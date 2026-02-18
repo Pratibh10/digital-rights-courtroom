@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Digital Rights Courtroom — A browser-based litigation simulator for EU digital law education.">
+    <title>Digital Rights Courtroom</title>
+    <link rel="stylesheet" href="css/style.css">
+    <noscript>
+        <style>
+            body { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+        </style>
+    </noscript>
+</head>
+<body>
+
+    <!-- No-JS fallback -->
+    <noscript>
+        <div style="text-align: center; padding: 2rem;">
+            <h1>Digital Rights Courtroom</h1>
+            <p>This application requires JavaScript to run. Please enable JavaScript in your browser settings.</p>
+        </div>
+    </noscript>
+
+    <!-- Main App Container -->
+    <div id="app">
+        <!-- Screens are rendered here by JavaScript -->
+    </div>
+
+    <!-- Legal Codex Sidebar -->
+    <button class="codex-toggle" id="codex-toggle-btn">
+        <span>⚖</span> LEGAL CODEX
+    </button>
+    <aside id="codex-sidebar">
+        <div class="codex-header">
+            <h2>⚖ Legal Codex</h2>
+            <input type="text" class="codex-search" placeholder="Search articles..." id="codex-search">
+        </div>
+        <div class="codex-tabs">
+            <button class="codex-tab active" data-framework="all">All</button>
+            <button class="codex-tab" data-framework="ai-act">AI Act</button>
+            <button class="codex-tab" data-framework="gdpr">GDPR</button>
+            <button class="codex-tab" data-framework="dsa">DSA</button>
+            <button class="codex-tab" data-framework="dma">DMA</button>
+        </div>
+        <div class="codex-content" id="codex-content">
+            <!-- Codex articles rendered here by codex.js -->
+            <p class="text-muted" style="padding: 1rem; font-size: 0.85rem;">Codex articles will appear here as cases are loaded.</p>
+        </div>
+    </aside>
+
+    <!-- Scripts — order matters: data first, then engine, then screens, then codex -->
+    <script src="js/data.js"></script>
+    <script src="js/engine.js"></script>
+    <script src="js/screens.js"></script>
+    <script src="js/codex.js"></script>
+</body>
+</html>
