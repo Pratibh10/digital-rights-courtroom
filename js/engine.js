@@ -1,6 +1,6 @@
 /* ============================================
    DIGITAL RIGHTS COURTROOM — Game Engine
-   Screen manager, game state, scoring
+   Screen manager, game state, scoring, keyword gate
    ============================================ */
 
    const Game = {
@@ -11,15 +11,26 @@
       currentCaseId: null,
       currentCase: null,
   
-      // Per-case progress (reset when starting a new case)
+      // Per-case progress
       collectedEvidence: [],
+      readEvidence: [],
       analysisAnswers: {
         framework: { chosen: null, correct: false },
         article: { chosen: null, correct: false }
       },
       courtroomResults: [],
   
-      // Persistent progress (saved to localStorage)
+      // Written answers (Write Before You Choose)
+      writtenAnswers: {
+        analysis_framework: '',
+        analysis_article: '',
+        courtroom: []
+      },
+  
+      // Keyword gate attempts
+      keywordAttempts: {},
+  
+      // Persistent progress
       completedCases: {}
     },
   
@@ -36,7 +47,6 @@
       app.innerHTML = '';
       this.state.currentScreen = screenName;
   
-      // Call the appropriate render function from screens.js
       switch (screenName) {
         case 'dashboard':
           Screens.renderDashboard(app);
@@ -64,7 +74,6 @@
           app.innerHTML = '<p>Screen not found.</p>';
       }
   
-      // Scroll to top on screen change
       window.scrollTo(0, 0);
     },
   
@@ -76,7 +85,6 @@
         return;
       }
   
-      // Check if case has content
       if (caseData.evidence.length === 0) {
         alert('This case is coming soon! Content is being developed.');
         return;
@@ -87,11 +95,18 @@
   
       // Reset per-case state
       this.state.collectedEvidence = [];
+      this.state.readEvidence = [];
       this.state.analysisAnswers = {
         framework: { chosen: null, correct: false },
         article: { chosen: null, correct: false }
       };
       this.state.courtroomResults = [];
+      this.state.writtenAnswers = {
+        analysis_framework: '',
+        analysis_article: '',
+        courtroom: []
+      };
+      this.state.keywordAttempts = {};
   
       this.showScreen('briefing');
     },
@@ -102,15 +117,65 @@
       this.showScreen('dashboard');
     },
   
-    // --- Evidence Collection ---
+    // --- Evidence ---
     collectEvidence(evidenceId) {
       if (!this.state.collectedEvidence.includes(evidenceId)) {
         this.state.collectedEvidence.push(evidenceId);
       }
     },
   
+    markEvidenceRead(evidenceId) {
+      if (!this.state.readEvidence.includes(evidenceId)) {
+        this.state.readEvidence.push(evidenceId);
+      }
+    },
+  
+    isEvidenceRead(evidenceId) {
+      return this.state.readEvidence.includes(evidenceId);
+    },
+  
     isEvidenceCollected(evidenceId) {
       return this.state.collectedEvidence.includes(evidenceId);
+    },
+  
+    // --- Written Answers ---
+    recordWrittenAnswer(phase, text) {
+      if (phase === 'analysis_framework' || phase === 'analysis_article') {
+        this.state.writtenAnswers[phase] = text;
+      } else if (phase.startsWith('courtroom_')) {
+        const index = parseInt(phase.split('_')[1]);
+        this.state.writtenAnswers.courtroom[index] = text;
+      }
+    },
+  
+    // --- Keyword Gate ---
+    checkKeywords(text, requiredConcepts) {
+      if (!requiredConcepts || requiredConcepts.length === 0) {
+        return { allFound: true, results: [] };
+      }
+  
+      const lower = text.toLowerCase().replace(/[.,;:!?()]/g, ' ');
+  
+      const results = requiredConcepts.map(concept => ({
+        name: concept.name,
+        found: concept.keywords.some(kw => lower.includes(kw.toLowerCase())),
+        hints: concept.hints || [],
+        keywords: concept.keywords
+      }));
+  
+      return {
+        allFound: results.every(r => r.found),
+        results: results
+      };
+    },
+  
+    getKeywordAttempts(gateId) {
+      return this.state.keywordAttempts[gateId] || 0;
+    },
+  
+    incrementKeywordAttempts(gateId) {
+      this.state.keywordAttempts[gateId] = (this.state.keywordAttempts[gateId] || 0) + 1;
+      return this.state.keywordAttempts[gateId];
     },
   
     // --- Analysis Tracking ---
@@ -125,7 +190,7 @@
     recordArgument(argumentId, quality) {
       this.state.courtroomResults.push({
         argumentId: argumentId,
-        quality: quality  // 'strong', 'weak', or 'wrong'
+        quality: quality
       });
     },
   
@@ -134,11 +199,11 @@
       const caseData = this.state.currentCase;
       if (!caseData) return null;
   
-      // Evidence: 20 points
+      // Evidence: 20 points (based on read, not just clicked)
       const totalEvidence = caseData.evidence.length;
-      const collectedCount = this.state.collectedEvidence.length;
+      const readCount = this.state.readEvidence.length;
       const evidenceScore = totalEvidence > 0
-        ? Math.round((collectedCount / totalEvidence) * 20)
+        ? Math.round((readCount / totalEvidence) * 20)
         : 0;
   
       // Framework identification: 15 points
@@ -170,7 +235,6 @@
   
       const total = evidenceScore + frameworkScore + articleScore + courtroomScore;
   
-      // Determine verdict
       let verdict;
       if (total >= 80) verdict = 'won';
       else if (total >= 55) verdict = 'won_with_reservations';
@@ -182,7 +246,7 @@
         evidence: {
           earned: evidenceScore,
           possible: 20,
-          found: collectedCount,
+          found: readCount,
           total: totalEvidence
         },
         analysis: {
@@ -196,10 +260,10 @@
           possible: 50,
           arguments: argumentDetails
         },
-        verdict: verdict
+        verdict: verdict,
+        writtenAnswers: { ...this.state.writtenAnswers }
       };
   
-      // Save completion
       this.state.completedCases[this.state.currentCaseId] = {
         completed: true,
         score: total,
@@ -210,12 +274,11 @@
       return score;
     },
   
-    // --- Persistence (localStorage — game progress only, no personal data) ---
+    // --- Persistence ---
     saveProgress() {
       try {
         localStorage.setItem('drc-progress', JSON.stringify(this.state.completedCases));
       } catch (e) {
-        // localStorage might be unavailable — that's fine, progress just won't persist
         console.log('Could not save progress:', e);
       }
     },
@@ -235,14 +298,11 @@
       this.state.completedCases = {};
       try {
         localStorage.removeItem('drc-progress');
-      } catch (e) {
-        // Ignore
-      }
+      } catch (e) {}
     }
   };
   
-  
-  // --- Start the game when the page loads ---
+  // --- Start ---
   document.addEventListener('DOMContentLoaded', () => {
     Game.init();
   });
