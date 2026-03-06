@@ -2455,6 +2455,13 @@ const CASES = [
         {
           id: 'arg1',
           evidenceId: 'ev2-technical-specs',
+          requiredConcepts: [
+            {
+              name: 'Real-Time Classification',
+              keywords: ['real-time', 'biometric', 'article 5(1)(h)', 'art. 5', 'remote', 'identification', 'publicly accessible'],
+              hints: ['Consider whether the system operates in real-time and whether it performs biometric identification in a publicly accessible space.', 'Article 5(1)(h) specifically prohibits real-time remote biometric identification in publicly accessible spaces. Does this system match that definition?']
+            }
+          ],
           oppositionArgument: 'Your Honour, the Metropolitan Police are not engaged in \"surveillance.\" Sentinel-RBI is a precision tool used for the identification of specific, known offenders. It only matches faces against a pre-defined database of people who have already committed crimes. The AI Act\'s prohibitions were intended to prevent mass, indiscriminate scanning of the general public. By targeting only known shoplifters, the MPD is acting within its public safety mandate to protect the economic interests of the city.',
           writePrompt: 'The respondent claims the system isn\'t \"indiscriminate.\" Look at the technical specs\u2014how does the system actually process the data of pedestrians?',
           minWords: 20,
@@ -2492,6 +2499,13 @@ const CASES = [
         {
           id: 'arg2',
           evidenceId: 'ev4-compliance-log',
+          requiredConcepts: [
+            {
+              name: 'Exception Requirements',
+              keywords: ['exception', 'article 5(1)(h)(iii)', 'serious crime', 'annex ii', 'shoplifting', 'threshold', 'proportionality'],
+              hints: ['Check whether the crimes being investigated meet the threshold in Annex II for the Article 5(1)(h) exception.', 'The exception requires crimes listed in Annex II. Shoplifting is not among them. The exception does not apply to minor offences.']
+            }
+          ],
           oppositionArgument: 'Even if the court finds this is a \"real-time\" system, it falls under the exception in Article 5(1)(h)(iii). This provision allows the identification of persons suspected of criminal offences for the purpose of prosecution. Shoplifting is a criminal offence that causes significant social and economic harm. The police are simply using modern tools to perform their traditional role of identifying suspects who have a documented history of criminal activity.',
           writePrompt: 'Counsel claims they meet the Article 5(1)(h)(iii) exception. Check the arrest logs and Annex II\u2014do shoplifting offences meet the specific legal threshold required by the AI Act?',
           minWords: 20,
@@ -2529,6 +2543,13 @@ const CASES = [
         {
           id: 'arg3',
           evidenceId: 'ev6-police-manual',
+          requiredConcepts: [
+            {
+              name: 'Judicial Authorisation',
+              keywords: ['judicial', 'warrant', 'court order', 'article 5(3)', 'administrative', 'independent', 'prior authorisation'],
+              hints: ['Does Article 5(3) accept internal police sign-off as sufficient authorisation?', 'Article 5(3) requires prior authorisation from a judicial authority or independent administrative body. Internal police approval does not satisfy this.']
+            }
+          ],
           oppositionArgument: 'Finally, Your Honour, even if a warrant were required, our internal police manual provides for a rigorous \"administrative authorisation\" process. The Commissioner himself signs off on these deployments. The AI Act allows for authorisation by either a judicial authority or an independent administrative authority. The MPD Crime Analytics Team is an independent body within the department that provides the necessary oversight to ensure the system is used responsibly.',
           writePrompt: 'The respondent claims their internal police sign-off counts as \"administrative authorisation.\" Does a police department count as an \"independent administrative authority\" under Article 5(3)?',
           minWords: 20,
@@ -2717,6 +2738,13 @@ const CASES = [
         {
           id: 'arg1',
           evidenceId: 'ev4-the-warrant',
+          requiredConcepts: [
+            {
+              name: 'Geographic & Temporal Limits',
+              keywords: ['geographic', 'temporal', 'article 5(2)', 'necessary', 'proportionate', 'blanket', 'limitation'],
+              hints: ['Article 5(2) requires the use to be strictly necessary. Does a blanket warrant over an entire station network satisfy this?', 'The warrant must be geographically and temporally limited. A nationwide, perpetual warrant fails the Article 5(2) necessity test.']
+            }
+          ],
           oppositionArgument: 'Your Honour, the National Police Force acted under the clear exception provided in Article 5(1)(h)(ii) for the prevention of a specific, substantial, and imminent threat to the life or physical safety of natural persons, namely a terrorist attack. We obtained a judicial warrant, which satisfy the requirements of Article 5(3). The 72-hour window was a reasonable time limit given the intelligence that the suspect was in transit. To suggest that the police should have limited their view in a major transit hub is to ask them to ignore the very security mandate the AI Act provides for.',
           writePrompt: 'The respondent claims the warrant satisfies Article 5(3). Look at the geographic and time limitations in Article 5(2)\u2014is the warrant\'s scope legally sufficient?',
           minWords: 20,
@@ -2754,6 +2782,13 @@ const CASES = [
         {
           id: 'arg2',
           evidenceId: 'ev3-internal-email',
+          requiredConcepts: [
+            {
+              name: 'FRIA Requirements',
+              keywords: ['fundamental rights', 'impact assessment', 'fria', 'article 5(3)', 'specific', 'generic', 'context-specific'],
+              hints: ['Can a fundamental rights impact assessment from one context be reused for a completely different deployment?', 'Article 5(3) requires a context-specific FRIA for each deployment. A generic, reused assessment does not comply.']
+            }
+          ],
           oppositionArgument: 'Your Honour, we acknowledge the requirement in Article 5(3) for a Fundamental Rights Impact Assessment. However, the law does not specify that the assessment must be drafted from scratch for every single deployment. In an emergency involving a terrorist threat, the NPF used its existing expertise and previous assessments to evaluate the risks. The core impacts on privacy and non-discrimination are consistent across all biometric deployments. To demand a months-long study in the face of an imminent attack would render the Article 5(1)(h) exceptions useless in practice.',
           writePrompt: 'The respondent admits to using a "generic" FRIA. Does Article 5(3) allow for the reuse of impact assessments from different contexts, such as retail theft?',
           minWords: 20,
@@ -2791,6 +2826,13 @@ const CASES = [
         {
           id: 'arg3',
           evidenceId: 'ev1-gpw-intake',
+          requiredConcepts: [
+            {
+              name: 'Real-Time vs Post Classification',
+              keywords: ['real-time', 'post', 'data retention', 'article 5', '48 hours', 'storage', 'purpose limitation'],
+              hints: ['Does keeping biometric data for 48 hours turn real-time identification into post-identification?', 'The classification depends on when identification occurs, not data retention. If matching happens in real-time, subsequent storage does not change its character.']
+            }
+          ],
           oppositionArgument: 'Your Honour, Global Privacy Watch complains that biometric data was kept for 48 hours after the operation. This was necessary to ensure that we hadn\'t missed any potential matches that the real-time system might have flagged during peak traffic. This is a standard \"post-processing\" procedure. The AI Act\'s rules on real-time identification do not apply to data once it has been recorded; at that point, it becomes a \"post\" biometric identification system, which is subject to much less stringent rules under the Act.',
           writePrompt: 'The respondent claims that keeping the data for 48 hours turns it into "post" RBI. Does the AI Act allow for real-time data to be reclassified as "post" to avoid Article 5 restrictions?',
           minWords: 20,
@@ -2979,6 +3021,13 @@ const CASES = [
         {
           id: 'arg1',
           evidenceId: 'ev2-tech-specs',
+          requiredConcepts: [
+            {
+              name: 'Prohibited vs High-Risk',
+              keywords: ['article 5(1)(f)', 'prohibited', 'emotion recognition', 'workplace', 'high-risk', 'annex iii', 'absolute ban'],
+              hints: ['Is emotion recognition in the workplace a high-risk system or a prohibited practice? Check Article 5(1)(f).', 'Article 5(1)(f) places an absolute prohibition on emotion recognition in the workplace. It cannot be downgraded to high-risk.']
+            }
+          ],
           oppositionArgument: 'Your Honour, EmpathyStream is not a prohibited practice but a high-risk AI system under Article 6 and Annex III, point 4(b). This provision specifically categorises AI systems used for monitoring and evaluating persons in work-related relationships as high-risk. By classifying it as such, the AI Act acknowledges that these systems are lawful provided they meet transparency and human oversight requirements. We have complied with Article 13 by informing staff, and Article 14 by having managers review the scores. A total ban under Article 5 is a misapplication of the Act\'s risk-based hierarchy.',
           writePrompt: 'The respondent argues the system is "High-Risk" under Annex III. Look at Article 5(1)(f)\u2014is there a specific prohibition that takes precedence over the general "employment" category?',
           minWords: 20,
@@ -3016,6 +3065,13 @@ const CASES = [
         {
           id: 'arg2',
           evidenceId: 'ev4-compliance-memo',
+          requiredConcepts: [
+            {
+              name: 'Safety Exception Scope',
+              keywords: ['safety', 'exception', 'medical', 'article 5(1)(f)', 'narrow', 'intended purpose', 'wellbeing'],
+              hints: ['The safety exception in Article 5(1)(f) is very narrow. Is monitoring employee sentiment a genuine safety reason?', 'The exception covers systems put into service for medical or safety reasons (e.g., fatigue detection for pilots). General wellbeing monitoring does not qualify.']
+            }
+          ],
           oppositionArgument: 'Your Honour, even if Article 5(1)(f) applies, the system falls squarely within the mandatory exception for \"medical or safety reasons.\" Call centre work is high-stress and prone to extreme burnout. EmpathyStream is a safety tool designed to monitor employee stress levels and prevent psychological harm. Identifying fatigue is a health and safety objective that Member States are required to promote. The fact that the data is also useful for management does not negate the primary safety-oriented purpose of protecting our staff from mental exhaustion.',
           writePrompt: 'The respondent claims the "safety" exception applies. Check the compliance memo (Ev 4) and the health logs (Ev 5)\u2014is the "safety" claim a genuine medical objective or a legal pretext?',
           minWords: 20,
@@ -3053,6 +3109,13 @@ const CASES = [
         {
           id: 'arg3',
           evidenceId: 'ev6-employee-handbook',
+          requiredConcepts: [
+            {
+              name: 'Detrimental Treatment',
+              keywords: ['detrimental', 'treatment', 'kpi', 'consequence', 'performance review', 'unfavourable', 'disadvantage'],
+              hints: ['If the emotion score affects employment outcomes, does that constitute detrimental treatment?', 'When emotion scores feed into KPIs and performance reviews, they directly cause detrimental treatment to employees regardless of stated intent.']
+            }
+          ],
           oppositionArgument: 'Finally, Your Honour, we must consider the intent of the AI Act. Recital 44 notes that the ban is intended to prevent "detrimental or unfavourable treatment." VocalVibe is a professional environment where agents are paid to provide a specific emotional service to customers. By making the "Engagement Score" a KPI in the employee handbook, we have made it a transparent part of the work-related relationship. Employees know what is expected of them. There is no unfairness when an agent is penalised for failing to meet a clearly defined and technologically measured professional standard.',
           writePrompt: 'The respondent claims that because the score is a KPI in the handbook, it\'s not "unfavourable treatment." Does transparency in a handbook override the Article 5 prohibition?',
           minWords: 20,
@@ -3241,6 +3304,13 @@ const CASES = [
         {
           id: 'arg1',
           evidenceId: 'ev2-classmind-manual',
+          requiredConcepts: [
+            {
+              name: 'Emotion vs Engagement',
+              keywords: ['emotion recognition', 'engagement', 'article 5(1)(f)', 'education', 'infer emotions', 'facial analysis', 'prohibited'],
+              hints: ['Is measuring "engagement" through facial analysis the same as emotion recognition?', 'If the system infers emotional states (boredom, confusion, interest) from facial features, it is emotion recognition regardless of the label used.']
+            }
+          ],
           oppositionArgument: 'Your Honour, the Parent Coalition is fundamentally mischaracterizing ClassMind AI. This is not an \"emotion recognition\" system. It is a pedagogical support system that measures cognitive engagement. Article 5(1)(f) was intended to prevent the psychological profiling of students, not to ban schools from using technology to improve teaching quality. By monitoring whether a student is \'confused\' by a math problem, we are providing a better education. We are measuring attention, not private emotions.',
           writePrompt: 'The school claims "engagement" isn\'t "emotion." Check the technical manual (Ev 2) and the definition of emotion recognition in the AI Act—does the system\'s function match the prohibited practice?',
           minWords: 20,
@@ -3278,6 +3348,13 @@ const CASES = [
         {
           id: 'arg2',
           evidenceId: 'ev4-legal-warning',
+          requiredConcepts: [
+            {
+              name: 'Safety Exception in Education',
+              keywords: ['safety', 'exception', 'academic success', 'narrow', 'medical', 'article 5(1)(f)', 'not a safety reason'],
+              hints: ['Does "improving academic success" qualify as a safety reason under Article 5(1)(f)?', 'The safety exception is limited to medical or genuine safety contexts. Academic performance improvement is not a safety reason.']
+            }
+          ],
           oppositionArgument: 'Your Honour, even if this court finds the system falls under Article 5(1)(f), we must consider the intent of the Academy. Our teachers are using this data to identify students who are struggling or falling behind—a clear educational safety objective. The AI Act provides an exception for \"medical or safety reasons.\" Ensuring that a child does not fail their exams and is protected from the psychological harm of academic failure is a safety reason. We are using the AI to ensure the well-being and future success of our students, which is the highest form of safety in an educational context.',
           writePrompt: 'The respondent claims "academic success" is a "safety reason." Look at the legal advice (Ev 4) and the AI Act\'s exceptions—is this a valid interpretation of the safety exception?',
           minWords: 20,
@@ -3315,6 +3392,13 @@ const CASES = [
         {
           id: 'arg3',
           evidenceId: 'ev1-student-account',
+          requiredConcepts: [
+            {
+              name: 'Detrimental Treatment of Minors',
+              keywords: ['detrimental', 'minor', 'child', 'coaching', 'singled out', 'stigma', 'teacher intervention'],
+              hints: ['If a child is flagged for "disengagement" and receives intervention, is that detrimental treatment?', 'Being singled out based on inferred emotions, particularly for minors, constitutes detrimental treatment even when framed as supportive coaching.']
+            }
+          ],
           oppositionArgument: 'Your Honour, we must consider the lack of \"detrimental treatment\" here. Recital 44 notes that the prohibition aims to prevent unfavorable treatment. St. Jude\'s is using this to help students. When Mr. Sterling tells a student to \"look more interested,\" he is not penalizing them; he is coaching them. There is no evidence of harm. In fact, the AI helps ensure that no student is ignored. If a child is confused, the AI tells the teacher. This is a benefit to the student\'s right to education, not a violation of their rights.',
           writePrompt: 'The school claims "coaching" isn\'t "detrimental treatment." Look at Leo Thorne\'s statement (Ev 1)—does being told to "look more interested" count as detrimental treatment under the AI Act\'s framework?',
           minWords: 20,
@@ -3503,6 +3587,13 @@ const CASES = [
         {
           id: 'arg1',
           evidenceId: 'ev2-tech-scraping-specs',
+          requiredConcepts: [
+            {
+              name: 'Untargeted Scraping',
+              keywords: ['untargeted', 'article 5(1)(e)', 'facial images', 'scraping', 'internet', 'database', 'mass collection'],
+              hints: ['Does the AI Act distinguish between "purposeful" and "untargeted" scraping based on the collector intent?', 'Article 5(1)(e) prohibits the creation of facial recognition databases through untargeted scraping from the internet. The prohibition focuses on the method (mass collection) not the stated purpose.']
+            }
+          ],
           oppositionArgument: 'Your Honour, the term \"untargeted\" in Article 5(1)(e) is intended to prevent the creation of mass surveillance states. ClearSight is a private commercial entity. Our scraping is highly targeted toward a specific goal: providing identity verification for legitimate business security. We are not \"indiscriminately\" scraping; we are carefully indexing public data to build a tool that prevents fraud and theft. Because our purpose is commercial security, our data collection is purposeful and therefore falls outside the scope of the Article 5 prohibitions.',
           writePrompt: 'The respondent claims their scraping is "purposeful" and therefore not "untargeted." Look at the technical specs (Ev 2)\u2014how does the system actually collect data? Is it limited to specific individuals?',
           minWords: 20,
@@ -3540,6 +3631,13 @@ const CASES = [
         {
           id: 'arg2',
           evidenceId: 'ev3-internal-memo',
+          requiredConcepts: [
+            {
+              name: 'Internet Sources',
+              keywords: ['internet', 'cctv', 'youtube', 'publicly accessible', 'open source', 'article 5(1)(e)', 'online'],
+              hints: ['Are YouTube and social media feeds considered "the internet" or "CCTV footage" under Article 5(1)(e)?', 'Article 5(1)(e) covers scraping from the internet OR CCTV footage. Open YouTube feeds are internet sources, not CCTV.']
+            }
+          ],
           oppositionArgument: 'Your Honour, Article 5(1)(e) also mentions scraping from CCTV footage. We contend that the streams ClearSight used were \"open\" YouTube broadcasts of city streets. These are not \"CCTV footage\" in the traditional sense of a closed-circuit police network. These are public broadcasts that anyone can watch. Using an AI to analyze a public broadcast is no different from a human watching a screen. To ban this would be to ban the use of AI on any public video data, which would stifle innovation in the security sector.',
           writePrompt: 'The respondent argues "Open YouTube feeds" aren\'t "CCTV." Check the internal memo (Ev 3) and Art 5(1)(e)\u2014does the Act distinguish between private and publicly-broadcasted CCTV?',
           minWords: 20,
@@ -3577,6 +3675,13 @@ const CASES = [
         {
           id: 'arg3',
           evidenceId: 'ev5-audit-warning',
+          requiredConcepts: [
+            {
+              name: 'Retrospective Application',
+              keywords: ['retrospective', 'transitional', 'existing database', 'prohibition', 'ongoing', 'article 5', 'continued use'],
+              hints: ['Does the fact that a database was built before the AI Act entered into force exempt it?', 'The prohibition covers the use of such databases, not just their creation. Continuing to use an unlawfully scraped database after the Act applies is itself a violation.']
+            }
+          ],
           oppositionArgument: 'Finally, Your Honour, we must consider the timing. ClearSight built much of this database before the AI Act came into full effect. Article 5 prohibitions cannot be applied retroactively to data that has already been collected and processed. To force the deletion of billions of images would be a disproportionate destruction of corporate property and would harm the security of our existing clients who rely on this data. The Act should only apply to new scraping activities going forward, allowing ClearSight to maintain its existing \"Legacy Database.\"',
           writePrompt: 'The respondent argues the ban isn\'t retroactive. Look at Art 5(1)(e)\u2014does it prohibit just the "scraping" or also the "placing on the market" and "use" of the resulting database?',
           minWords: 20,
@@ -3766,6 +3871,13 @@ const CASES = [
         {
           id: 'arg1',
           evidenceId: 'ev2-technical-docs',
+          requiredConcepts: [
+            {
+              name: 'Profiling vs Objective Facts',
+              keywords: ['profiling', 'article 5(1)(d)', 'objective', 'socioeconomic', 'personality traits', 'risk assessment', 'predict'],
+              hints: ['What kind of data does Article 5(1)(d) consider problematic for predicting criminal offences?', 'Article 5(1)(d) prohibits profiling based on personality traits or personal characteristics. Socioeconomic data like postcode and employment are personal characteristics, not objective facts about criminal conduct.']
+            }
+          ],
           oppositionArgument: 'Your Honour, the Civil Liberties Union is misapplying Article 5(1)(d). Crim-Pulse is not based \'solely\' on personality traits. As the technical documents show, the system incorporates objective, verifiable data such as geospatial crime density, employment status, and official family records. These are external, verifiable facts. The AI Act\'s prohibition was meant to stop the use of \'pseudo-scientific\' personality tests, not to prevent the police from using hard socioeconomic data to identify where future crimes are most likely to occur.',
           writePrompt: 'The respondent claims socioeconomic data counts as "objective facts." Look at Article 5(1)(d)\u2014what kind of "objective facts" are required to trigger the exception?',
           minWords: 20,
@@ -3803,6 +3915,13 @@ const CASES = [
         {
           id: 'arg2',
           evidenceId: 'ev5-witness-officer',
+          requiredConcepts: [
+            {
+              name: 'Human-in-the-Loop Exception',
+              keywords: ['human-in-the-loop', 'exception', 'override', 'rubber-stamp', 'meaningful', 'article 5(1)(d)', 'solely'],
+              hints: ['Does a human who never overrides the AI constitute meaningful human-in-the-loop oversight?', 'If the human systematically follows the AI recommendation without independent assessment, the system operates as the sole basis for action, which Article 5(1)(d) prohibits.']
+            }
+          ],
           oppositionArgument: 'Your Honour, even if the system uses profiling, it does not do so \'solely.\' As our witness from the patrol unit explained, the AI is a \'support tool.\' The final decision to stop and search an individual is always made by a human officer based on their professional experience and observations in the field. This human-in-the-loop ensures that the system falls under the exception in Article 5(1)(d), which permits AI systems used to support human assessment. The AI provides the lead, but the human provides the actual law enforcement decision.',
           writePrompt: 'The respondent argues the "human-in-the-loop" satisfies the exception. Look at the witness statement (Ev 5) and internal email (Ev 3)\u2014is the human assessment truly independent, or is it triggered by the score?',
           minWords: 20,
@@ -3840,6 +3959,13 @@ const CASES = [
         {
           id: 'arg3',
           evidenceId: 'ev4-statistical-report',
+          requiredConcepts: [
+            {
+              name: 'Statistical Correlation vs Causation',
+              keywords: ['correlation', 'causation', 'efficacy', 'false positive', 'bias', 'discriminatory', 'article 5(1)(d)'],
+              hints: ['Can statistical correlation between socioeconomic data and crime justify a predictive policing system?', 'Article 5(1)(d) does not allow effectiveness as a defence. If the system profiles based on personal characteristics rather than objective verifiable facts related to criminal activity, it is prohibited regardless of its statistical accuracy.']
+            }
+          ],
           oppositionArgument: 'Finally, Your Honour, we must look at the results. Crim-Pulse is effective. The statistical review shows that individuals in the \'High Risk\' category are significantly more likely to have a criminal history than those in the \'Low Risk\' category. Even if 85% of those flagged have no prior record, the system is identifying a pool of individuals who share characteristics with known offenders. This is a scientific, data-driven approach to public safety. To ban it would be to force the police back into the dark ages of reactive policing, where we only act after a victim has been harmed.',
           writePrompt: 'The respondent argues "statistical correlation" justifies the system. Look at the efficacy report (Ev 4) and Art 5(1)(d)\u2014does "scientific correlation" allow for profiling-based crime prediction?',
           minWords: 20,
@@ -4028,6 +4154,13 @@ const CASES = [
         {
           id: 'arg1',
           evidenceId: 'ev2-prism-technical',
+          requiredConcepts: [
+            {
+              name: 'Categorisation Without Identification',
+              keywords: ['biometric categorisation', 'article 5(1)(g)', 'identification', 'categorise', 'protected characteristics', 'race', 'ethnicity'],
+              hints: ['Does Article 5(1)(g) require the system to identify individuals, or is categorisation enough?', 'Article 5(1)(g) prohibits categorising individuals based on biometric data to infer protected characteristics like race or ethnicity. Individual identification is not required.']
+            }
+          ],
           oppositionArgument: 'Your Honour, the ECLU is fundamentally misreading Article 5(1)(g). That provision prohibits systems that \"categorise individually natural persons.\" Prism-AI is an anonymous segmentation tool. We do not know the names, addresses, or identities of the shoppers. We are categorizing transient biometric patterns for a momentary advertising display. Because we do not link these categories to a persistent legal identity, we are not categorizing \"natural persons\" as individuals, but rather as anonymous members of a commercial demographic.',
           writePrompt: 'The respondent claims anonymity exempts them. Look at Art. 5(1)(g) and Evidence 2—does the law require "identification" for the prohibition on categorization to apply?',
           minWords: 20,
@@ -4065,6 +4198,13 @@ const CASES = [
         {
           id: 'arg2',
           evidenceId: 'ev4-compliance-internal',
+          requiredConcepts: [
+            {
+              name: 'Filtering Exception',
+              keywords: ['filtering', 'exception', 'labelling', 'article 5(1)(g)', 'commercial', 'advertising', 'lawful'],
+              hints: ['Is using biometric categorisation for advertising the same as the lawful filtering exception?', 'The exception for labelling or filtering is narrow and relates to legitimate purposes like content safety. Using it to segment audiences by inferred race for commercial targeting falls outside the exception.']
+            }
+          ],
           oppositionArgument: 'Even if the court finds this is biometric categorisation, it falls under the exception for commercial \"labelling and filtering.\" Article 5(1)(g) allows for the labelling or filtering of biometric datasets. Aura Analytics is simply filtering the stream of people in the mall to ensure that a Christian shopper sees a Christian-themed ad. This is a filtering service for our clients, no different from the law enforcement exceptions mentioned in the Act. If the police can filter for suspects, why can\'t a mall filter for interested consumers?',
           writePrompt: 'The respondent claims the "filtering" exception applies. Check Art. 5(1)(g)\u2014is the "labelling or filtering" exception available to private marketing firms?',
           minWords: 20,
@@ -4102,6 +4242,13 @@ const CASES = [
         {
           id: 'arg3',
           evidenceId: 'ev3-marketing-pitch',
+          requiredConcepts: [
+            {
+              name: 'Inference vs Deduction',
+              keywords: ['inference', 'probability', 'deduction', 'biometric data', 'article 5(1)(g)', 'infer', 'categorise'],
+              hints: ['Does the prohibition apply only to certain categorisation or to any inference of protected traits from biometric data?', 'Article 5(1)(g) covers any system that uses biometric data to infer protected characteristics. The distinction between inference and deduction is irrelevant to the prohibition.']
+            }
+          ],
           oppositionArgument: 'Finally, Your Honour, we must address the \"inference\" vs \"deduction\" distinction. Article 5(1)(g) prohibits systems that deduce or infer race or politics. Prism-AI does not \"know\" a person\'s race; it merely assigns a probability score. This is an estimation, not a deduction of fact. If the AI says a person is \"88% likely to be a Conservative,\" it is providing a probabilistic data point for a marketing model. This is no different from a human salesperson making an educated guess about a customer\'s tastes. We are not categorizing them by their actual beliefs, but by their statistical profile.',
           writePrompt: 'The respondent argues "probability" isn\'t "inference." Look at Art. 5(1)(g) and Evidence 3\u2014does the law distinguish between "statistical probability" and "inference"?',
           minWords: 20,
@@ -4290,6 +4437,13 @@ const CASES = [
         {
           id: 'arg1',
           evidenceId: 'ev2-training-stats',
+          requiredConcepts: [
+            {
+              name: 'Representative Data',
+              keywords: ['representative', 'article 10(3)', 'training data', 'bias', 'demographic', 'skin tone', 'best extent possible'],
+              hints: ['What does Article 10(3) require regarding the representativeness of training data?', 'Article 10(3) requires training data to be representative to the best extent possible. With 1% dark skin representation when the patient population is significantly more diverse, this standard is clearly not met.']
+            }
+          ],
           oppositionArgument: 'Your Honour, DermScan AI is a state-of-the-art high-risk system. Article 10(3) of the AI Act requires that training data be relevant and representative to the best extent possible. SkinTech AI used nearly half a million high-quality clinical images. The fact that fewer images exist for certain skin types is a systemic issue in medical research, not a regulatory violation by my client. We used the data that was available. To hold a developer liable for the general lack of diverse medical data in the world would make the development of any high-risk medical AI impossible.',
           writePrompt: 'The respondent claims 1% representation is "representative to the best extent possible." Look at the technical stats and Art. 10(3)—what is the actual standard for datasets in high-risk systems?',
           minWords: 20,
@@ -4327,6 +4481,13 @@ const CASES = [
         {
           id: 'arg2',
           evidenceId: 'ev3-internal-warning',
+          requiredConcepts: [
+            {
+              name: 'Risk Management and Bias',
+              keywords: ['risk management', 'article 9', 'known bias', 'mitigation', 'human-in-the-loop', 'residual risk', 'identify'],
+              hints: ['If the provider knows about the bias, is adding a human-in-the-loop sufficient mitigation under Article 9?', 'Article 9(2) requires providers to identify and mitigate risks. When the bias is known and predictable, delegating to a human without fixing the underlying data is not adequate mitigation.']
+            }
+          ],
           oppositionArgument: 'Your Honour, SkinTech AI maintained a rigorous risk management system as required by Article 9. Our internal memos show we identified the skin-tone performance delta during the validation phase. We analyzed this risk and determined that the most effective mitigation was the human-in-the-loop: the dermatologist. By ensuring that the AI is only an \'assistant\', we mitigated the risk of a false diagnosis. The provider is not responsible for the fact that Dr. Weber chose to rely on the AI rather than his own clinical judgment.',
           writePrompt: 'The respondent claims "human-in-the-loop" is a sufficient mitigation for the known bias. Look at Art. 9(2) and Evidence 3—did the provider actually mitigate the risk?',
           minWords: 20,
@@ -4364,6 +4525,13 @@ const CASES = [
         {
           id: 'arg3',
           evidenceId: 'ev6-clinical-audit',
+          requiredConcepts: [
+            {
+              name: 'Aggregate vs Group Accuracy',
+              keywords: ['aggregate', 'accuracy', 'subgroup', 'article 9', 'trade-off', 'disproportionate', 'harm'],
+              hints: ['Does Article 9 allow for high aggregate accuracy that masks poor performance for specific groups?', 'Article 9 does not permit a trade-off where overall benefit comes at the cost of disproportionate harm to specific demographic groups. Residual risk must be acceptable for all affected populations.']
+            }
+          ],
           oppositionArgument: 'Finally, Your Honour, we must look at the overall benefit. DermScan AI has a 96% aggregate accuracy rate. It has helped identify thousands of early-stage melanomas in light-skinned patients that might have been missed by general practitioners. Article 9(4) notes that risk management must ensure that the residual risk remains acceptable when weighed against the benefits. The benefit to the vast majority of the population clearly outweighs the residual risk of a lower sensitivity in a small demographic subgroup. To shut down this system would be to deny life-saving technology to 90% of our patients.',
           writePrompt: 'The respondent argues "aggregate benefit" justifies the residual risk. Does Article 9 allow for a trade-off where one group is put at significantly higher risk than another?',
           minWords: 20,
@@ -4551,6 +4719,13 @@ const CASES = [
         {
           id: 'arg1',
           evidenceId: 'ev2-ux-design-doc',
+          requiredConcepts: [
+            {
+              name: 'Effective Override Mechanism',
+              keywords: ['override', 'article 14(4)', 'button', 'effective', 'able to', 'understand', 'human oversight'],
+              hints: ['Is the mere presence of an override button sufficient to satisfy Article 14(4)?', 'Article 14(4) requires that humans can effectively understand and override the system. A button that is technically present but practically unusable (due to interface design or institutional pressure) does not satisfy the requirement.']
+            }
+          ],
           oppositionArgument: 'Your Honour, the AI Act requires that high-risk systems allow for human oversight. MediLogic has fully complied. Every screen in TriageFlow AI includes a prominent \'Manual Override\' button. The fact that we require a justification for clinical deviations is not a violation; it is a quality control measure. Article 14 does not mandate that overrides be \'easy\' or \'instant\'; it only requires that the human has the technical ability to perform them. The doctor in this case had that ability but chose not to exercise it.',
           writePrompt: 'The respondent claims the mere presence of an "Override" button is enough. Look at Article 14(4) and Evidence 2—what is the actual standard for the *effectiveness* of human oversight?',
           minWords: 20,
@@ -4588,6 +4763,13 @@ const CASES = [
         {
           id: 'arg2',
           evidenceId: 'ev4-oversight-stats',
+          requiredConcepts: [
+            {
+              name: 'Automation Bias',
+              keywords: ['automation bias', 'adherence', 'article 14(4)(b)', 'over-reliance', 'trust', 'independent judgment', 'defer'],
+              hints: ['When staff follow the AI 98% of the time, does the Act consider this a problem?', 'Article 14(4)(b) specifically requires systems to be designed so that humans do not over-rely on them (automation bias). A 98% adherence rate indicates exactly the automation bias the Act seeks to prevent.']
+            }
+          ],
           oppositionArgument: 'Your Honour, the statistics show the system is working exactly as intended. A 98% adherence rate is a testament to the accuracy of the model. Article 14(2) requires that oversight measures aim at preventing or minimizing the risks that may emerge. By requiring a justification for overrides, we minimize the risk of human error and ensure that clinicians only deviate when they have a robust, verifiable reason. The low override rate is not a sign of \"automation bias,\" but a sign of a high-performing system that clinicians have learned to trust.',
           writePrompt: 'The respondent claims high adherence is a sign of "trust." Look at Art. 14(4)(b) and Evidence 4 and 5—does the AI Act allow providers to design systems that encourage "blind trust" or automation bias?',
           minWords: 20,
@@ -4625,6 +4807,13 @@ const CASES = [
         {
           id: 'arg3',
           evidenceId: 'ev6-risk-mgmt-plan',
+          requiredConcepts: [
+            {
+              name: 'Risk Management Delegation',
+              keywords: ['risk management', 'article 9', 'contractual', 'disclaimer', 'residual risk', 'deployer', 'provider responsibility'],
+              hints: ['Can a provider discharge risk management duties through contractual terms with deployers?', 'Article 9 places the risk management obligation on the provider. It cannot be delegated to deployers through disclaimers about professional resilience. The provider must design the system to prevent foreseeable misuse.']
+            }
+          ],
           oppositionArgument: 'Finally, Your Honour, we must look at the Risk Management Plan. Article 9 requires providers to identify and mitigate risks. MediLogic identified automation bias and mitigated it by designating the system as \'Assistant Only.\' The clinicians signed a service agreement acknowledging their final authority. If a doctor, like Dr. Aris, feels \'pressured\' by a red box, that is a matter of professional resilience, not a software defect. The provider cannot be held liable for the psychological pressure felt by a user who is legally and contractually the final decision-maker.',
           writePrompt: 'The respondent blames "professional resilience." Does Article 9 allow providers to use contractual terms to discharge their technical risk mitigation duties?',
           minWords: 20,
@@ -4815,6 +5004,13 @@ const CASES = [
         {
           id: 'arg1',
           evidenceId: 'ev2-proctor-tech-specs',
+          requiredConcepts: [
+            {
+              name: 'Training Data Diversity',
+              keywords: ['training data', 'article 10(3)', 'representative', 'caucasian', '95%', 'demographic', 'bias'],
+              hints: ['Is 95% Caucasian training data representative when the student body is diverse?', 'Article 10(3) requires data representative to the best extent possible. A 95% single-demographic dataset deployed on a diverse population fails this standard.']
+            }
+          ],
           oppositionArgument: 'Your Honour, ExamWatch AI is a high-risk system as categorized in Annex III, paragraph 3(b). St. Jude\'s University has complied with all its obligations as a deployer. The technical documentation provided by the manufacturer lists the training data. The law requires that data be representative \"to the best extent possible.\" The developer used a massive dataset of 50,000 sessions. If there are minor performance differences between demographics, that is a technical limitation of the current state of the art, not a regulatory failure by the university.',
           writePrompt: 'The respondent claims 95% Caucasian data is "representative to the best extent possible." Look at Art. 10(3) and Evidence 4—does the training data meet the legal standard for high-risk systems?',
           minWords: 20,
@@ -4852,6 +5048,13 @@ const CASES = [
         {
           id: 'arg2',
           evidenceId: 'ev5-proctor-testimony',
+          requiredConcepts: [
+            {
+              name: 'Meaningful Human Oversight',
+              keywords: ['human oversight', 'article 14(4)', 'signature', 'rubber-stamp', 'meaningful', 'review', 'seconds'],
+              hints: ['Does signing off without reviewing the underlying evidence constitute human oversight?', 'Article 14(4)(b) requires the human to be able to correctly interpret the system output. A perfunctory signature without review is not meaningful oversight.']
+            }
+          ],
           oppositionArgument: 'Your Honour, the university maintained a robust human-in-the-loop system. As Prof. Miller testified, she personally signs off on every failure report. Article 14(4) simply requires that high-risk systems be overseen by natural persons. There is no requirement in the AI Act for a professor to watch every minute of a video if the AI is 94% confident. The \"automatic failure\" policy is merely an internal efficiency guideline. The professor remains the final decision-maker, and her signature satisfies the human oversight obligations of the Act.',
           writePrompt: 'The respondent claims a signature is "oversight." Look at Art. 14(4)(b) and Prof. Miller\'s statement (Ev 5)—does a rubber-stamp sign-off minimize "automation bias"?',
           minWords: 20,
@@ -4889,6 +5092,13 @@ const CASES = [
         {
           id: 'arg3',
           evidenceId: 'ev6-risk-assessment',
+          requiredConcepts: [
+            {
+              name: 'Known Bias and Risk Assessment',
+              keywords: ['known bias', 'article 9', 'neurodivergent', 'risk assessment', 'residual risk', 'identify', 'mitigate'],
+              hints: ['If the system is known to flag neurodivergent students disproportionately, did the university properly identify and mitigate this risk?', 'Article 9 requires identification and mitigation of foreseeable risks. A known bias against neurodivergent students that is documented but not mitigated violates the risk management obligation.']
+            }
+          ],
           oppositionArgument: 'Finally, Your Honour, we must address the neurodivergent claim. The university has a broad \"Academic Support\" mandate. While the system was not specifically tested for involuntary tics, Article 9 of the AI Act allows for a risk-benefit analysis. The benefit of preventing mass cheating during a remote exam outweighs the residual risk of a few false positives for students with rare conditions. We have a post-market monitoring system in place to catch these issues over time. To ban the system now would be a disproportionate response that would jeopardize the integrity of all remote degrees.',
           writePrompt: 'The respondent argues "residual risk" justifies the bias. Look at Art. 9 and Evidence 6—did the university identify and mitigate the risk to vulnerable groups before deployment?',
           minWords: 20,
@@ -5078,6 +5288,13 @@ const CASES = [
       {
         id: 'arg1',
         evidenceId: 'ev2-technical-specs',
+          requiredConcepts: [
+            {
+              name: 'Transparency Scope',
+              keywords: ['transparency', 'article 13(1)', 'interpret', 'output', 'deployer', 'understand', 'sufficiently transparent'],
+              hints: ['Does knowing a score was generated satisfy the transparency requirement?', 'Article 13(1) requires the system to be sufficiently transparent for deployers to interpret output and use it appropriately. Knowing a score exists without understanding how it was derived is insufficient.']
+            }
+          ],
         oppositionArgument: 'Your Honour, the University has acted with complete transparency. We have informed every applicant that an AI system is used, satisfying our obligations. Article 13 does not require that a high-risk system be simple enough for a layperson to understand; it requires that it be \'sufficiently transparent\' to allow the deployer to use it. The University understands that a score of 0.42 means a rejection. The internal mathematical weights are trade secrets of the developer. Requiring a university to explain every \'hidden layer\' of a neural network would effectively ban the use of modern AI in education.',
         writePrompt: 'The respondent claims transparency only means "knowing the score." Look at Article 13(1)\u2014what must the deployer actually be able to do with the system\'s output?',
         minWords: 20,
@@ -5115,6 +5332,13 @@ const CASES = [
       {
         id: 'arg2',
         evidenceId: 'ev6-admissions-guide',
+          requiredConcepts: [
+            {
+              name: 'Individual-Level Oversight',
+              keywords: ['article 14(4)', 'individual', 'override', 'system-level', 'decision', 'intervene', 'specific applicant'],
+              hints: ['Does reviewing overall system performance satisfy the human oversight duty for individual decisions?', 'Article 14(4) requires the ability to intervene in or override individual decisions, not just monitor system-level statistics.']
+            }
+          ],
         oppositionArgument: 'Your Honour, the human oversight requirement of Article 14 is satisfied by the fact that the University\'s Admissions Committee set the parameters for the AI. Humans decided that a score below 0.60 should be a rejection. Humans chose the data inputs. Article 14(2) states that oversight shall aim at preventing or minimizing risks. Our oversight occurs at the \'system level\'—we monitor the aggregate results. We do not need to review every individual rejection to satisfy the law; the human remains \'in the loop\' by controlling the overall selection criteria.',
         writePrompt: 'The respondent argues "system-level" oversight is enough. Look at Article 14(4)\u2014does the human need the ability to intervene in *individual* cases?',
         minWords: 20,
@@ -5152,6 +5376,13 @@ const CASES = [
       {
         id: 'arg3',
         evidenceId: 'ev5-witness-dev',
+          requiredConcepts: [
+            {
+              name: 'Explainability vs Accuracy',
+              keywords: ['explainability', 'accuracy', 'article 13', 'trade-off', 'black box', 'interpretable', 'instructions for use'],
+              hints: ['Can a provider choose accuracy over explainability?', 'The AI Act does not permit providers to ignore Article 13 transparency requirements for the sake of accuracy. A system that cannot be explained cannot be properly overseen under Article 14.']
+            }
+          ],
         oppositionArgument: 'Finally, Your Honour, we must consider the \'Trade-off Principle.\' Article 9(4) of the AI Act allows for risk management that ensures residual risk is acceptable. The developer, Dr. Chen, correctly identified that adding explainability layers would reduce the accuracy of the admissions predictions by 15%. The University decided that the \'risk\' of opacity was outweighed by the \'benefit\' of identifying the most successful students. This is a legitimate management decision that balances regulatory goals with institutional performance. The system is compliant because we made a conscious, documented choice to prioritize accuracy.',
         writePrompt: 'The respondent argues they can "sacrifice explainability for accuracy." Does the AI Act allow providers to ignore Article 13 design requirements for the sake of performance?',
         minWords: 20,
@@ -5341,6 +5572,13 @@ const CASES = [
       {
         id: 'arg1',
         evidenceId: 'ev2-tech-manual',
+          requiredConcepts: [
+            {
+              name: 'Historical Bias in Training Data',
+              keywords: ['historical', 'representative', 'article 10(3)', 'gender', 'bias', '88%', 'male', 'training data'],
+              hints: ['Are historical hiring records representative when they reflect past discrimination?', 'Article 10(3) requires data representative to the best extent possible. If historical records are 88% male due to past bias, reproducing that distribution is not being representative of the actual talent pool.']
+            }
+          ],
         oppositionArgument: 'Your Honour, HireSmart AI is a high-risk system as defined in Annex III, point 4(a). CloudScale has met the rigorous requirements of Article 10. The training data is relevant, representative, and to the best extent possible, free of errors, as it is based on the actual, verified hiring records of the company. The AI Act does not require companies to invent a false history; it requires they use high-quality data. Using our real-world hiring history ensures the model is accurate for the specific environment of our firm.',
         writePrompt: 'The respondent claims historical records are "representative." Look at Art. 10(3) and Evidence 2\u2014is a 88% male dataset "sufficiently representative" for a recruitment tool?',
         minWords: 20,
@@ -5378,6 +5616,13 @@ const CASES = [
       {
         id: 'arg2',
         evidenceId: 'ev6-risk-plan',
+          requiredConcepts: [
+            {
+              name: 'Risk Management for Known Discrimination',
+              keywords: ['risk management', 'article 9', 'discriminatory', 'accuracy', 'fairness', 'known', 'mitigate'],
+              hints: ['Can a provider prioritise accuracy over fairness under Article 9?', 'Article 9 requires identification and mitigation of risks including bias. Knowingly accepting discriminatory outcomes because they improve a metric is not acceptable risk management.']
+            }
+          ],
         oppositionArgument: 'Your Honour, CloudScale maintained a comprehensive risk management system as required by Article 9. We identified the risk of bias in our strategy document (Evidence 6). We performed a risk-benefit analysis and determined that any technical intervention, such as synthetic data or keyword weighting, would degrade the system\'s accuracy. Under Article 9(4), risk management must ensure that the residual risk remains acceptable. We concluded that the benefit of a highly accurate hiring tool outweighed the residual risk of mirroring historical patterns. We fulfilled our duty by documenting the risk and choosing the most accurate path.',
         writePrompt: 'The respondent claims they can ignore bias for "accuracy." Does Article 9 allow a provider to knowingly accept a discriminatory residual risk?',
         minWords: 20,
@@ -5415,6 +5660,13 @@ const CASES = [
       {
         id: 'arg3',
         evidenceId: 'ev3-internal-email',
+          requiredConcepts: [
+            {
+              name: 'Freedom of Contract vs AI Act',
+              keywords: ['freedom of contract', 'article 10(2)(f)', 'effectiveness', 'mandatory', 'override', 'compliance', 'obligation'],
+              hints: ['Does freedom of contract override AI Act data governance requirements?', 'Article 10(2)(f) requires appropriate measures for bias detection. The AI Act is mandatory regulation. Freedom of contract cannot override statutory compliance obligations.']
+            }
+          ],
         oppositionArgument: 'Finally, Your Honour, we must address the intent. CloudScale did not set out to discriminate. We set out to find the best engineers. Recital 45 of the AI Act notes that providers should avoid bias, but it does not mandate specific results. If the data shows that candidates from certain colleges perform better in our specific environment, the AI is simply being efficient. We are a private company with the right to freedom of contract. To force us to hire people that the data suggests will not succeed is a violation of our commercial rights under the EU treaties.',
         writePrompt: 'The respondent argues "freedom of contract" overrides the AI Act. Look at the email (Ev 3) and Art. 10(2)(f)\u2014is efficiency a valid excuse for using biased weights?',
         minWords: 20,
@@ -5605,6 +5857,13 @@ const CASES = [
       {
         id: 'arg1',
         evidenceId: 'ev2-technical-manual',
+          requiredConcepts: [
+            {
+              name: 'Transparency Beyond Score Disclosure',
+              keywords: ['article 13(1)', 'transparency', 'interpret', 'logic', 'score', 'deployer', 'understand'],
+              hints: ['Is disclosing a score sufficient transparency under Article 13?', 'Article 13(1) requires the system to be transparent enough for deployers to interpret its output. A bare score without the logic behind it fails this test.']
+            }
+          ],
         oppositionArgument: 'Your Honour, the claimant is attempting to conflate high-risk classification with a duty of total technical exposure. PromoteOptima is a proprietary high-risk system. Article 13 requires that systems be designed to ensure \'sufficient\' transparency for the deployer. FleetLogistics understood the outputs perfectly: high scores meant high potential. The internal weights of a neural network are trade secrets. To demand that a company explain the \'logic\' of a deep-learning model to every passed-over employee would effectively ban the use of any modern AI in the workplace.',
         writePrompt: 'The respondent claims "knowing the score" is enough transparency. Look at Article 13(1)\u2014what is the system actually required to enable the *deployer* to do?',
         minWords: 20,
@@ -5642,6 +5901,13 @@ const CASES = [
       {
         id: 'arg2',
         evidenceId: 'ev1-leaked-ranking',
+          requiredConcepts: [
+            {
+              name: 'AI Interaction Disclosure',
+              keywords: ['article 50', 'disclosure', 'ai system', 'informed', 'interacting', 'natural person', 'aware'],
+              hints: ['Does Article 50 apply to internal HR systems that affect employees?', 'Article 50 requires that natural persons be informed they are interacting with or subject to decisions by an AI system. This applies to employment systems even if internal.']
+            }
+          ],
         oppositionArgument: 'Your Honour, the claimant relies on Article 50, but that article only applies to systems that \'interact\' with humans, like chatbots. PromoteOptima is a backend analytical tool; it does not speak to the employees. Furthermore, the keystroke analysis is not \'biometric categorization\' because it is used for productivity, not for identifying people. We already know who our employees are. Therefore, we had no duty to notify anyone under Article 50, and our general mention of \'monitoring\' in the employee handbook is more than sufficient for regulatory compliance.',
         writePrompt: 'The respondent claims Art. 50 doesn\'t apply because the AI is "backend." Look at the definition of biometric categorization and the leaked ranking (Ev 1)—does the system infer traits?',
         minWords: 20,
@@ -5679,6 +5945,13 @@ const CASES = [
       {
         id: 'arg3',
         evidenceId: 'ev3-manager-emails',
+          requiredConcepts: [
+            {
+              name: 'Secrecy Defence',
+              keywords: ['secrecy', 'data integrity', 'article 13', 'instructions for use', 'trade secret', 'mandatory', 'override'],
+              hints: ['Can a deployer claim secrecy overrides the AI Act transparency duty?', 'The AI Act does not contain a secrecy exception for transparency requirements. Article 13 is mandatory. Trade secrets may limit granularity but cannot justify complete opacity.']
+            }
+          ],
         oppositionArgument: 'Finally, Your Honour, we must address the \'Adversarial Gaming\' risk. The HR Director\'s email (Evidence 3) makes a valid point: if employees are informed of the metrics, the data becomes fraudulent. They will script their responses to look like high-performers. The AI Act recognizes the need for effective use. If transparency makes a high-risk system ineffective for its intended purpose, the deployer must have the discretion to limit disclosure to protect the integrity of the evaluation process. Our \'stealth\' approach was the only way to ensure a meritocratic outcome.',
         writePrompt: 'The respondent argues secrecy is necessary for "data integrity." Does the AI Act allow for a "secrecy by necessity" defense against Art. 50 notification duties?',
         minWords: 20,
@@ -5868,6 +6141,13 @@ const CASES = [
       {
         id: 'arg1',
         evidenceId: 'ev4-bias-audit',
+          requiredConcepts: [
+            {
+              name: 'Proxy Discrimination',
+              keywords: ['proxy', 'article 10(2)(f)', 'geospatial', 'postcode', 'correlation', 'ethnicity', 'indirect bias'],
+              hints: ['Can geospatial data serve as a proxy for ethnicity?', 'Article 10(2)(f) requires examination of data for possible biases including proxy effects. If postcode correlates strongly with ethnicity, using it as a credit factor creates prohibited proxy discrimination.']
+            }
+          ],
         oppositionArgument: 'Your Honour, CreditLens AI is a high-risk system as defined in Annex III, paragraph 5(b). EuroBank has met its obligations under Article 10 by using relevant and representative data from three decades of financial history. The AI Act does not prohibit the use of geospatial data. Postal codes are objective facts. If certain neighborhoods have higher default rates, the AI is simply reflecting that economic reality. To force the bank to ignore this data would be to mandate inaccurate lending, which would threaten the stability of the entire financial sector.',
         writePrompt: 'The respondent claims geospatial data is just "economic reality." Look at Art. 10(2)(f) and Evidence 4\u2014is using a proxy for ethnicity allowed in high-risk training data?',
         minWords: 20,
@@ -5905,6 +6185,13 @@ const CASES = [
       {
         id: 'arg2',
         evidenceId: 'ev5-witness-statement',
+          requiredConcepts: [
+            {
+              name: 'Exclusion vs Mitigation',
+              keywords: ['article 9(2)', 'mitigation', 'exclude variable', 'proxy', 'risk management', 'identify', 'address'],
+              hints: ['Is removing the "Race" variable sufficient mitigation if other variables act as proxies?', 'Article 9(2) requires actual mitigation of identified risks. Excluding one variable while retaining proxies that produce the same discriminatory effect is inadequate mitigation.']
+            }
+          ],
         oppositionArgument: 'Your Honour, EuroBank maintained a rigorous risk management system as required by Article 9. We identified the risk of \'historical data poisoning\' and mitigated it by ensuring the AI does not have access to the protected characteristics themselves. We followed the risk management hierarchy by choosing a design that prioritizes accurate financial prediction over social engineering. The fact that an academic like Dr. Chen disagreed with our mitigation strategy does not mean the system is non-compliant; it means there is a difference of professional opinion in a complex field.',
         writePrompt: 'The respondent claims they mitigated the risk by excluding "Race" as a variable. Look at Art. 9(2) and Evidence 5\u2014is ignoring a known data defect a valid mitigation?',
         minWords: 20,
@@ -5942,6 +6229,13 @@ const CASES = [
       {
         id: 'arg3',
         evidenceId: 'ev3-internal-email',
+          requiredConcepts: [
+            {
+              name: 'Accuracy vs Fairness Trade-off',
+              keywords: ['accuracy', 'fairness', 'article 9', 'trade-off', 'disproportionate', 'acceptable', 'residual risk'],
+              hints: ['Does Article 9 allow trading fairness for accuracy?', 'Article 9 does not permit knowingly accepting discriminatory outcomes for better aggregate accuracy. Residual risk must be acceptable across all affected groups.']
+            }
+          ],
         oppositionArgument: 'Finally, Your Honour, we must address the \"Accuracy vs. Fairness\" trade-off. Article 9(4) of the AI Act states that risk management shall ensure that the residual risk remains acceptable. Our internal email (Evidence 3) shows we carefully balanced the loss of predictive accuracy against the legal risk of using geospatial data. We decided that the economic benefit of a highly accurate credit model, which keeps the bank solvent and protects our depositors, outweighs the residual risk of neighborhood-based disparate impact. This is a legitimate business judgment that the AI Act allows.',
         writePrompt: 'The respondent argues they can trade "Fairness" for "Accuracy." Does Article 9 allow a provider to knowingly accept a discriminatory bias to protect their "predictive accuracy"?',
         minWords: 20,
@@ -6132,6 +6426,13 @@ const CASES = [
       {
         id: 'arg1',
         evidenceId: 'ev2-feature-weights',
+          requiredConcepts: [
+            {
+              name: 'Proxy Variables in Insurance',
+              keywords: ['proxy', 'article 10(2)(f)', 'geospatial', 'actuarial', 'bias', 'protected characteristic', 'indirect'],
+              hints: ['Can geospatial weighting be a proxy for protected characteristics in insurance?', 'Article 10(2)(f) requires data examination for possible biases. If geographic weighting produces outcomes that correlate with ethnicity, it creates proxy discrimination regardless of actuarial justification.']
+            }
+          ],
         oppositionArgument: 'Your Honour, LifeShield-AI is a sophisticated high-risk system as defined in Annex III. GLH has complied with Article 10 by using relevant and representative geospatial data. Actuarial science has always relied on geography to assess risk. The AI Act does not require us to ignore statistically significant data points simply because they correlate with socioeconomic status. We are assessing health risks, not social standing. To force us to remove location data would be to mandate an inaccurate system, which would lead to underpriced risk and financial instability.',
         writePrompt: 'The respondent claims geospatial weights are "actuarially significant." Look at Article 10(2)(f) and Evidence 2—does the law allow for "accurate" proxies that lead to discriminatory results?',
         minWords: 20,
@@ -6169,6 +6470,13 @@ const CASES = [
       {
         id: 'arg2',
         evidenceId: 'ev6-risk-plan',
+          requiredConcepts: [
+            {
+              name: 'Attribute Exclusion Insufficiency',
+              keywords: ['article 9(2)', 'exclude', 'sensitive attributes', 'proxy', 'mitigation', 'risk', 'attribute blindness'],
+              hints: ['Is excluding sensitive attributes from the model sufficient to prevent discrimination?', 'Simply excluding protected attributes does not eliminate bias when correlated proxies remain. Article 9(2) requires effective mitigation, not attribute blindness.']
+            }
+          ],
         oppositionArgument: 'Your Honour, GLH maintained a rigorous risk management system as required by Article 9. We identified the risk of bias and mitigated it by ensuring the AI does not have access to sensitive attributes like race or religion. We followed the risk management hierarchy by choosing a design that prioritizes accurate financial prediction. The fact that a developer like Dr. Chen disagreed with our mitigation strategy does not mean the system is non-compliant; it means we chose a professional, actuarial approach to risk rather than a social one.',
         writePrompt: 'The respondent claims they mitigated the risk by excluding sensitive attributes. Look at Art. 9(2) and Evidence 6—is "attribute blindness" a valid mitigation for proxy discrimination?',
         minWords: 20,
@@ -6206,6 +6514,13 @@ const CASES = [
       {
         id: 'arg3',
         evidenceId: 'ev3-internal-email',
+          requiredConcepts: [
+            {
+              name: 'Fairness vs Profitability',
+              keywords: ['fairness', 'accuracy', 'article 9', 'trade-off', 'disproportionate', 'group harm', 'residual risk'],
+              hints: ['Can an insurer accept group-level discrimination for overall model performance?', 'Article 9 requires residual risk to be acceptable for all groups. Disproportionate premiums for specific demographics cannot be justified by aggregate model accuracy.']
+            }
+          ],
         oppositionArgument: 'Finally, Your Honour, we must look at the \'Accuracy vs. Fairness\' balance. Article 9(4) states that risk management shall ensure that the residual risk remains acceptable. Our internal email (Evidence 3) shows we carefully balanced the loss of predictive accuracy against the legal risk of using geospatial data. We decided that the economic benefit of a highly accurate risk model, which protects the company\'s solvency and keeps premiums low for the majority of policyholders, outweighs the residual risk of neighborhood-based disparate impact. This is a legitimate business judgment.',
         writePrompt: 'The respondent argues they can trade "Fairness" for "Accuracy." Does Article 9 allow a provider to knowingly accept a discriminatory bias to protect their profit margins?',
         minWords: 20,
@@ -6396,6 +6711,13 @@ const CASES = [
       {
         id: 'arg1',
         evidenceId: 'ev2-training-log',
+          requiredConcepts: [
+            {
+              name: 'Historical Bias as Fact',
+              keywords: ['historical', 'arrest data', 'article 10(2)(f)', 'bias', 'fact', 'over-policing', 'training data'],
+              hints: ['Are historical arrest records objective facts or reflections of policing bias?', 'Article 10(2)(f) requires examination for possible biases. Arrest data from over-policed communities reflects enforcement patterns, not actual crime rates. Treating it as objective fact perpetuates structural bias.']
+            }
+          ],
         oppositionArgument: 'Your Honour, the Justice Department has acted in full compliance with Article 10. The training data for BailBound is derived from over a million historical records, making it more representative and complete than any manual study. The fact that certain districts have higher arrest records is a historical fact, not a \'bias\' of the AI. The AI Act does not require providers to engage in social engineering by erasing the truth of policing history to achieve artificial demographic parity.',
         writePrompt: 'The respondent claims historical arrests are "fact," not "bias." Look at Article 10(2)(f) and Evidence 2\u2014what is the provider\'s duty regarding "historical patterns" in training data?',
         minWords: 20,
@@ -6433,6 +6755,13 @@ const CASES = [
       {
         id: 'arg2',
         evidenceId: 'ev3-internal-memo',
+          requiredConcepts: [
+            {
+              name: 'Feedback Loop Prevention',
+              keywords: ['feedback loop', 'article 15(4)', 'output', 'input', 'self-reinforcing', 'robustness', 'bias amplification'],
+              hints: ['What does Article 15(4) say about system outputs feeding back as inputs?', 'Article 15(4) specifically requires that previously deployed high-risk AI systems address feedback loops where outputs influence future inputs. A self-reinforcing loop is exactly what this provision targets.']
+            }
+          ],
         oppositionArgument: 'Your Honour, we have met the accuracy and robustness requirements of Article 15. BailBound AI has a verified accuracy rate of 92%. The \'feedback loop\' mentioned by the claimant is actually a sign of a highly effective learning system. Article 15(4) encourages high-risk systems to continue learning after deployment. Our system is designed to be resilient to changes in criminal behavior by constantly updating its model based on the latest court data. To ban this self-learning feature would be to freeze our technology in the past and reduce its effectiveness over time.',
         writePrompt: 'The respondent claims the feedback loop is a "feature." Look at Article 15(4)\u2014what is the specific requirement for systems that "continue to learn" after being placed on the market?',
         minWords: 20,
@@ -6470,6 +6799,13 @@ const CASES = [
       {
         id: 'arg3',
         evidenceId: 'ev4-accuracy-audit',
+          requiredConcepts: [
+            {
+              name: 'Misleading Accuracy Metrics',
+              keywords: ['accuracy', 'article 15', 'metric', 'reliable', 'biased baseline', 'validation', 'ground truth'],
+              hints: ['Is a 92% accuracy metric meaningful if it is measured against biased historical data?', 'Article 15 requires accuracy metrics to be reliable. If the system is validated against the same biased data it was trained on, the accuracy figure is circular and misleading.']
+            }
+          ],
         oppositionArgument: 'Finally, Your Honour, we must consider the human-in-the-loop. Article 14 requires that high-risk systems be oversaw by natural persons. Our judicial manual (Evidence 6) makes it clear that the AI score is only advisory. The judge makes the final decision on bail. If a judge chooses to set high bail for a District 8 defendant, that is an exercise of judicial discretion, not a failure of the AI. The provider cannot be held liable for the decisions of a sovereign court, especially when the AI achieved its stated accuracy goals in 92% of cases.',
         writePrompt: 'The respondent blames "judicial discretion." Look at Evidence 4 and Art. 15\u2014is the 92% accuracy metric reliable if the system counts bail-violations as re-offenses?',
         minWords: 20,
@@ -6660,6 +6996,13 @@ const CASES = [
       {
         id: 'arg1',
         evidenceId: 'ev3-internal-memo',
+          requiredConcepts: [
+            {
+              name: 'Meaningful vs Nominal Oversight',
+              keywords: ['article 14(4)', 'meaningful', 'signature', 'rubber-stamp', 'override', 'interpret', 'human oversight'],
+              hints: ['Does a human signature on every decision satisfy Article 14(4)?', 'Article 14(4)(b) requires the human to correctly interpret the system output. A signature without substantive review is nominal, not meaningful oversight.']
+            }
+          ],
         oppositionArgument: 'Your Honour, the Ministry has fully complied with the human oversight requirements of Article 14. Veritas-Judge is a high-risk system that is overseen by a natural person\u2014the judge. Every final sentence bears a human signature. The fact that the Ministry tracks \'consistency\' and \'compliance\' is merely a matter of administrative quality control. Article 14 does not grant judges a right to be inconsistent or to ignore evidence-based tools. The judge in Thomas Miller\'s case had the technical ability to override the AI; that he chose not to is a matter of his own judicial choice, not a failure of the system\'s design.',
         writePrompt: 'The respondent claims the human signature is "oversight." Look at Article 14(4)(b) and (e)—what is the actual standard for "effective" human oversight?',
         minWords: 20,
@@ -6697,6 +7040,13 @@ const CASES = [
       {
         id: 'arg2',
         evidenceId: 'ev2-system-dashboard',
+          requiredConcepts: [
+            {
+              name: 'Interface Design and Automation Bias',
+              keywords: ['interface', 'automation bias', 'article 14(4)', 'design', 'override', 'friction', 'over-reliance'],
+              hints: ['Can the interface design contribute to automation bias?', 'If the dashboard design makes overriding the AI difficult or penalises deviation, it creates exactly the automation bias Article 14(4)(b) prohibits.']
+            }
+          ],
         oppositionArgument: 'Furthermore, Your Honour, we must consider the \'Transparency\' obligations of Article 13. The Ministry has provided the judges with a comprehensive dashboard that shows the recommended sentence. We have met the requirement that the system be interpretable by the deployer. If a judge finds the override process \'burdensome\' because of a reasoning form, that is a necessary part of the high-risk documentation process required by the Act itself. You cannot claim that following the law\'s own documentation requirements constitutes a failure of oversight.',
         writePrompt: 'The respondent claims the "Reasoning Form" is a compliance feature. Look at Evidence 2 and 5—does the interface design help or hinder the judge\'s ability to "disregard" the output?',
         minWords: 20,
@@ -6734,6 +7084,13 @@ const CASES = [
       {
         id: 'arg3',
         evidenceId: 'ev4-statistical-audit',
+          requiredConcepts: [
+            {
+              name: 'Consistency vs Judicial Discretion',
+              keywords: ['consistency', 'discretion', 'variance', 'equality', 'article 14', 'individual circumstances', 'independent'],
+              hints: ['Is eliminating variance in sentencing the same as achieving equality?', 'Judicial discretion exists to account for individual circumstances. Forcing uniformity through AI eliminates the independent human judgment Article 14 requires, not promotes equality.']
+            }
+          ],
         oppositionArgument: 'Finally, Your Honour, we must look at the outcomes. Our statistical audit (Evidence 4) shows that sentencing variance has decreased significantly. This is a victory for the principle of equality before the law. Article 14(2) states that human oversight shall aim at preventing or minimizing the risks that may emerge. By reducing the \'risk\' of subjective judicial bias through AI adherence, we are fulfilling the very purpose of the oversight mandate. The high adherence rate is not \'bias\'; it is the successful elimination of human inconsistency in the pursuit of a fairer justice system.',
         writePrompt: 'The respondent argues "adherence" is "equality." Look at Evidence 1 and 4—is the elimination of "variance" the same as "minimizing risk" under Article 14?',
         minWords: 20,
@@ -6924,6 +7281,13 @@ const CASES = [
       {
         id: 'arg1',
         evidenceId: 'ev3-internal-memo',
+          requiredConcepts: [
+            {
+              name: 'Nationality as Proxy',
+              keywords: ['nationality', 'article 10(2)(f)', 'objective', 'proxy', 'discrimination', 'risk', 'bias'],
+              hints: ['Is nationality an objective fact or a proxy for discrimination in migration risk assessment?', 'Article 10(2)(f) requires examination for biases. Using nationality as a primary risk factor creates systematic discrimination against specific nationalities, which is proxy discrimination.']
+            }
+          ],
         oppositionArgument: 'Your Honour, the National Migration Agency has a sovereign right to manage its borders. FrontierGuard AI is a high-risk system as defined in Annex III, paragraph 7(a). We have met our obligations under Article 10 by using relevant and representative historical data. Nationality is an objective, verifiable fact. The AI Act does not require us to ignore statistically significant data points. To force the NMA to ignore origin would be to mandate an inaccurate system that endangers the security of the Union.',
         writePrompt: 'The respondent claims nationality is an "objective fact" for risk. Look at Article 10(2)(f) and Evidence 3—what is the actual duty of a provider regarding biases that impact fundamental rights?',
         minWords: 20,
@@ -6961,6 +7325,13 @@ const CASES = [
       {
         id: 'arg2',
         evidenceId: 'ev6-nma-policy',
+          requiredConcepts: [
+            {
+              name: 'Rubber-Stamp Review',
+              keywords: ['rubber-stamp', 'article 9(2)', 'human-in-the-loop', 'mitigation', 'meaningful', 'override', 'independent'],
+              hints: ['Does a human who never overrides the AI constitute meaningful mitigation under Article 9?', 'Article 9(2) requires effective mitigation of identified risks. A human-in-the-loop who systematically follows the AI is rubber-stamp oversight, not genuine mitigation.']
+            }
+          ],
         oppositionArgument: 'Furthermore, Your Honour, we must consider the Risk Management System. Article 9 requires that we identify and mitigate risks. We identified the risk of "group-level correlations" and determined that the most effective mitigation was the "Human-in-the-Loop." Officer Vane signs every rejection. We followed the risk management hierarchy by choosing a design that prioritizes the security of the Union over the individual convenience of the applicant. The provider is not responsible for the fact that certain nationalities have higher historical overstay rates; our risk management simply reflects that statistical reality.',
         writePrompt: 'The respondent claims "Human-in-the-loop" is a valid mitigation for bias. Look at Article 9(2) and Evidence 5—does a "rubber-stamp" sign-off meet the risk management hierarchy requirements?',
         minWords: 20,
@@ -7151,6 +7522,13 @@ const CASES = [
       {
         id: 'arg1',
         evidenceId: 'ev4-oversight-audit',
+          requiredConcepts: [
+            {
+              name: 'Time-Based Oversight Adequacy',
+              keywords: ['article 14(4)', 'seconds', 'time', 'meaningful', 'review', 'oversight', 'interpret'],
+              hints: ['Is 162 seconds enough to meaningfully review a migration case?', 'Article 14(4) requires the ability to correctly interpret and override. If the volume makes meaningful individual review impossible, the oversight is nominal regardless of the signature.']
+            }
+          ],
         oppositionArgument: 'Your Honour, the Department of Immigration has fully complied with the human oversight requirements of Article 14. AsylumFlow is a decision-support tool, not a decision-maker. Every rejection is signed by a natural person, satisfying the requirement for human-in-the-loop. The AI Act does not mandate a specific amount of time for a review; it only requires that oversight be enabled. The 97% adherence rate is a testament to the system\'s accuracy, not evidence of a failure in oversight. To demand slower processing is to demand that thousands of applicants wait years for a decision.',
         writePrompt: 'The respondent claims the human signature is "oversight." Look at Article 14(4) and the audit data—is 162 seconds enough to "disregard, override or reverse" the AI?',
         minWords: 20,
@@ -7188,6 +7566,13 @@ const CASES = [
       {
         id: 'arg2',
         evidenceId: 'ev2-technical-manual',
+          requiredConcepts: [
+            {
+              name: 'Error Code Transparency',
+              keywords: ['article 13(1)', 'transparency', 'error code', 'interpret', 'understand', 'deployer', 'output'],
+              hints: ['Is a generic error code like "Consistency Error" sufficient transparency?', 'Article 13(1) requires deployers to interpret the system output. A generic code that does not explain the reasoning fails the transparency requirement.']
+            }
+          ],
         oppositionArgument: 'Your Honour, the system is designed to provide maximum interpretability as required by Article 13. Every flag is accompanied by a clear category, such as \"Consistency Error.\" This allows the officer to interpret the system\'s output and use it appropriately. The AI Act does not require the system to explain the internal weights of its neural network; it only requires that the deployer be able to use the output. The DIA officers understand the categories perfectly and use them to identify the most urgent cases for rejection.',
         writePrompt: 'The respondent claims "Consistency Error" is sufficient transparency. Look at Article 13(1) and Evidence 2—can a deployer "interpret" the output with only a label?',
         minWords: 20,
@@ -7225,6 +7610,13 @@ const CASES = [
       {
         id: 'arg3',
         evidenceId: 'ev3-internal-memo',
+          requiredConcepts: [
+            {
+              name: 'Workload and Risk Management',
+              keywords: ['article 9', 'risk management', 'workload', 'residual risk', 'foreseeable', 'systemic', 'volume'],
+              hints: ['Can a provider accept that the system creates unmanageable human review workloads?', 'Article 9 requires managing foreseeable risks. If the system design makes meaningful oversight impossible due to volume, that is a foreseeable and unacceptable residual risk.']
+            }
+          ],
         oppositionArgument: 'Finally, Your Honour, we must address the \"backlog\" reality. Article 9(4) of the AI Act states that risk management shall ensure that the residual risk remains acceptable. We identified the risk of automation bias and determined that the benefit of processing cases 40% faster, which allows more people to receive decisions, outweighs the residual risk of a few errors. The 50-case-per-day target (Evidence 3) is a management necessity to fulfill our public service mandate. The provider cannot be held liable for the administrative pressure that the government must manage in a crisis.',
         writePrompt: 'The respondent argues "residual risk" justifies the workload. Does Article 9 allow a provider to knowingly accept a lack of oversight to protect their efficiency metrics?',
         minWords: 20,
@@ -7415,6 +7807,13 @@ courtroom: {
     {
       id: 'arg1',
       evidenceId: 'ev6-risk-plan',
+          requiredConcepts: [
+            {
+              name: 'Foreseeable Risk',
+              keywords: ['article 9', 'foreseeable', 'extreme weather', 'risk management', 'identify', 'edge case', 'scenario'],
+              hints: ['Is extreme weather an unforeseeable event for critical infrastructure AI?', 'Article 9 requires identification of foreseeable risks. For an energy grid AI, extreme weather is not an edge case but a core operational scenario that must be planned for.']
+            }
+          ],
       oppositionArgument: 'Your Honour, the National Power Grid maintained a state-of-the-art Risk Management System under Article 9. We identified all standard foreseeable risks, including cyberattacks and hardware failure. The combination of record-breaking heat and sudden cloud cover was a \'Black Swan\' event\u2014a Force Majeure that no reasonable operator could be expected to model. Article 9(4) allows for the acceptance of residual risks that are reasonable. To demand that every possible weather permutation be tested would prevent any AI from ever being deployed in the energy sector.',
       writePrompt: 'The respondent claims extreme weather isn\'t "foreseeable." Look at Article 9(2) and Evidence 3\u2014was this risk identified before the launch?',
       minWords: 20,
@@ -7452,6 +7851,13 @@ courtroom: {
     {
       id: 'arg2',
       evidenceId: 'ev5-post-mortem',
+          requiredConcepts: [
+            {
+              name: 'Redundancy Design',
+              keywords: ['article 15(4)', 'redundancy', 'correlated failure', 'dual-ai', 'independent', 'robustness', 'single point'],
+              hints: ['Does having two AI systems provide redundancy if both fail in the same conditions?', 'Article 15(4) requires robustness. If both systems share training data or architecture, they are correlated not independent. This is a single point of failure, not redundancy.']
+            }
+          ],
       oppositionArgument: 'Your Honour, we have met the robustness requirements of Article 15. GridCore was designed with a dual-redundancy architecture. We had a primary and a secondary AI. Article 15(1) requires that high-risk systems be resilient as regards errors, faults, or inconsistencies. Our architecture was resilient to hardware faults. The fact that both systems encountered the same environmental inconsistency at the same time is a technical anomaly that no level of redundancy could prevent. We followed the state-of-the-art standards for high-availability systems.',
       writePrompt: 'The respondent claims dual-AI is "redundancy." Look at Article 15(4) and Evidence 5—does redundancy work if both systems share the same training defect?',
       minWords: 20,
@@ -7489,6 +7895,13 @@ courtroom: {
     {
       id: 'arg3',
       evidenceId: 'ev2-tech-specs',
+          requiredConcepts: [
+            {
+              name: 'Safety vs Green Transition',
+              keywords: ['article 9', 'safety', 'trade-off', 'critical infrastructure', 'green transition', 'acceptable risk', 'lives'],
+              hints: ['Can environmental goals justify accepting safety risks in critical infrastructure?', 'Article 9 does not allow trading critical safety for policy goals. When human lives depend on critical infrastructure, no policy justification makes the safety risk acceptable.']
+            }
+          ],
       oppositionArgument: 'Finally, Your Honour, we must consider the public interest. GridCore AI has reduced carbon emissions by 18% by optimizing renewable energy integration. Article 9(4) requires that risk management ensures the residual risk remains acceptable when weighed against the benefits. The environmental benefit of GridCore is massive. To demand manual fallbacks or legacy switching systems would increase energy prices and slow down the green transition. The risk of an 8-hour blackout once every ten years is an acceptable price to pay for a carbon-neutral and efficient power grid.',
       writePrompt: 'The respondent argues "Green Transition" justifies the risk. Does Article 9 allow for a trade-off where critical safety fallbacks are removed for the sake of efficiency or environmental goals?',
       minWords: 20,
@@ -7679,6 +8092,13 @@ verdict: {
       {
         id: 'arg1',
         evidenceId: 'ev6-campaign-contract',
+          requiredConcepts: [
+            {
+              name: 'Private Use of Electoral AI',
+              keywords: ['annex iii', 'point 8', 'electoral', 'private', 'public authority', 'influence', 'voting behaviour'],
+              hints: ['Does Annex III point 8(a) only apply to public authorities?', 'Annex III point 8(a) covers systems intended to influence the outcome of an election. It applies to any entity, not just public authorities.']
+            }
+          ],
         oppositionArgument: 'Your Honour, the claimant is attempting to censor political speech. VoterPulse is a marketing support tool. The AI Act\'s high-risk categories in Annex III were intended for systems used by \"public authorities.\" DemocracyLabs is a private consulting firm working for a private political party. Because we are not a state entity, our use of AI to communicate with voters is protected by the principle of political expression and does not fall under the restrictive oversight of Annex III, point 8.',
         writePrompt: 'The respondent claims Annex III, point 8 only applies to public authorities. Check the text of 8(a)—does it include systems used by "political campaigns"?',
         minWords: 20,
@@ -7716,6 +8136,13 @@ verdict: {
       {
         id: 'arg2',
         evidenceId: 'ev5-risk-mgmt-summary',
+          requiredConcepts: [
+            {
+              name: 'Psychological Manipulation',
+              keywords: ['manipulation', 'article 5(1)(a)', 'subliminal', 'psychological', 'emotional profiling', 'microtargeting', 'beyond consciousness'],
+              hints: ['Does emotionally-targeted political messaging cross into subliminal manipulation?', 'If the system exploits psychological profiles to craft messages designed to manipulate beyond conscious awareness, it may also trigger Article 5(1)(a) prohibited manipulation.']
+            }
+          ],
         oppositionArgument: 'Your Honour, even if the system is high-risk, DemocracyLabs maintained a risk management system under Article 9. We identified the risk of demographic mis-targeting and implemented tuning mitigations. The claimant\'s concern regarding \"psychological manipulation\" is a political critique, not a technical risk. The AI Act requires us to manage technical risks to health, safety, and fundamental rights. We determined that providing personalized messaging is a benefit to the voter\'s right to be informed, and thus the residual risk to the democratic process was deemed acceptable and not in need of further mitigation.',
         writePrompt: 'The respondent claims "psychological manipulation" isn\'t a technical risk. Look at Art. 9(2) and Evidence 5—does the law allow providers to ignore risks to "democratic processes" in high-risk systems?',
         minWords: 20,
@@ -7753,6 +8180,13 @@ verdict: {
       {
         id: 'arg3',
         evidenceId: 'ev3-internal-email',
+          requiredConcepts: [
+            {
+              name: 'AI-Generated Content Labelling',
+              keywords: ['article 50(4)', 'ai-generated', 'label', 'disclosure', 'synthetic', 'deepfake', 'political content'],
+              hints: ['Must AI-generated political content be labelled?', 'Article 50(4) requires disclosure that content has been artificially generated. Political messaging created by AI must be labelled regardless of quality.']
+            }
+          ],
         oppositionArgument: 'Finally, Your Honour, we must address the transparency claim. The Unity Party has already informed the public that they use digital analytics. Article 50 of the AI Act requires transparency for AI systems that generate deepfakes or manipulate images. Our system generates text. There is no absolute requirement to label every sentence of political messaging as AI-generated, especially when such a label would infringe upon the candidate\'s right to maintain a consistent and authentic public voice. We have met the spirit of the law through our general campaign disclosures.',
         writePrompt: 'The respondent argues AI text doesn\'t need labeling. Look at Article 50(4)—does the duty to disclose AI generation apply to text used for "informational purposes on matters of public interest"?',
         minWords: 20,
@@ -7943,6 +8377,13 @@ verdict: {
       {
         id: 'arg1',
         evidenceId: 'ev2-target-logic',
+          requiredConcepts: [
+            {
+              name: 'High-Risk Electoral Classification',
+              keywords: ['annex iii', 'point 8(a)', 'high-risk', 'electoral', 'intended to influence', 'voting', 'compliance'],
+              hints: ['Does the system fall under Annex III point 8(a)?', 'Systems intended to influence voting behaviour or election outcomes are high-risk under Annex III point 8(a), requiring full compliance with Articles 9-15.']
+            }
+          ],
         oppositionArgument: 'Your Honour, the claimant is attempting to apply the heavy burden of high-risk oversight to standard political communication. VoterFlow is a marketing support tool. The AI Act\'s high-risk categories were intended for systems used by \"public authorities\" or for critical infrastructure. StrategicPulse is a private firm. Our system does not make decisions; it merely suggests messaging. To classify every targeted political ad as \"high-risk\" would stifle political speech and give regulators an unprecedented veto over democratic campaigning.',
         writePrompt: 'The respondent claims high-risk status doesn\'t apply to private political campaigns. Check Annex III, point 8(a)—is this classification limited to state actors?',
         minWords: 20,
@@ -7980,6 +8421,13 @@ verdict: {
       {
         id: 'arg2',
         evidenceId: 'ev4-risk-omission',
+          requiredConcepts: [
+            {
+              name: 'Democratic Integrity Risk',
+              keywords: ['article 9', 'risk management', 'democratic', 'integrity', 'systemic risk', 'electoral', 'fundamental rights'],
+              hints: ['Is democratic integrity a risk that must be assessed under Article 9?', 'Article 9 requires assessment of risks to fundamental rights. The integrity of democratic processes is a fundamental right that must be specifically assessed.']
+            }
+          ],
         oppositionArgument: 'Furthermore, Your Honour, we have met the risk management requirements of Article 9. We identified technical risks like data leaks and mitigated them. The claimant\'s concern regarding \"democratic integrity\" is a political and philosophical debate, not a technical risk that can be managed within an AI engineering workflow. The AI Act requires us to manage risks to health, safety, and fundamental rights. We determined that providing more personalized messaging is a benefit to the voter\'s right to be informed, and thus the residual risk was deemed acceptable without further mitigation.',
         writePrompt: 'The respondent claims "democratic integrity" isn\'t a technical risk. Does Article 9 allow providers to ignore risks to "the democratic process" in high-risk systems?',
         minWords: 20,
@@ -8017,6 +8465,13 @@ verdict: {
       {
         id: 'arg3',
         evidenceId: 'ev3-ceo-email',
+          requiredConcepts: [
+            {
+              name: 'Synthetic Content Disclosure',
+              keywords: ['article 50(4)', 'ai-generated', 'label', 'synthetic', 'text', 'disclosure', 'public interest'],
+              hints: ['Does Article 50(4) require labelling AI-generated text, not just images and video?', 'Article 50(4) covers all artificially generated or manipulated content, including text. AI-written political ads must be disclosed.']
+            }
+          ],
         oppositionArgument: 'Finally, Your Honour, the claimant\'s demand for \"AI Labels\" is an infringement on political expression. Article 50 of the AI Act requires transparency for deepfakes. Our system generates text. There is no absolute requirement to label every sentence of political messaging as AI-generated, especially when such a label would infringe upon the candidate\'s right to maintain an authentic public voice. We have met our transparency obligations through general campaign disclosures. Forcing a candidate to state that their policy message was written by an AI is a violation of their right to self-representation.',
         writePrompt: 'The respondent argues AI text doesn\'t need labeling. Look at Article 50(4)—does the duty to disclose AI generation apply to text used for "informational purposes on matters of public interest"?',
         minWords: 20,
@@ -8207,6 +8662,13 @@ verdict: {
       {
         id: 'arg1',
         evidenceId: 'ev3-internal-email',
+          requiredConcepts: [
+            {
+              name: 'Therapeutic Benefit Exception',
+              keywords: ['article 50(1)', 'disclosure', 'ai system', 'therapeutic', 'exception', 'no exemption', 'inform'],
+              hints: ['Does therapeutic benefit excuse the lack of AI disclosure?', 'Article 50(1) contains no therapeutic benefit exception. All persons interacting with an AI system must be informed they are doing so, regardless of the context.']
+            }
+          ],
         oppositionArgument: 'Your Honour, MindMend is a healthcare innovator. The AI Act\'s transparency rules must be interpreted in light of the system\'s purpose. Article 50(1) was designed to prevent deceptive marketing, not to destroy the "therapeutic bond" in mental health crisis support. Forcing a patient in a moment of despair to read a technical disclaimer about algorithms would be clinically irresponsible. The "information" requirement of the Act is satisfied because the user knows they are on a digital platform; the non-human nature of the counselor is a proprietary method of delivery that ensures 24/7 availability.',
         writePrompt: 'The respondent argues "therapeutic benefit" excuses the lack of disclosure. Look at Article 50(1)—does the law provide an exception for healthcare or "clinical benefit"?',
         minWords: 20,
@@ -8244,6 +8706,13 @@ verdict: {
       {
         id: 'arg2',
         evidenceId: 'ev2-prompt-engineering',
+          requiredConcepts: [
+            {
+              name: 'Obviousness Defence',
+              keywords: ['obvious', 'context', 'article 50(1)', 'reasonably well-informed', 'apparent', 'disclosure', 'explicit'],
+              hints: ['Is it enough that AI nature should have been obvious from context?', 'Article 50(1) requires that persons be informed, not that they should have figured it out. If the system is designed to seem human, the context makes it less obvious, not more.']
+            }
+          ],
         oppositionArgument: 'Furthermore, Your Honour, we must consider the exception in Article 50(1). The law states that disclosure is not required where it is obvious from the circumstances and the context of use. MindMend is a website with a chat interface. In 2025, every reasonable user knows that an instant response on a digital app is likely generated by an AI. The user\'s belief that "Dr. Sarah" was a real person is an unreasonable expectation in a digital-first world. We did not "conceal" the AI; we simply did not state what was already obvious to any modern consumer.',
         writePrompt: 'The respondent claims the AI nature was "obvious from the context." Look at the prompt instructions (Ev 2) and witness statement (Ev 6)—was the system designed to be obvious or to be deceptive?',
         minWords: 20,
@@ -8281,6 +8750,13 @@ verdict: {
       {
         id: 'arg3',
         evidenceId: 'ev1-user-transcript',
+          requiredConcepts: [
+            {
+              name: 'Law Enforcement Exception Scope',
+              keywords: ['law enforcement', 'exception', 'article 50(1)', 'mental health', 'narrow', 'crime', 'investigation'],
+              hints: ['Does the law enforcement exception in Article 50(1) extend to mental health prevention?', 'The law enforcement exception is narrow and relates to detection, investigation, and prosecution of crime. Mental health support does not fall within its scope.']
+            }
+          ],
         oppositionArgument: 'Finally, Your Honour, we must consider the Law Enforcement exception. Article 50(1) states that transparency obligations do not apply to AI systems authorized by law to detect, prevent, or investigate criminal offenses. MindMend works closely with local authorities to prevent self-harm. In many jurisdictions, the prevention of self-harm is treated as a crime-prevention mandate. By providing this AI support, we are assisting the state in its duty to protect life. Therefore, we fall under the authorized law enforcement exception and are not required to disclose the AI nature of our counselors.',
         writePrompt: 'The respondent claims the "Law Enforcement" exception applies to mental health prevention. Look at Article 50(1) and the transcript (Ev 1)—is a private health platform an "authorized law enforcement" system?',
         minWords: 20,
@@ -8470,6 +8946,13 @@ verdict: {
       {
         id: 'arg1',
         evidenceId: 'ev1-forensic-report',
+          requiredConcepts: [
+            {
+              name: 'Deepfake Definition',
+              keywords: ['article 50(4)', 'deepfake', 'artificially generated', 'image', 'video', 'audio', 'resembling', 'real person'],
+              hints: ['Does the video meet the definition of a deepfake under the AI Act?', 'Article 50(4) covers content that has been artificially generated or manipulated and appreciably resembles existing persons, objects, or events. A video impersonating a real person qualifies.']
+            }
+          ],
         oppositionArgument: 'Your Honour, the Public Prosecutor is misapplying the law. Article 3(60) defines a deepfake as content that would \'falsely appear to a person to be authentic.\' My client created a political caricature. Any reasonable, digitally literate citizen in 2025 knows that a Minister would not say such things at a recorded dinner. Because the video is so inflammatory, it carries its own internal signal that it is not authentic. Therefore, it does not meet the legal definition of a deepfake and no disclosure label was required under Article 50.',
         writePrompt: 'The respondent claims the video isn\'t a "deepfake" because it\'s too inflammatory to be believed. Look at the forensic report (Ev 1) and engagement stats (Ev 3)—did it actually appear authentic?',
         minWords: 20,
@@ -8507,6 +8990,13 @@ verdict: {
       {
         id: 'arg2',
         evidenceId: 'ev2-activist-manifesto',
+          requiredConcepts: [
+            {
+              name: 'Satire Exception',
+              keywords: ['satire', 'exception', 'article 50(4)', 'label', 'disclosure', 'artistic', 'enjoyment'],
+              hints: ['Does the AI Act exempt satirical deepfakes from the labelling requirement?', 'Article 50(4) does not exempt satire from the labelling duty. Labelling must occur regardless of creative intent. The audience can still appreciate satire while knowing it is AI-generated.']
+            }
+          ],
         oppositionArgument: 'Your Honour, even if this is a deepfake, it falls under the \'Artistic and Satirical\' exception in Article 50(4). The law states that for satirical works, transparency obligations are limited to disclosure in an \'appropriate manner that does not hamper the display or enjoyment of the work.\' My client believes that the only appropriate manner in satire is to let the viewer realize the truth through critical thinking. Forcing a digital label onto the Minister\'s face would hamper the \'enjoyment\' and the political effectiveness of the satire. This is a matter of artistic freedom protected by the Union.',
         writePrompt: 'The respondent argues "satire" allows them to omit the label to avoid "hampering enjoyment." Look at Article 50(4)—does the satirical exception allow for *no* disclosure at all?',
         minWords: 20,
@@ -8544,6 +9034,13 @@ verdict: {
       {
         id: 'arg3',
         evidenceId: 'ev4-internal-email',
+          requiredConcepts: [
+            {
+              name: 'Free Speech vs Labelling',
+              keywords: ['free speech', 'article 50(4)', 'labelling', 'mandatory', 'expression', 'override', 'disclosure'],
+              hints: ['Does free speech override the mandatory labelling requirement?', 'Article 50(4) labelling is a disclosure obligation, not a content restriction. It does not prohibit creating the content — it requires transparency about its artificial origin. This does not conflict with free speech.']
+            }
+          ],
         oppositionArgument: 'Finally, Your Honour, we must address the intent. My client is a whistleblower of sorts. He used AI to reveal a \'moral truth\' about the Minister\'s policies. The AI Act\'s transparency rules are intended to prevent commercial fraud, not to interfere with the political education of the citizenry. By forcing a label, the court is essentially requiring my client to provide a government-mandated disclaimer on his own political speech. This is an unnecessary and disproportionate interference with his right to impart information without interference by public authority.',
         writePrompt: 'The respondent argues "moral truth" and free speech override the label. Look at the internal email (Ev 4) and Art 50(4)\u2014is there a "political speech" exemption for deepfake disclosure?',
         minWords: 20,
@@ -8734,6 +9231,13 @@ verdict: {
       {
         id: 'arg1',
         evidenceId: 'ev4-system-logs',
+          requiredConcepts: [
+            {
+              name: 'Human Review Threshold',
+              keywords: ['article 50(4)', 'human review', 'editorial', 'substantially', 'generated', '30 seconds', 'control'],
+              hints: ['Does a 30-second check constitute sufficient human editorial control?', 'Article 50 considers whether the content was substantially generated by AI. A perfunctory check does not transform AI-generated content into human-authored content.']
+            }
+          ],
         oppositionArgument: 'Your Honour, the claimant misrepresents the nature of editorial responsibility. Article 50(4) provides a clear exemption for AI-generated text that has undergone a process of human review or editorial control. Europress editors review every single article. The fact that they are efficient and can review a piece in thirty seconds (Evidence 4) is a testament to their professional skill, not a failure of control. A natural person holds editorial responsibility for every word published. Therefore, no AI label is required by law.',
         writePrompt: 'The respondent claims a 30-second check is "editorial control." Look at Art 50(4) and Evidence 6—does the "process of human review" require a substantive check of the content?',
         minWords: 20,
@@ -8771,6 +9275,13 @@ verdict: {
       {
         id: 'arg2',
         evidenceId: 'ev2-internal-email',
+          requiredConcepts: [
+            {
+              name: 'Assistive vs Generative',
+              keywords: ['article 50(2)', 'assistive', 'generative', 'substantially alter', 'generate text', 'original content', 'ai-generated'],
+              hints: ['When does AI assistance cross the line into AI generation?', 'If the system generates the original content rather than merely editing human-written text, it is generative regardless of how it is labelled. Article 50 applies to the substance, not the branding.']
+            }
+          ],
         oppositionArgument: 'Your Honour, even if the review is short, the law provides an exception for content that is \"assistive.\" Article 50(2) notes that transparency does not apply to systems performing an assistive function for standard editing. NewsWire AI is simply a high-tech editor. It takes raw facts and organizes them into a readable format. The journalists then perform the final polish. This is a standard editing workflow that has been modernized. Requiring a label on an \"edited\" work would be a disproportionate burden that would unfairly stigmatize AI-assisted journalism.',
         writePrompt: 'The respondent argues the AI is purely "assistive." Check Art 50(2) and Evidence 3—does the system "substantially alter" the input, and does that trigger the disclosure duty?',
         minWords: 20,
@@ -8808,6 +9319,13 @@ verdict: {
       {
         id: 'arg3',
         evidenceId: 'ev5-editorial-guideline',
+          requiredConcepts: [
+            {
+              name: 'Content Type Exception',
+              keywords: ['article 50(4)', 'financial', 'news', 'public interest', 'exception', 'all content', 'mandatory'],
+              hints: ['Are financial reports or news articles exempt from AI content labelling?', 'Article 50(4) does not exempt any content type. All artificially generated or manipulated content that is published must be labelled, including financial reports and news articles.']
+            }
+          ],
         oppositionArgument: 'Finally, Your Honour, we must consider the \"matters of public interest\" clause. Article 50(4) only requires disclosure for text intended to inform the public on matters of public interest. Europress considers financial reports on individual stocks and sports scores to be \'niche interest\' or \'commercial data,\' not matters of general public interest like an election. Therefore, the disclosure duty was never triggered for the vast majority of our AI-generated output. We have the editorial discretion to determine what constitutes the public interest for our readers.',
         writePrompt: 'The respondent claims financial reports aren\'t "public interest." Does the AI Act allow deployers to define "public interest" to avoid disclosure? What was the impact of the hallucinations (Ev 1)?',
         minWords: 20,
@@ -8996,6 +9514,13 @@ verdict: {
       {
         id: 'arg1',
         evidenceId: 'ev2-lumina-model-card',
+          requiredConcepts: [
+            {
+              name: 'Trade Secret vs Documentation',
+              keywords: ['trade secret', 'article 53(1)(b)', 'annex xii', 'documentation', 'technical', 'mandatory', 'override'],
+              hints: ['Can trade secrets excuse the lack of technical documentation?', 'Article 53(1)(b) and Annex XII require specific technical documentation. Trade secret protection may affect how information is shared downstream but does not exempt the provider from creating the documentation.']
+            }
+          ],
         oppositionArgument: 'Your Honour, Aether AI has acted in good faith to protect its intellectual property. Article 53(1)(b) states that the provision of information to downstream providers shall be \"without prejudice to the need to observe and protect trade secrets.\" Providing the specific compute and energy data MediTech demands would reveal our proprietary architecture. We provided a Model Card (Evidence 2) that warned of general inaccuracies. MediTech is a sophisticated company; they should have conducted their own oncology-specific validation instead of blaming the foundation model provider for their own implementation errors.',
         writePrompt: 'The respondent claims trade secrets excuse the lack of detail. Look at Art 53(1)(b) and Annex XII\u2014is a "general warning" sufficient to satisfy the duty to inform downstream providers?',
         minWords: 20,
@@ -9033,6 +9558,13 @@ verdict: {
       {
         id: 'arg2',
         evidenceId: 'ev4-ai-office-notice',
+          requiredConcepts: [
+            {
+              name: 'Compute and Energy Reporting',
+              keywords: ['compute', 'energy', 'article 53(1)(a)', 'annex xi', 'training', 'resources', 'reporting'],
+              hints: ['Must GPAI providers report compute resources and energy consumption?', 'Article 53(1)(a) and Annex XI specifically require reporting of computational resources and energy used in training. These are mandatory disclosure items.']
+            }
+          ],
         oppositionArgument: 'Your Honour, regarding the Annex XI documentation for the AI Office, Aether AI has provided a comprehensive technical summary. Article 53(1)(a) requires documentation to be provided \"upon request.\" We have engaged in a dialogue with the Office. The specific request for \"computational resources\" and \"FLOPs\" (Evidence 4) is an overreach. The AI Office cannot use the AI Act to perform industrial audits on our proprietary data centers. Our energy consumption is a matter of corporate ESG reporting, not a safety requirement for an AI model that does not even have a physical presence in the Union.',
         writePrompt: 'The respondent claims "compute resources" and "energy" are not safety requirements for models. Look at Art 53(1)(a) and Annex XI—are these elements optional for the AI Office?',
         minWords: 20,
@@ -9070,6 +9602,13 @@ verdict: {
       {
         id: 'arg3',
         evidenceId: 'ev5-witness-engineer',
+          requiredConcepts: [
+            {
+              name: 'Training Data Summary Detail',
+              keywords: ['article 53(1)(d)', 'summary', 'training data', 'detailed', 'general', 'template', 'sufficiently'],
+              hints: ['Must the training data summary be detailed or can it be general?', 'Article 53(1)(d) requires a sufficiently detailed summary prepared according to a template provided by the AI Office. A vague summary does not meet this standard.']
+            }
+          ],
         oppositionArgument: 'Finally, Your Honour, we must address the \"Summary of Training Content.\" Article 53(1)(d) requires a summary, which we have provided. It mentions internet data and books. The claimant wants us to list every URL and every title. This is impossible for a model trained on billions of tokens. Furthermore, such a list would reveal our secret curation recipes. The AI Office has provided a template, but that template is not yet legally binding. We have met the requirement for a \"sufficiently detailed\" summary by describing the general nature of the data sources without compromising our competitive edge.',
         writePrompt: 'The respondent argues the summary only needs to be "general." Look at Art 53(1)(d) and the template requirement—what is the purpose of the summary, and did they meet it?',
         minWords: 20,
@@ -9259,6 +9798,13 @@ verdict: {
       {
         id: 'arg1',
         evidenceId: 'ev2-training-log',
+          requiredConcepts: [
+            {
+              name: 'Systemic Risk Classification',
+              keywords: ['article 51(1)', 'systemic risk', 'classification', 'compute', 'threshold', 'flops', 'gpai'],
+              hints: ['When does a GPAI model become classified as having systemic risk?', 'Article 51(1) classifies models as systemic risk when they were trained with total compute above a specified threshold (10^25 FLOPs) or when designated by the Commission.']
+            }
+          ],
         oppositionArgument: 'Your Honour, the classification of Nova-Omni as having \"systemic risk\" is a purely technical designation based on a compute threshold in Article 51. It is not an admission of actual hazard. NovaCore AI has acted responsibly by providing the technical documentation required for all GPAI models. Article 55 obligations only apply once the AI Office has formally notified a provider that their specific model represents a systemic threat. Since no such individual notification was received prior to launch, NovaCore was not yet bound by the specialized red-teaming or incident reporting duties.',
         writePrompt: 'The respondent claims they weren\'t bound by Article 55 because they weren\'t "notified." Look at Article 51(1)(a)\u2014is the classification automatic or based on notification?',
         minWords: 20,
@@ -9296,6 +9842,13 @@ verdict: {
       {
         id: 'arg2',
         evidenceId: 'ev3-internal-email',
+          requiredConcepts: [
+            {
+              name: 'Adversarial Testing Requirements',
+              keywords: ['article 55(1)(b)', 'adversarial testing', 'red-teaming', 'annex xiii', 'automated filters', 'systematic', 'evaluation'],
+              hints: ['Are automated content filters sufficient adversarial testing?', 'Article 55(1)(b) and Annex XIII require systematic adversarial testing including red-teaming. Automated filters test for known patterns but do not constitute the systematic adversarial evaluation required.']
+            }
+          ],
         oppositionArgument: 'Your Honour, Article 55(1)(b) requires providers to perform model evaluation and adversarial testing. NovaCore has met this through our automated safety evaluators. The AI Act does not mandate \"manual red-teaming\" or external sessions. Our internal email (Evidence 3) merely reflects a strategic decision to use our own world-class automated tools rather than slower external ones. To demand a specific type of adversarial testing that isn\'t defined in the text of the Regulation is an overreach by the AI Office. Our automated filters are a valid technical mitigation under the risk-based approach.',
         writePrompt: 'The respondent claims automated filters are sufficient "adversarial testing." Look at Article 55(1)(b) and Annex XIII—what is required for models with systemic risk?',
         minWords: 20,
@@ -9333,6 +9886,13 @@ verdict: {
       {
         id: 'arg3',
         evidenceId: 'ev6-incident-log-empty',
+          requiredConcepts: [
+            {
+              name: 'Third-Party Misuse Responsibility',
+              keywords: ['article 55(1)', 'incident', 'report', 'third-party', 'misuse', 'systemic risk', 'responsibility'],
+              hints: ['Is a GPAI provider responsible for third-party misuse?', 'Article 55(1) requires providers of systemic-risk models to track, document, and report serious incidents. Third-party misuse of the model is a foreseeable systemic risk that must be monitored and reported.']
+            }
+          ],
         oppositionArgument: 'Finally, Your Honour, regarding incident reporting. Article 55(1)(c) requires providers to report \"serious incidents.\" NovaCore has maintained an internal log (Evidence 6) which shows zero incidents. The phishing surge mentioned by the AI Office is an external societal trend, not a \"serious incident\" within our model\'s technical operation. A serious incident refers to a system malfunction or a physical injury caused by the AI. Since Nova-Omni did not crash or explode, there was nothing to report. We cannot be held liable for failing to report data that does not meet the legal threshold of a serious incident.',
         writePrompt: 'The respondent claims misuse by third parties isn\'t a "serious incident." Look at Article 55(1)(c) and the definition of systemic risk—is mass-phishing a reportable event?',
         minWords: 20,
@@ -9523,6 +10083,13 @@ verdict: {
       {
         id: 'arg1',
         evidenceId: 'ev4-training-summary-published',
+          requiredConcepts: [
+            {
+              name: 'Training Data Summary Specificity',
+              keywords: ['article 53(1)(d)', 'training data', 'summary', 'detailed', 'general categories', 'template', 'specific sources'],
+              hints: ['Can the training data summary use general categories like "web data"?', 'Article 53(1)(d) requires a sufficiently detailed summary. General categories that obscure specific copyrighted sources do not meet the detail requirement.']
+            }
+          ],
         oppositionArgument: 'Your Honour, Aether AI has acted in full compliance with the transparency spirit of Article 53(1)(d). We have provided a public summary that describes the general nature of our training corpus. The AI Act does not require a line-item inventory of every book or article; doing so would destroy our competitive edge and expose our curation trade secrets. The term \"sufficiently detailed\" must be interpreted in light of Article 53(5), which protects commercial interests. Our summary provides the public with a good understanding of the model\'s origins without compromising our business.',
         writePrompt: 'The respondent argues "sufficiently detailed" allows for general categories. Look at Art 53(1)(d) and Evidence 4—does the summary meet the standard required for rights enforcement?',
         minWords: 20,
@@ -9560,6 +10127,13 @@ verdict: {
       {
         id: 'arg2',
         evidenceId: 'ev2-scraper-logs',
+          requiredConcepts: [
+            {
+              name: 'Copyright Compliance Burden',
+              keywords: ['article 53(1)(c)', 'copyright', 'state of the art', 'opt-out', 'robots.txt', 'burden', 'provider'],
+              hints: ['Who bears the burden of copyright compliance — the provider or the publisher?', 'Article 53(1)(c) places the burden on the GPAI provider to use state-of-the-art technologies to comply with copyright reservations. The provider cannot blame publishers for unclear opt-out mechanisms.']
+            }
+          ],
         oppositionArgument: 'Your Honour, Article 53(1)(c) requires a policy to comply with Union copyright law \"without prejudice\" to the rights of the provider. Our policy recognizes the principle of \"Transformative Use,\" which is a recognized legal theory for AI training. Regarding the TDM opt-out in Article 4(3) of the Copyright Directive, that provision only applies to \"machine-readable\" reservations. LexiClone\'s scraper (Evidence 2) focuses on high-speed efficiency. If a publisher fails to make their opt-out readable by our specific scraping architecture, that is a failure of the publisher\'s technology, not a breach of our compliance policy.',
         writePrompt: 'The respondent blames publishers for "unreadable" opt-outs. Look at Art 53(1)(c)—who has the burden to use "state-of-the-art" technology to identify reservations of rights?',
         minWords: 20,
@@ -9597,6 +10171,13 @@ verdict: {
       {
         id: 'arg3',
         evidenceId: 'ev3-internal-email',
+          requiredConcepts: [
+            {
+              name: 'Innovation vs Copyright',
+              keywords: ['article 53(1)(c)', 'innovation', 'technical necessity', 'copyright', 'override', 'mandatory', 'no exception'],
+              hints: ['Does technical necessity or innovation override the copyright compliance duty?', 'Article 53(1)(c) is a mandatory obligation. No innovation or technical necessity exception exists. The provider must comply with copyright law regardless of the difficulty.']
+            }
+          ],
         oppositionArgument: 'Finally, Your Honour, we must address the \"Technical Necessity\" defense. As our internal memo suggests, building a competitive GPAI model requires access to the highest-quality human knowledge. If we were forced to license or exclude every copyrighted work, the resulting model would be significantly less accurate and would put the Union at a disadvantage in the global AI race. The AI Act\'s copyright rules must be interpreted through the lens of \"Innovation Neutrality.\" We have put in place a policy that balances the interests of rightsholders with the technical necessity of large-scale training.',
         writePrompt: 'The respondent argues "technical necessity" and "innovation" override the copyright duty. Does Art 53(1)(c) allow for a "performance-based" exemption from copyright compliance?',
         minWords: 20,

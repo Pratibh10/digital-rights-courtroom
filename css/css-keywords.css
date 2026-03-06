@@ -1,12 +1,74 @@
-.keyword-hints { margin: 0.75rem 0; padding: 0.75rem 1rem; background: rgba(52,152,219,0.08); border: 1px solid rgba(52,152,219,0.2); border-radius: 8px; }
-.concept-group { margin-bottom: 0.6rem; }
-.concept-group:last-child { margin-bottom: 0; }
-.concept-name { font-size: 0.82rem; color: var(--text-secondary, #adb5bd); margin-bottom: 0.35rem; font-weight: 600; }
-.concept-threshold { font-weight: 400; color: #6c757d; font-size: 0.75rem; }
+/* Keyword Feedback Styles (v5) */
+
+.keyword-feedback { margin-top: 1rem; }
+
+.kw-feedback-pass {
+  padding: 0.75rem 1rem;
+  background: rgba(39,174,96,0.1);
+  border: 1px solid rgba(39,174,96,0.3);
+  border-radius: 8px;
+}
+
+.kw-feedback-fail {
+  padding: 1rem;
+  background: rgba(231,76,60,0.06);
+  border: 1px solid rgba(231,76,60,0.2);
+  border-radius: 8px;
+}
+
+.kw-feedback-title {
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 0.75rem;
+  color: var(--text-primary, #e0e0e0);
+}
+
+.concept-feedback-group { margin-bottom: 0.6rem; }
+.concept-feedback-group:last-child { margin-bottom: 0; }
+
+.concept-feedback-name {
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+  color: var(--text-secondary, #adb5bd);
+}
+
 .keyword-chips { display: flex; flex-wrap: wrap; gap: 0.35rem; }
-.keyword-chip { display: inline-block; padding: 0.2rem 0.55rem; border-radius: 999px; font-size: 0.75rem; font-weight: 500; background: rgba(108,117,125,0.12); color: var(--text-secondary, #6c757d); border: 1px solid rgba(108,117,125,0.25); transition: all 0.25s ease; }
-.keyword-chip.matched { background: rgba(39,174,96,0.15); color: #27ae60; border-color: rgba(39,174,96,0.4); }
-.keyword-chip.unmatched { background: rgba(108,117,125,0.06); color: #666; border-color: rgba(108,117,125,0.12); }
-.keyword-match-count { font-size: 0.8rem; font-weight: 500; margin-left: 0.75rem; padding: 0.15rem 0.5rem; border-radius: 4px; }
-.keyword-match-count.sufficient { color: #27ae60; background: rgba(39,174,96,0.1); }
-.keyword-match-count.insufficient { color: #b7791f; background: rgba(183,121,31,0.1); }
+
+.keyword-chip {
+  display: inline-block;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  transition: all 0.25s ease;
+}
+
+.keyword-chip.matched {
+  background: rgba(39,174,96,0.15);
+  color: #27ae60;
+  border: 1px solid rgba(39,174,96,0.4);
+}
+
+.keyword-chip.missed {
+  background: rgba(231,76,60,0.1);
+  color: #e74c3c;
+  border: 1px solid rgba(231,76,60,0.3);
+}
+
+.kw-hint {
+  margin-top: 0.75rem;
+  padding: 0.6rem 0.8rem;
+  background: rgba(52,152,219,0.08);
+  border: 1px solid rgba(52,152,219,0.2);
+  border-radius: 6px;
+  font-size: 0.82rem;
+  color: var(--text-secondary, #adb5bd);
+}
+
+.kw-retry-msg {
+  margin-top: 0.6rem;
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--text-secondary, #888);
+}

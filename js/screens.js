@@ -677,47 +677,32 @@
       prompt.innerHTML = `<div class="prompt-text">${caseData.courtroom.judgeName}: Counsel for the applicant, you may respond.</div>`;
       round.appendChild(prompt);
   
-      // Write-first gate (v5: keyword validation)
+      // Write-first gate (v5: hidden keyword validation with retry)
       const writePrompt = arg.writePrompt || 'How would you respond to opposing counsel\'s argument?';
       const minWords = arg.minWords || 15;
       const reqConcepts = arg.requiredConcepts || [];
 
       if (!this._argConcepts) this._argConcepts = {};
       this._argConcepts[index] = reqConcepts;
+      if (!this._retryUsed) this._retryUsed = {};
 
       const writeGate = document.createElement('div');
       writeGate.className = 'write-first-container';
       writeGate.id = `write-gate-court-${index}`;
 
-      let keywordHintHtml = '';
-      if (reqConcepts.length > 0) {
-        const conceptBlocks = reqConcepts.map((rc, ci) => {
-          const chips = (rc.keywords || []).map((kw, ki) =>
-            `<span class="keyword-chip" id="wf-court-${index}-c${ci}-kw-${ki}">${kw}</span>`
-          ).join('');
-          const needed = Math.ceil((rc.keywords || []).length / 2);
-          return `<div class="concept-group">
-            <div class="concept-name">${rc.name} <span class="concept-threshold">(mention at least ${needed})</span></div>
-            <div class="keyword-chips">${chips}</div>
-          </div>`;
-        }).join('');
-        keywordHintHtml = `<div class="keyword-hints">${conceptBlocks}</div>`;
-      }
-
       writeGate.innerHTML = `
         <div class="write-first-prompt">${writePrompt}</div>
         <div class="write-first-instruction">Draft your counter-argument before seeing the response options. Minimum ${minWords} words.</div>
-        ${keywordHintHtml}
         <textarea class="write-first-textarea" id="wf-court-${index}-text"
                   placeholder="Your Honour, I must object to opposing counsel's characterisation..."
-                  oninput="Screens._updateWriteGate(${index}, ${minWords})"></textarea>
+                  oninput="Screens._updateWordOnly(${index}, ${minWords})"></textarea>
         <div class="write-first-footer">
           <span class="write-first-charcount" id="wf-court-${index}-count">0 words</span>
-          <span class="keyword-match-count" id="wf-court-${index}-kwcount" style="display:${reqConcepts.length > 0 ? 'inline' : 'none'}"></span>
-          <button class="btn btn-primary" id="wf-court-${index}-btn" onclick="Screens._submitCourtWriteGate(${index})" disabled>
+          <button class="btn btn-primary" id="wf-court-${index}-btn" onclick="Screens._submitWriteAndCheck(${index})" disabled>
             Submit My Response
           </button>
         </div>
+        <div class="keyword-feedback" id="wf-court-${index}-feedback" style="display:none"></div>
       `;
       round.appendChild(writeGate);
   
@@ -769,41 +754,112 @@
       }, 100);
     },
   
-    // v5: keyword + word count validation
-    _updateWriteGate(argIndex, minWords) {
+    // v5: Word count only (no keywords shown during writing)
+    _updateWordOnly(argIndex, minWords) {
       const textarea = document.getElementById(`wf-court-${argIndex}-text`);
       const countEl = document.getElementById(`wf-court-${argIndex}-count`);
-      const kwCountEl = document.getElementById(`wf-court-${argIndex}-kwcount`);
       const btn = document.getElementById(`wf-court-${argIndex}-btn`);
-      const text = textarea.value;
-
-      const words = text.trim().split(/\s+/).filter(w => w.length > 0).length;
+      const words = textarea.value.trim().split(/\s+/).filter(w => w.length > 0).length;
       countEl.textContent = `${words} word${words !== 1 ? 's' : ''}`;
       const wordsOk = words >= minWords;
       if (wordsOk) countEl.classList.add('sufficient');
       else countEl.classList.remove('sufficient');
+      if (btn) btn.disabled = !wordsOk;
+    },
 
-      const reqConcepts = (this._argConcepts && this._argConcepts[argIndex]) || [];
-      let keywordsOk = true;
-      if (reqConcepts.length > 0) {
-        const result = Game.checkKeywords(text, reqConcepts);
-        kwCountEl.textContent = `${result.totalMatched}/${result.totalKeywords} concepts`;
-        kwCountEl.style.display = 'inline';
-        if (result.passed) { kwCountEl.classList.add('sufficient'); kwCountEl.classList.remove('insufficient'); }
-        else { kwCountEl.classList.remove('sufficient'); kwCountEl.classList.add('insufficient'); }
-        keywordsOk = result.passed;
-        reqConcepts.forEach((rc, ci) => {
-          (rc.keywords || []).forEach((kw, ki) => {
-            const chip = document.getElementById(`wf-court-${argIndex}-c${ci}-kw-${ki}`);
-            if (chip) {
-              const isMatched = text.toLowerCase().includes(kw.toLowerCase());
-              if (isMatched) { chip.classList.add('matched'); chip.classList.remove('unmatched'); }
-              else { chip.classList.remove('matched'); chip.classList.add('unmatched'); }
-            }
-          });
-        });
+    // v5: Submit -> check keywords behind the scenes -> feedback or proceed
+    _submitWriteAndCheck(index) {
+      const text = document.getElementById(`wf-court-${index}-text`).value;
+      Game.recordWrittenAnswer(`courtroom_${index}`, text);
+
+      const reqConcepts = (this._argConcepts && this._argConcepts[index]) || [];
+
+      // No keywords defined -> proceed directly
+      if (reqConcepts.length === 0) {
+        document.getElementById(`write-gate-court-${index}`).style.display = 'none';
+        document.getElementById(`court-options-${index}`).style.display = 'block';
+        return;
       }
-      if (btn) btn.disabled = !(wordsOk && keywordsOk);
+
+      const result = Game.checkKeywords(text, reqConcepts);
+
+      if (result.passed) {
+        // Passed! Show brief success + proceed
+        const fb = document.getElementById(`wf-court-${index}-feedback`);
+        fb.style.display = 'block';
+        fb.innerHTML = `<div class="kw-feedback-pass">
+          <div class="kw-feedback-title">✅ Good analysis — you addressed the key legal concepts.</div>
+        </div>`;
+        setTimeout(() => {
+          document.getElementById(`write-gate-court-${index}`).style.display = 'none';
+          document.getElementById(`court-options-${index}`).style.display = 'block';
+        }, 1200);
+        return;
+      }
+
+      // Failed - show feedback with concepts revealed
+      const isRetry = this._retryUsed && this._retryUsed[index];
+
+      if (isRetry) {
+        // Second attempt - unlock options regardless but still show feedback
+        const fb = document.getElementById(`wf-court-${index}-feedback`);
+        fb.style.display = 'block';
+        fb.innerHTML = this._buildKeywordFeedback(result, reqConcepts, false);
+        setTimeout(() => {
+          document.getElementById(`write-gate-court-${index}`).style.display = 'none';
+          document.getElementById(`court-options-${index}`).style.display = 'block';
+        }, 2500);
+        return;
+      }
+
+      // First attempt failed - show feedback + allow retry
+      this._retryUsed[index] = true;
+      const fb = document.getElementById(`wf-court-${index}-feedback`);
+      fb.style.display = 'block';
+      fb.innerHTML = this._buildKeywordFeedback(result, reqConcepts, true);
+
+      // Re-enable textarea and button for retry
+      const btn = document.getElementById(`wf-court-${index}-btn`);
+      btn.textContent = 'Retry My Response';
+      btn.disabled = false;
+
+      // Scroll to feedback
+      fb.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    },
+
+    _buildKeywordFeedback(result, reqConcepts, canRetry) {
+      const conceptHtml = result.concepts.map(c => {
+        const chips = [...c.matched.map(kw =>
+          `<span class="keyword-chip matched">${kw}</span>`
+        ), ...c.missed.map(kw =>
+          `<span class="keyword-chip missed">${kw}</span>`
+        )].join('');
+        const icon = c.passed ? '✅' : '❌';
+        return `<div class="concept-feedback-group">
+          <div class="concept-feedback-name">${icon} ${c.name} (${c.matched.length}/${c.matched.length + c.missed.length})</div>
+          <div class="keyword-chips">${chips}</div>
+        </div>`;
+      }).join('');
+
+      // Get hints from first failing concept
+      let hintHtml = '';
+      if (canRetry) {
+        const failingConcept = reqConcepts.find((rc, i) => !result.concepts[i].passed);
+        if (failingConcept && failingConcept.hints && failingConcept.hints.length > 0) {
+          hintHtml = `<div class="kw-hint"><strong>Hint:</strong> ${failingConcept.hints[0]}</div>`;
+        }
+      }
+
+      const retryMsg = canRetry
+        ? '<div class="kw-retry-msg">Revise your answer above and try again. The concepts you missed are shown in red.</div>'
+        : '<div class="kw-retry-msg">Moving to the response options. Review the concepts above to strengthen your understanding.</div>';
+
+      return `<div class="kw-feedback-fail">
+        <div class="kw-feedback-title">⚠️ Your response missed some key legal concepts (${result.totalMatched}/${result.totalKeywords})</div>
+        ${conceptHtml}
+        ${hintHtml}
+        ${retryMsg}
+      </div>`;
     },
 
     _updateWordCount(textareaId, countId, minWords, btnId) {
