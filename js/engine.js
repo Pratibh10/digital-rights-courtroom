@@ -1,6 +1,6 @@
 /* ============================================
-   DIGITAL RIGHTS COURTROOM — Game Engine
-   Screen manager, game state, scoring, keyword gate
+   DIGITAL RIGHTS COURTROOM — Game Engine v4
+   4-option courtroom + evidence citation challenge
    ============================================ */
 
    const Game = {
@@ -14,21 +14,20 @@
       // Per-case progress
       collectedEvidence: [],
       readEvidence: [],
-      analysisAnswers: {
-        framework: { chosen: null, correct: false },
-        article: { chosen: null, correct: false }
+  
+      // Cross-examination tracking
+      crossExamResults: {
+        questionsAsked: [],
+        totalScore: 0
       },
+  
+      // Courtroom tracking (v4: includes citation result)
       courtroomResults: [],
   
-      // Written answers (Write Before You Choose)
+      // Written answers (courtroom write-before-choose)
       writtenAnswers: {
-        analysis_framework: '',
-        analysis_article: '',
         courtroom: []
       },
-  
-      // Keyword gate attempts
-      keywordAttempts: {},
   
       // Persistent progress
       completedCases: {}
@@ -38,7 +37,7 @@
     init() {
       this.loadProgress();
       this.showScreen('dashboard');
-      console.log('Digital Rights Courtroom initialized.');
+      console.log('Digital Rights Courtroom v4 initialized.');
     },
   
     // --- Screen Management ---
@@ -57,8 +56,8 @@
         case 'investigation':
           Screens.renderInvestigation(app, this.state.currentCase);
           break;
-        case 'analysis':
-          Screens.renderAnalysis(app, this.state.currentCase);
+        case 'cross-examination':
+          Screens.renderCrossExamination(app, this.state.currentCase);
           break;
         case 'courtroom':
           Screens.renderCourtroom(app, this.state.currentCase);
@@ -96,17 +95,12 @@
       // Reset per-case state
       this.state.collectedEvidence = [];
       this.state.readEvidence = [];
-      this.state.analysisAnswers = {
-        framework: { chosen: null, correct: false },
-        article: { chosen: null, correct: false }
+      this.state.crossExamResults = {
+        questionsAsked: [],
+        totalScore: 0
       };
       this.state.courtroomResults = [];
-      this.state.writtenAnswers = {
-        analysis_framework: '',
-        analysis_article: '',
-        courtroom: []
-      };
-      this.state.keywordAttempts = {};
+      this.state.writtenAnswers = { courtroom: [] };
   
       this.showScreen('briefing');
     },
@@ -138,79 +132,58 @@
       return this.state.collectedEvidence.includes(evidenceId);
     },
   
+    // --- Cross-Examination ---
+    recordCrossExamQuestion(questionId, impact, followedUp, score) {
+      this.state.crossExamResults.questionsAsked.push({
+        id: questionId,
+        impact: impact,
+        followedUp: followedUp,
+        score: score
+      });
+      this.state.crossExamResults.totalScore += score;
+    },
+  
+    getCrossExamQuestionsAsked() {
+      return this.state.crossExamResults.questionsAsked.map(q => q.id);
+    },
+  
     // --- Written Answers ---
     recordWrittenAnswer(phase, text) {
-      if (phase === 'analysis_framework' || phase === 'analysis_article') {
-        this.state.writtenAnswers[phase] = text;
-      } else if (phase.startsWith('courtroom_')) {
+      if (phase.startsWith('courtroom_')) {
         const index = parseInt(phase.split('_')[1]);
         this.state.writtenAnswers.courtroom[index] = text;
       }
     },
   
-    // --- Keyword Gate ---
-    checkKeywords(text, requiredConcepts) {
-      if (!requiredConcepts || requiredConcepts.length === 0) {
-        return { allFound: true, results: [] };
-      }
-  
-      const lower = text.toLowerCase().replace(/[.,;:!?()]/g, ' ');
-  
-      const results = requiredConcepts.map(concept => ({
-        name: concept.name,
-        found: concept.keywords.some(kw => lower.includes(kw.toLowerCase())),
-        hints: concept.hints || [],
-        keywords: concept.keywords
-      }));
-  
-      return {
-        allFound: results.every(r => r.found),
-        results: results
-      };
-    },
-  
-    getKeywordAttempts(gateId) {
-      return this.state.keywordAttempts[gateId] || 0;
-    },
-  
-    incrementKeywordAttempts(gateId) {
-      this.state.keywordAttempts[gateId] = (this.state.keywordAttempts[gateId] || 0) + 1;
-      return this.state.keywordAttempts[gateId];
-    },
-  
-    // --- Analysis Tracking ---
-    recordAnalysisAnswer(questionType, chosenId, isCorrect) {
-      this.state.analysisAnswers[questionType] = {
-        chosen: chosenId,
-        correct: isCorrect
-      };
-    },
-  
-    // --- Courtroom Tracking ---
-    recordArgument(argumentId, quality) {
+    // --- Courtroom Tracking (v4: quality + citation) ---
+    recordArgument(argumentId, quality, citationCorrect) {
       this.state.courtroomResults.push({
         argumentId: argumentId,
-        quality: quality
+        quality: quality,
+        citationCorrect: citationCorrect
       });
     },
   
     // --- Scoring ---
+    // v4: quality determines base, citation is multiplier
+    // strong=full, weak=half, plausible=0, wrong=0
+    // correct citation=1.0x, wrong citation=0.5x
     calculateFinalScore() {
       const caseData = this.state.currentCase;
       if (!caseData) return null;
   
-      // Evidence: 20 points (based on read, not just clicked)
+      // Evidence: 20 points
       const totalEvidence = caseData.evidence.length;
       const readCount = this.state.readEvidence.length;
       const evidenceScore = totalEvidence > 0
         ? Math.round((readCount / totalEvidence) * 20)
         : 0;
   
-      // Framework identification: 15 points
-      const frameworkScore = this.state.analysisAnswers.framework.correct ? 15 : 0;
-  
-      // Article identification: 15 points
-      const articleScore = this.state.analysisAnswers.article.correct ? 15 : 0;
+      // Cross-examination: 30 points
+      const ceData = caseData.crossExamination;
+      const maxCEScore = ceData ? ceData.maxQuestions * 10 : 30;
+      const rawCEScore = this.state.crossExamResults.totalScore;
+      const crossExamScore = Math.min(Math.round((rawCEScore / maxCEScore) * 30), 30);
   
       // Courtroom arguments: 50 points
       const totalArguments = caseData.courtroom.arguments.length;
@@ -219,13 +192,15 @@
       const argumentDetails = [];
   
       this.state.courtroomResults.forEach((result, index) => {
-        let earned = 0;
-        if (result.quality === 'strong') earned = pointsPerArgument;
-        else if (result.quality === 'weak') earned = pointsPerArgument * 0.5;
-        else earned = 0;
+        let baseScore = 0;
+        if (result.quality === 'strong') baseScore = 1.0;
+        else if (result.quality === 'weak') baseScore = 0.5;
+        else baseScore = 0; // plausible or wrong
   
-        earned = Math.round(earned);
+        const citationMult = result.citationCorrect ? 1.0 : 0.5;
+        let earned = Math.round(pointsPerArgument * baseScore * citationMult);
         courtroomScore += earned;
+  
         argumentDetails.push({
           ...result,
           earned: earned,
@@ -233,7 +208,7 @@
         });
       });
   
-      const total = evidenceScore + frameworkScore + articleScore + courtroomScore;
+      const total = evidenceScore + crossExamScore + courtroomScore;
   
       let verdict;
       if (total >= 80) verdict = 'won';
@@ -249,11 +224,10 @@
           found: readCount,
           total: totalEvidence
         },
-        analysis: {
-          earned: frameworkScore + articleScore,
+        crossExam: {
+          earned: crossExamScore,
           possible: 30,
-          frameworkCorrect: this.state.analysisAnswers.framework.correct,
-          articleCorrect: this.state.analysisAnswers.article.correct
+          questionsAsked: this.state.crossExamResults.questionsAsked
         },
         courtroom: {
           earned: courtroomScore,

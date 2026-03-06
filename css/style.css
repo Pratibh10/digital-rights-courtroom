@@ -1466,3 +1466,526 @@
   color: #e86a8c;
   border: 1px solid rgba(232, 106, 140, 0.3);
 }
+
+/* ============================================
+   FIX: Evidence viewer scrolling
+   ============================================ */
+
+   .evidence-viewer {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 0;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    height: 70vh;
+    margin-bottom: var(--space-xl);
+  }
+  
+  .evidence-list {
+    background: var(--bg-surface);
+    border-right: 1px solid var(--border-subtle);
+    overflow-y: auto;
+    padding: var(--space-sm);
+    height: 100%;
+  }
+  
+  .evidence-reader {
+    background: var(--bg-primary);
+    overflow-y: scroll;
+    padding: var(--space-xl) var(--space-2xl);
+    height: 100%;
+  }
+  
+  /* ============================================
+     ADVERSARIAL COURTROOM STYLES
+     ============================================ */
+  
+  .courtroom-scene {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+  
+  .courtroom-round {
+    margin-bottom: var(--space-2xl);
+    padding-bottom: var(--space-xl);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  
+  .courtroom-round:last-child {
+    border-bottom: none;
+  }
+  
+  .round-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    margin-bottom: var(--space-lg);
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+  
+  .round-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border-subtle);
+  }
+  
+  /* Speaker Bubbles — Adversarial */
+  .dialogue-bubble.opposition {
+    background: rgba(201, 74, 74, 0.06);
+    border: 1px solid rgba(201, 74, 74, 0.2);
+    border-left: 3px solid var(--color-error);
+    margin-right: var(--space-2xl);
+    padding: var(--space-lg);
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--space-lg);
+    animation: bubbleFadeIn 400ms ease forwards;
+    opacity: 0;
+  }
+  
+  .dialogue-bubble.opposition .speaker-name {
+    color: var(--color-error);
+    font-weight: 700;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: var(--space-sm);
+  }
+  
+  .dialogue-bubble.opposition .speaker-role {
+    color: var(--text-muted);
+    font-size: 0.72rem;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+    margin-left: var(--space-sm);
+  }
+  
+  .dialogue-bubble.opposition .speaker-text {
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    line-height: 1.7;
+  }
+  
+  /* Judge ruling style */
+  .judge-ruling {
+    background: var(--bg-surface);
+    border: 1px solid var(--accent-gold-dim);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    margin-top: var(--space-lg);
+    margin-bottom: var(--space-lg);
+  }
+  
+  .judge-ruling-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-md);
+  }
+  
+  .judge-gavel {
+    font-size: 1.2rem;
+  }
+  
+  .judge-ruling .speaker-name {
+    color: var(--accent-gold);
+    font-weight: 700;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  
+  .judge-ruling .ruling-text {
+    font-size: 0.92rem;
+    color: var(--text-primary);
+    line-height: 1.7;
+    font-style: italic;
+  }
+  
+  /* Objection prompt */
+  .objection-prompt {
+    text-align: center;
+    padding: var(--space-md) 0;
+    margin: var(--space-md) 0;
+  }
+  
+  .objection-prompt .prompt-text {
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    color: var(--accent-gold);
+    font-style: italic;
+  }
+  
+  /* Player response highlight */
+  .dialogue-bubble.player .chosen-quality {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 2px 8px;
+    border-radius: 100px;
+    margin-left: var(--space-sm);
+  }
+  
+  .chosen-quality.strong {
+    background: var(--color-success-bg);
+    color: var(--color-success);
+  }
+  
+  .chosen-quality.weak {
+    background: var(--color-warning-bg);
+    color: var(--color-warning);
+  }
+  
+  .chosen-quality.wrong {
+    background: var(--color-error-bg);
+    color: var(--color-error);
+  }
+  
+  /* ============================================
+   CROSS-EXAMINATION STYLES
+   ============================================ */
+
+.cross-exam-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: var(--space-xl);
+  margin-bottom: var(--space-2xl);
+}
+
+@media (max-width: 768px) {
+  .cross-exam-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Witness Box */
+.witness-box {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  text-align: center;
+  position: sticky;
+  top: var(--space-lg);
+  height: fit-content;
+}
+
+.witness-icon {
+  font-size: 2.5rem;
+  margin-bottom: var(--space-sm);
+}
+
+.witness-name {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.witness-role {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+  margin-bottom: var(--space-md);
+}
+
+.witness-background {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+
+.questions-remaining {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  padding: var(--space-sm);
+  background: var(--bg-primary);
+  border-radius: var(--radius-md);
+}
+
+.questions-remaining strong {
+  color: var(--accent-gold);
+}
+
+/* Examination Area */
+.exam-area {
+  min-height: 400px;
+}
+
+.exam-dialogue {
+  margin-bottom: var(--space-xl);
+}
+
+.exam-intro {
+  margin-bottom: var(--space-lg);
+}
+
+/* Witness bubble */
+.dialogue-bubble.witness {
+  background: rgba(180, 160, 120, 0.06);
+  border: 1px solid rgba(180, 160, 120, 0.2);
+  border-left: 3px solid var(--accent-gold-dim);
+  margin-right: var(--space-2xl);
+  padding: var(--space-lg);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--space-lg);
+  animation: bubbleFadeIn 400ms ease forwards;
+  opacity: 0;
+}
+
+.dialogue-bubble.witness .speaker-name {
+  color: var(--accent-gold);
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: var(--space-sm);
+}
+
+.dialogue-bubble.witness .speaker-text {
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  line-height: 1.7;
+  font-style: italic;
+}
+
+/* Question cards */
+.exam-questions-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-bottom: var(--space-md);
+}
+
+.exam-questions-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.ce-question-card {
+  display: flex;
+  gap: var(--space-md);
+  padding: var(--space-md) var(--space-lg);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: all 200ms ease;
+}
+
+.ce-question-card:hover {
+  border-color: var(--accent-gold);
+  background: rgba(180, 160, 120, 0.04);
+  transform: translateX(4px);
+}
+
+.ce-question-number {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.75rem;
+  color: var(--accent-gold);
+  min-width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(180, 160, 120, 0.1);
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
+.ce-question-text {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+
+/* Follow-up choice buttons */
+.ce-followup-choice {
+  display: flex;
+  gap: var(--space-md);
+  justify-content: center;
+  padding: var(--space-lg) 0;
+  animation: bubbleFadeIn 300ms ease forwards;
+  opacity: 0;
+}
+
+/* Impact feedback within cross-exam */
+.ce-impact {
+  margin-top: var(--space-md);
+  margin-bottom: var(--space-xl);
+}
+
+/* Cross-exam summary */
+.ce-summary {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  margin-top: var(--space-xl);
+  text-align: center;
+}
+
+.ce-summary-title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--text-primary);
+  margin-bottom: var(--space-lg);
+}
+
+.ce-summary-stats {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-2xl);
+}
+
+.ce-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ce-stat-number {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.8rem;
+  color: var(--accent-gold);
+}
+
+.ce-stat-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ============================================
+   CITATION CHALLENGE STYLES
+   ============================================ */
+
+   .citation-challenge {
+    background: var(--bg-surface);
+    border: 1px solid var(--accent-gold-dim);
+    border-radius: var(--radius-lg);
+    padding: var(--space-xl);
+    margin-top: var(--space-lg);
+    animation: bubbleFadeIn 400ms ease forwards;
+    opacity: 0;
+  }
+  
+  .citation-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-md);
+  }
+  
+  .citation-icon {
+    font-size: 1.3rem;
+  }
+  
+  .citation-title {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--accent-gold);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  
+  .citation-prompt {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: var(--space-lg);
+    line-height: 1.5;
+  }
+  
+  .citation-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-sm);
+  }
+  
+  @media (max-width: 768px) {
+    .citation-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  .citation-card {
+    padding: var(--space-md);
+    background: var(--bg-primary);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 200ms ease;
+  }
+  
+  .citation-card:hover {
+    border-color: var(--accent-gold);
+    background: rgba(180, 160, 120, 0.04);
+    transform: translateY(-1px);
+  }
+  
+  .citation-card.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+  
+  .citation-card-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.4;
+    margin-bottom: 2px;
+  }
+  
+  .citation-card-date {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+  }
+  
+  /* Citation result feedback */
+  .citation-result {
+    margin-top: var(--space-md);
+  }
+  
+  /* Plausible quality label */
+  .chosen-quality.plausible {
+    background: rgba(200, 120, 50, 0.15);
+    color: #c87832;
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-left: var(--space-sm);
+  }
+  
+  /* Options grid — ensure 2-column for 4 options */
+  .options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-md);
+  }
+  
+  @media (max-width: 768px) {
+    .options-grid {
+      grid-template-columns: 1fr;
+    }
+  }

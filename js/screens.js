@@ -1,6 +1,6 @@
 /* ============================================
-   DIGITAL RIGHTS COURTROOM — Screen Renderers
-   Enhanced with document reader & write-before-choose
+   DIGITAL RIGHTS COURTROOM — Screen Renderers v4
+   4-option courtroom + evidence citation challenge
    ============================================ */
 
    const Screens = {
@@ -14,12 +14,6 @@
   
       const completedCount = Object.keys(Game.state.completedCases).length;
       const totalCases = CASES.filter(c => c.evidence.length > 0).length;
-      const frameworksCovered = new Set(
-        Object.keys(Game.state.completedCases)
-          .map(id => CASES.find(c => c.id === id))
-          .filter(Boolean)
-          .map(c => c.framework)
-      ).size;
   
       screen.innerHTML = `
         <div class="dashboard-hero">
@@ -63,35 +57,43 @@
   
       container.appendChild(screen);
   
-      const grid = document.getElementById('cases-grid');
-      CASES.forEach(caseData => {
-        const completion = Game.state.completedCases[caseData.id];
-        const hasContent = caseData.evidence.length > 0;
-        const card = document.createElement('div');
-        card.className = 'case-card' + (completion ? ' completed' : '');
-        card.style.opacity = hasContent ? '1' : '0.5';
-        card.onclick = () => Game.startCase(caseData.id);
+      // Render case cards
+      const grid = screen.querySelector('#cases-grid');
+      CASES.forEach(c => {
+        const completed = Game.state.completedCases[c.id];
+        const isPlayable = c.evidence.length > 0;
   
-        let tagClass = 'tag-ai-act';
-        if (caseData.framework === 'gdpr') tagClass = 'tag-gdpr';
-        else if (caseData.framework === 'dsa') tagClass = 'tag-dsa';
-        else if (caseData.framework === 'dma') tagClass = 'tag-dma';
-        else if (caseData.framework === 'data-act') tagClass = 'tag-data-act';
-        else if (caseData.framework === 'cross-framework') tagClass = 'tag-gdpr';
+        const frameworkClass = {
+          'ai-act': 'tag-ai-act',
+          'gdpr': 'tag-gdpr',
+          'dsa': 'tag-dsa',
+          'dma': 'tag-dma',
+          'data-act': 'tag-data-act',
+          'cross-framework': 'tag-cross-framework'
+        }[c.framework] || '';
+  
+        const card = document.createElement('div');
+        card.className = `case-card ${!isPlayable ? 'case-card-locked' : ''} ${completed ? 'case-card-completed' : ''}`;
   
         card.innerHTML = `
-          <div class="case-number">CASE ${String(caseData.number).padStart(2, '0')}</div>
-          <div class="case-title">${caseData.title}</div>
-          <div class="case-subtitle">${caseData.subtitle}</div>
-          <div class="case-meta">
-            <span class="tag ${tagClass}">${caseData.frameworkLabel}</span>
-            <span class="badge badge-difficulty">${caseData.difficulty}</span>
-            <span class="badge-time">${caseData.estimatedMinutes} min</span>
-            ${completion ? `<span class="badge badge-score">${completion.score}/100</span>` : ''}
-            ${completion ? '<span class="badge badge-completed">Completed</span>' : ''}
-            ${!hasContent ? '<span class="badge badge-difficulty">COMING SOON</span>' : ''}
+          <div class="case-card-header">
+            <span class="case-number">#${c.number}</span>
+            <span class="framework-tag ${frameworkClass}">${c.frameworkLabel}</span>
           </div>
+          <h3 class="case-title">${c.title}</h3>
+          <p class="case-subtitle">${c.subtitle}</p>
+          <div class="case-meta">
+            <span class="case-difficulty">${c.difficulty}</span>
+            <span class="case-time">${c.estimatedMinutes} min</span>
+            ${c.primaryArticles ? `<span class="case-articles">${c.primaryArticles.join(', ')}</span>` : ''}
+          </div>
+          ${completed ? `<div class="case-score-badge">${completed.score}/100</div>` : ''}
+          ${!isPlayable ? '<div class="case-locked-badge">Coming Soon</div>' : ''}
         `;
+  
+        if (isPlayable) {
+          card.onclick = () => Game.startCase(c.id);
+        }
   
         grid.appendChild(card);
       });
@@ -105,51 +107,52 @@
       const screen = document.createElement('div');
       screen.className = 'screen';
   
+      const frameworkClass = {
+        'ai-act': 'tag-ai-act',
+        'gdpr': 'tag-gdpr',
+        'dsa': 'tag-dsa',
+        'dma': 'tag-dma',
+        'data-act': 'tag-data-act',
+        'cross-framework': 'tag-cross-framework'
+      }[caseData.framework] || '';
+  
       screen.innerHTML = `
         <div class="screen-header">
           <div class="breadcrumb">
-            <a href="#" onclick="Game.goToDashboard(); return false;">Dashboard</a> / Case ${String(caseData.number).padStart(2, '0')}
+            <a href="#" onclick="Game.goToDashboard(); return false;">Dashboard</a> / ${caseData.title}
           </div>
+          <span class="framework-tag ${frameworkClass}">${caseData.frameworkLabel}</span>
           <h1>${caseData.title}</h1>
           <p class="subtitle">${caseData.subtitle}</p>
         </div>
   
         ${this._renderPhaseIndicator('briefing')}
   
-        <div class="feedback-box" style="border-left-color: var(--accent-gold); margin-bottom: var(--space-xl);">
-          <div class="feedback-title" style="color: var(--accent-gold);">Case Briefing</div>
-          <div class="feedback-text" style="line-height: 1.8; font-size: 0.95rem; color: var(--text-primary);">
-            ${caseData.briefing.narrative}
+        <div class="briefing-card">
+          <div class="briefing-narrative">${caseData.briefing.narrative}</div>
+  
+          <div class="briefing-parties">
+            <div class="party-card">
+              <div class="party-role">Your Client</div>
+              <div class="party-name">${caseData.briefing.client.name}</div>
+              <div class="party-description">${caseData.briefing.client.role}</div>
+            </div>
+            <div class="vs-divider">v.</div>
+            <div class="party-card">
+              <div class="party-role">Respondent</div>
+              <div class="party-name">${caseData.briefing.respondent.name}</div>
+              <div class="party-description">${caseData.briefing.respondent.type}</div>
+            </div>
+          </div>
+  
+          <div class="briefing-setting">
+            <strong>Setting:</strong> ${caseData.briefing.setting}
           </div>
         </div>
   
-        <div style="display: flex; gap: var(--space-lg); margin-bottom: var(--space-xl); flex-wrap: wrap;">
-          <div class="feedback-box" style="flex: 1; min-width: 250px;">
-            <div class="feedback-title" style="color: var(--accent-blue);">Your Client</div>
-            <div class="feedback-text">
-              <strong>${caseData.briefing.client.name}</strong><br>
-              ${caseData.briefing.client.role}
-            </div>
-          </div>
-          <div class="feedback-box" style="flex: 1; min-width: 250px;">
-            <div class="feedback-title" style="color: var(--color-error);">Respondent</div>
-            <div class="feedback-text">
-              <strong>${caseData.briefing.respondent.name}</strong><br>
-              ${caseData.briefing.respondent.type}
-            </div>
-          </div>
-        </div>
-  
-        <p class="text-muted" style="font-size: 0.85rem; margin-bottom: var(--space-xl);">
-          Setting: ${caseData.briefing.setting}
-        </p>
-  
-        <div style="display: flex; gap: var(--space-md);">
+        <div class="text-center mt-xl">
           <button class="btn btn-primary btn-large" onclick="Game.showScreen('investigation')">
-            Begin Investigation &rarr;
-          </button>
-          <button class="btn btn-ghost" onclick="Game.goToDashboard()">
-            Back to Cases
+            Review the Evidence &rarr;
           </button>
         </div>
       `;
@@ -159,143 +162,115 @@
   
   
     // ========================
-    // INVESTIGATION (Enhanced Document Reader)
+    // INVESTIGATION (Document Reader)
     // ========================
     renderInvestigation(container, caseData) {
       const screen = document.createElement('div');
       screen.className = 'screen';
   
-      const totalEvidence = caseData.evidence.length;
-      const readCount = Game.state.readEvidence.length;
-  
-      const evidenceIcons = {
-        'internal-email': '\uD83D\uDCE7', 'email': '\uD83D\uDCE7',
-        'procurement-document': '\uD83D\uDCCB', 'report': '\uD83D\uDCCB', 'audit-report': '\uD83D\uDCCB',
-        'testimony': '\uD83D\uDDE3\uFE0F', 'witness-statement': '\uD83D\uDDE3\uFE0F',
-        'data': '\uD83D\uDCCA', 'metrics': '\uD83D\uDCCA', 'statistics': '\uD83D\uDCCA',
-        'contract': '\uD83D\uDCDD', 'policy-document': '\uD83D\uDCDD',
-        'technical-document': '\u2699\uFE0F', 'client-intake': '\uD83D\uDCC1'
-      };
-  
       const typeLabels = {
-        'internal-email': 'Internal Email', 'email': 'Email Correspondence',
-        'procurement-document': 'Procurement Document', 'report': 'Report', 'audit-report': 'Audit Report',
-        'testimony': 'Testimony', 'witness-statement': 'Witness Statement',
-        'data': 'Data Record', 'metrics': 'Metrics', 'statistics': 'Statistical Analysis',
-        'contract': 'Contract', 'policy-document': 'Policy Document',
-        'technical-document': 'Technical Document', 'client-intake': 'Client Intake Form'
+        'client-intake': '\u{1F4C1} Client Intake Form',
+        'procurement-document': '\u{1F4CB} Official Document',
+        'internal-email': '\u{1F4E7} Internal Communication',
+        'email': '\u{1F4E7} Correspondence',
+        'witness-statement': '\u{1F5E3}\uFE0F Witness Statement',
+        'statistics': '\u{1F4CA} Statistical Data',
+        'technical-document': '\u2699\uFE0F Technical Document',
+        'data': '\u{1F4CA} Data Record',
+        'policy-document': '\u{1F4CB} Policy Document'
       };
-  
-      // Build evidence list HTML
-      let listHTML = '';
-      caseData.evidence.forEach((ev, i) => {
-        const isRead = Game.isEvidenceRead(ev.id);
-        const icon = evidenceIcons[ev.type] || '\uD83D\uDCC4';
-        listHTML += `
-          <div class="evidence-list-item ${i === 0 ? 'active' : ''} ${isRead ? 'read' : ''}" 
-               id="ev-item-${ev.id}" 
-               onclick="Screens._selectEvidence('${ev.id}', ${i})">
-            <span class="evidence-list-icon">${icon}</span>
-            <div class="evidence-list-info">
-              <div class="evidence-list-title">${ev.title}</div>
-              <div class="evidence-list-meta">${typeLabels[ev.type] || ev.type} &middot; ${ev.date}</div>
-            </div>
-          </div>
-        `;
-      });
   
       screen.innerHTML = `
         <div class="screen-header">
           <div class="breadcrumb">
-            <a href="#" onclick="Game.goToDashboard(); return false;">Dashboard</a> / 
-            <a href="#" onclick="Game.showScreen('briefing'); return false;">${caseData.title}</a> / Investigation
+            <a href="#" onclick="Game.goToDashboard(); return false;">Dashboard</a> / ${caseData.title} / Investigation
           </div>
-          <h1>Investigation Phase</h1>
-          <p class="subtitle">Review the case file carefully — critical details may be buried in the documents</p>
+          <h1>Evidence Review</h1>
+          <p class="subtitle">Review the case documents carefully. Key details will be critical in cross-examination and courtroom arguments.</p>
         </div>
   
         ${this._renderPhaseIndicator('investigation')}
   
-        <div class="progress-bar-container">
-          <div class="progress-bar-label">
-            <span>Documents Reviewed</span>
-            <span id="evidence-count">${readCount} of ${totalEvidence}</span>
-          </div>
-          <div class="progress-bar">
-            <div class="progress-bar-fill" id="evidence-bar" style="width: ${totalEvidence > 0 ? (readCount / totalEvidence) * 100 : 0}%"></div>
-          </div>
+        <div class="evidence-progress">
+          <div class="evidence-progress-text">Documents reviewed: <span id="ev-read-count">0</span> of ${caseData.evidence.length}</div>
+          <div class="evidence-progress-bar"><div class="evidence-progress-fill" id="ev-progress-bar"></div></div>
         </div>
   
         <div class="evidence-viewer">
-          <div class="evidence-list">
-            ${listHTML}
-          </div>
+          <div class="evidence-list" id="evidence-list"></div>
           <div class="evidence-reader" id="evidence-reader">
-            <div class="evidence-reader-empty">Select a document from the case file to begin reading.</div>
+            <div class="evidence-reader-placeholder">
+              <p>\u2190 Select a document to review</p>
+              <p class="text-muted" style="font-size: 0.85rem;">Read each document carefully. You will need to cite specific evidence during the courtroom phase.</p>
+            </div>
           </div>
         </div>
   
-        <div style="display: flex; gap: var(--space-md); margin-top: var(--space-lg);">
-          <button class="btn btn-primary btn-large" id="proceed-analysis-btn" 
-                  onclick="Screens._proceedToAnalysis()" ${readCount < Math.min(3, totalEvidence) ? 'disabled' : ''}>
-            Proceed to Legal Analysis &rarr;
-          </button>
-          <button class="btn btn-ghost" onclick="Game.showScreen('briefing')">
-            &larr; Back to Briefing
+        <div class="text-center mt-lg">
+          <button class="btn btn-primary btn-large" id="proceed-crossexam-btn" onclick="Screens._proceedToCrossExam()" disabled>
+            Proceed to Cross-Examination &rarr;
           </button>
         </div>
       `;
   
       container.appendChild(screen);
   
-      // Auto-open first evidence
-      if (caseData.evidence.length > 0) {
-        this._selectEvidence(caseData.evidence[0].id, 0);
-      }
+      // Render evidence list
+      const list = screen.querySelector('#evidence-list');
+      caseData.evidence.forEach((ev, i) => {
+        const isRead = Game.isEvidenceRead(ev.id);
+        const item = document.createElement('div');
+        item.className = `evidence-list-item ${isRead ? 'read' : ''}`;
+        item.id = `ev-item-${i}`;
+        item.innerHTML = `
+          <div class="evidence-list-icon">${(typeLabels[ev.type] || '\u{1F4C4}').split(' ')[0]}</div>
+          <div class="evidence-list-info">
+            <div class="evidence-list-title">${ev.title}</div>
+            <div class="evidence-list-date">${ev.date}</div>
+          </div>
+          ${isRead ? '<div class="evidence-read-check">\u2713</div>' : ''}
+        `;
+        item.onclick = () => this._selectEvidence(ev, i, caseData);
+        list.appendChild(item);
+      });
     },
   
-    _selectEvidence(evidenceId, index) {
-      const caseData = Game.state.currentCase;
-      const ev = caseData.evidence.find(e => e.id === evidenceId);
-      if (!ev) return;
-  
+    _selectEvidence(ev, index, caseData) {
       const typeLabels = {
-        'internal-email': 'Internal Email', 'email': 'Email Correspondence',
-        'procurement-document': 'Procurement Document', 'report': 'Report', 'audit-report': 'Audit Report',
-        'testimony': 'Testimony', 'witness-statement': 'Witness Statement',
-        'data': 'Data Record', 'metrics': 'Metrics', 'statistics': 'Statistical Analysis',
-        'contract': 'Contract', 'policy-document': 'Policy Document',
-        'technical-document': 'Technical Document', 'client-intake': 'Client Intake Form'
+        'client-intake': 'Client Intake Form',
+        'procurement-document': 'Official Document',
+        'internal-email': 'Internal Communication',
+        'email': 'Correspondence',
+        'witness-statement': 'Witness Statement',
+        'statistics': 'Statistical Data',
+        'technical-document': 'Technical Document',
+        'data': 'Data Record',
+        'policy-document': 'Policy Document'
       };
   
-      // Mark as read
-      Game.markEvidenceRead(evidenceId);
-      Game.collectEvidence(evidenceId);
+      document.querySelectorAll('.evidence-list-item').forEach(item => item.classList.remove('active'));
+      document.getElementById(`ev-item-${index}`).classList.add('active');
   
-      // Update list item styling
-      document.querySelectorAll('.evidence-list-item').forEach(item => {
-        item.classList.remove('active');
-      });
-      const activeItem = document.getElementById(`ev-item-${evidenceId}`);
-      if (activeItem) {
-        activeItem.classList.add('active', 'read');
+      Game.markEvidenceRead(ev.id);
+      Game.collectEvidence(ev.id);
+      const item = document.getElementById(`ev-item-${index}`);
+      item.classList.add('read');
+      if (!item.querySelector('.evidence-read-check')) {
+        item.innerHTML += '<div class="evidence-read-check">\u2713</div>';
       }
   
-      // Update progress
       const total = caseData.evidence.length;
       const readCount = Game.state.readEvidence.length;
-      const countEl = document.getElementById('evidence-count');
-      const barEl = document.getElementById('evidence-bar');
-      if (countEl) countEl.textContent = `${readCount} of ${total}`;
+      const countEl = document.getElementById('ev-read-count');
+      if (countEl) countEl.textContent = readCount;
+      const barEl = document.getElementById('ev-progress-bar');
       if (barEl) barEl.style.width = `${(readCount / total) * 100}%`;
   
-      // Enable proceed button
-      const btn = document.getElementById('proceed-analysis-btn');
+      const btn = document.getElementById('proceed-crossexam-btn');
       if (btn && readCount >= Math.min(3, total)) {
         btn.disabled = false;
       }
   
-      // Render document in reader
       const reader = document.getElementById('evidence-reader');
       reader.innerHTML = `
         <div class="evidence-reader-header">
@@ -311,322 +286,309 @@
       reader.scrollTop = 0;
     },
   
-    _proceedToAnalysis() {
+    _proceedToCrossExam() {
       const caseData = Game.state.currentCase;
       const total = caseData.evidence.length;
       const readCount = Game.state.readEvidence.length;
   
       if (readCount < total) {
-        if (!confirm(`You have reviewed ${readCount} of ${total} documents. Unread evidence may contain critical details. Continue anyway?`)) {
+        if (!confirm(`You have reviewed ${readCount} of ${total} documents. Unread evidence may contain details critical for cross-examination and courtroom citation. Continue anyway?`)) {
           return;
         }
       }
   
-      Game.showScreen('analysis');
+      Game.showScreen('cross-examination');
     },
   
   
     // ========================
-    // ANALYSIS (Write Before You Choose)
+    // CROSS-EXAMINATION
     // ========================
-    renderAnalysis(container, caseData) {
+    renderCrossExamination(container, caseData) {
       const screen = document.createElement('div');
       screen.className = 'screen';
   
-      screen.innerHTML = `
-        <div class="screen-header">
-          <div class="breadcrumb">
-            <a href="#" onclick="Game.goToDashboard(); return false;">Dashboard</a> / ${caseData.title} / Analysis
+      const ce = caseData.crossExamination;
+  
+      if (!ce || !ce.questions || ce.questions.length === 0) {
+        screen.innerHTML = `
+          <div class="screen-header">
+            <div class="breadcrumb">
+              <a href="#" onclick="Game.goToDashboard(); return false;">Dashboard</a> / ${caseData.title} / Cross-Examination
+            </div>
+            <h1>Cross-Examination</h1>
           </div>
-          <h1>Legal Analysis</h1>
-          <p class="subtitle">Identify the applicable legal framework and provision</p>
-        </div>
-  
-        ${this._renderPhaseIndicator('analysis')}
-  
-        <div id="analysis-content"></div>
-      `;
-  
-      container.appendChild(screen);
-  
-      if (caseData.analysis.frameworkQuestion) {
-        this._renderWriteGate_Framework(caseData);
-      } else {
-        document.getElementById('analysis-content').innerHTML = `
-          <p class="text-muted">Analysis content will be available when case content is complete.</p>
+          ${this._renderPhaseIndicator('cross-examination')}
+          <p class="text-muted">Cross-examination content is being developed for this case.</p>
           <button class="btn btn-primary btn-large mt-xl" onclick="Game.showScreen('courtroom')">
             Proceed to Courtroom &rarr;
           </button>
         `;
+        container.appendChild(screen);
+        return;
       }
-    },
   
-    // --- Framework Write Gate ---
-    _renderWriteGate_Framework(caseData) {
-      const content = document.getElementById('analysis-content');
-      const q = caseData.analysis.frameworkQuestion;
-      const writePrompt = q.writePrompt || 'Based on the evidence you reviewed, which EU regulation applies to this case and why? Identify the specific framework and explain your reasoning.';
-      const minWords = q.minWords || 20;
-  
-      content.innerHTML = `
-        <div class="write-first-container" id="write-gate-framework">
-          <div class="write-first-prompt">${writePrompt}</div>
-          <div class="write-first-instruction">
-            Write your analysis below. You must demonstrate understanding of the applicable legal framework before seeing the options. Minimum ${minWords} words.
+      screen.innerHTML = `
+        <div class="screen-header">
+          <div class="breadcrumb">
+            <a href="#" onclick="Game.goToDashboard(); return false;">Dashboard</a> / ${caseData.title} / Cross-Examination
           </div>
-          <textarea class="write-first-textarea" id="wf-framework-text" 
-                    placeholder="I believe the applicable framework is..." 
-                    oninput="Screens._updateWordCount('wf-framework-text', 'wf-framework-count', ${minWords})"></textarea>
-          <div id="wf-framework-hint" class="write-first-hint"></div>
-          <div class="write-first-footer">
-            <span class="write-first-charcount" id="wf-framework-count">0 words</span>
-            <button class="btn btn-primary" id="wf-framework-btn" onclick="Screens._submitWriteGate('framework')" disabled>
-              Submit My Analysis
-            </button>
-          </div>
+          <h1>Cross-Examination</h1>
+          <p class="subtitle">${ce.context || 'Examine the witness to build your case.'}</p>
         </div>
   
-        <div id="framework-options-container" style="display: none;">
-          <h3 style="margin-bottom: var(--space-md); color: var(--text-primary);">${q.prompt}</h3>
-          <div class="options-grid" id="framework-options"></div>
-          <div id="framework-feedback" style="display: none;"></div>
-        </div>
+        ${this._renderPhaseIndicator('cross-examination')}
   
-        <div id="article-section" style="display: none;"></div>
+        <div class="cross-exam-layout">
+          <!-- Witness Box -->
+          <div class="witness-box">
+            <div class="witness-icon">\u{1F9D1}\u200D\u2696\uFE0F</div>
+            <div class="witness-name">${ce.witness.name}</div>
+            <div class="witness-role">${ce.witness.role}</div>
+            <div class="witness-background">${ce.witness.background || ''}</div>
+            <div class="questions-remaining" id="questions-remaining">
+              Questions remaining: <strong>${ce.maxQuestions}</strong> of ${ce.maxQuestions}
+            </div>
+          </div>
+  
+          <!-- Examination Area -->
+          <div class="exam-area">
+            <div class="exam-dialogue" id="exam-dialogue">
+              <div class="exam-intro">
+                <div class="dialogue-bubble judge">
+                  <div class="speaker-name">${caseData.courtroom.judgeName}</div>
+                  <div class="speaker-text">Counsel for the applicant, you may cross-examine the witness. Please proceed.</div>
+                </div>
+              </div>
+            </div>
+  
+            <div class="exam-questions-label" id="exam-questions-label">Select a question to ask the witness:</div>
+            <div class="exam-questions-grid" id="exam-questions-grid"></div>
+          </div>
+        </div>
       `;
+  
+      container.appendChild(screen);
+  
+      this._ceState = {
+        questionsAsked: 0,
+        maxQuestions: ce.maxQuestions || 3,
+        askedIds: []
+      };
+  
+      this._renderCEQuestions(caseData);
     },
   
-    _updateWordCount(textareaId, countId, minWords) {
-      const textarea = document.getElementById(textareaId);
-      const countEl = document.getElementById(countId);
-      const btnId = textareaId.replace('-text', '-btn');
-      const btn = document.getElementById(btnId);
-      
-      const words = textarea.value.trim().split(/\s+/).filter(w => w.length > 0).length;
-      countEl.textContent = `${words} word${words !== 1 ? 's' : ''}`;
-  
-      if (words >= minWords) {
-        countEl.classList.add('sufficient');
-        if (btn) btn.disabled = false;
-      } else {
-        countEl.classList.remove('sufficient');
-        if (btn) btn.disabled = true;
-      }
+    _ceState: {
+      questionsAsked: 0,
+      maxQuestions: 3,
+      askedIds: []
     },
   
-    _submitWriteGate(phase) {
-      const caseData = Game.state.currentCase;
-      let gateId, text, requiredConcepts, textareaId, hintId;
-  
-      if (phase === 'framework') {
-        textareaId = 'wf-framework-text';
-        hintId = 'wf-framework-hint';
-        gateId = 'gate_analysis_framework';
-        text = document.getElementById(textareaId).value;
-        requiredConcepts = caseData.analysis.frameworkQuestion.requiredConcepts || [];
-        Game.recordWrittenAnswer('analysis_framework', text);
-      } else if (phase === 'article') {
-        textareaId = 'wf-article-text';
-        hintId = 'wf-article-hint';
-        gateId = 'gate_analysis_article';
-        text = document.getElementById(textareaId).value;
-        requiredConcepts = caseData.analysis.articleQuestion.requiredConcepts || [];
-        Game.recordWrittenAnswer('analysis_article', text);
-      } else if (phase.startsWith('courtroom_')) {
-        const idx = phase.split('_')[1];
-        textareaId = `wf-court-${idx}-text`;
-        hintId = `wf-court-${idx}-hint`;
-        gateId = `gate_courtroom_${idx}`;
-        text = document.getElementById(textareaId).value;
-        const arg = caseData.courtroom.arguments[parseInt(idx)];
-        requiredConcepts = arg.requiredConcepts || [];
-        Game.recordWrittenAnswer(`courtroom_${idx}`, text);
-      }
-  
-      const attempt = Game.incrementKeywordAttempts(gateId);
-      const check = Game.checkKeywords(text, requiredConcepts);
-      const hintEl = document.getElementById(hintId);
-  
-      // After 3 attempts, let them through regardless
-      if (check.allFound || attempt >= 3) {
-        // Hide write gate, show options
-        if (phase === 'framework') {
-          document.getElementById('write-gate-framework').style.display = 'none';
-          document.getElementById('framework-options-container').style.display = 'block';
-          this._populateFrameworkOptions(caseData);
-        } else if (phase === 'article') {
-          document.getElementById('write-gate-article').style.display = 'none';
-          document.getElementById('article-options-container').style.display = 'block';
-          this._populateArticleOptions(caseData);
-        } else if (phase.startsWith('courtroom_')) {
-          const idx = phase.split('_')[1];
-          document.getElementById(`write-gate-court-${idx}`).style.display = 'none';
-          document.getElementById(`court-options-${idx}`).style.display = 'block';
-        }
-  
-        if (attempt >= 3 && !check.allFound) {
-          hintEl.className = 'write-first-hint visible strong-hint';
-          hintEl.innerHTML = '<strong>Moving forward.</strong> Review the options below — they may help clarify the legal concepts.';
-        }
-      } else {
-        // Show progressive hints for missing concepts
-        const missing = check.results.filter(r => !r.found);
-        let hintHTML = '';
-  
-        if (attempt === 1) {
-          hintHTML = '<strong>Not quite there yet.</strong> Your analysis is missing some key legal concepts:<br><br>';
-          missing.forEach(m => {
-            const hint = m.hints[0] || `Consider: what does "${m.name}" refer to in this context?`;
-            hintHTML += `\u2022 ${hint}<br>`;
-          });
-          hintHTML += '<br>Revise your answer and try again.';
-        } else {
-          hintHTML = '<strong>Almost there — here are stronger hints:</strong><br><br>';
-          missing.forEach(m => {
-            const hint = m.hints[1] || m.hints[0] || `You need to reference ${m.name}.`;
-            hintHTML += `\u2022 ${hint}<br>`;
-          });
-          hintHTML += '<br>One more attempt and you can proceed regardless.';
-        }
-  
-        hintEl.className = `write-first-hint visible ${attempt >= 2 ? 'strong-hint' : ''}`;
-        hintEl.innerHTML = hintHTML;
-  
-        // Shake the button briefly
-        const btn = document.getElementById(textareaId.replace('-text', '-btn'));
-        if (btn) {
-          btn.style.transform = 'translateX(-5px)';
-          setTimeout(() => btn.style.transform = 'translateX(5px)', 100);
-          setTimeout(() => btn.style.transform = '', 200);
-        }
-      }
-    },
-  
-    _populateFrameworkOptions(caseData) {
-      const q = caseData.analysis.frameworkQuestion;
-      const grid = document.getElementById('framework-options');
+    _renderCEQuestions(caseData) {
+      const ce = caseData.crossExamination;
+      const grid = document.getElementById('exam-questions-grid');
       grid.innerHTML = '';
   
-      q.options.forEach(opt => {
+      ce.questions.forEach((q, i) => {
+        if (this._ceState.askedIds.includes(q.id)) return;
+  
         const card = document.createElement('div');
-        card.className = 'option-card';
-        card.innerHTML = `<div class="option-label">${opt.label}</div>`;
-        card.onclick = () => this._selectFramework(opt, q.correct, caseData);
+        card.className = 'ce-question-card';
+        card.innerHTML = `
+          <div class="ce-question-number">Q${i + 1}</div>
+          <div class="ce-question-text">${q.questionText}</div>
+        `;
+        card.onclick = () => this._askCEQuestion(caseData, q);
         grid.appendChild(card);
       });
     },
   
-    _selectFramework(chosen, correctId, caseData) {
-      const isCorrect = chosen.id === correctId;
-      Game.recordAnalysisAnswer('framework', chosen.id, isCorrect);
+    _askCEQuestion(caseData, question) {
+      const ce = caseData.crossExamination;
+      const dialogue = document.getElementById('exam-dialogue');
   
-      document.querySelectorAll('#framework-options .option-card').forEach(card => {
-        card.classList.add('disabled');
-        card.onclick = null;
-        if (card.querySelector('.option-label').textContent === chosen.label) {
-          card.classList.add(isCorrect ? 'correct' : 'incorrect');
-        }
-      });
+      this._ceState.askedIds.push(question.id);
+      this._ceState.questionsAsked++;
   
-      const fb = document.getElementById('framework-feedback');
-      fb.style.display = 'block';
-      fb.innerHTML = `
-        <div class="feedback-box ${isCorrect ? 'success' : 'error'}">
-          <div class="feedback-title">${isCorrect ? 'Correct' : 'Incorrect'}</div>
-          <div class="feedback-text">${chosen.feedback}</div>
-        </div>
+      const remaining = this._ceState.maxQuestions - this._ceState.questionsAsked;
+      document.getElementById('questions-remaining').innerHTML =
+        `Questions remaining: <strong>${remaining}</strong> of ${this._ceState.maxQuestions}`;
+  
+      const yourQ = document.createElement('div');
+      yourQ.className = 'dialogue-bubble player';
+      yourQ.innerHTML = `
+        <div class="speaker-name">You</div>
+        <div class="speaker-text">${question.questionText}</div>
       `;
+      dialogue.appendChild(yourQ);
+  
+      const witnessR = document.createElement('div');
+      witnessR.className = 'dialogue-bubble witness';
+      witnessR.innerHTML = `
+        <div class="speaker-name">${ce.witness.name}</div>
+        <div class="speaker-text">${question.witnessResponse}</div>
+      `;
+      dialogue.appendChild(witnessR);
+  
+      if (question.followUp && question.followUp.available !== false) {
+        const followUpContainer = document.createElement('div');
+        followUpContainer.className = 'ce-followup-choice';
+        followUpContainer.id = `followup-${question.id}`;
+        followUpContainer.innerHTML = `
+          <button class="btn btn-secondary btn-sm" onclick="Screens._ceFollowUp('${question.id}', true)">
+            Press Further \u2192
+          </button>
+          <button class="btn btn-ghost btn-sm" onclick="Screens._ceFollowUp('${question.id}', false)">
+            Move On
+          </button>
+        `;
+        dialogue.appendChild(followUpContainer);
+      } else {
+        this._showCEImpact(dialogue, question, false, ce);
+      }
+  
+      this._renderCEQuestions(caseData);
   
       setTimeout(() => {
-        if (caseData.analysis.articleQuestion) {
-          this._renderWriteGate_Article(caseData);
-        }
-      }, 800);
+        yourQ.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
     },
   
-    // --- Article Write Gate ---
-    _renderWriteGate_Article(caseData) {
-      const section = document.getElementById('article-section');
-      const q = caseData.analysis.articleQuestion;
-      const writePrompt = q.writePrompt || 'Now identify the specific article or provision that applies. Explain which part of the regulation is violated and why.';
-      const minWords = q.minWords || 15;
-      section.style.display = 'block';
+    _ceFollowUp(questionId, doFollowUp) {
+      const caseData = Game.state.currentCase;
+      const ce = caseData.crossExamination;
+      const question = ce.questions.find(q => q.id === questionId);
+      const dialogue = document.getElementById('exam-dialogue');
   
-      section.innerHTML = `
-        <div class="divider"></div>
+      const choiceEl = document.getElementById(`followup-${questionId}`);
+      if (choiceEl) choiceEl.remove();
   
-        <div class="write-first-container" id="write-gate-article">
-          <div class="write-first-prompt">${writePrompt}</div>
-          <div class="write-first-instruction">
-            Identify the specific provision. Minimum ${minWords} words.
-          </div>
-          <textarea class="write-first-textarea" id="wf-article-text" 
-                    placeholder="The specific provision that applies is..." 
-                    oninput="Screens._updateWordCount('wf-article-text', 'wf-article-count', ${minWords})"></textarea>
-          <div id="wf-article-hint" class="write-first-hint"></div>
-          <div class="write-first-footer">
-            <span class="write-first-charcount" id="wf-article-count">0 words</span>
-            <button class="btn btn-primary" id="wf-article-btn" onclick="Screens._submitWriteGate('article')" disabled>
-              Submit My Analysis
-            </button>
-          </div>
+      if (doFollowUp && question.followUp) {
+        const followQ = document.createElement('div');
+        followQ.className = 'dialogue-bubble player';
+        followQ.innerHTML = `
+          <div class="speaker-name">You</div>
+          <div class="speaker-text">${question.followUp.questionText}</div>
+        `;
+        dialogue.appendChild(followQ);
+  
+        const followR = document.createElement('div');
+        followR.className = 'dialogue-bubble witness';
+        followR.innerHTML = `
+          <div class="speaker-name">${ce.witness.name}</div>
+          <div class="speaker-text">${question.followUp.witnessResponse}</div>
+        `;
+        dialogue.appendChild(followR);
+  
+        setTimeout(() => {
+          followQ.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+      }
+  
+      this._showCEImpact(dialogue, question, doFollowUp, ce);
+    },
+  
+    _showCEImpact(dialogue, question, followedUp, ce) {
+      let score = 0;
+      if (question.category === 'effective') {
+        score = followedUp ? 10 : 8;
+      } else if (question.category === 'risky') {
+        if (followedUp) {
+          score = (question.followUp && question.followUp.followUpImpact === 'positive') ? 8 : 3;
+        } else {
+          score = 5;
+        }
+      } else {
+        score = followedUp ? 0 : 2;
+      }
+  
+      Game.recordCrossExamQuestion(question.id, question.impact, followedUp, score);
+  
+      const impactClass = question.impact === 'positive' ? 'success'
+        : question.impact === 'negative' ? 'error'
+        : 'warning';
+  
+      const impactLabel = question.impact === 'positive' ? 'Effective Line of Questioning'
+        : question.impact === 'negative' ? 'This Hurt Your Case'
+        : 'Limited Impact';
+  
+      const impactBox = document.createElement('div');
+      impactBox.className = `feedback-box ${impactClass} ce-impact`;
+      impactBox.innerHTML = `
+        <div class="feedback-title">${impactLabel}</div>
+        <div class="feedback-text">${question.impactExplanation}</div>
+      `;
+      dialogue.appendChild(impactBox);
+  
+      if (this._ceState.questionsAsked >= this._ceState.maxQuestions) {
+        this._finishCrossExam(dialogue, Game.state.currentCase);
+      }
+  
+      setTimeout(() => {
+        impactBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 150);
+    },
+  
+    _finishCrossExam(dialogue, caseData) {
+      const grid = document.getElementById('exam-questions-grid');
+      const label = document.getElementById('exam-questions-label');
+      if (grid) grid.style.display = 'none';
+      if (label) label.style.display = 'none';
+  
+      const dismissal = document.createElement('div');
+      dismissal.className = 'judge-ruling';
+      dismissal.innerHTML = `
+        <div class="judge-ruling-header">
+          <span class="judge-gavel">\u2696\uFE0F</span>
+          <span class="speaker-name" style="color: var(--accent-gold);">${caseData.courtroom.judgeName}</span>
         </div>
+        <div class="ruling-text">Thank you, Counsel. The witness is dismissed. We will now hear oral arguments. Opposing counsel, you may present your case.</div>
+      `;
+      dialogue.appendChild(dismissal);
   
-        <div id="article-options-container" style="display: none;">
-          <h3 style="margin-bottom: var(--space-md); color: var(--text-primary);">${q.prompt}</h3>
-          <div class="options-grid" id="article-options"></div>
-          <div id="article-feedback" style="display: none;"></div>
-          <button class="btn btn-primary btn-large mt-xl" id="proceed-courtroom-btn" style="display: none;" 
-                  onclick="Game.showScreen('courtroom')">
-            Proceed to Courtroom &rarr;
-          </button>
+      const asked = Game.state.crossExamResults.questionsAsked;
+      const effectiveCount = asked.filter(q => q.impact === 'positive').length;
+  
+      const summary = document.createElement('div');
+      summary.className = 'ce-summary';
+      summary.innerHTML = `
+        <div class="ce-summary-title">Cross-Examination Summary</div>
+        <div class="ce-summary-stats">
+          <div class="ce-stat">
+            <span class="ce-stat-number">${asked.length}</span>
+            <span class="ce-stat-label">Questions Asked</span>
+          </div>
+          <div class="ce-stat">
+            <span class="ce-stat-number">${effectiveCount}</span>
+            <span class="ce-stat-label">Effective Lines</span>
+          </div>
+          <div class="ce-stat">
+            <span class="ce-stat-number">${Game.state.crossExamResults.totalScore}</span>
+            <span class="ce-stat-label">Points Earned</span>
+          </div>
         </div>
       `;
+      dialogue.appendChild(summary);
   
-      section.scrollIntoView({ behavior: 'smooth' });
-    },
-  
-    _populateArticleOptions(caseData) {
-      const q = caseData.analysis.articleQuestion;
-      const grid = document.getElementById('article-options');
-      grid.innerHTML = '';
-  
-      q.options.forEach(opt => {
-        const card = document.createElement('div');
-        card.className = 'option-card';
-        card.innerHTML = `<div class="option-label">${opt.label}</div>`;
-        card.onclick = () => this._selectArticle(opt, q.correct);
-        grid.appendChild(card);
-      });
-    },
-  
-    _selectArticle(chosen, correctId) {
-      const isCorrect = chosen.id === correctId;
-      Game.recordAnalysisAnswer('article', chosen.id, isCorrect);
-  
-      document.querySelectorAll('#article-options .option-card').forEach(card => {
-        card.classList.add('disabled');
-        card.onclick = null;
-        if (card.querySelector('.option-label').textContent === chosen.label) {
-          card.classList.add(isCorrect ? 'correct' : 'incorrect');
-        }
-      });
-  
-      const fb = document.getElementById('article-feedback');
-      fb.style.display = 'block';
-      fb.innerHTML = `
-        <div class="feedback-box ${isCorrect ? 'success' : 'error'}">
-          <div class="feedback-title">${isCorrect ? 'Correct' : 'Incorrect'}</div>
-          <div class="feedback-text">${chosen.feedback}</div>
-        </div>
+      const proceedBtn = document.createElement('div');
+      proceedBtn.className = 'text-center mt-xl';
+      proceedBtn.style.paddingBottom = 'var(--space-2xl)';
+      proceedBtn.innerHTML = `
+        <button class="btn btn-primary btn-large" onclick="Game.showScreen('courtroom')">
+          Proceed to Courtroom Arguments &rarr;
+        </button>
       `;
+      dialogue.appendChild(proceedBtn);
   
-      document.getElementById('proceed-courtroom-btn').style.display = 'inline-flex';
+      setTimeout(() => {
+        dismissal.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 200);
     },
   
   
     // ========================
-    // COURTROOM (Write Before You Choose)
+    // COURTROOM (v4: 4 options + evidence citation)
     // ========================
     renderCourtroom(container, caseData) {
       const screen = document.createElement('div');
@@ -638,12 +600,12 @@
             <a href="#" onclick="Game.goToDashboard(); return false;">Dashboard</a> / ${caseData.title} / Courtroom
           </div>
           <h1>Courtroom Phase</h1>
-          <p class="subtitle">Present your arguments before the court</p>
+          <p class="subtitle">Respond to opposing counsel's arguments before ${caseData.courtroom.judgeName}</p>
         </div>
   
         ${this._renderPhaseIndicator('courtroom')}
   
-        <div class="dialogue-container" id="courtroom-dialogue"></div>
+        <div class="courtroom-scene" id="courtroom-dialogue"></div>
       `;
   
       container.appendChild(screen);
@@ -669,9 +631,16 @@
         const dialogue = document.getElementById('courtroom-dialogue');
         const endDiv = document.createElement('div');
         endDiv.className = 'text-center mt-2xl';
+        endDiv.style.paddingBottom = 'var(--space-2xl)';
         endDiv.innerHTML = `
-          <p class="text-muted mb-lg" style="font-style: italic;">The court will now deliberate...</p>
-          <button class="btn btn-primary btn-large" onclick="Game.showScreen('verdict')">
+          <div class="judge-ruling" style="text-align: center;">
+            <div class="judge-ruling-header" style="justify-content: center;">
+              <span class="judge-gavel">\u2696\uFE0F</span>
+              <span class="speaker-name" style="color: var(--accent-gold);">${caseData.courtroom.judgeName}</span>
+            </div>
+            <p class="ruling-text">The court has heard all arguments from both parties. The bench will now deliberate and deliver its verdict.</p>
+          </div>
+          <button class="btn btn-primary btn-large mt-xl" onclick="Game.showScreen('verdict')">
             Hear the Verdict &rarr;
           </button>
         `;
@@ -681,27 +650,35 @@
   
       const arg = args[index];
       const dialogue = document.getElementById('courtroom-dialogue');
+      const oppName = caseData.courtroom.oppositionName || 'Opposing Counsel';
+      const oppRole = caseData.courtroom.oppositionRole || 'Counsel for the Respondent';
   
       if (index === 0) dialogue.innerHTML = '';
   
-      // Progress
-      const progress = document.createElement('p');
-      progress.className = 'text-muted mb-lg';
-      progress.style.fontSize = '0.8rem';
-      progress.textContent = `Argument ${index + 1} of ${args.length}`;
-      dialogue.appendChild(progress);
+      // Round container
+      const round = document.createElement('div');
+      round.className = 'courtroom-round';
+      round.id = `court-round-${index}`;
   
-      // Judge speaks
-      const judgeBubble = document.createElement('div');
-      judgeBubble.className = 'dialogue-bubble judge';
-      judgeBubble.innerHTML = `
-        <div class="speaker-name">${caseData.courtroom.judgeName}</div>
-        <div class="speaker-text">${arg.context}</div>
+      round.innerHTML = `<div class="round-label">Round ${index + 1} of ${args.length}</div>`;
+  
+      // Opposition speaks
+      const oppBubble = document.createElement('div');
+      oppBubble.className = 'dialogue-bubble opposition';
+      oppBubble.innerHTML = `
+        <div class="speaker-name">${oppName} <span class="speaker-role">${oppRole}</span></div>
+        <div class="speaker-text">${arg.oppositionArgument}</div>
       `;
-      dialogue.appendChild(judgeBubble);
+      round.appendChild(oppBubble);
   
-      // Write-first gate for courtroom
-      const writePrompt = arg.writePrompt || 'How would you respond to this question? Draft your argument before seeing the options.';
+      // Objection prompt
+      const prompt = document.createElement('div');
+      prompt.className = 'objection-prompt';
+      prompt.innerHTML = `<div class="prompt-text">${caseData.courtroom.judgeName}: Counsel for the applicant, you may respond.</div>`;
+      round.appendChild(prompt);
+  
+      // Write-first gate
+      const writePrompt = arg.writePrompt || 'How would you respond to opposing counsel\'s argument?';
       const minWords = arg.minWords || 15;
   
       const writeGate = document.createElement('div');
@@ -709,92 +686,227 @@
       writeGate.id = `write-gate-court-${index}`;
       writeGate.innerHTML = `
         <div class="write-first-prompt">${writePrompt}</div>
-        <div class="write-first-instruction">Draft your argument. Minimum ${minWords} words.</div>
-        <textarea class="write-first-textarea" id="wf-court-${index}-text" 
-                  placeholder="Your Honour, I submit that..."
-                  oninput="Screens._updateWordCount('wf-court-${index}-text', 'wf-court-${index}-count', ${minWords})"></textarea>
-        <div id="wf-court-${index}-hint" class="write-first-hint"></div>
+        <div class="write-first-instruction">Draft your counter-argument before seeing the response options. Minimum ${minWords} words.</div>
+        <textarea class="write-first-textarea" id="wf-court-${index}-text"
+                  placeholder="Your Honour, I must object to opposing counsel's characterisation..."
+                  oninput="Screens._updateWordCount('wf-court-${index}-text', 'wf-court-${index}-count', ${minWords}, 'wf-court-${index}-btn')"></textarea>
         <div class="write-first-footer">
           <span class="write-first-charcount" id="wf-court-${index}-count">0 words</span>
-          <button class="btn btn-primary" id="wf-court-${index}-btn" onclick="Screens._submitWriteGate('courtroom_${index}')" disabled>
-            Submit My Argument
+          <button class="btn btn-primary" id="wf-court-${index}-btn" onclick="Screens._submitCourtWriteGate(${index})" disabled>
+            Submit My Response
           </button>
         </div>
       `;
-      dialogue.appendChild(writeGate);
+      round.appendChild(writeGate);
   
-      // Hidden options (revealed after write gate passes)
+      // Hidden response options (4 options, shuffled)
       const optionsDiv = document.createElement('div');
-      optionsDiv.className = 'options-grid';
       optionsDiv.id = `court-options-${index}`;
       optionsDiv.style.display = 'none';
   
       const optionsLabel = document.createElement('p');
       optionsLabel.className = 'text-muted mb-md';
       optionsLabel.style.fontSize = '0.85rem';
-      optionsLabel.innerHTML = '<em>Now select the argument you want to present to the court:</em>';
+      optionsLabel.style.fontStyle = 'italic';
+      optionsLabel.textContent = 'Now select the legal argument you would present to the court:';
       optionsDiv.appendChild(optionsLabel);
   
-      arg.options.forEach(opt => {
+      const optionsGrid = document.createElement('div');
+      optionsGrid.className = 'options-grid';
+  
+      // Shuffle options so strong isn't always first
+      const shuffled = [...arg.options].sort(() => Math.random() - 0.5);
+  
+      shuffled.forEach(opt => {
         const card = document.createElement('div');
         card.className = 'option-card';
         card.innerHTML = `<div class="option-description">${opt.text}</div>`;
         card.onclick = () => this._selectCourtArgument(caseData, index, opt);
-        optionsDiv.appendChild(card);
+        optionsGrid.appendChild(card);
       });
   
-      dialogue.appendChild(optionsDiv);
-      window.scrollTo(0, document.body.scrollHeight);
+      optionsDiv.appendChild(optionsGrid);
+      round.appendChild(optionsDiv);
+  
+      // Hidden citation challenge
+      const citationDiv = document.createElement('div');
+      citationDiv.id = `court-citation-${index}`;
+      citationDiv.style.display = 'none';
+      round.appendChild(citationDiv);
+  
+      // Hidden feedback
+      const feedbackDiv = document.createElement('div');
+      feedbackDiv.id = `court-feedback-${index}`;
+      feedbackDiv.style.display = 'none';
+      round.appendChild(feedbackDiv);
+  
+      dialogue.appendChild(round);
+  
+      setTimeout(() => {
+        oppBubble.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
     },
   
+    _updateWordCount(textareaId, countId, minWords, btnId) {
+      const textarea = document.getElementById(textareaId);
+      const countEl = document.getElementById(countId);
+      const btn = document.getElementById(btnId);
+  
+      const words = textarea.value.trim().split(/\s+/).filter(w => w.length > 0).length;
+      countEl.textContent = `${words} word${words !== 1 ? 's' : ''}`;
+  
+      if (words >= minWords) {
+        countEl.classList.add('sufficient');
+        if (btn) btn.disabled = false;
+      } else {
+        countEl.classList.remove('sufficient');
+        if (btn) btn.disabled = true;
+      }
+    },
+  
+    _submitCourtWriteGate(index) {
+      const textareaId = `wf-court-${index}-text`;
+      const text = document.getElementById(textareaId).value;
+      Game.recordWrittenAnswer(`courtroom_${index}`, text);
+  
+      document.getElementById(`write-gate-court-${index}`).style.display = 'none';
+      document.getElementById(`court-options-${index}`).style.display = 'block';
+    },
+  
+    // v4: After picking an option, show citation challenge BEFORE feedback
     _selectCourtArgument(caseData, argIndex, chosen) {
-      Game.recordArgument(chosen.id, chosen.quality);
+      const arg = caseData.courtroom.arguments[argIndex];
+      const optionsContainer = document.getElementById(`court-options-${argIndex}`);
   
       // Disable options
-      const optionsDiv = document.getElementById(`court-options-${argIndex}`);
-      optionsDiv.querySelectorAll('.option-card').forEach(card => {
+      optionsContainer.querySelectorAll('.option-card').forEach(card => {
         card.classList.add('disabled');
         card.onclick = null;
       });
   
-      const dialogue = document.getElementById('courtroom-dialogue');
+      // Store chosen for later
+      this._pendingChoice = { caseData, argIndex, chosen };
+  
+      // Show citation challenge
+      const citationDiv = document.getElementById(`court-citation-${argIndex}`);
+      citationDiv.style.display = 'block';
+  
+      citationDiv.innerHTML = `
+        <div class="citation-challenge">
+          <div class="citation-header">
+            <span class="citation-icon">\u{1F4C4}</span>
+            <span class="citation-title">Evidence Citation</span>
+          </div>
+          <div class="citation-prompt">Which document from the case file best supports the argument you selected?</div>
+          <div class="citation-grid" id="citation-grid-${argIndex}"></div>
+        </div>
+      `;
+  
+      const grid = citationDiv.querySelector(`#citation-grid-${argIndex}`);
+      caseData.evidence.forEach(ev => {
+        const card = document.createElement('div');
+        card.className = 'citation-card';
+        card.innerHTML = `
+          <div class="citation-card-title">${ev.title}</div>
+          <div class="citation-card-date">${ev.date}</div>
+        `;
+        card.onclick = () => this._submitCitation(argIndex, ev.id);
+        grid.appendChild(card);
+      });
+  
+      setTimeout(() => {
+        citationDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    },
+  
+    _submitCitation(argIndex, chosenEvidenceId) {
+      const { caseData, chosen } = this._pendingChoice;
+      const arg = caseData.courtroom.arguments[argIndex];
+      const correctEvidenceId = arg.evidenceId;
+      const citationCorrect = (chosenEvidenceId === correctEvidenceId);
+  
+      // Record in engine
+      Game.recordArgument(chosen.id, chosen.quality, citationCorrect);
+  
+      // Hide citation, disable cards
+      const citationDiv = document.getElementById(`court-citation-${argIndex}`);
+      citationDiv.querySelectorAll('.citation-card').forEach(card => {
+        card.classList.add('disabled');
+        card.onclick = null;
+      });
+  
+      // Show full feedback
+      this._showCourtFeedback(caseData, argIndex, chosen, citationCorrect, chosenEvidenceId, correctEvidenceId);
+    },
+  
+    _showCourtFeedback(caseData, argIndex, chosen, citationCorrect, chosenEvId, correctEvId) {
+      const round = document.getElementById(`court-round-${argIndex}`);
+      const feedbackDiv = document.getElementById(`court-feedback-${argIndex}`);
+      feedbackDiv.style.display = 'block';
+  
+      // Quality label
+      let qualityLabel = '';
+      if (chosen.quality === 'strong') qualityLabel = '<span class="chosen-quality strong">Strong Argument</span>';
+      else if (chosen.quality === 'plausible') qualityLabel = '<span class="chosen-quality plausible">Plausible but Flawed</span>';
+      else if (chosen.quality === 'weak') qualityLabel = '<span class="chosen-quality weak">Weak Argument</span>';
+      else qualityLabel = '<span class="chosen-quality wrong">Fundamentally Flawed</span>';
   
       // Player bubble
       const playerBubble = document.createElement('div');
       playerBubble.className = 'dialogue-bubble player';
       playerBubble.innerHTML = `
-        <div class="speaker-name">You</div>
+        <div class="speaker-name">You ${qualityLabel}</div>
         <div class="speaker-text">${chosen.text}</div>
       `;
-      dialogue.appendChild(playerBubble);
+      feedbackDiv.appendChild(playerBubble);
   
-      // Judge response
-      const responseBubble = document.createElement('div');
-      responseBubble.className = 'dialogue-bubble judge';
-      responseBubble.innerHTML = `
-        <div class="speaker-name">${caseData.courtroom.judgeName}</div>
-        <div class="speaker-text">${chosen.judge_response}</div>
+      // Judge ruling
+      const ruling = document.createElement('div');
+      ruling.className = 'judge-ruling';
+      ruling.innerHTML = `
+        <div class="judge-ruling-header">
+          <span class="judge-gavel">\u2696\uFE0F</span>
+          <span class="speaker-name" style="color: var(--accent-gold);">${caseData.courtroom.judgeName}</span>
+        </div>
+        <div class="ruling-text">${chosen.judge_response}</div>
       `;
-      dialogue.appendChild(responseBubble);
+      feedbackDiv.appendChild(ruling);
   
-      // Reasoning feedback
+      // Legal reasoning feedback
       let responseClass = 'warning';
       if (chosen.quality === 'strong') responseClass = 'success';
-      else if (chosen.quality === 'wrong') responseClass = 'error';
+      else if (chosen.quality === 'wrong' || chosen.quality === 'plausible') responseClass = 'error';
   
       const reasoning = document.createElement('div');
       reasoning.className = `feedback-box ${responseClass}`;
       reasoning.innerHTML = `
-        <div class="feedback-title">Legal Reasoning</div>
+        <div class="feedback-title">Legal Analysis</div>
         <div class="feedback-text">${chosen.legal_reasoning}</div>
       `;
-      dialogue.appendChild(reasoning);
+      feedbackDiv.appendChild(reasoning);
+  
+      // Citation result
+      const correctEv = caseData.evidence.find(e => e.id === correctEvId);
+      const chosenEv = caseData.evidence.find(e => e.id === chosenEvId);
+  
+      const citationResult = document.createElement('div');
+      citationResult.className = `feedback-box ${citationCorrect ? 'success' : 'warning'} citation-result`;
+      citationResult.innerHTML = `
+        <div class="feedback-title">${citationCorrect ? '\u2713 Correct Citation' : '\u2717 Incorrect Citation'}</div>
+        <div class="feedback-text">
+          ${citationCorrect
+            ? `You correctly identified <strong>${correctEv ? correctEv.title : correctEvId}</strong> as the key supporting evidence for this argument.`
+            : `You cited <strong>${chosenEv ? chosenEv.title : chosenEvId}</strong>, but the strongest supporting evidence was <strong>${correctEv ? correctEv.title : correctEvId}</strong>. ${citationCorrect ? '' : 'Citing the wrong evidence halves your argument score for this round.'}`
+          }
+        </div>
+      `;
+      feedbackDiv.appendChild(citationResult);
   
       // Continue button
       const continueBtn = document.createElement('button');
-      continueBtn.className = 'btn btn-secondary mt-lg mb-xl';
+      continueBtn.className = 'btn btn-secondary mt-lg';
       continueBtn.textContent = argIndex < caseData.courtroom.arguments.length - 1
-        ? 'Next Argument \u2192'
+        ? 'Next Round \u2192'
         : 'Hear the Verdict \u2192';
       continueBtn.onclick = () => {
         continueBtn.remove();
@@ -804,156 +916,94 @@
           Game.showScreen('verdict');
         }
       };
-      dialogue.appendChild(continueBtn);
+      feedbackDiv.appendChild(continueBtn);
   
-      window.scrollTo(0, document.body.scrollHeight);
+      setTimeout(() => {
+        playerBubble.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
     },
   
   
     // ========================
-    // VERDICT (with Written Answer Comparison)
+    // VERDICT
     // ========================
     renderVerdict(container, caseData, score) {
       const screen = document.createElement('div');
       screen.className = 'screen';
   
-      const verdictLabels = {
-        'won': 'CASE WON',
-        'won_with_reservations': 'CASE WON WITH RESERVATIONS',
-        'lost': 'CASE LOST',
-        'dismissed': 'CASE DISMISSED'
+      const verdictTitles = {
+        'won': 'Case Won \u2014 Judgment in Your Favour',
+        'won_with_reservations': 'Case Won with Reservations',
+        'lost': 'Case Lost',
+        'dismissed': 'Case Dismissed'
       };
   
-      const verdictClass = score.verdict.includes('won') ? 'won' : 'lost';
-      const verdictText = score.verdict.includes('won')
-        ? (caseData.verdict.winText || 'The court rules in your favor.')
-        : (caseData.verdict.loseText || 'The court finds against your client.');
+      const verdictClasses = {
+        'won': 'verdict-won',
+        'won_with_reservations': 'verdict-partial',
+        'lost': 'verdict-lost',
+        'dismissed': 'verdict-lost'
+      };
   
-      // Build written answer sections
-      let writtenHTML = '';
-      const wa = score.writtenAnswers;
+      const verdictText = (score.verdict === 'won' || score.verdict === 'won_with_reservations')
+        ? caseData.verdict.winText
+        : caseData.verdict.loseText;
   
-      if (wa.analysis_framework || wa.analysis_article) {
-        writtenHTML += `
-          <div class="your-answer-section">
-            <h3>Your Written Analysis vs. Model Analysis</h3>
-        `;
-  
-        if (wa.analysis_framework) {
-          writtenHTML += `
-            <p class="text-muted" style="font-size: 0.8rem; margin-bottom: var(--space-sm);">Framework Identification</p>
-            <div class="your-answer-text">${this._escapeHTML(wa.analysis_framework)}</div>
-          `;
-        }
-  
-        if (wa.analysis_article) {
-          writtenHTML += `
-            <p class="text-muted" style="font-size: 0.8rem; margin-bottom: var(--space-sm);">Article Identification</p>
-            <div class="your-answer-text">${this._escapeHTML(wa.analysis_article)}</div>
-          `;
-        }
-  
-        writtenHTML += `</div>`;
-      }
-  
-      if (wa.courtroom && wa.courtroom.length > 0) {
-        writtenHTML += `
-          <div class="your-answer-section">
-            <h3>Your Courtroom Arguments (as drafted)</h3>
-        `;
-  
-        wa.courtroom.forEach((text, i) => {
-          if (text) {
-            writtenHTML += `
-              <p class="text-muted" style="font-size: 0.8rem; margin-bottom: var(--space-sm);">Argument ${i + 1}</p>
-              <div class="your-answer-text">${this._escapeHTML(text)}</div>
-            `;
-          }
-        });
-  
-        writtenHTML += `</div>`;
-      }
+      // Count citations
+      const citationsCorrect = score.courtroom.arguments.filter(a => a.citationCorrect).length;
+      const totalArgs = score.courtroom.arguments.length;
   
       screen.innerHTML = `
         <div class="screen-header">
           <div class="breadcrumb">
             <a href="#" onclick="Game.goToDashboard(); return false;">Dashboard</a> / ${caseData.title} / Verdict
           </div>
+          <h1>Verdict</h1>
         </div>
   
         ${this._renderPhaseIndicator('verdict')}
   
-        <div class="verdict-container">
-          <div class="verdict-result ${verdictClass}">
-            ${verdictLabels[score.verdict]}
-          </div>
-          <p class="text-muted" style="max-width: 600px; margin: 0 auto var(--space-lg);">
-            ${verdictText}
-          </p>
-          <div class="verdict-score">
-            ${score.total}<span class="score-total">/100</span>
-          </div>
+        <div class="verdict-card ${verdictClasses[score.verdict]}">
+          <div class="verdict-title">${verdictTitles[score.verdict]}</div>
+          <div class="verdict-score">${score.total}<span class="verdict-score-max">/100</span></div>
+          <div class="verdict-text">${verdictText}</div>
         </div>
   
         <div class="score-breakdown">
-          <div class="score-section">
-            <div class="score-section-header">
-              <span class="score-section-title">Evidence Collection</span>
-              <span class="score-section-points">${score.evidence.earned}/${score.evidence.possible}</span>
-            </div>
-            <p class="score-section-detail">
-              Reviewed ${score.evidence.found} of ${score.evidence.total} documents.
-            </p>
+          <h3>Score Breakdown</h3>
+  
+          <div class="score-row">
+            <span class="score-label">\u{1F4C4} Evidence Review</span>
+            <span class="score-value">${score.evidence.earned}/${score.evidence.possible}</span>
+            <span class="score-detail">${score.evidence.found} of ${score.evidence.total} documents reviewed</span>
           </div>
   
-          <div class="score-section">
-            <div class="score-section-header">
-              <span class="score-section-title">Legal Analysis</span>
-              <span class="score-section-points">${score.analysis.earned}/${score.analysis.possible}</span>
-            </div>
-            <p class="score-section-detail">
-              Framework: ${score.analysis.frameworkCorrect ? '\u2713 Correct' : '\u2717 Incorrect'} &nbsp;|&nbsp;
-              Article: ${score.analysis.articleCorrect ? '\u2713 Correct' : '\u2717 Incorrect'}
-            </p>
+          <div class="score-row">
+            <span class="score-label">\u{1F9D1}\u200D\u2696\uFE0F Cross-Examination</span>
+            <span class="score-value">${score.crossExam.earned}/${score.crossExam.possible}</span>
+            <span class="score-detail">${score.crossExam.questionsAsked.length} questions asked, ${score.crossExam.questionsAsked.filter(q => q.impact === 'positive').length} effective</span>
           </div>
   
-          <div class="score-section">
-            <div class="score-section-header">
-              <span class="score-section-title">Courtroom Arguments</span>
-              <span class="score-section-points">${score.courtroom.earned}/${score.courtroom.possible}</span>
-            </div>
-            ${score.courtroom.arguments.map((a, i) => `
-              <p class="score-section-detail">
-                Argument ${i + 1}: 
-                ${a.quality === 'strong' ? '<span class="text-success">\u2713 Strong</span>' : ''}
-                ${a.quality === 'weak' ? '<span class="text-gold">~ Weak but valid</span>' : ''}
-                ${a.quality === 'wrong' ? '<span class="text-error">\u2717 Wrong</span>' : ''}
-                (${a.earned}/${a.possible} pts)
-              </p>
-            `).join('')}
+          <div class="score-row">
+            <span class="score-label">\u2696\uFE0F Courtroom Arguments</span>
+            <span class="score-value">${score.courtroom.earned}/${score.courtroom.possible}</span>
+            <span class="score-detail">${score.courtroom.arguments.filter(a => a.quality === 'strong').length} of ${totalArgs} strong arguments, ${citationsCorrect} of ${totalArgs} correct citations</span>
           </div>
         </div>
   
-        ${writtenHTML}
-  
-        ${caseData.verdict.modelAnswer ? `
-          <div class="model-answer" id="model-answer-box">
-            <div class="model-answer-header" onclick="Screens._toggleModelAnswer()">
-              <h3>The Strongest Legal Analysis</h3>
-              <span id="model-answer-arrow">\u25BC</span>
-            </div>
-            <div class="model-answer-body" id="model-answer-body" style="display: none;">
-              ${caseData.verdict.modelAnswer}
-            </div>
+        <div class="model-answer-section">
+          <h3>Model Answer</h3>
+          <div class="model-answer-toggle" onclick="this.nextElementSibling.classList.toggle('visible'); this.textContent = this.textContent.includes('Show') ? 'Hide Model Answer' : 'Show Model Answer';">
+            Show Model Answer
           </div>
-        ` : ''}
+          <div class="model-answer-content">
+            ${caseData.verdict.modelAnswer}
+          </div>
+        </div>
   
-        <div class="text-center mt-2xl" style="display: flex; justify-content: center; gap: var(--space-md); padding-bottom: var(--space-2xl);">
-          <button class="btn btn-secondary" onclick="Game.startCase('${caseData.id}')">
-            Retry Case
-          </button>
-          <button class="btn btn-primary" onclick="Game.goToDashboard()">
-            Back to Dashboard
+        <div class="text-center mt-2xl" style="padding-bottom: var(--space-2xl);">
+          <button class="btn btn-primary btn-large" onclick="Game.goToDashboard()">
+            Return to Dashboard
           </button>
         </div>
       `;
@@ -961,30 +1011,47 @@
       container.appendChild(screen);
     },
   
-    _toggleModelAnswer() {
-      const body = document.getElementById('model-answer-body');
-      const arrow = document.getElementById('model-answer-arrow');
-      if (body.style.display === 'none') {
-        body.style.display = 'block';
-        arrow.textContent = '\u25B2';
-      } else {
-        body.style.display = 'none';
-        arrow.textContent = '\u25BC';
-      }
-    },
-  
   
     // ========================
-    // TAXONOMY / SCENARIO LIBRARY
+    // TAXONOMY
     // ========================
     renderTaxonomy(container) {
       const screen = document.createElement('div');
       screen.className = 'screen';
   
-      const frameworks = {};
+      const grouped = {};
       TAXONOMY.forEach(t => {
-        if (!frameworks[t.framework]) frameworks[t.framework] = 0;
-        frameworks[t.framework]++;
+        const fw = t.framework;
+        if (!grouped[fw]) grouped[fw] = [];
+        grouped[fw].push(t);
+      });
+  
+      const frameworkMeta = {
+        'ai-act': { label: 'EU AI Act', tagClass: 'tag-ai-act' },
+        'gdpr': { label: 'GDPR', tagClass: 'tag-gdpr' },
+        'dsa': { label: 'Digital Services Act', tagClass: 'tag-dsa' },
+        'dma': { label: 'Digital Markets Act', tagClass: 'tag-dma' },
+        'data-act': { label: 'Data Act', tagClass: 'tag-data-act' }
+      };
+  
+      let taxonomyHTML = '';
+      Object.keys(grouped).forEach(fw => {
+        const meta = frameworkMeta[fw] || { label: fw, tagClass: '' };
+        taxonomyHTML += `
+          <div class="taxonomy-framework">
+            <h3><span class="framework-tag ${meta.tagClass}">${meta.label}</span></h3>
+            <div class="taxonomy-list">
+              ${grouped[fw].map(t => `
+                <div class="taxonomy-item ${t.playable ? 'playable' : 'locked'}">
+                  <span class="taxonomy-id">${t.id}.</span>
+                  <span class="taxonomy-title">${t.title}</span>
+                  <span class="taxonomy-articles">${t.articles}</span>
+                  ${t.playable ? `<button class="btn btn-ghost btn-sm" onclick="Game.startCase('${t.caseId}')">Play</button>` : '<span class="taxonomy-status">Coming Soon</span>'}
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
       });
   
       screen.innerHTML = `
@@ -993,87 +1060,30 @@
             <a href="#" onclick="Game.goToDashboard(); return false;">Dashboard</a> / Scenario Library
           </div>
           <h1>Scenario Library</h1>
-          <p class="subtitle">${TAXONOMY.length} legal scenario types across 5 EU frameworks</p>
+          <p class="subtitle">All ${TAXONOMY.length} scenario types across 5 EU digital law frameworks</p>
         </div>
   
-        <div id="taxonomy-filters" style="display: flex; gap: var(--space-sm); margin-bottom: var(--space-xl); flex-wrap: wrap;">
-          <button class="btn btn-ghost" style="border-color: var(--accent-gold); color: var(--accent-gold);" data-filter="all" onclick="Screens._filterTaxonomy('all', this)">All (${TAXONOMY.length})</button>
-          <button class="btn btn-ghost" data-filter="ai-act" onclick="Screens._filterTaxonomy('ai-act', this)">AI Act (${frameworks['ai-act'] || 0})</button>
-          <button class="btn btn-ghost" data-filter="gdpr" onclick="Screens._filterTaxonomy('gdpr', this)">GDPR (${frameworks['gdpr'] || 0})</button>
-          <button class="btn btn-ghost" data-filter="dsa" onclick="Screens._filterTaxonomy('dsa', this)">DSA (${frameworks['dsa'] || 0})</button>
-          <button class="btn btn-ghost" data-filter="dma" onclick="Screens._filterTaxonomy('dma', this)">DMA (${frameworks['dma'] || 0})</button>
-          <button class="btn btn-ghost" data-filter="data-act" onclick="Screens._filterTaxonomy('data-act', this)">Data Act (${frameworks['data-act'] || 0})</button>
-        </div>
+        ${taxonomyHTML}
   
-        <div id="taxonomy-grid" class="cases-grid"></div>
-  
-        <div class="text-center mt-2xl" style="padding-bottom: var(--space-2xl);">
-          <button class="btn btn-secondary" onclick="Game.goToDashboard()">
+        <div class="text-center mt-xl">
+          <button class="btn btn-ghost" onclick="Game.goToDashboard()">
             &larr; Back to Dashboard
           </button>
         </div>
       `;
   
       container.appendChild(screen);
-      this._renderTaxonomyGrid('all');
-    },
-  
-    _renderTaxonomyGrid(filter) {
-      const grid = document.getElementById('taxonomy-grid');
-      grid.innerHTML = '';
-  
-      const filtered = filter === 'all'
-        ? TAXONOMY
-        : TAXONOMY.filter(t => t.framework === filter);
-  
-      filtered.forEach(t => {
-        let tagClass = 'tag-ai-act';
-        if (t.framework === 'gdpr') tagClass = 'tag-gdpr';
-        else if (t.framework === 'dsa') tagClass = 'tag-dsa';
-        else if (t.framework === 'dma') tagClass = 'tag-dma';
-        else if (t.framework === 'data-act') tagClass = 'tag-data-act';
-  
-        const card = document.createElement('div');
-        card.className = 'case-card';
-        card.style.cursor = t.playable ? 'pointer' : 'default';
-        if (t.playable) card.onclick = () => Game.startCase(t.caseId);
-  
-        card.innerHTML = `
-          <div class="case-number" style="display: flex; justify-content: space-between; align-items: center;">
-            <span>#${t.id}</span>
-            ${t.playable
-              ? '<span class="badge badge-completed">PLAYABLE</span>'
-              : '<span class="badge badge-difficulty">COMING SOON</span>'}
-          </div>
-          <div class="case-title" style="font-size: 1rem;">${t.title}</div>
-          <div class="case-meta mt-sm">
-            <span class="tag ${tagClass}" style="font-size: 0.65rem;">${t.articles}</span>
-          </div>
-        `;
-  
-        grid.appendChild(card);
-      });
-    },
-  
-    _filterTaxonomy(filter, btn) {
-      document.querySelectorAll('#taxonomy-filters .btn').forEach(b => {
-        b.style.borderColor = '';
-        b.style.color = '';
-      });
-      btn.style.borderColor = 'var(--accent-gold)';
-      btn.style.color = 'var(--accent-gold)';
-      this._renderTaxonomyGrid(filter);
     },
   
   
     // ========================
-    // HELPERS
+    // UTILITY: Phase Indicator
     // ========================
     _renderPhaseIndicator(currentPhase) {
       const phases = [
         { id: 'briefing', label: 'Briefing' },
         { id: 'investigation', label: 'Investigation' },
-        { id: 'analysis', label: 'Analysis' },
+        { id: 'cross-examination', label: 'Cross-Exam' },
         { id: 'courtroom', label: 'Courtroom' },
         { id: 'verdict', label: 'Verdict' }
       ];
