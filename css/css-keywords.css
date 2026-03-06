@@ -1,0 +1,12 @@
+.keyword-hints { margin: 0.75rem 0; padding: 0.75rem 1rem; background: rgba(52,152,219,0.08); border: 1px solid rgba(52,152,219,0.2); border-radius: 8px; }
+.concept-group { margin-bottom: 0.6rem; }
+.concept-group:last-child { margin-bottom: 0; }
+.concept-name { font-size: 0.82rem; color: var(--text-secondary, #adb5bd); margin-bottom: 0.35rem; font-weight: 600; }
+.concept-threshold { font-weight: 400; color: #6c757d; font-size: 0.75rem; }
+.keyword-chips { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.keyword-chip { display: inline-block; padding: 0.2rem 0.55rem; border-radius: 999px; font-size: 0.75rem; font-weight: 500; background: rgba(108,117,125,0.12); color: var(--text-secondary, #6c757d); border: 1px solid rgba(108,117,125,0.25); transition: all 0.25s ease; }
+.keyword-chip.matched { background: rgba(39,174,96,0.15); color: #27ae60; border-color: rgba(39,174,96,0.4); }
+.keyword-chip.unmatched { background: rgba(108,117,125,0.06); color: #666; border-color: rgba(108,117,125,0.12); }
+.keyword-match-count { font-size: 0.8rem; font-weight: 500; margin-left: 0.75rem; padding: 0.15rem 0.5rem; border-radius: 4px; }
+.keyword-match-count.sufficient { color: #27ae60; background: rgba(39,174,96,0.1); }
+.keyword-match-count.insufficient { color: #b7791f; background: rgba(183,121,31,0.1); }

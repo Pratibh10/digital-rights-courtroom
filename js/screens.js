@@ -677,21 +677,43 @@
       prompt.innerHTML = `<div class="prompt-text">${caseData.courtroom.judgeName}: Counsel for the applicant, you may respond.</div>`;
       round.appendChild(prompt);
   
-      // Write-first gate
+      // Write-first gate (v5: keyword validation)
       const writePrompt = arg.writePrompt || 'How would you respond to opposing counsel\'s argument?';
       const minWords = arg.minWords || 15;
-  
+      const reqConcepts = arg.requiredConcepts || [];
+
+      if (!this._argConcepts) this._argConcepts = {};
+      this._argConcepts[index] = reqConcepts;
+
       const writeGate = document.createElement('div');
       writeGate.className = 'write-first-container';
       writeGate.id = `write-gate-court-${index}`;
+
+      let keywordHintHtml = '';
+      if (reqConcepts.length > 0) {
+        const conceptBlocks = reqConcepts.map((rc, ci) => {
+          const chips = (rc.keywords || []).map((kw, ki) =>
+            `<span class="keyword-chip" id="wf-court-${index}-c${ci}-kw-${ki}">${kw}</span>`
+          ).join('');
+          const needed = Math.ceil((rc.keywords || []).length / 2);
+          return `<div class="concept-group">
+            <div class="concept-name">${rc.name} <span class="concept-threshold">(mention at least ${needed})</span></div>
+            <div class="keyword-chips">${chips}</div>
+          </div>`;
+        }).join('');
+        keywordHintHtml = `<div class="keyword-hints">${conceptBlocks}</div>`;
+      }
+
       writeGate.innerHTML = `
         <div class="write-first-prompt">${writePrompt}</div>
         <div class="write-first-instruction">Draft your counter-argument before seeing the response options. Minimum ${minWords} words.</div>
+        ${keywordHintHtml}
         <textarea class="write-first-textarea" id="wf-court-${index}-text"
                   placeholder="Your Honour, I must object to opposing counsel's characterisation..."
-                  oninput="Screens._updateWordCount('wf-court-${index}-text', 'wf-court-${index}-count', ${minWords}, 'wf-court-${index}-btn')"></textarea>
+                  oninput="Screens._updateWriteGate(${index}, ${minWords})"></textarea>
         <div class="write-first-footer">
           <span class="write-first-charcount" id="wf-court-${index}-count">0 words</span>
+          <span class="keyword-match-count" id="wf-court-${index}-kwcount" style="display:${reqConcepts.length > 0 ? 'inline' : 'none'}"></span>
           <button class="btn btn-primary" id="wf-court-${index}-btn" onclick="Screens._submitCourtWriteGate(${index})" disabled>
             Submit My Response
           </button>
@@ -747,33 +769,62 @@
       }, 100);
     },
   
+    // v5: keyword + word count validation
+    _updateWriteGate(argIndex, minWords) {
+      const textarea = document.getElementById(`wf-court-${argIndex}-text`);
+      const countEl = document.getElementById(`wf-court-${argIndex}-count`);
+      const kwCountEl = document.getElementById(`wf-court-${argIndex}-kwcount`);
+      const btn = document.getElementById(`wf-court-${argIndex}-btn`);
+      const text = textarea.value;
+
+      const words = text.trim().split(/\s+/).filter(w => w.length > 0).length;
+      countEl.textContent = `${words} word${words !== 1 ? 's' : ''}`;
+      const wordsOk = words >= minWords;
+      if (wordsOk) countEl.classList.add('sufficient');
+      else countEl.classList.remove('sufficient');
+
+      const reqConcepts = (this._argConcepts && this._argConcepts[argIndex]) || [];
+      let keywordsOk = true;
+      if (reqConcepts.length > 0) {
+        const result = Game.checkKeywords(text, reqConcepts);
+        kwCountEl.textContent = `${result.totalMatched}/${result.totalKeywords} concepts`;
+        kwCountEl.style.display = 'inline';
+        if (result.passed) { kwCountEl.classList.add('sufficient'); kwCountEl.classList.remove('insufficient'); }
+        else { kwCountEl.classList.remove('sufficient'); kwCountEl.classList.add('insufficient'); }
+        keywordsOk = result.passed;
+        reqConcepts.forEach((rc, ci) => {
+          (rc.keywords || []).forEach((kw, ki) => {
+            const chip = document.getElementById(`wf-court-${argIndex}-c${ci}-kw-${ki}`);
+            if (chip) {
+              const isMatched = text.toLowerCase().includes(kw.toLowerCase());
+              if (isMatched) { chip.classList.add('matched'); chip.classList.remove('unmatched'); }
+              else { chip.classList.remove('matched'); chip.classList.add('unmatched'); }
+            }
+          });
+        });
+      }
+      if (btn) btn.disabled = !(wordsOk && keywordsOk);
+    },
+
     _updateWordCount(textareaId, countId, minWords, btnId) {
       const textarea = document.getElementById(textareaId);
       const countEl = document.getElementById(countId);
       const btn = document.getElementById(btnId);
-  
       const words = textarea.value.trim().split(/\s+/).filter(w => w.length > 0).length;
       countEl.textContent = `${words} word${words !== 1 ? 's' : ''}`;
-  
-      if (words >= minWords) {
-        countEl.classList.add('sufficient');
-        if (btn) btn.disabled = false;
-      } else {
-        countEl.classList.remove('sufficient');
-        if (btn) btn.disabled = true;
-      }
+      if (words >= minWords) { countEl.classList.add('sufficient'); if (btn) btn.disabled = false; }
+      else { countEl.classList.remove('sufficient'); if (btn) btn.disabled = true; }
     },
-  
+
     _submitCourtWriteGate(index) {
       const textareaId = `wf-court-${index}-text`;
       const text = document.getElementById(textareaId).value;
       Game.recordWrittenAnswer(`courtroom_${index}`, text);
-  
       document.getElementById(`write-gate-court-${index}`).style.display = 'none';
       document.getElementById(`court-options-${index}`).style.display = 'block';
     },
-  
-    // v4: After picking an option, show citation challenge BEFORE feedback
+
+        // v4: After picking an option, show citation challenge BEFORE feedback
     _selectCourtArgument(caseData, argIndex, chosen) {
       const arg = caseData.courtroom.arguments[argIndex];
       const optionsContainer = document.getElementById(`court-options-${argIndex}`);

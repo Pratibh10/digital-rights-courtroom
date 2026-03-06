@@ -1,5 +1,5 @@
 /* ============================================
-   DIGITAL RIGHTS COURTROOM — Game Engine v4
+   DIGITAL RIGHTS COURTROOM — Game Engine v5
    4-option courtroom + evidence citation challenge
    ============================================ */
 
@@ -37,7 +37,7 @@
     init() {
       this.loadProgress();
       this.showScreen('dashboard');
-      console.log('Digital Rights Courtroom v4 initialized.');
+      console.log('Digital Rights Courtroom v5 initialized.');
     },
   
     // --- Screen Management ---
@@ -156,7 +156,29 @@
     },
   
     // --- Courtroom Tracking (v4: quality + citation) ---
-    recordArgument(argumentId, quality, citationCorrect) {
+  
+  // --- Keyword Validation (v5) ---
+  checkKeywords(text, requiredConcepts) {
+    if (!requiredConcepts || requiredConcepts.length === 0) {
+      return { passed: true, totalMatched: 0, totalKeywords: 0, concepts: [] };
+    }
+    const lowerText = text.toLowerCase();
+    const concepts = [];
+    let totalKeywords = 0;
+    let totalMatched = 0;
+    requiredConcepts.forEach(concept => {
+      const kws = concept.keywords || [];
+      const matched = kws.filter(kw => lowerText.includes(kw.toLowerCase()));
+      const missed = kws.filter(kw => !lowerText.includes(kw.toLowerCase()));
+      const threshold = Math.ceil(kws.length / 2);
+      totalKeywords += kws.length;
+      totalMatched += matched.length;
+      concepts.push({ name: concept.name, matched, missed, threshold, passed: matched.length >= threshold });
+    });
+    return { passed: concepts.every(c => c.passed), totalMatched, totalKeywords, concepts };
+  },
+
+  recordArgument(argumentId, quality, citationCorrect) {
       this.state.courtroomResults.push({
         argumentId: argumentId,
         quality: quality,
@@ -176,18 +198,18 @@
       const totalEvidence = caseData.evidence.length;
       const readCount = this.state.readEvidence.length;
       const evidenceScore = totalEvidence > 0
-        ? Math.round((readCount / totalEvidence) * 20)
+        ? Math.round((readCount / totalEvidence) * 10)
         : 0;
   
       // Cross-examination: 30 points
       const ceData = caseData.crossExamination;
       const maxCEScore = ceData ? ceData.maxQuestions * 10 : 30;
       const rawCEScore = this.state.crossExamResults.totalScore;
-      const crossExamScore = Math.min(Math.round((rawCEScore / maxCEScore) * 30), 30);
+      const crossExamScore = Math.min(Math.round((rawCEScore / maxCEScore) * 25), 25);
   
       // Courtroom arguments: 50 points
       const totalArguments = caseData.courtroom.arguments.length;
-      const pointsPerArgument = totalArguments > 0 ? 50 / totalArguments : 0;
+      const pointsPerArgument = totalArguments > 0 ? 65 / totalArguments : 0;
       let courtroomScore = 0;
       const argumentDetails = [];
   
@@ -211,27 +233,27 @@
       const total = evidenceScore + crossExamScore + courtroomScore;
   
       let verdict;
-      if (total >= 80) verdict = 'won';
-      else if (total >= 55) verdict = 'won_with_reservations';
-      else if (total >= 30) verdict = 'lost';
+      if (total >= 75) verdict = 'won';
+      else if (total >= 50) verdict = 'won_with_reservations';
+      else if (total >= 25) verdict = 'lost';
       else verdict = 'dismissed';
   
       const score = {
         total: total,
         evidence: {
           earned: evidenceScore,
-          possible: 20,
+          possible: 10,
           found: readCount,
           total: totalEvidence
         },
         crossExam: {
           earned: crossExamScore,
-          possible: 30,
+          possible: 25,
           questionsAsked: this.state.crossExamResults.questionsAsked
         },
         courtroom: {
           earned: courtroomScore,
-          possible: 50,
+          possible: 65,
           arguments: argumentDetails
         },
         verdict: verdict,
