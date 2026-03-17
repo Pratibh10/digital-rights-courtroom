@@ -15,8 +15,13 @@
       const completedCount = Object.keys(Game.state.completedCases).length;
       const totalCases = CASES.filter(c => c.evidence.length > 0).length;
   
+      const studentLabel = Game.state.studentName
+        ? `<div class="student-badge">\uD83C\uDF93 ${Game.state.studentName}</div>`
+        : '';
+
       screen.innerHTML = `
         <div class="dashboard-hero">
+          ${studentLabel}
           <h1>Digital Rights Courtroom</h1>
           <p class="tagline">A Litigation Simulator for EU Digital Law</p>
           <div class="stats-row">
@@ -77,7 +82,7 @@
   
         card.innerHTML = `
           <div class="case-card-header">
-            <span class="case-number">#${c.number}</span>
+            <span class="case-number">Case ${String(c.number).padStart(2, '0')}</span>
             <span class="framework-tag ${frameworkClass}">${c.frameworkLabel}</span>
           </div>
           <h3 class="case-title">${c.title}</h3>
@@ -119,9 +124,10 @@
       screen.innerHTML = `
         <div class="screen-header">
           <div class="breadcrumb">
-            <a href="#" onclick="Game.goToDashboard(); return false;">Dashboard</a> / ${caseData.title}
+            <a href="#" onclick="Game.goToDashboard(); return false;">Dashboard</a> / Case ${String(caseData.number).padStart(2, '0')}: ${caseData.title}
           </div>
           <span class="framework-tag ${frameworkClass}">${caseData.frameworkLabel}</span>
+          <div class="case-id-label">Case ${String(caseData.number).padStart(2, '0')}</div>
           <h1>${caseData.title}</h1>
           <p class="subtitle">${caseData.subtitle}</p>
         </div>
@@ -363,6 +369,9 @@
             </div>
   
             <div class="exam-questions-label" id="exam-questions-label">Select a question to ask the witness:</div>
+            <div class="ce-strategy-tip" id="ce-strategy-tip">
+              <strong>Strategy:</strong> Effective questions use specific evidence from the case file to challenge the witness\u2019s claims, forcing admissions that support your legal argument. Risky questions may let the witness deliver a strong defence. Ineffective questions waste your limited turns on irrelevant details.
+            </div>
             <div class="exam-questions-grid" id="exam-questions-grid"></div>
           </div>
         </div>
@@ -388,11 +397,19 @@
     _renderCEQuestions(caseData) {
       const ce = caseData.crossExamination;
       const grid = document.getElementById('exam-questions-grid');
+      const label = document.getElementById('exam-questions-label');
       grid.innerHTML = '';
-  
+
+      // Hard-lock: if max questions reached, hide grid entirely
+      if (this._ceState.questionsAsked >= this._ceState.maxQuestions) {
+        grid.style.display = 'none';
+        if (label) label.style.display = 'none';
+        return;
+      }
+
       ce.questions.forEach((q, i) => {
         if (this._ceState.askedIds.includes(q.id)) return;
-  
+
         const card = document.createElement('div');
         card.className = 'ce-question-card';
         card.innerHTML = `
@@ -405,12 +422,16 @@
     },
   
     _askCEQuestion(caseData, question) {
+      // Guard: prevent asking beyond limit (race condition from fast clicks)
+      if (this._ceState.questionsAsked >= this._ceState.maxQuestions) return;
+      if (this._ceState.askedIds.includes(question.id)) return;
+
       const ce = caseData.crossExamination;
       const dialogue = document.getElementById('exam-dialogue');
-  
+
       this._ceState.askedIds.push(question.id);
       this._ceState.questionsAsked++;
-  
+
       const remaining = this._ceState.maxQuestions - this._ceState.questionsAsked;
       document.getElementById('questions-remaining').innerHTML =
         `Questions remaining: <strong>${remaining}</strong> of ${this._ceState.maxQuestions}`;
@@ -502,29 +523,37 @@
       } else {
         score = followedUp ? 0 : 2;
       }
-  
+
       Game.recordCrossExamQuestion(question.id, question.impact, followedUp, score);
-  
+
       const impactClass = question.impact === 'positive' ? 'success'
         : question.impact === 'negative' ? 'error'
         : 'warning';
-  
-      const impactLabel = question.impact === 'positive' ? 'Effective Line of Questioning'
-        : question.impact === 'negative' ? 'This Hurt Your Case'
-        : 'Limited Impact';
-  
+
+      const impactLabel = question.impact === 'positive' ? '\u2705 Effective Line of Questioning'
+        : question.impact === 'negative' ? '\u274C This Hurt Your Case'
+        : '\u26A0\uFE0F Limited Impact';
+
+      // Explain why this category of question had this effect
+      const categoryExplain = question.category === 'effective'
+        ? 'This question used specific evidence to extract a damaging admission from the witness, directly advancing your legal argument.'
+        : question.category === 'risky'
+        ? 'This question gave the witness an opportunity to present a strong defence narrative. Risky questions can backfire by letting the witness reframe the issue on their terms.'
+        : 'This question addressed peripheral facts (budget, staffing, timeline) that do not establish a legal violation. It used a limited question slot without advancing your case.';
+
       const impactBox = document.createElement('div');
       impactBox.className = `feedback-box ${impactClass} ce-impact`;
       impactBox.innerHTML = `
         <div class="feedback-title">${impactLabel}</div>
         <div class="feedback-text">${question.impactExplanation}</div>
+        <div class="ce-category-explain">${categoryExplain}</div>
       `;
       dialogue.appendChild(impactBox);
-  
+
       if (this._ceState.questionsAsked >= this._ceState.maxQuestions) {
         this._finishCrossExam(dialogue, Game.state.currentCase);
       }
-  
+
       setTimeout(() => {
         impactBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 150);
@@ -533,8 +562,10 @@
     _finishCrossExam(dialogue, caseData) {
       const grid = document.getElementById('exam-questions-grid');
       const label = document.getElementById('exam-questions-label');
+      const tip = document.getElementById('ce-strategy-tip');
       if (grid) grid.style.display = 'none';
       if (label) label.style.display = 'none';
+      if (tip) tip.style.display = 'none';
   
       const dismissal = document.createElement('div');
       dismissal.className = 'judge-ruling';
@@ -593,7 +624,19 @@
     renderCourtroom(container, caseData) {
       const screen = document.createElement('div');
       screen.className = 'screen';
-  
+
+      // Build evidence summary items for the collapsible panel
+      const evidenceItems = caseData.evidence.map((ev, i) => `
+        <div class="court-ev-item" onclick="this.classList.toggle('court-ev-expanded')">
+          <div class="court-ev-header">
+            <span class="court-ev-num">EV${i + 1}</span>
+            <span class="court-ev-title">${ev.title}</span>
+            <span class="court-ev-toggle">\u25BC</span>
+          </div>
+          <div class="court-ev-body">${ev.content}</div>
+        </div>
+      `).join('');
+
       screen.innerHTML = `
         <div class="screen-header">
           <div class="breadcrumb">
@@ -602,12 +645,21 @@
           <h1>Courtroom Phase</h1>
           <p class="subtitle">Respond to opposing counsel's arguments before ${caseData.courtroom.judgeName}</p>
         </div>
-  
+
         ${this._renderPhaseIndicator('courtroom')}
-  
+
+        <div class="court-evidence-panel">
+          <button class="court-evidence-toggle" onclick="document.getElementById('court-ev-drawer').classList.toggle('open'); this.classList.toggle('open');">
+            \uD83D\uDCC2 Review Case Evidence <span class="court-ev-arrow">\u25BC</span>
+          </button>
+          <div class="court-evidence-drawer" id="court-ev-drawer">
+            ${evidenceItems}
+          </div>
+        </div>
+
         <div class="courtroom-scene" id="courtroom-dialogue"></div>
       `;
-  
+
       container.appendChild(screen);
   
       if (caseData.courtroom.arguments.length > 0) {
@@ -677,32 +729,25 @@
       prompt.innerHTML = `<div class="prompt-text">${caseData.courtroom.judgeName}: Counsel for the applicant, you may respond.</div>`;
       round.appendChild(prompt);
   
-      // Write-first gate (v5: hidden keyword validation with retry)
+      // Write-first gate
       const writePrompt = arg.writePrompt || 'How would you respond to opposing counsel\'s argument?';
-      const minWords = arg.minWords || 15;
-      const reqConcepts = arg.requiredConcepts || [];
-
-      if (!this._argConcepts) this._argConcepts = {};
-      this._argConcepts[index] = reqConcepts;
-      if (!this._retryUsed) this._retryUsed = {};
-
+      const minWords = arg.minWords || 10;
+  
       const writeGate = document.createElement('div');
       writeGate.className = 'write-first-container';
       writeGate.id = `write-gate-court-${index}`;
-
       writeGate.innerHTML = `
         <div class="write-first-prompt">${writePrompt}</div>
         <div class="write-first-instruction">Draft your counter-argument before seeing the response options. Minimum ${minWords} words.</div>
         <textarea class="write-first-textarea" id="wf-court-${index}-text"
                   placeholder="Your Honour, I must object to opposing counsel's characterisation..."
-                  oninput="Screens._updateWordOnly(${index}, ${minWords})"></textarea>
+                  oninput="Screens._updateWordCount('wf-court-${index}-text', 'wf-court-${index}-count', ${minWords}, 'wf-court-${index}-btn')"></textarea>
         <div class="write-first-footer">
           <span class="write-first-charcount" id="wf-court-${index}-count">0 words</span>
-          <button class="btn btn-primary" id="wf-court-${index}-btn" onclick="Screens._submitWriteAndCheck(${index})" disabled>
+          <button class="btn btn-primary" id="wf-court-${index}-btn" onclick="Screens._submitCourtWriteGate(${index})" disabled>
             Submit My Response
           </button>
         </div>
-        <div class="keyword-feedback" id="wf-court-${index}-feedback" style="display:none"></div>
       `;
       round.appendChild(writeGate);
   
@@ -754,28 +799,38 @@
       }, 100);
     },
   
-    // v5: Word count only (no keywords shown during writing)
-    _updateWordOnly(argIndex, minWords) {
-      const textarea = document.getElementById(`wf-court-${argIndex}-text`);
-      const countEl = document.getElementById(`wf-court-${argIndex}-count`);
-      const btn = document.getElementById(`wf-court-${argIndex}-btn`);
+    _updateWordCount(textareaId, countId, minWords, btnId) {
+      const textarea = document.getElementById(textareaId);
+      const countEl = document.getElementById(countId);
+      const btn = document.getElementById(btnId);
+  
       const words = textarea.value.trim().split(/\s+/).filter(w => w.length > 0).length;
       countEl.textContent = `${words} word${words !== 1 ? 's' : ''}`;
-      const wordsOk = words >= minWords;
-      if (wordsOk) countEl.classList.add('sufficient');
-      else countEl.classList.remove('sufficient');
-      if (btn) btn.disabled = !wordsOk;
+  
+      if (words >= minWords) {
+        countEl.classList.add('sufficient');
+        if (btn) btn.disabled = false;
+      } else {
+        countEl.classList.remove('sufficient');
+        if (btn) btn.disabled = true;
+      }
     },
+  
+    // Keyword retry tracking per argument
+    _retryUsed: {},
 
-    // v5: Submit -> check keywords behind the scenes -> feedback or proceed
-    _submitWriteAndCheck(index) {
-      const text = document.getElementById(`wf-court-${index}-text`).value;
+    _submitCourtWriteGate(index) {
+      const textareaId = `wf-court-${index}-text`;
+      const text = document.getElementById(textareaId).value;
       Game.recordWrittenAnswer(`courtroom_${index}`, text);
 
-      const reqConcepts = (this._argConcepts && this._argConcepts[index]) || [];
+      // Check if this argument has requiredConcepts
+      const caseData = Game.state.currentCase;
+      const arg = caseData.courtroom.arguments[index];
+      const reqConcepts = arg.requiredConcepts;
 
-      // No keywords defined -> proceed directly
-      if (reqConcepts.length === 0) {
+      if (!reqConcepts || reqConcepts.length === 0) {
+        // No keywords — proceed directly
         document.getElementById(`write-gate-court-${index}`).style.display = 'none';
         document.getElementById(`court-options-${index}`).style.display = 'block';
         return;
@@ -783,104 +838,81 @@
 
       const result = Game.checkKeywords(text, reqConcepts);
 
+      // Remove any previous feedback
+      const oldFeedback = document.getElementById(`kw-feedback-${index}`);
+      if (oldFeedback) oldFeedback.remove();
+
       if (result.passed) {
-        // Passed! Show brief success + proceed
-        const fb = document.getElementById(`wf-court-${index}-feedback`);
-        fb.style.display = 'block';
-        fb.innerHTML = `<div class="kw-feedback-pass">
-          <div class="kw-feedback-title">✅ Good analysis — you addressed the key legal concepts.</div>
-        </div>`;
+        // Keywords matched — show success then reveal options
+        const gate = document.getElementById(`write-gate-court-${index}`);
+        const successDiv = document.createElement('div');
+        successDiv.className = 'keyword-feedback kw-feedback-pass';
+        successDiv.innerHTML = '<div class="kw-feedback-title">\u2705 Good analysis — your response demonstrates understanding of the key legal concepts.</div>';
+        gate.appendChild(successDiv);
+
         setTimeout(() => {
-          document.getElementById(`write-gate-court-${index}`).style.display = 'none';
+          gate.style.display = 'none';
           document.getElementById(`court-options-${index}`).style.display = 'block';
         }, 1200);
-        return;
-      }
+      } else if (!this._retryUsed[index]) {
+        // First failure — show feedback with hints, allow retry
+        this._retryUsed[index] = true;
+        const gate = document.getElementById(`write-gate-court-${index}`);
+        const feedbackDiv = this._buildKeywordFeedback(result, reqConcepts, true);
+        feedbackDiv.id = `kw-feedback-${index}`;
+        gate.appendChild(feedbackDiv);
 
-      // Failed - show feedback with concepts revealed
-      const isRetry = this._retryUsed && this._retryUsed[index];
+        // Change button to "Retry"
+        const btn = document.getElementById(`wf-court-${index}-btn`);
+        if (btn) btn.textContent = 'Retry My Response';
 
-      if (isRetry) {
-        // Second attempt - unlock options regardless but still show feedback
-        const fb = document.getElementById(`wf-court-${index}-feedback`);
-        fb.style.display = 'block';
-        fb.innerHTML = this._buildKeywordFeedback(result, reqConcepts, false);
+        setTimeout(() => { feedbackDiv.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
+      } else {
+        // Second failure — show feedback then unlock options anyway
+        const gate = document.getElementById(`write-gate-court-${index}`);
+        const feedbackDiv = this._buildKeywordFeedback(result, reqConcepts, false);
+        feedbackDiv.id = `kw-feedback-${index}`;
+        gate.appendChild(feedbackDiv);
+
         setTimeout(() => {
-          document.getElementById(`write-gate-court-${index}`).style.display = 'none';
+          gate.style.display = 'none';
           document.getElementById(`court-options-${index}`).style.display = 'block';
         }, 2500);
-        return;
       }
-
-      // First attempt failed - show feedback + allow retry
-      this._retryUsed[index] = true;
-      const fb = document.getElementById(`wf-court-${index}-feedback`);
-      fb.style.display = 'block';
-      fb.innerHTML = this._buildKeywordFeedback(result, reqConcepts, true);
-
-      // Re-enable textarea and button for retry
-      const btn = document.getElementById(`wf-court-${index}-btn`);
-      btn.textContent = 'Retry My Response';
-      btn.disabled = false;
-
-      // Scroll to feedback
-      fb.scrollIntoView({ behavior: 'smooth', block: 'center' });
     },
 
     _buildKeywordFeedback(result, reqConcepts, canRetry) {
-      const conceptHtml = result.concepts.map(c => {
-        const chips = [...c.matched.map(kw =>
-          `<span class="keyword-chip matched">${kw}</span>`
-        ), ...c.missed.map(kw =>
-          `<span class="keyword-chip missed">${kw}</span>`
-        )].join('');
-        const icon = c.passed ? '✅' : '❌';
-        return `<div class="concept-feedback-group">
-          <div class="concept-feedback-name">${icon} ${c.name} (${c.matched.length}/${c.matched.length + c.missed.length})</div>
-          <div class="keyword-chips">${chips}</div>
-        </div>`;
-      }).join('');
+      const div = document.createElement('div');
+      div.className = 'keyword-feedback kw-feedback-fail';
 
-      // Get hints from first failing concept
-      let hintHtml = '';
-      if (canRetry) {
-        const failingConcept = reqConcepts.find((rc, i) => !result.concepts[i].passed);
-        if (failingConcept && failingConcept.hints && failingConcept.hints.length > 0) {
-          hintHtml = `<div class="kw-hint"><strong>Hint:</strong> ${failingConcept.hints[0]}</div>`;
+      let html = '<div class="kw-feedback-title">\u274C Your response is missing key legal concepts.</div>';
+
+      result.concepts.forEach((c, i) => {
+        const concept = reqConcepts[i];
+        html += '<div class="concept-feedback-group">';
+        html += `<div class="concept-feedback-name">${c.passed ? '\u2705' : '\u274C'} ${c.name}</div>`;
+        html += '<div class="keyword-chips">';
+        c.matched.forEach(kw => { html += `<span class="keyword-chip matched">${kw}</span>`; });
+        c.missed.forEach(kw => { html += `<span class="keyword-chip missed">${kw}</span>`; });
+        html += '</div>';
+        if (!c.passed && concept.hints && concept.hints.length > 0) {
+          const hint = concept.hints[this._retryUsed ? 1 : 0] || concept.hints[0];
+          html += `<div class="kw-hint">\uD83D\uDCA1 ${hint}</div>`;
         }
+        html += '</div>';
+      });
+
+      if (canRetry) {
+        html += '<div class="kw-retry-msg">Revise your response above and click <strong>Retry My Response</strong> to try again.</div>';
+      } else {
+        html += '<div class="kw-retry-msg">Moving to the argument options. Study the concepts above for next time.</div>';
       }
 
-      const retryMsg = canRetry
-        ? '<div class="kw-retry-msg">Revise your answer above and try again. The concepts you missed are shown in red.</div>'
-        : '<div class="kw-retry-msg">Moving to the response options. Review the concepts above to strengthen your understanding.</div>';
-
-      return `<div class="kw-feedback-fail">
-        <div class="kw-feedback-title">⚠️ Your response missed some key legal concepts (${result.totalMatched}/${result.totalKeywords})</div>
-        ${conceptHtml}
-        ${hintHtml}
-        ${retryMsg}
-      </div>`;
+      div.innerHTML = html;
+      return div;
     },
-
-    _updateWordCount(textareaId, countId, minWords, btnId) {
-      const textarea = document.getElementById(textareaId);
-      const countEl = document.getElementById(countId);
-      const btn = document.getElementById(btnId);
-      const words = textarea.value.trim().split(/\s+/).filter(w => w.length > 0).length;
-      countEl.textContent = `${words} word${words !== 1 ? 's' : ''}`;
-      if (words >= minWords) { countEl.classList.add('sufficient'); if (btn) btn.disabled = false; }
-      else { countEl.classList.remove('sufficient'); if (btn) btn.disabled = true; }
-    },
-
-    _submitCourtWriteGate(index) {
-      const textareaId = `wf-court-${index}-text`;
-      const text = document.getElementById(textareaId).value;
-      Game.recordWrittenAnswer(`courtroom_${index}`, text);
-      document.getElementById(`write-gate-court-${index}`).style.display = 'none';
-      document.getElementById(`court-options-${index}`).style.display = 'block';
-    },
-
-        // v4: After picking an option, show citation challenge BEFORE feedback
+  
+    // v4: After picking an option, show citation challenge BEFORE feedback
     _selectCourtArgument(caseData, argIndex, chosen) {
       const arg = caseData.courtroom.arguments[argIndex];
       const optionsContainer = document.getElementById(`court-options-${argIndex}`);
@@ -1214,5 +1246,226 @@
       const div = document.createElement('div');
       div.textContent = text;
       return div.innerHTML;
+    },
+
+
+    // ========================
+    // FEEDBACK / FLAG MECHANISM
+    // ========================
+    initFeedbackButton() {
+      // Only create once
+      if (document.getElementById('feedback-fab')) return;
+
+      const fab = document.createElement('button');
+      fab.id = 'feedback-fab';
+      fab.className = 'feedback-fab';
+      fab.innerHTML = '\uD83D\uDCE8';
+      fab.title = 'Send feedback or flag an issue';
+      fab.onclick = () => Screens.openFeedbackModal();
+      document.body.appendChild(fab);
+    },
+
+    openFeedbackModal() {
+      // Remove existing if open
+      const existing = document.getElementById('feedback-modal-overlay');
+      if (existing) { existing.remove(); return; }
+
+      const currentCase = Game.state.currentCase;
+      const caseLabel = currentCase
+        ? `Case ${String(currentCase.number).padStart(2, '0')}: ${currentCase.title}`
+        : 'General / Dashboard';
+
+      const overlay = document.createElement('div');
+      overlay.id = 'feedback-modal-overlay';
+      overlay.className = 'feedback-modal-overlay';
+      overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
+
+      overlay.innerHTML = `
+        <div class="feedback-modal">
+          <div class="feedback-modal-header">
+            <h3>\uD83D\uDCE8 Feedback & Flags</h3>
+            <button class="feedback-modal-close" onclick="document.getElementById('feedback-modal-overlay').remove()">\u2715</button>
+          </div>
+          <div class="feedback-modal-body">
+            <div class="feedback-context">Regarding: <strong>${caseLabel}</strong></div>
+            <label class="feedback-label">Type</label>
+            <select id="feedback-type" class="feedback-select">
+              <option value="flag-error">Flag a legal error in this case</option>
+              <option value="flag-unclear">Something is unclear or confusing</option>
+              <option value="flag-bug">Technical bug or display issue</option>
+              <option value="suggestion">Suggestion for improvement</option>
+              <option value="general">General feedback</option>
+            </select>
+            <label class="feedback-label">Your feedback</label>
+            <textarea id="feedback-text" class="feedback-textarea" rows="4" placeholder="Describe the issue or suggestion..."></textarea>
+            <div class="feedback-actions">
+              <button class="btn btn-primary" onclick="Screens.submitFeedback()">Submit Feedback</button>
+              <button class="btn btn-ghost" onclick="document.getElementById('feedback-modal-overlay').remove()">Cancel</button>
+            </div>
+          </div>
+        </div>
+      `;
+
+      document.body.appendChild(overlay);
+    },
+
+    submitFeedback() {
+      const type = document.getElementById('feedback-type').value;
+      const text = document.getElementById('feedback-text').value.trim();
+      if (!text) { alert('Please enter your feedback before submitting.'); return; }
+
+      const currentCase = Game.state.currentCase;
+      const entry = {
+        timestamp: new Date().toISOString(),
+        studentName: Game.state.studentName || 'Unknown',
+        caseId: currentCase ? currentCase.id : null,
+        caseNumber: currentCase ? currentCase.number : null,
+        type: type,
+        text: text,
+        screen: Game.state.currentScreen || 'unknown'
+      };
+
+      // Store in localStorage
+      const feedbackLog = JSON.parse(localStorage.getItem('drc_feedback') || '[]');
+      feedbackLog.push(entry);
+      localStorage.setItem('drc_feedback', JSON.stringify(feedbackLog));
+
+      // Replace modal content with confirmation
+      const modal = document.querySelector('.feedback-modal');
+      if (modal) {
+        modal.innerHTML = `
+          <div class="feedback-modal-header">
+            <h3>\u2713 Feedback Submitted</h3>
+            <button class="feedback-modal-close" onclick="document.getElementById('feedback-modal-overlay').remove()">\u2715</button>
+          </div>
+          <div class="feedback-modal-body" style="text-align: center; padding: 2rem;">
+            <p>Thank you! Your feedback has been saved.</p>
+            <p class="text-muted" style="font-size: 0.8rem; margin-top: 0.5rem;">Feedback is stored locally and can be exported by the instructor from the browser console:<br><code>localStorage.getItem('drc_feedback')</code></p>
+            <button class="btn btn-ghost mt-lg" onclick="document.getElementById('feedback-modal-overlay').remove()">Close</button>
+          </div>
+        `;
+      }
+    },
+
+
+    // ========================
+    // INSTRUCTOR PANEL
+    // ========================
+    renderInstructorPanel(container) {
+      const results = Game.getDetailedResults();
+      const feedback = Game.getFeedbackLog();
+
+      const screen = document.createElement('div');
+      screen.className = 'screen';
+
+      // Build results table rows
+      let resultRows = '';
+      if (results.length === 0) {
+        resultRows = '<tr><td colspan="7" style="text-align:center;color:var(--text-secondary);">No student results yet. Results appear here after students complete cases on this device.</td></tr>';
+      } else {
+        results.forEach(r => {
+          const verdictClass = r.verdict === 'won' ? 'color:#4ade80' : r.verdict === 'won_with_reservations' ? 'color:#c9a84c' : 'color:#f87171';
+          resultRows += `<tr>
+            <td>${r.studentName || 'Unknown'}</td>
+            <td>Case ${String(r.caseNumber || '?').padStart(2,'0')}</td>
+            <td>${r.caseTitle || ''}</td>
+            <td><strong>${r.totalScore}/100</strong></td>
+            <td style="${verdictClass}">${r.verdict}</td>
+            <td>${r.evidence ? r.evidence.earned + '/' + r.evidence.possible : ''} | ${r.crossExam ? r.crossExam.earned + '/' + r.crossExam.possible : ''} | ${r.courtroom ? r.courtroom.earned + '/' + r.courtroom.possible : ''}</td>
+            <td>${r.timestamp ? new Date(r.timestamp).toLocaleDateString() : ''}</td>
+          </tr>`;
+        });
+      }
+
+      // Build feedback table rows
+      let feedbackRows = '';
+      if (feedback.length === 0) {
+        feedbackRows = '<tr><td colspan="5" style="text-align:center;color:var(--text-secondary);">No feedback submitted yet.</td></tr>';
+      } else {
+        feedback.forEach(f => {
+          feedbackRows += `<tr>
+            <td>${f.studentName || f.type || ''}</td>
+            <td>${f.caseNumber ? 'Case ' + String(f.caseNumber).padStart(2,'0') : 'General'}</td>
+            <td>${f.type || ''}</td>
+            <td>${f.text || ''}</td>
+            <td>${f.timestamp ? new Date(f.timestamp).toLocaleDateString() : ''}</td>
+          </tr>`;
+        });
+      }
+
+      screen.innerHTML = `
+        <div class="screen-header">
+          <h1>\uD83C\uDF93 Instructor Panel</h1>
+          <p class="subtitle">Review student performance and feedback. Access this page by adding <code>?instructor=true</code> to the URL.</p>
+        </div>
+
+        <div style="display:flex;gap:0.75rem;margin-bottom:2rem;flex-wrap:wrap;">
+          <button class="btn btn-primary" onclick="Game.downloadExport()">\u2B07 Download All Data (JSON)</button>
+          <button class="btn btn-secondary" onclick="Screens._downloadCSV()">Download Results (CSV)</button>
+          <button class="btn btn-ghost" onclick="window.location.href=window.location.pathname;">Back to Game</button>
+        </div>
+
+        <h2 style="margin-bottom:0.75rem;">Student Results (${results.length} entries)</h2>
+        <div style="overflow-x:auto;margin-bottom:2rem;">
+          <table class="instructor-table">
+            <thead><tr>
+              <th>Student</th><th>Case</th><th>Title</th><th>Score</th><th>Verdict</th><th>Ev | CE | Court</th><th>Date</th>
+            </tr></thead>
+            <tbody>${resultRows}</tbody>
+          </table>
+        </div>
+
+        <h2 style="margin-bottom:0.75rem;">Feedback & Flags (${feedback.length} entries)</h2>
+        <div style="overflow-x:auto;margin-bottom:2rem;">
+          <table class="instructor-table">
+            <thead><tr>
+              <th>From</th><th>Case</th><th>Type</th><th>Feedback</th><th>Date</th>
+            </tr></thead>
+            <tbody>${feedbackRows}</tbody>
+          </table>
+        </div>
+
+        <div style="margin-top:2rem;padding:1rem;background:rgba(255,255,255,0.03);border-radius:8px;">
+          <h3 style="margin:0 0 0.5rem;">How to use this panel</h3>
+          <p style="font-size:0.85rem;color:var(--text-secondary);line-height:1.6;">
+            This panel shows data stored in the <strong>current browser on this device</strong>. Since the game runs client-side, each student's results are stored on their own computer.<br><br>
+            <strong>Option A (in class):</strong> Walk to the student's computer, open <code>?instructor=true</code> in the URL bar, and view or download their data.<br>
+            <strong>Option B (remote collection):</strong> Have each student click the \uD83D\uDCE8 feedback button and submit a "general feedback" with their final scores, or ask them to open <code>?instructor=true</code> and click "Download All Data" and email you the JSON file.<br>
+            <strong>Option C (student self-report):</strong> The verdict screen already shows each student their breakdown. They can screenshot it.
+          </p>
+        </div>
+      `;
+
+      container.appendChild(screen);
+    },
+
+    _downloadCSV() {
+      const results = Game.getDetailedResults();
+      if (results.length === 0) { alert('No results to export.'); return; }
+
+      let csv = 'Student,Case Number,Case Title,Total Score,Verdict,Evidence,CrossExam,Courtroom,Date\\n';
+      results.forEach(r => {
+        csv += [
+          '"' + (r.studentName || '') + '"',
+          r.caseNumber || '',
+          '"' + (r.caseTitle || '') + '"',
+          r.totalScore,
+          r.verdict,
+          r.evidence ? r.evidence.earned + '/' + r.evidence.possible : '',
+          r.crossExam ? r.crossExam.earned + '/' + r.crossExam.possible : '',
+          r.courtroom ? r.courtroom.earned + '/' + r.courtroom.possible : '',
+          r.timestamp ? new Date(r.timestamp).toLocaleDateString() : ''
+        ].join(',') + '\\n';
+      });
+
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'drc-results-' + new Date().toISOString().slice(0,10) + '.csv';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
     }
   };

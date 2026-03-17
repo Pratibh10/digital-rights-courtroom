@@ -117,7 +117,3 @@
   document.addEventListener('DOMContentLoaded', () => {
     Codex.init();
   });
-
-  
-
-  
