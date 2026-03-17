@@ -80,7 +80,7 @@ const CASES = [
         prompt: 'Based on the evidence, which EU regulation is most directly applicable to challenging this scoring system?',
         correct: 'ai-act',
         writePrompt: 'Before seeing the options, write your own analysis: which EU regulation is most relevant to this case, and why? Reference specific aspects of the CivicTrust system that make this regulation applicable.',
-        minWords: 25,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Framework Identification',
@@ -121,7 +121,7 @@ const CASES = [
         prompt: 'Which specific provision of the EU AI Act is most directly violated by the CivicTrust system?',
         correct: 'art5-1c',
         writePrompt: 'Now identify the specific article. Which provision of the AI Act does this system violate, and what are the two conditions that make the CivicTrust scoring system fall under this prohibition?',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Specific Article',
@@ -257,7 +257,7 @@ const CASES = [
           evidenceId: 'ev2-policy-document',
           oppositionArgument: 'Your Honour, CivicTrust serves a critical public function: fair and efficient allocation of scarce social housing. The system does not engage in "social scoring" as contemplated by Article 5(1)(c). It is a purpose-specific evaluation tool that assesses residents\' engagement with municipal services — services funded by taxpayer money — to prioritise housing allocation. Recital 31 of the AI Act explicitly preserves "lawful evaluation practices of natural persons that are carried out for a specific purpose in accordance with Union and national law." Helsinki has a legal obligation under Finnish housing law to allocate limited resources effectively. CivicTrust fulfils this statutory mandate using objective, data-driven criteria rather than subjective caseworker judgment. The applicant\'s counsel would have this court shut down a system that has improved allocation efficiency by 34% and reduced processing times significantly.',
           writePrompt: 'Opposing counsel claims CivicTrust is a lawful purpose-specific evaluation, not social scoring. How would you counter this? Think about what makes the data collection in this system different from a legitimate housing assessment.',
-          minWords: 20,
+          minWords: 10,
           requiredConcepts: [
             {
               name: 'Cross-Context Argument',
@@ -272,14 +272,14 @@ const CASES = [
             {
               id: 'arg1-strong',
               quality: 'strong',
-              text: 'Your Honour, opposing counsel\'s reliance on Recital 31 actually undermines their position. The exception for "purpose-specific evaluation" requires that the evaluation uses data relevant to that specific purpose. A legitimate housing assessment would consider income, family size, current housing conditions, and urgency of need. CivicTrust does none of this. Instead, it aggregates library return compliance, public transport regularity, and neighbour complaints — data from contexts entirely unrelated to housing need — into a behavioural score that determines housing access. This is precisely the cross-context detrimental treatment that Article 5(1)(c) was designed to prohibit.',
+              text: 'Your Honour, opposing counsel\'s reliance on Recital 31 actually undermines their position. The exception for "purpose-specific evaluation" requires that the evaluation uses data relevant to that specific purpose. A legitimate housing assessment would consider income, family size, current housing conditions, and urgency of need. CivicTrust does none of this. Instead, it aggregates library return compliance, public transport regularity, and neighbour complaints — data from contexts entirely unrelated to housing need — into a behavioural score that determines housing access. This is precisely the cross-context detrimental treatment that Article 5(1)(c) was designed to prohibit. The fact that the system serves a municipal function does not immunise it. Article 5 applies to public authorities and private entities alike.',
               judge_response: 'A well-constructed rebuttal, Counsel. The court notes the distinction between data relevant to housing allocation and behavioural data from unrelated municipal services. Dr. Lähteenmäki, the court would appreciate your response to this characterisation of the data sources.',
               legal_reasoning: 'This is the strongest argument because it directly addresses opposing counsel\'s Recital 31 defence by demonstrating that the exception requires purpose-relevant data. The key legal test under Article 5(1)(c) requires showing detrimental treatment "in social contexts that are unrelated to the contexts in which the data was originally generated or collected." Library compliance used for housing decisions is a textbook example of cross-context use.'
             },
             {
               id: 'arg1-weak',
               quality: 'weak',
-              text: 'Your Honour, the CivicTrust system is fundamentally unfair to vulnerable citizens. My client was removed from the housing waiting list because of overdue library books and an unsubstantiated neighbour complaint — while she was in hospital. No reasonable system should punish a single mother for being ill. The efficiency gains that opposing counsel touts come at the cost of human dignity. The Authority should therefore address the respondent\u2019s conduct under this specific provision rather than the general framework the defence has invoked.',
+              text: 'Your Honour, the CivicTrust system is fundamentally unfair to vulnerable citizens. My client was removed from the housing waiting list because of overdue library books and an unsubstantiated neighbour complaint — while she was in hospital. No reasonable system should punish a single mother for being ill. The efficiency gains that opposing counsel touts come at the cost of human dignity.',
               judge_response: 'Counsel, while the court is sympathetic to your client\'s circumstances, I need you to ground your argument in the specific legal provisions of the AI Act. The question before us is whether this system meets the legal definition of a prohibited practice, not whether it is broadly unfair. Can you direct me to the specific elements of Article 5(1)(c)?',
               legal_reasoning: 'This argument is emotionally compelling but legally imprecise. It makes a fairness claim rather than connecting to the specific legal test in Article 5(1)(c). The second limb of the prohibition — treatment "disproportionate to their social behaviour or its gravity" — actually supports this point, but it needs to be explicitly cited. Opposing counsel can easily dismiss fairness arguments; they cannot dismiss statutory text.'
             },
@@ -293,7 +293,7 @@ const CASES = [
             {
               id: 'arg1-wrong',
               quality: 'wrong',
-              text: 'Your Honour, the City of Helsinki failed to register CivicTrust as a high-risk AI system under Annex III and did not conduct the required conformity assessment under Article 43. The system is therefore being operated unlawfully and must be suspended until these compliance requirements are met. The regulatory framework specifically anticipates situations of this nature and imposes obligations that the respondent has manifestly failed to satisfy. This provision establishes a comprehensive framework for addressing precisely this kind of conduct and provides enforcement tools for meaningful corrective action.',
+              text: 'Your Honour, the City of Helsinki failed to register CivicTrust as a high-risk AI system under Annex III and did not conduct the required conformity assessment under Article 43. The system is therefore being operated unlawfully and must be suspended until these compliance requirements are met.',
               judge_response: 'Counsel, I must intervene. You appear to be arguing that CivicTrust is a non-compliant high-risk system. But your own filing characterises it as a prohibited practice under Article 5. These are mutually exclusive positions — a prohibited system cannot be made compliant through conformity assessment. Which is your position: that this system is prohibited, or that it is high-risk but non-compliant?',
               legal_reasoning: 'This confuses prohibited practices (Article 5) with high-risk systems (Article 6/Annex III). This is the most common mistake in AI Act analysis. If you argue for conformity assessment, you implicitly concede the system could be made lawful — which directly contradicts the claim that it is prohibited. Opposing counsel would immediately exploit this inconsistency.'
             }
@@ -304,7 +304,7 @@ const CASES = [
           evidenceId: 'ev5-witness-statement',
           oppositionArgument: 'Your Honour, even if the court has concerns about the data sources, I must emphasise that CivicTrust includes robust human oversight. Every removal decision is reviewed by a trained housing case worker before it takes effect. No citizen is removed from the waiting list by the algorithm alone — a human being makes the final call. This distinguishes CivicTrust from the autonomous social scoring systems that Article 5 was designed to address. The system is advisory; the case worker is the decision-maker. If the applicant\'s counsel has concerns about the quality of individual review decisions, the appropriate remedy is administrative law review of those decisions — not a blanket prohibition of the technology.',
           writePrompt: 'Opposing counsel says human oversight makes the system lawful. What did the evidence actually reveal about how the review works? And more fundamentally — does human oversight matter under Article 5?',
-          minWords: 20,
+          minWords: 10,
           requiredConcepts: [
             {
               name: 'Oversight Quality',
@@ -319,14 +319,14 @@ const CASES = [
             {
               id: 'arg2-strong',
               quality: 'strong',
-              text: 'Your Honour, the evidence directly contradicts opposing counsel\'s characterisation. The case worker testimony confirms each review takes approximately 2 minutes, she processes 40 to 60 removals per week, and she does not understand how the scoring components are calculated. The system statistics show a 98.7% confirmation rate — only 16 overrides out of 1,187 removals. This is not meaningful oversight; it is a rubber stamp. But more fundamentally, opposing counsel misunderstands the structure of Article 5.',
+              text: 'Your Honour, the evidence directly contradicts opposing counsel\'s characterisation. The case worker testimony confirms each review takes approximately 2 minutes, she processes 40 to 60 removals per week, and she does not understand how the scoring components are calculated. The system statistics show a 98.7% confirmation rate — only 16 overrides out of 1,187 removals. This is not meaningful oversight; it is a rubber stamp. But more fundamentally, opposing counsel misunderstands the structure of Article 5. The prohibition attaches to the AI system itself — "the placing on the market, the putting into service or the use of AI systems for the evaluation or classification" based on social behaviour. Article 5 prohibits the system, not individual decisions. Adding a perfunctory human step does not transform a prohibited system into a lawful one. Human oversight is a relevant consideration for high-risk systems under Article 14 — not for prohibited practices.',
               judge_response: 'The court finds this argument compelling on both levels. The empirical evidence regarding the review process is noted — 98.7% confirmation with 2-minute reviews raises serious questions about the meaningfulness of oversight. And the structural point about Article 5 attaching to the system rather than individual decisions is legally significant. Dr. Lähteenmäki, the court would like to hear how you reconcile the confirmation rate with your characterisation of "robust oversight."',
               legal_reasoning: 'This is the strongest argument because it demolishes the human oversight defence with concrete evidence AND makes the deeper structural point: Article 5 prohibits the system itself, not automated decisions. Human oversight is relevant under Article 14 (high-risk systems) but cannot cure an Article 5 prohibition. The two-level attack — factual rebuttal plus legal framework — is very difficult for opposing counsel to answer.'
             },
             {
               id: 'arg2-weak',
               quality: 'weak',
-              text: 'Your Honour, the GDPR requires that automated decisions significantly affecting individuals must involve meaningful human intervention under Article 22. A 2-minute review where the case worker does not understand the scoring methodology cannot constitute meaningful intervention. The decisions are therefore effectively fully automated, and the oversight claim is a fiction. This kind of behaviour should not be tolerated under the regulatory framework and the Authority must take decisive corrective action to address it.',
+              text: 'Your Honour, the GDPR requires that automated decisions significantly affecting individuals must involve meaningful human intervention under Article 22. A 2-minute review where the case worker does not understand the scoring methodology cannot constitute meaningful intervention. The decisions are therefore effectively fully automated, and the oversight claim is a fiction.',
               judge_response: 'Counsel, the GDPR argument has some merit regarding the quality of the review, but we are examining this system primarily under the AI Act. Can you tell me whether the presence or absence of human oversight changes the legal analysis under Article 5(1)(c) specifically?',
               legal_reasoning: 'This argument is valid but relies on the GDPR framework rather than the AI Act. Under the AI Act, the critical point is that Article 5 prohibitions apply to the system regardless of oversight arrangements. The GDPR argument about meaningful human intervention is supplementary, not primary. In this proceeding, the AI Act provides the stronger weapon.'
             },
@@ -340,7 +340,7 @@ const CASES = [
             {
               id: 'arg2-wrong',
               quality: 'wrong',
-              text: 'Your Honour, the fact that a human case worker reviews every decision means CivicTrust is not truly an AI system. Since the final determination is made by a person, the AI Act does not apply to these decisions. The system is merely an advisory tool that supports human judgement, and advisory tools fall outside the scope of Regulation 2024/1689. The Authority should therefore address the respondent\u2019s conduct under this specific provision rather than the general framework the defence has invoked.',
+              text: 'Your Honour, the fact that a human case worker reviews every decision means CivicTrust is not truly an AI system. Since the final determination is made by a person, the AI Act does not apply to these decisions. The system is merely an advisory tool that supports human judgement, and advisory tools fall outside the scope of Regulation 2024/1689.',
               judge_response: 'Counsel, that argument is not supported by the legislation. The AI Act applies to AI systems that are "used" for certain purposes — the definition does not require autonomous decision-making. An AI system that generates a score which is then routinely adopted by a human decision-maker remains an AI system under Regulation 2024/1689. I must reject this submission.',
               legal_reasoning: 'This misunderstands the AI Act\'s scope entirely. The Act applies to AI systems based on their function, not on whether a human makes the final decision. Article 5(1)(c) prohibits "the use of AI systems for the evaluation or classification" — the prohibited activity is the scoring itself, not the downstream decision. Opposing counsel would immediately point out that this interpretation would create a loophole allowing any prohibited system to operate with a nominal human sign-off.'
             }
@@ -351,7 +351,7 @@ const CASES = [
           evidenceId: 'ev6-statistics',
           oppositionArgument: 'Your Honour, even if — and I stress "if" — the court finds technical non-compliance, the appropriate remedy is proportionate modification, not destruction of a system that serves 24,000 residents. The City proposes three remedial measures: first, limiting data sources to housing-relevant criteria; second, increasing review time to a minimum of 15 minutes per case; and third, engaging an independent auditor to assess the revised system. This proportionate approach preserves the public benefit of data-driven allocation while addressing any concerns about data scope and oversight quality. Shutting down CivicTrust entirely would revert Helsinki to a purely manual process that is slower, more subjective, and — respectfully — more susceptible to human bias than an algorithmic system.',
           writePrompt: 'Opposing counsel proposes modifying the system instead of shutting it down. What is the key distinction in the AI Act\'s architecture that determines whether a system can be fixed or must be stopped? What remedy should you ask for?',
-          minWords: 20,
+          minWords: 10,
           requiredConcepts: [
             {
               name: 'Prohibition vs Compliance',
@@ -366,14 +366,14 @@ const CASES = [
             {
               id: 'arg3-strong',
               quality: 'strong',
-              text: 'Your Honour, opposing counsel asks for proportionate modification \u2014 but Article 5 is a categorical prohibition, not a compliance framework. The distinction is fundamental to the AI Act\u2019s architecture: high-risk systems under Article 6 can be made lawful through conformity assessment and risk management. Prohibited practices under Article 5 cannot \u2014 there is no pathway to compliance. The system must cease. I request three remedies: first, an order requiring the City to discontinue CivicTrust immediately; second, reinstatement of Ms Korhonen and all citizens removed on the basis of CRI scores; and third, referral to the Finnish market surveillance authority for enforcement action under Article 99(3).',
+              text: 'Your Honour, opposing counsel asks for proportionate modification — but Article 5 is a categorical prohibition, not a compliance framework. The distinction is fundamental to the AI Act\'s architecture: high-risk systems under Article 6 can be made lawful through conformity assessment, risk management, and oversight requirements. Prohibited practices under Article 5 cannot. There is no pathway to compliance for a prohibited system — it must cease. I request three remedies: first, an order requiring the City to discontinue CivicTrust immediately; second, reinstatement of Ms Korhonen and all citizens removed on the basis of CRI scores to their prior positions on the waiting list; and third, referral to the Finnish market surveillance authority for enforcement action, noting that Article 99(3) provides for penalties of up to 35 million euros or 7% of annual turnover for prohibited practice violations.',
               judge_response: 'The court appreciates the precision of this submission. Counsel correctly identifies the categorical nature of the Article 5 prohibition and the distinction from high-risk regulatory treatment. Dr. Lähteenmäki, the court observes that if the system is found to constitute a prohibited practice, the regulation does not contemplate modification as a remedy. The court will take all submissions under advisement.',
               legal_reasoning: 'This is the strongest argument because it demonstrates command of the AI Act\'s regulatory architecture. The prohibited vs. high-risk distinction is the most important structural concept in the Act. Requesting specific remedies — cessation, reinstatement, and enforcement referral with the correct fine figure — demonstrates both legal precision and advocacy for the client.'
             },
             {
               id: 'arg3-weak',
               quality: 'weak',
-              text: 'Your Honour, while I believe the system should ideally be shut down, perhaps the court could consider a compromise: order the City to suspend CivicTrust pending a thorough revision that removes non-housing data sources and implements genuine human oversight. This would address the immediate harm while giving the City time to develop a compliant alternative. This interpretation follows from the architecture of the regulation itself, which draws a deliberate distinction between prohibited practices and compliance-eligible high-risk systems.',
+              text: 'Your Honour, while I believe the system should ideally be shut down, perhaps the court could consider a compromise: order the City to suspend CivicTrust pending a thorough revision that removes non-housing data sources and implements genuine human oversight. This would address the immediate harm while giving the City time to develop a compliant alternative.',
               judge_response: 'Counsel, I appreciate the pragmatic approach, but I must press you: if this court finds a prohibited practice under Article 5, does the AI Act permit suspension-pending-modification as a remedy, or does it require something more definitive? I want to be certain of your legal position.',
               legal_reasoning: 'This argument is weak because it accepts opposing counsel\'s framing that the system can be reformed. If CivicTrust constitutes a prohibited practice, suggesting modification — even temporary suspension pending revision — undermines the legal position. It implies the system is merely non-compliant rather than fundamentally unlawful. A strong advocate who has established a prohibition demands cessation, not compromise.'
             },
@@ -387,7 +387,7 @@ const CASES = [
             {
               id: 'arg3-wrong',
               quality: 'wrong',
-              text: 'Your Honour, I request that the court order the City to conduct a fundamental rights impact assessment under Article 27 and register the system in the EU database under Article 71. These compliance measures would ensure transparency and accountability going forward, and would allow the system to continue operating under proper regulatory oversight. The Authority should therefore address the respondent\u2019s conduct under this specific provision rather than the general framework the defence has invoked.',
+              text: 'Your Honour, I request that the court order the City to conduct a fundamental rights impact assessment under Article 27 and register the system in the EU database under Article 71. These compliance measures would ensure transparency and accountability going forward, and would allow the system to continue operating under proper regulatory oversight.',
               judge_response: 'Counsel, I must note the contradiction in your position. Articles 27 and 71 are obligations for high-risk AI systems — they are compliance mechanisms for lawful systems, not remedies for unlawful ones. If this court finds a prohibited practice under Article 5, there is no pathway to continued operation through impact assessments or registration. Your submission on remedy appears to be inconsistent with your earlier arguments.',
               legal_reasoning: 'This is wrong because it requests high-risk compliance measures (fundamental rights impact assessment under Article 27, EU database registration under Article 71) for a system the student has been arguing is prohibited. This contradiction would be devastating in court — it suggests the advocate does not understand the difference between the Act\'s two main regulatory categories and effectively concedes the system could lawfully continue operating.'
             }
@@ -473,7 +473,7 @@ const CASES = [
         prompt: 'Based on the facts presented, which EU digital law framework primarily governs the legality of the Workforce Trust Score system?',
         correct: 'ai-act',
         writePrompt: 'Identify the applicable EU digital law framework. Justify your answer by referencing the specific capabilities and purpose of the OmniMart system.',
-        minWords: 25,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'AI System',
@@ -508,7 +508,7 @@ const CASES = [
         prompt: 'Which specific article of the EU AI Act establishes the prohibition most relevant to the Workforce Trust Score?',
         correct: 'art5-1c',
         writePrompt: 'Identify the exact article number and explain the legal test it establishes for this prohibition. What are the two alternative conditions that make social scoring prohibited?',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Article 5',
@@ -638,7 +638,7 @@ const CASES = [
           evidenceId: 'ev4-compliance-email',
           oppositionArgument: 'Your Honour, the applicant fundamentally mischaracterises the Workforce Trust Score. Article 5(1)(c) of the AI Act was designed to address government-run social credit systems — the kind of mass population surveillance seen in authoritarian regimes. OmniMart is a private retailer exercising its legitimate right to evaluate employee reliability and cultural fit. The legislative history of the AI Act makes clear that the social scoring prohibition was motivated by concerns about state power, not private employment decisions. Every employer in Europe uses some form of performance evaluation. If this court extends the Article 5(1)(c) prohibition to private companies, it would effectively ban all AI-assisted HR tools across the continent. That cannot have been the legislator\'s intention.',
           writePrompt: 'Opposing counsel claims Article 5(1)(c) only applies to governments, not private companies. Is this correct? Look at the text of the article — does it distinguish between public and private actors?',
-          minWords: 20,
+          minWords: 10,
           requiredConcepts: [
             {
               name: 'Scope of Prohibition',
@@ -660,7 +660,7 @@ const CASES = [
             {
               id: 'arg1-weak',
               quality: 'weak',
-              text: 'Your Honour, the AI Act bans social scoring completely. It does not matter what the company thinks. They are not allowed to score employees like this because it is a violation of fundamental rights and the AI Act covers all citizens regardless of whether the scorer is a government or a corporation. Any reasonable assessment would recognise that the respondent acted improperly and that meaningful intervention is required to ensure compliance. This kind of behaviour should not be tolerated under the regulatory framework and the Authority must take decisive corrective action to address it.',
+              text: 'Your Honour, the AI Act bans social scoring completely. It does not matter what the company thinks. They are not allowed to score employees like this because it is a violation of fundamental rights and the AI Act covers all citizens regardless of whether the scorer is a government or a corporation.',
               judge_response: 'I agree with your conclusion, Counsel, but your legal reasoning lacks specific statutory reference. Can you direct me to the exact language in Article 5 or the recitals that supports the application to private actors?',
               legal_reasoning: 'While the conclusion is correct, this argument fails to cite the specific textual evidence. In adversarial proceedings, you need to direct the court to the exact provisions that support your position. A general appeal to fundamental rights does not specifically address opposing counsel\'s claim about legislative intent.'
             },
@@ -674,7 +674,7 @@ const CASES = [
             {
               id: 'arg1-wrong',
               quality: 'wrong',
-              text: 'Your Honour, the company is wrong because private employers are covered under Annex III for high-risk employment systems. They need to register the system and complete a conformity assessment. Once they do that, the system could potentially continue operating lawfully. This provision establishes a comprehensive framework for addressing precisely this kind of conduct and provides enforcement tools for meaningful corrective action. The regulatory framework specifically anticipates situations of this nature and imposes obligations that the respondent has manifestly failed to satisfy.',
+              text: 'Your Honour, the company is wrong because private employers are covered under Annex III for high-risk employment systems. They need to register the system and complete a conformity assessment. Once they do that, the system could potentially continue operating lawfully.',
               judge_response: 'Counsel, I must stop you. Are you arguing that this system is a prohibited practice or a non-compliant high-risk system? These are fundamentally different legal positions. If it is prohibited under Article 5, conformity assessment is irrelevant — the system must cease entirely.',
               legal_reasoning: 'This confuses prohibited practices (Article 5) with high-risk systems (Article 6/Annex III). By suggesting the system could operate after conformity assessment, counsel implicitly concedes it is not prohibited — directly undermining their own case. Opposing counsel would immediately exploit this contradiction.'
             }
@@ -685,7 +685,7 @@ const CASES = [
           evidenceId: 'ev6-statistics',
           oppositionArgument: 'Your Honour, even if the court finds the prohibition applies to private entities, the Workforce Trust Score does not meet the legal definition of prohibited social scoring. This is a legitimate employee performance evaluation tool. It assesses workplace reliability — a directly relevant criterion for promotion decisions. The system considers how employees interact with colleagues, their attitude toward company policies, and their overall cultural alignment. These are standard HR considerations that every employer evaluates, whether through AI or through a manager\'s subjective impressions. The fact that some data points come from social media does not transform a performance tool into a social scoring system. Ms Rostova was not denied housing or government services — she was simply not promoted based on a holistic assessment of her suitability for a leadership role.',
           writePrompt: 'Opposing counsel says this is just a performance evaluation. Apply the specific legal test from Article 5(1)(c) to the facts. Where does the data come from? Where is it used? Is the treatment proportionate?',
-          minWords: 20,
+          minWords: 10,
           requiredConcepts: [
             {
               name: 'Unrelated Contexts',
@@ -700,28 +700,28 @@ const CASES = [
             {
               id: 'arg2-strong',
               quality: 'strong',
-              text: 'Your Honour, opposing counsel describes this as a performance evaluation, but the evidence satisfies every element of the Article 5(1)(c) prohibition. The Workforce Trust Score evaluates natural persons over a rolling twelve-month period. It classifies them based on social behaviour and personality characteristics \u2014 explicitly scoring break room interactions, social media sentiment, and predicted disruptive traits. The resulting classification leads to detrimental treatment in an unrelated context: social media posts about lunch breaks and casual conversations deny a promotion to the region\u2019s top-performing employee. The social surveillance data has no connection to point-of-sale performance. Denying career advancement to the highest-performing employee because of lunch-break complaints is manifestly disproportionate.',
+              text: 'Your Honour, opposing counsel describes this as a performance evaluation, but the evidence shows otherwise. The system meets every element of the Article 5(1)(c) prohibition. First, it evaluates natural persons over time — the Workforce Trust Score operates on a rolling twelve-month assessment period. Second, it classifies them based on social behaviour and personality characteristics — the system explicitly scores break room interactions, social media sentiment, and predicted "disruptive personality characteristics." Third, the resulting score leads to detrimental treatment in unrelated contexts — social media posts about lunch breaks and casual conversations with colleagues are used to deny a promotion, despite the employee having the highest sales figures in the region. The data from social media and break room surveillance has no connection to point-of-sale performance. Finally, the treatment is disproportionate — denying a career advancement to the top-performing employee in the region because of social media complaints about lunch breaks is manifestly disproportionate to the gravity of the behaviour.',
               judge_response: 'The court appreciates this systematic application of the statutory elements. Each criterion appears to be supported by the documentary evidence. Dr. Brandt, the statistics before the court show that an employee in the 99th percentile for sales was denied a promotion while employees in the 30th and 45th percentiles were promoted. How do you characterise this as a performance evaluation?',
               legal_reasoning: 'This is the strongest argument because it methodically walks through every element of the Article 5(1)(c) test and connects each one to specific evidence. It addresses both alternative conditions — unrelated context (social media used for promotions) and disproportionate treatment (top performer denied for minor social behaviour). This systematic approach is very difficult for opposing counsel to counter.'
             },
             {
               id: 'arg2-weak',
               quality: 'weak',
-              text: 'Your Honour, evaluating someone\'s cultural fit using social media surveillance is a violation of their privacy and dignity. The AI is judging her personality rather than her sales numbers, which is unfair and constitutes illegal scoring under the AI Act. No employee should have their break room conversations monitored and used against them. Any reasonable assessment would recognise that the respondent acted improperly and that meaningful intervention is required to ensure compliance.',
+              text: 'Your Honour, evaluating someone\'s cultural fit using social media surveillance is a violation of their privacy and dignity. The AI is judging her personality rather than her sales numbers, which is unfair and constitutes illegal scoring under the AI Act. No employee should have their break room conversations monitored and used against them.',
               judge_response: 'Counsel, you highlight the unfairness of the system, but I need you to anchor this to the specific legal test in Article 5(1)(c). The question before this court is not whether the system is unfair in general, but whether it meets the specific statutory criteria for a prohibited practice. Can you identify those criteria?',
               legal_reasoning: 'This argument identifies the factual problem but fails to apply the specific legal test from Article 5(1)(c). It relies on general privacy and fairness claims rather than demonstrating the "unrelated context" or "disproportionate treatment" elements. In adversarial proceedings, vague fairness arguments are much easier for opposing counsel to dismiss than precise statutory analysis.'
             },
             {
               id: 'arg2-plausible',
               quality: 'plausible',
-              text: 'Your Honour, the Workforce Trust Score violates Article 5(1)(c) because it evaluates natural persons over time based on personality characteristics. However, the system additionally violates Article 5(1)(d) of the AI Act. The break room camera surveillance constitutes the untargeted scraping of images from CCTV footage, and the social media monitoring scrapes facial images from the internet. Both activities build identification databases falling under the Article 5(1)(d) prohibition on building facial recognition databases through untargeted scraping. OmniMart has therefore violated two separate prohibited practices simultaneously. This interpretation aligns with the regulatory architecture which carefully distinguishes obligations by system risk category and provider type.',
+              text: 'Your Honour, the Workforce Trust Score violates Article 5(1)(c) because it evaluates natural persons over time based on personality characteristics. However, the system additionally violates Article 5(1)(d) of the AI Act. The break room camera surveillance constitutes the untargeted scraping of images from CCTV footage, and the social media monitoring scrapes facial images from the internet. Both activities build identification databases falling under the Article 5(1)(d) prohibition on building facial recognition databases through untargeted scraping. OmniMart has therefore violated two separate prohibited practices simultaneously.',
               judge_response: 'Counsel, your Article 5(1)(c) analysis is sound, but I am not certain the break room surveillance qualifies as untargeted facial image scraping under Article 5(1)(d). That provision addresses building facial recognition databases, not workplace social analysis. Can you clarify?',
               legal_reasoning: 'This starts correctly with 5(1)(c) but overreaches by citing 5(1)(d), which prohibits scraping facial images to build recognition databases — not break room behavioural analysis. The break room cameras analyse social interactions, not facial identity. By citing the wrong additional prohibition, counsel dilutes a winning argument with a losing one.'
             },
             {
               id: 'arg2-wrong',
               quality: 'wrong',
-              text: 'Your Honour, the system is illegal because it processes personal data without explicit consent under GDPR Article 22. The employees were not informed about the social media scraping or break room monitoring. If Elena had signed a consent form for this data processing, the performance evaluation would be legally valid under the GDPR framework. The Authority should therefore address the respondent\u2019s conduct under this specific provision rather than the general framework the defence has invoked.',
+              text: 'Your Honour, the system is illegal because it processes personal data without explicit consent under GDPR Article 22. The employees were not informed about the social media scraping or break room monitoring. If Elena had signed a consent form for this data processing, the performance evaluation would be legally valid under the GDPR framework.',
               judge_response: 'Counsel, we are examining this system under the AI Act, not the GDPR. And I must note a critical legal error in your submission: consent does not override an absolute prohibition. Even if every employee had signed a consent form, this would not affect the analysis under Article 5(1)(c). A prohibited practice cannot be made lawful through consent.',
               legal_reasoning: 'This commits two fundamental errors. First, it shifts the framework from the AI Act to the GDPR, which is not the primary issue. Second, and more seriously, it implies that a prohibited AI practice could be validated by obtaining user consent. Article 5 prohibitions are absolute — no amount of consent, transparency, or procedural safeguard can make a prohibited practice lawful. This argument would severely damage credibility before the court.'
             }
@@ -732,7 +732,7 @@ const CASES = [
           evidenceId: 'ev2-policy-document',
           oppositionArgument: 'Your Honour, if — and I stress "if" — the court finds any technical non-compliance, OmniMart is prepared to take immediate remedial action. We propose three measures: first, removing social media data from the scoring algorithm; second, implementing mandatory human review by a senior HR manager for any score below 50; and third, registering the system in the EU database as a high-risk employment AI system under Annex III. These proportionate modifications would address any concerns about data scope and oversight while preserving a valuable workforce management tool that serves 12,000 employees across 200 stores. Surely this court would prefer targeted remediation over the nuclear option of ordering complete system shutdown.',
           writePrompt: 'Opposing counsel wants to modify the system to make it compliant. Is this legally possible for a system that falls under Article 5? What is the fundamental difference between prohibited and high-risk systems in the AI Act?',
-          minWords: 20,
+          minWords: 10,
           requiredConcepts: [
             {
               name: 'Absolute Prohibition',
@@ -747,28 +747,28 @@ const CASES = [
             {
               id: 'arg3-strong',
               quality: 'strong',
-              text: 'Your Honour, opposing counsel\'s proposal is legally invalid. Article 5 establishes a list of prohibited AI practices representing unacceptable risk. This is fundamentally different from the high-risk classification under Article 6, where systems can be made lawful through conformity assessment, risk management, and human oversight requirements. A prohibited practice under Article 5 cannot be remedied, mitigated, or modified into compliance — it must cease entirely. OmniMart cannot register a prohibited system as a high-risk system and continue operating it; these are mutually exclusive regulatory categories.',
+              text: 'Your Honour, opposing counsel\'s proposal is legally invalid. Article 5 establishes a list of prohibited AI practices representing unacceptable risk. This is fundamentally different from the high-risk classification under Article 6, where systems can be made lawful through conformity assessment, risk management, and human oversight requirements. A prohibited practice under Article 5 cannot be remedied, mitigated, or modified into compliance — it must cease entirely. OmniMart cannot register a prohibited system as a high-risk system and continue operating it; these are mutually exclusive regulatory categories. The only lawful course of action is the immediate withdrawal and discontinuation of the Workforce Trust Score, subject to administrative fines of up to 35 million euros or 7% of worldwide annual turnover under Article 99(3). I further request that all employment decisions made on the basis of the Trust Score be reviewed and that Ms Rostova\'s promotion application be reconsidered on its merits.',
               judge_response: 'The court finds this submission legally sound. The distinction between prohibited practices and high-risk systems is indeed fundamental to the Act\'s architecture. If the Workforce Trust Score constitutes a prohibited practice, the regulation does not contemplate modification as a remedy. Dr. Brandt, the court will take your proposal under advisement, but notes the structural objection raised by opposing counsel.',
               legal_reasoning: 'This is the strongest answer because it clearly articulates the most important structural concept in the AI Act: the distinction between prohibited practices (which must cease) and high-risk systems (which can be made compliant). By explicitly requesting specific remedies — cessation, decision review, and reconsideration of the promotion — it demonstrates both legal precision and client advocacy. The citation of the exact penalty provision shows command of the enforcement framework.'
             },
             {
               id: 'arg3-weak',
               quality: 'weak',
-              text: 'Your Honour, human oversight is not enough. The system is doing social scoring, which is banned by the AI Act. They cannot just register it and keep using it. They must stop using the Trust Score immediately. Modifying the data sources does not change the fundamental nature of what the system does. This kind of behaviour should not be tolerated under the regulatory framework and the Authority must take decisive corrective action to address it.',
+              text: 'Your Honour, human oversight is not enough. The system is doing social scoring, which is banned by the AI Act. They cannot just register it and keep using it. They must stop using the Trust Score immediately. Modifying the data sources does not change the fundamental nature of what the system does.',
               judge_response: 'That is the correct outcome, Counsel. But I would appreciate a more thorough explanation of the structural difference between prohibited and high-risk systems in the AI Act. Why specifically can this system not be made compliant?',
               legal_reasoning: 'The conclusion is correct, but the argument lacks the depth of legal reasoning that would make it persuasive. It does not explain the structural distinction between Article 5 (prohibited) and Article 6 (high-risk), which is the key to defeating the modification proposal. A stronger argument would articulate why these categories are mutually exclusive.'
             },
             {
               id: 'arg3-plausible',
               quality: 'plausible',
-              text: 'Your Honour, opposing counsel\'s proposed modifications are legally insufficient, but not because the system must cease entirely. The modifications fail because they do not satisfy requirements for high-risk employment AI systems under Article 6 and Annex III. OmniMart must complete a full conformity assessment under Article 43, implement a quality management system under Article 17, establish a risk management framework under Article 9, and provide technical documentation under Article 11. I request the court order OmniMart to suspend operations until full Annex III compliance is achieved. The Authority should therefore ground its finding in this specific framework rather than the general provisions the complainant has relied upon.',
+              text: 'Your Honour, opposing counsel\'s proposed modifications are legally insufficient, but not because the system must cease entirely. The modifications fail because they do not satisfy requirements for high-risk employment AI systems under Article 6 and Annex III. OmniMart must complete a full conformity assessment under Article 43, implement a quality management system under Article 17, establish a risk management framework under Article 9, and provide technical documentation under Article 11. I request the court order OmniMart to suspend operations until full Annex III compliance is achieved.',
               judge_response: 'Counsel, you have outlined the high-risk compliance pathway thoroughly. But if this system constitutes a prohibited practice under Article 5, does the high-risk compliance pathway under Article 6 remain available at all?',
               legal_reasoning: 'The most dangerous trap answer because it sounds like a tough, demanding legal position. But it implicitly accepts the system is a high-risk system (Article 6) rather than a prohibited practice (Article 5). By arguing for suspension pending compliance rather than permanent cessation, counsel concedes the system can lawfully exist.'
             },
             {
               id: 'arg3-wrong',
               quality: 'wrong',
-              text: 'Your Honour, I accept that the proposed modifications would bring the system into compliance. By adding meaningful human oversight and registering as a high-risk employment system, OmniMart would satisfy the requirements of the AI Act. My only concern is that the modifications must be genuine and independently verified. The regulatory framework specifically anticipates situations of this nature and imposes obligations that the respondent has manifestly failed to satisfy.',
+              text: 'Your Honour, I accept that the proposed modifications would bring the system into compliance. By adding meaningful human oversight and registering as a high-risk employment system, OmniMart would satisfy the requirements of the AI Act. My only concern is that the modifications must be genuine and independently verified.',
               judge_response: 'Counsel, I must ask you to reconsider your position. If this court has found that the Workforce Trust Score constitutes a prohibited practice under Article 5, does the regulation permit modification as a pathway to continued operation? Your own earlier arguments characterised this system as prohibited.',
               legal_reasoning: 'This is a devastating concession. By accepting the modification proposal, counsel implicitly admits the system is not prohibited but merely non-compliant — directly contradicting everything argued in the first two rounds. This error reflects a fundamental misunderstanding of the AI Act\'s architecture: a prohibited practice under Article 5 cannot be converted into a compliant high-risk system through modifications. Opposing counsel would immediately point to this concession as evidence that even the applicant\'s own lawyer does not believe the system is truly prohibited.'
             }
@@ -854,7 +854,7 @@ const CASES = [
         prompt: 'Based on the facts presented, which EU digital law framework primarily governs the legality of the NeuroConversion Engine?',
         correct: 'ai-act',
         writePrompt: 'Identify the applicable EU digital law framework. Justify your answer by referencing the specific technical capabilities of the LuminaCart system.',
-        minWords: 25,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'AI System',
@@ -889,7 +889,7 @@ const CASES = [
         prompt: 'Which specific article of the EU AI Act establishes the prohibition most relevant to the NeuroConversion Engine?',
         correct: 'art5-1a',
         writePrompt: 'Identify the exact article number and explain the legal test it establishes for this prohibition. What elements must be proven?',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Article 5(1)(a)',
@@ -1019,7 +1019,7 @@ const CASES = [
           evidenceId: 'ev2-technical-document',
           oppositionArgument: 'Your Honour, the applicant fundamentally misunderstands our technology. The NeuroConversion Engine is merely a highly optimized, dynamic user interface. Yes, the frame changes are fast, and the audio is subtle, but this is just aggressive marketing and A/B testing. At worst, this might be scrutinized as a "dark pattern" under Article 25 of the Digital Services Act. But it is not an AI Act issue. We are simply presenting products in an appealing way, and consumers are free to look away.',
           writePrompt: 'Opposing counsel claims this is just a DSA "dark pattern" and not an AI Act violation. Formulate a counter-argument applying the specific threshold from Article 5(1)(a) that distinguishes this system from a standard deceptive UI.',
-          minWords: 20,
+          minWords: 10,
           requiredConcepts: [
             {
               name: 'Beyond Consciousness',
@@ -1041,7 +1041,7 @@ const CASES = [
             {
               id: 'arg1-weak',
               quality: 'weak',
-              text: 'Your Honour, this is not just a dark pattern because the AI is forcing people to buy things. The company is using very fast flashes and weird sounds to trick people into spending money they don\'t have. This kind of manipulation is unfair and should be banned under the AI Act because it violates consumer trust. The Authority should therefore address the respondent\u2019s conduct under this specific provision rather than the general framework the defence has invoked.',
+              text: 'Your Honour, this is not just a dark pattern because the AI is forcing people to buy things. The company is using very fast flashes and weird sounds to trick people into spending money they don\'t have. This kind of manipulation is unfair and should be banned under the AI Act because it violates consumer trust.',
               judge_response: 'Counsel, you are describing the unfairness accurately, but you must use the statutory language of the Regulation to establish jurisdiction.',
               legal_reasoning: 'While factually accurate regarding the unfairness, this argument fails to use the specific legal terminology ("subliminal techniques", "beyond a person\'s consciousness") required to prove an Article 5(1)(a) violation. It relies on emotional appeal rather than statutory elements.'
             },
@@ -1055,7 +1055,7 @@ const CASES = [
             {
               id: 'arg1-wrong',
               quality: 'wrong',
-              text: 'Your Honour, I agree it is a dark pattern, but dark patterns are prohibited under both the DSA and the AI Act. LuminaCart is violating both regulations simultaneously by intentionally confusing users with complex interface designs that hide the total cost of the items. The regulatory framework specifically anticipates situations of this nature and imposes obligations that the respondent has manifestly failed to satisfy. This provision establishes a comprehensive framework for addressing precisely this kind of conduct and provides enforcement tools for meaningful corrective action.',
+              text: 'Your Honour, I agree it is a dark pattern, but dark patterns are prohibited under both the DSA and the AI Act. LuminaCart is violating both regulations simultaneously by intentionally confusing users with complex interface designs that hide the total cost of the items.',
               judge_response: 'Counsel, you are arguing against your own evidence. Your witness stated the cues are imperceptible, not merely confusing.',
               legal_reasoning: 'This is a critical legal error. It concedes the opposing counsel\'s framing (that it is merely a dark pattern) and ignores the specific technological mechanism (subliminal cues) that makes it an AI Act violation. The AI Act does not generally ban dark patterns; it bans subliminal techniques.'
             }
@@ -1066,7 +1066,7 @@ const CASES = [
           evidenceId: 'ev6-statistics',
           oppositionArgument: 'Your Honour, even if the court considers these techniques subliminal, Article 5(1)(a) requires proof of "significant harm." No one is being physically injured. Consumers are acquiring valuable goods like espresso machines. Buyer\'s remorse or spending too much money online is not a legal harm. The AI Act requires profound psychological or physical injury to meet the "significant harm" threshold.',
           writePrompt: 'Opposing counsel claims financial loss does not constitute "significant harm" under the AI Act. Rebut this by applying the legal test for material distortion and harm to the evidence provided.',
-          minWords: 20,
+          minWords: 10,
           requiredConcepts: [
             {
               name: 'Material Distortion and Harm',
@@ -1088,7 +1088,7 @@ const CASES = [
             {
               id: 'arg2-weak',
               quality: 'weak',
-              text: 'Your Honour, the harm is obvious. People are buying \u20AC4,000 espresso machines they do not want. This proves the AI is materially distorting their behaviour. It is terrible for consumers to lose money because a computer manipulated their brain waves without their permission. Any reasonable assessment would recognise that the respondent acted improperly and that meaningful intervention is required to ensure compliance. This kind of behaviour should not be tolerated under the regulatory framework and the Authority must take decisive corrective action to address it.',
+              text: 'Your Honour, the harm is obvious. People are buying \u20AC4,000 espresso machines they do not want. This proves the AI is materially distorting their behaviour. It is terrible for consumers to lose money because a computer manipulated their brain waves without their permission.',
               judge_response: 'You have established the distortion of behaviour, Counsel, but you must solidify the "significant harm" element beyond mere financial regret.',
               legal_reasoning: 'This argument successfully identifies the material distortion but fails to firmly establish the "significant harm" threshold. Opposing counsel can easily dismiss an unwanted \u20AC4,000 purchase as mere regret; the advocate must point to the severe downstream consequences (defaults, debt) to prove the harm is legally "significant."'
             },
@@ -1102,7 +1102,7 @@ const CASES = [
             {
               id: 'arg2-wrong',
               quality: 'wrong',
-              text: 'Your Honour, the harm is that LuminaCart violated the consumers\' right of withdrawal under the Consumer Rights Directive. Because the users were manipulated, the standard 14-day return window is insufficient, which harms their consumer rights. This provision establishes a comprehensive framework for addressing precisely this kind of conduct and provides enforcement tools for meaningful corrective action. The regulatory framework specifically anticipates situations of this nature and imposes obligations that the respondent has manifestly failed to satisfy.',
+              text: 'Your Honour, the harm is that LuminaCart violated the consumers\' right of withdrawal under the Consumer Rights Directive. Because the users were manipulated, the standard 14-day return window is insufficient, which harms their consumer rights.',
               judge_response: 'Counsel, we are litigating a prohibited practice under the AI Act, not consumer return policies. Please focus on the statutory requirements of Article 5.',
               legal_reasoning: 'This argument shifts the legal framework entirely to the Consumer Rights Directive and abandons the AI Act. While true that withdrawal rights exist, focusing on return policies fails to prove the specific "significant harm" element required to ban the AI system entirely under Article 5(1)(a).'
             }
@@ -1113,7 +1113,7 @@ const CASES = [
           evidenceId: 'ev5-witness-statement',
           oppositionArgument: 'Your Honour, if the court finds the current deployment problematic, we offer a total compliance remedy. We will implement a mandatory, prominent consent banner. Before any user accesses LuminaCart, they must explicitly click "I Consent" to acknowledge that the site uses subliminal AI optimization for marketing purposes. Under GDPR standards, explicit, informed consent legitimises data processing. This procedural safeguard cures any alleged violation and allows the market to operate freely.',
           writePrompt: 'Address the legal validity of using user consent to authorize a system that falls under Article 5(1)(a).',
-          minWords: 20,
+          minWords: 10,
           requiredConcepts: [
             {
               name: 'Absolute Prohibition',
@@ -1135,7 +1135,7 @@ const CASES = [
             {
               id: 'arg3-weak',
               quality: 'weak',
-              text: 'Your Honour, a consent banner is not enough because nobody actually reads them. Users will just click "Accept" to buy their items without understanding what subliminal manipulation means. It is impossible to give informed consent to something that bypasses your consciousness. This kind of behaviour should not be tolerated under the regulatory framework and the Authority must take decisive corrective action to address it. Any reasonable assessment would recognise that the respondent acted improperly and that meaningful intervention is required to ensure compliance.',
+              text: 'Your Honour, a consent banner is not enough because nobody actually reads them. Users will just click "Accept" to buy their items without understanding what subliminal manipulation means. It is impossible to give informed consent to something that bypasses your consciousness.',
               judge_response: 'You make a valid practical point about consent fatigue, Counsel, but I am looking for the specific legal reason why consent is invalid under this Regulation.',
               legal_reasoning: 'While logically sound and practically true (you cannot consciously consent to unconscious manipulation), this argument misses the primary legal principle: Article 5 prohibitions are absolute. Arguing about the quality of the consent implicitly validates the premise that consent might be possible, which is a dangerous legal concession.'
             },
@@ -1149,7 +1149,7 @@ const CASES = [
             {
               id: 'arg3-wrong',
               quality: 'wrong',
-              text: 'Your Honour, consent would only be valid if it clearly explained exactly what 19kHz frequencies and 5ms flashes do to the amygdala. If LuminaCart updates their privacy policy to include full technical details of the NeuroConversion Engine, then users can make an informed choice to proceed. This provision establishes a comprehensive framework for addressing precisely this kind of conduct and provides enforcement tools for meaningful corrective action.',
+              text: 'Your Honour, consent would only be valid if it clearly explained exactly what 19kHz frequencies and 5ms flashes do to the amygdala. If LuminaCart updates their privacy policy to include full technical details of the NeuroConversion Engine, then users can make an informed choice to proceed.',
               judge_response: 'Counsel, you are suggesting that an explicitly prohibited AI practice can be legalized through a privacy policy update. That is a gross misreading of the AI Act.',
               legal_reasoning: 'This is a fatal legal error. It fully accepts the opposing counsel\'s flawed premise that an Article 5 prohibited practice can be cured by transparency and consent. This demonstrates a fundamental misunderstanding of the "unacceptable risk" tier of the AI Act.'
             }
@@ -1235,7 +1235,7 @@ const CASES = [
         prompt: 'Which EU digital law framework provides the primary basis for prohibiting the use of the Demographic Adaptive Router (DAR) as described in the facts?',
         correct: 'ai-act',
         writePrompt: 'Identify the applicable EU digital law framework. Justify your answer by referencing the specific mechanism of the DAR system and the protected characteristics involved.',
-        minWords: 25,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'AI System',
@@ -1270,7 +1270,7 @@ const CASES = [
         prompt: 'Which specific article of the EU AI Act prohibits the deployment of the Demographic Adaptive Router?',
         correct: 'art5-1b',
         writePrompt: 'Identify the exact article number and explain the three core legal elements that must be met to prove this prohibition.',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Article 5(1)(b)',
@@ -1400,7 +1400,7 @@ const CASES = [
           evidenceId: 'ev2-technical-document',
           oppositionArgument: 'Your Honour, the complainant is mischaracterising a standard business practice. DAR is not an instrument of exploitation; it is a personalized marketing engine. Demographically targeted marketing is legal and ubiquitous. The AI simply identifies a demographic segment and serves them a tailored sales pitch. If a clothing store uses an algorithm to show different ads to teenagers than to retirees, it is not illegal. Connectia is merely offering premium tech support to a demographic that statistically struggles with technology and might benefit from it. This is aggressive marketing, perhaps, but it is certainly not a prohibited AI practice.',
           writePrompt: 'Opposing counsel claims this is just legal "personalized marketing." Counter this by applying the specific text of Article 5(1)(b) to explain the difference between targeting a demographic and exploiting a vulnerability.',
-          minWords: 20,
+          minWords: 10,
           requiredConcepts: [
             {
               name: 'Exploitation vs Targeting',
@@ -1422,7 +1422,7 @@ const CASES = [
             {
               id: 'arg1-weak',
               quality: 'weak',
-              text: 'Your Honour, it is not just marketing because it is cruel. These are elderly people who are just trying to get their internet fixed. Connectia is tricking them into buying things they don\'t need. The AI Act is meant to protect human rights, and tricking pensioners is a violation of their rights. Any reasonable assessment would recognise that the respondent acted improperly and that meaningful intervention is required to ensure compliance. This kind of behaviour should not be tolerated under the regulatory framework and the Authority must take decisive corrective action to address it.',
+              text: 'Your Honour, it is not just marketing because it is cruel. These are elderly people who are just trying to get their internet fixed. Connectia is tricking them into buying things they don\'t need. The AI Act is meant to protect human rights, and tricking pensioners is a violation of their rights.',
               judge_response: 'While I am sympathetic to the moral argument, Counsel, you must stick to the legal definitions in Article 5. How exactly does the statute define this behavior?',
               legal_reasoning: 'This argument relies on emotion and general morality ("cruel", "human rights") rather than the precise legal test required by Article 5(1)(b). It fails to use the keywords "exploit," "vulnerability," or "age," making it a weak legal counter.'
             },
@@ -1436,7 +1436,7 @@ const CASES = [
             {
               id: 'arg1-wrong',
               quality: 'wrong',
-              text: 'Your Honour, personalized marketing is actually illegal under the AI Act if it uses biometric data. Because the system analyzes their voice to determine their age, it is processing special category data without consent, making the entire marketing campaign a prohibited AI practice. The regulatory framework specifically anticipates situations of this nature and imposes obligations that the respondent has manifestly failed to satisfy. This provision establishes a comprehensive framework for addressing precisely this kind of conduct and provides enforcement tools for meaningful corrective action.',
+              text: 'Your Honour, personalized marketing is actually illegal under the AI Act if it uses biometric data. Because the system analyzes their voice to determine their age, it is processing special category data without consent, making the entire marketing campaign a prohibited AI practice.',
               judge_response: 'Counsel, processing biometric data is regulated by the GDPR, not absolutely prohibited by the AI Act. You are applying the wrong regulatory framework to the problem.',
               legal_reasoning: 'This represents a common student mistake: confusing GDPR data processing violations with AI Act prohibited practices. Analyzing voice data to infer age is not automatically a prohibited AI practice; the prohibition under 5(1)(b) requires the *exploitation* of that age to cause *harm*. Focusing entirely on the data collection misses the core AI Act violation.'
             }
@@ -1447,7 +1447,7 @@ const CASES = [
           evidenceId: 'ev6-statistics',
           oppositionArgument: 'Even if the court considers the scripting to leverage their age, Article 5(1)(b) requires the applicant to prove that the system causes "significant harm." Your Honour, no one is being physically injured. No one is losing their life savings. They are being charged \u20AC45 a month for a legitimate, functional smart-home insurance product. If they don\'t want it, they can cancel it. Paying for a valid commercial service, even one they rarely use, cannot meet the high threshold of "significant harm" required to ban an AI system completely.',
           writePrompt: 'Rebut the claim that a \u20AC45/month charge for a legitimate service does not constitute "significant harm" under the AI Act. Focus on the context of the victims.',
-          minWords: 20,
+          minWords: 10,
           requiredConcepts: [
             {
               name: 'Significant Financial Harm',
@@ -1469,7 +1469,7 @@ const CASES = [
             {
               id: 'arg2-weak',
               quality: 'weak',
-              text: 'Your Honour, \u20AC45 is a lot of money. It is significant harm because they did not want to spend it. The AI made them spend it by confusing them. Any time money is taken from someone without their true understanding, it is harmful and should be illegal under the AI Act. Any reasonable assessment would recognise that the respondent acted improperly and that meaningful intervention is required to ensure compliance. This kind of behaviour should not be tolerated under the regulatory framework and the Authority must take decisive corrective action to address it.',
+              text: 'Your Honour, \u20AC45 is a lot of money. It is significant harm because they did not want to spend it. The AI made them spend it by confusing them. Any time money is taken from someone without their true understanding, it is harmful and should be illegal under the AI Act.',
               judge_response: 'You need to be more precise, Counsel. Not every unwanted purchase is "significant harm." Why is it legally significant in this specific case?',
               legal_reasoning: 'The argument is too broad. Saying "any time money is taken... it is harmful" ignores the statutory requirement that the harm must be "significant." It fails to contextualize the financial loss relative to the vulnerable group, missing the strongest point of the case.'
             },
@@ -1483,7 +1483,7 @@ const CASES = [
             {
               id: 'arg2-wrong',
               quality: 'wrong',
-              text: 'Your Honour, the harm is actually psychological. The AI Act states that causing emotional distress is the primary definition of significant harm. Because the callers were frightened by the cyber-security jargon, the system is illegal regardless of whether any money actually changed hands. This provision establishes a comprehensive framework for addressing precisely this kind of conduct and provides enforcement tools for meaningful corrective action. The regulatory framework specifically anticipates situations of this nature and imposes obligations that the respondent has manifestly failed to satisfy.',
+              text: 'Your Honour, the harm is actually psychological. The AI Act states that causing emotional distress is the primary definition of significant harm. Because the callers were frightened by the cyber-security jargon, the system is illegal regardless of whether any money actually changed hands.',
               judge_response: 'Counsel, while psychological harm is recognized, claiming it is the "primary definition" in the Act is factually incorrect, and ignoring the concrete financial damages weakens your case considerably.',
               legal_reasoning: 'This answer invents a statutory priority ("primary definition") that doesn\'t exist in the AI Act. More importantly, it completely abandons the strongest, most easily quantifiable evidence of harm—the recurring financial theft—in favor of a much harder-to-prove psychological claim.'
             }
@@ -1494,7 +1494,7 @@ const CASES = [
           evidenceId: 'ev5-witness-statement',
           oppositionArgument: 'Your Honour, to resolve this dispute quickly, Connectia is willing to reclassify the DAR system as a high-risk AI system under Article 6. We will implement immediate remedies: we will add a human supervisor to monitor all calls flagged as Profile E in real-time, and we will register the system in the EU database. By adding human oversight, we remove the fully automated nature of the harm, thereby bringing the system into full compliance with the law without needing to shut it down.',
           writePrompt: 'Address the legal validity of the respondent\'s offer to fix an Article 5(1)(b) violation by applying high-risk compliance measures.',
-          minWords: 20,
+          minWords: 10,
           requiredConcepts: [
             {
               name: 'Absolute Prohibition',
@@ -1516,7 +1516,7 @@ const CASES = [
             {
               id: 'arg3-weak',
               quality: 'weak',
-              text: 'Your Honour, human oversight is not enough because the human agent is the one reading the script. The AI is still identifying the elderly people and feeding the agent the manipulative words. Therefore, the system is still exploiting them and must be shut down entirely. This kind of behaviour should not be tolerated under the regulatory framework and the Authority must take decisive corrective action to address it. Any reasonable assessment would recognise that the respondent acted improperly and that meaningful intervention is required to ensure compliance.',
+              text: 'Your Honour, human oversight is not enough because the human agent is the one reading the script. The AI is still identifying the elderly people and feeding the agent the manipulative words. Therefore, the system is still exploiting them and must be shut down entirely.',
               judge_response: 'You make a good factual point about the human\'s role, but you are missing the underlying legal principle regarding the structure of the AI Act.',
               legal_reasoning: 'This argument successfully points out a factual flaw in the proposed remedy (the human is already in the loop), but it fails to articulate the critical legal concept: that Article 5 prohibitions are absolute and legally cannot be remedied by Article 6 compliance measures.'
             },
@@ -1530,7 +1530,7 @@ const CASES = [
             {
               id: 'arg3-wrong',
               quality: 'wrong',
-              text: 'Your Honour, we accept this proposal, provided the human supervisor is given the power to override the AI script if the elderly person sounds too confused. With that addition, the system would meet the Article 14 human oversight requirements for high-risk systems. This provision establishes a comprehensive framework for addressing precisely this kind of conduct and provides enforcement tools for meaningful corrective action. The regulatory framework specifically anticipates situations of this nature and imposes obligations that the respondent has manifestly failed to satisfy.',
+              text: 'Your Honour, we accept this proposal, provided the human supervisor is given the power to override the AI script if the elderly person sounds too confused. With that addition, the system would meet the Article 14 human oversight requirements for high-risk systems.',
               judge_response: 'Counsel, you have just conceded your entire case. Are you abandoning your claim under Article 5?',
               legal_reasoning: 'This is a catastrophic legal error. By accepting the remedy, counsel implicitly agrees the system is merely "high-risk" (Article 6) rather than "prohibited" (Article 5). An advocate cannot agree to mitigate a practice that the law demands must be absolutely banned.'
             }
@@ -1616,7 +1616,7 @@ const CASES = [
         prompt: 'Which legal framework is most appropriate to challenge the core mechanism of CrediCatch\'s Vulnerability Targeting Engine?',
         correct: 'ai-act',
         writePrompt: 'Identify the EU digital law framework that specifically prohibits the algorithmic exploitation of user desperation. Justify why this framework is more applicable than general data protection rules.',
-        minWords: 25,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'AI System',
@@ -1651,7 +1651,7 @@ const CASES = [
         prompt: 'Which specific article of the EU AI Act prohibits the practices of the Vulnerability Targeting Engine?',
         correct: 'art5-1b',
         writePrompt: 'Identify the exact article number and explain the legal test it establishes regarding vulnerabilities.',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Article 5(1)(b)',
@@ -1781,7 +1781,7 @@ const CASES = [
           evidenceId: 'ev4-compliance-email',
           oppositionArgument: 'Your Honour, the NCPA\'s case has no legal standing because our users explicitly consented to this process. When users register for CrediCatch, they sign a comprehensive GDPR consent form agreeing to let our algorithms analyze their open banking data to "deliver personalized, dynamically timed credit offers." We have transparently informed them of the profiling. Under EU law, explicit consent legitimises automated processing. You cannot penalize a company for doing exactly what the user legally agreed to let them do.',
           writePrompt: 'Opposing counsel claims GDPR consent makes the AI system legal. Counter this by explaining the hierarchy and structural differences between GDPR consent and AI Act prohibitions.',
-          minWords: 20,
+          minWords: 10,
           requiredConcepts: [
             {
               name: 'Consent Invalidity for Prohibitions',
@@ -1803,7 +1803,7 @@ const CASES = [
             {
               id: 'arg1-weak',
               quality: 'weak',
-              text: 'Your Honour, the consent is invalid because the users were desperate when they signed it. Nobody reads the terms and conditions anyway, especially when they need money to pay rent. The company tricked them into giving up their data to feed the AI, which violates the spirit of the law. Any reasonable assessment would recognise that the respondent acted improperly and that meaningful intervention is required to ensure compliance. This kind of behaviour should not be tolerated under the regulatory framework and the Authority must take decisive corrective action to address it.',
+              text: 'Your Honour, the consent is invalid because the users were desperate when they signed it. Nobody reads the terms and conditions anyway, especially when they need money to pay rent. The company tricked them into giving up their data to feed the AI, which violates the spirit of the law.',
               judge_response: 'Counsel, while the quality of consent is a valid GDPR issue, we are litigating a prohibited practice under the AI Act. You need to address why consent is irrelevant to an Article 5 violation.',
               legal_reasoning: 'This argument attacks the *quality* of the consent (a GDPR argument) rather than the *legal relevance* of consent under the AI Act. It falls into the trap of arguing on the opponent\'s chosen battlefield (data protection) rather than asserting the absolute supremacy of the AI Act\'s prohibitions.'
             },
@@ -1817,7 +1817,7 @@ const CASES = [
             {
               id: 'arg1-wrong',
               quality: 'wrong',
-              text: 'Your Honour, the consent is valid under GDPR, but CrediCatch failed to complete a Data Protection Impact Assessment (DPIA) before deploying the algorithm. If they complete the DPIA and demonstrate the profiling is proportionate, the personalized timed offers would be compliant. The regulatory framework specifically anticipates situations of this nature and imposes obligations that the respondent has manifestly failed to satisfy. This provision establishes a comprehensive framework for addressing precisely this kind of conduct and provides enforcement tools for meaningful corrective action.',
+              text: 'Your Honour, the consent is valid under GDPR, but CrediCatch failed to complete a Data Protection Impact Assessment (DPIA) before deploying the algorithm. If they complete the DPIA and demonstrate the profiling is proportionate, the personalized timed offers would be compliant.',
               judge_response: 'Counsel, you are effectively acting as the defense attorney. If the system exploits vulnerabilities under Article 5 of the AI Act, no DPIA can save it.',
               legal_reasoning: 'This is a catastrophic error. It fully accepts the opponent\'s premise that the issue is merely procedural data protection compliance. By suggesting a DPIA would make the system compliant, the advocate completely abandons the claim that the system is an absolutely prohibited AI practice.'
             }
@@ -1828,7 +1828,7 @@ const CASES = [
           evidenceId: 'ev2-technical-document',
           oppositionArgument: 'Your Honour, CrediCatch is not exploiting anyone; we are providing a vital service. Our app offers micro-credit to people whom traditional banks reject. Yes, we offer loans when their balance is low—because that is exactly when they need a loan! This is a high-risk AI system for evaluating creditworthiness under Annex III, and we are prepared to meet those compliance requirements. But it is absurd to call providing credit to poor people a "prohibited exploitation of an economic situation."',
           writePrompt: 'Rebut the claim that this is merely a "high-risk" credit scoring system providing a service. Use the specific facts of the VTE to prove it crosses the line into prohibited exploitation.',
-          minWords: 20,
+          minWords: 10,
           requiredConcepts: [
             {
               name: 'Exploitation vs Service',
@@ -1850,7 +1850,7 @@ const CASES = [
             {
               id: 'arg2-weak',
               quality: 'weak',
-              text: 'Your Honour, offering loans at 400% interest is predatory lending, which is illegal. The company is taking advantage of poor people who have no other options. The AI is just making this predatory lending faster and more efficient, so it violates the AI Act. Any reasonable assessment would recognise that the respondent acted improperly and that meaningful intervention is required to ensure compliance. This kind of behaviour should not be tolerated under the regulatory framework and the Authority must take decisive corrective action to address it.',
+              text: 'Your Honour, offering loans at 400% interest is predatory lending, which is illegal. The company is taking advantage of poor people who have no other options. The AI is just making this predatory lending faster and more efficient, so it violates the AI Act.',
               judge_response: 'Counsel, predatory lending laws exist separately from the AI Act. To win under Article 5(1)(b), you must tie the *algorithmic mechanism* specifically to the exploitation of the vulnerability, not just complain about the interest rate.',
               legal_reasoning: 'While factually true that the interest rate is predatory, this argument relies on general consumer finance law rather than the specific mechanics of the AI Act. It fails to focus on the AI\'s core violation: the algorithmic timing designed to exploit cognitive impairment caused by economic distress.'
             },
@@ -1864,7 +1864,7 @@ const CASES = [
             {
               id: 'arg2-wrong',
               quality: 'wrong',
-              text: 'Your Honour, I agree it is a high-risk credit scoring system under Annex III. Therefore, CrediCatch just needs to ensure there is human oversight before the loan is approved, and they must check the data for biases against low-income users to become compliant. This provision establishes a comprehensive framework for addressing precisely this kind of conduct and provides enforcement tools for meaningful corrective action. The regulatory framework specifically anticipates situations of this nature and imposes obligations that the respondent has manifestly failed to satisfy.',
+              text: 'Your Honour, I agree it is a high-risk credit scoring system under Annex III. Therefore, CrediCatch just needs to ensure there is human oversight before the loan is approved, and they must check the data for biases against low-income users to become compliant.',
               judge_response: 'Counsel, you have completely abandoned your claim. If you concede this is merely a high-risk system requiring bias checks, you lose the Article 5 prohibition claim entirely.',
               legal_reasoning: 'This answer commits the fatal flaw of agreeing with opposing counsel. It downplays the severe exploitation to mere "bias" and accepts the Annex III classification, effectively surrendering the case for an absolute ban.'
             }
@@ -1875,7 +1875,7 @@ const CASES = [
           evidenceId: 'ev6-statistics',
           oppositionArgument: 'Finally, Your Honour, Article 5(1)(b) requires proof of "significant harm." The NCPA has shown nothing but users taking on debt. Taking a loan is a standard economic activity. If a user cannot pay it back, that is a breach of contract or poor financial planning on their part. Financial loss from a loan you voluntarily accepted does not rise to the extreme threshold of "significant harm" required to outright ban an AI system.',
           writePrompt: 'Address the respondent\'s claim that debt is just a consequence of a voluntary contract and does not constitute "significant harm."',
-          minWords: 20,
+          minWords: 10,
           requiredConcepts: [
             {
               name: 'Significant Financial Harm',
@@ -1897,7 +1897,7 @@ const CASES = [
             {
               id: 'arg3-weak',
               quality: 'weak',
-              text: 'Your Honour, losing \u20AC4,000 is a lot of money for a poor person. It is definitely significant harm. The AI made them take the loan, so the company should forgive the debt and pay a fine for causing financial stress to these families. Any reasonable assessment would recognise that the respondent acted improperly and that meaningful intervention is required to ensure compliance. This kind of behaviour should not be tolerated under the regulatory framework and the Authority must take decisive corrective action to address it.',
+              text: 'Your Honour, losing \u20AC4,000 is a lot of money for a poor person. It is definitely significant harm. The AI made them take the loan, so the company should forgive the debt and pay a fine for causing financial stress to these families.',
               judge_response: 'Counsel, you must be more robust in your legal reasoning. Why is this harm legally significant under the AI Act, as opposed to just a bad financial outcome?',
               legal_reasoning: 'The argument correctly identifies the financial loss but lacks the legal depth to explain *why* it meets the statutory requirement. It fails to connect the harm to the AI\'s manipulative distortion of behavior, making it sound like standard financial regret rather than algorithmic victimization.'
             },
@@ -1911,7 +1911,7 @@ const CASES = [
             {
               id: 'arg3-wrong',
               quality: 'wrong',
-              text: 'Your Honour, the significant harm is that CrediCatch is damaging the credit scores of these users. The primary remedy under the AI Act is for CrediCatch to contact the credit bureaus and repair the victims\' credit ratings so they can borrow from legitimate banks again. The regulatory framework specifically anticipates situations of this nature and imposes obligations that the respondent has manifestly failed to satisfy. This provision establishes a comprehensive framework for addressing precisely this kind of conduct and provides enforcement tools for meaningful corrective action.',
+              text: 'Your Honour, the significant harm is that CrediCatch is damaging the credit scores of these users. The primary remedy under the AI Act is for CrediCatch to contact the credit bureaus and repair the victims\' credit ratings so they can borrow from legitimate banks again.',
               judge_response: 'Counsel, credit repair is a matter for consumer finance regulation. We are discussing the absolute prohibition of an AI system. Furthermore, damaged credit is the least of their worries if they are facing eviction.',
               legal_reasoning: 'This argument trivializes the harm (focusing on credit scores rather than bankruptcy/eviction) and invents a remedy that does not exist in the AI Act. It misses the gravity of the situation required to justify an absolute ban under Article 5.'
             }
@@ -1997,7 +1997,7 @@ const CASES = [
         prompt: 'Which legal framework is most directly applicable to challenging the deployment of the FlowOptimizer system based on its routing logic?',
         correct: 'ai-act',
         writePrompt: 'Identify the primary EU digital law framework that governs the system\'s specific mechanism of evaluating behaviour to alter outcomes. Justify your answer.',
-        minWords: 25,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'AI System',
@@ -2032,7 +2032,7 @@ const CASES = [
         prompt: 'Which specific article of the EU AI Act establishes the prohibition most relevant to the FlowOptimizer system?',
         correct: 'art5-1b',
         writePrompt: 'Identify the exact article number and explain the legal threshold for this prohibition. How does the system target the user?',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Article 5(1)(b)',
@@ -2162,7 +2162,7 @@ const CASES = [
           evidenceId: 'ev5-witness-statement',
           oppositionArgument: 'Your Honour, the complainant\'s entire case rests on a false premise. Article 5(1)(b) prohibits exploiting vulnerabilities due to a disability. VitaMatch does not process medical records, we do not ask users if they have a disability, and the AI system has no access to health data. The Cognitive Load Index merely measures website interaction speed and friction. Being a slow reader or having poor mouse control is not a legally protected "disability." Because the system does not know if a user is legally disabled, it cannot logically or legally be exploiting a disability under the AI Act.',
           writePrompt: 'Opposing counsel argues that without explicit medical data, they cannot be exploiting a disability. Counter this by explaining how inferred vulnerabilities through behavioural proxies satisfy the legal test in Article 5(1)(b).',
-          minWords: 20,
+          minWords: 10,
           requiredConcepts: [
             {
               name: 'Inferred Vulnerability',
@@ -2177,28 +2177,28 @@ const CASES = [
             {
               id: 'arg1-strong',
               quality: 'strong',
-              text: 'Your Honour, the AI Act prohibits exploiting vulnerabilities "due to" a disability; it does not require the system to process a formal medical diagnosis. As the lead developer\'s testimony confirms, the Cognitive Load Index was explicitly calibrated using data from neurodivergent and intellectually disabled users. The system uses behavioural telemetry as a precise proxy to infer the presence of cognitive impairment. If an AI system is mathematically designed to detect the behavioural footprint of a disability and trigger an exploitative response based on that footprint, it is exploiting a vulnerability due to a disability.',
+              text: 'Your Honour, the AI Act prohibits exploiting vulnerabilities "due to" a disability; it does not require the system to process a formal medical diagnosis. As the lead developer\'s testimony confirms, the Cognitive Load Index was explicitly calibrated using data from neurodivergent and intellectually disabled users. The system uses behavioural telemetry as a precise proxy to infer the presence of cognitive impairment. If an AI system is mathematically designed to detect the behavioural footprint of a disability and trigger an exploitative response based on that footprint, it is exploiting a vulnerability due to a disability. Allowing companies to circumvent the absolute prohibition in Article 5 simply by not asking for a medical certificate would render the entire protection meaningless.',
               judge_response: 'A highly persuasive interpretation of the law. The prohibition focuses on the objective exploitation of the vulnerability, regardless of whether the system explicitly labels it a "medical disability."',
               legal_reasoning: 'This is the strongest argument because it directly tackles the "proxy" defense. It uses the witness testimony to prove the model was intentionally designed to target disabled users via their behavioral footprint, effectively shutting down the technicality that VitaMatch didn\'t "know" they were disabled.'
             },
             {
               id: 'arg1-weak',
               quality: 'weak',
-              text: 'Your Honour, even if they don\'t know the user has a disability, the result is the same. The AI is targeting people who are confused and making it harder for them to get good insurance. This is discriminatory and unfair, so it violates the AI Act\'s core principles of fairness and non-discrimination. This kind of behaviour should not be tolerated under the regulatory framework and the Authority must take decisive corrective action to address it.',
+              text: 'Your Honour, even if they don\'t know the user has a disability, the result is the same. The AI is targeting people who are confused and making it harder for them to get good insurance. This is discriminatory and unfair, so it violates the AI Act\'s core principles of fairness and non-discrimination.',
               judge_response: 'Counsel, general appeals to fairness do not establish a violation of a specific absolute prohibition. You must tie the system\'s mechanism directly to the statutory language of Article 5.',
               legal_reasoning: 'This argument relies on general ethical principles rather than statutory analysis. It fails to directly address the opponent\'s legal claim that "no diagnosis = no disability," making it a weak rebuttal in a formal legal setting.'
             },
             {
               id: 'arg1-plausible',
               quality: 'plausible',
-              text: 'Your Honour, the Cognitive Load Index effectively acts as a health proxy that infers cognitive disability from behavioural telemetry. This constitutes processing special categories of personal data concerning health under GDPR Article 9(1). The Article 29 Working Party guidelines confirm inferred health data is treated identically to declared health data. VitaMatch has no valid legal basis under Article 9(2), and no DPIA was conducted as required by Article 35(3)(a). I request the court order immediate suspension of CLI processing and deletion of all inferred health profiles. The Authority should therefore ground its finding in this specific framework rather than the general provisions the complainant has relied upon.',
+              text: 'Your Honour, the Cognitive Load Index effectively acts as a health proxy that infers cognitive disability from behavioural telemetry. This constitutes processing special categories of personal data concerning health under GDPR Article 9(1). The Article 29 Working Party guidelines confirm inferred health data is treated identically to declared health data. VitaMatch has no valid legal basis under Article 9(2), and no DPIA was conducted as required by Article 35(3)(a). I request the court order immediate suspension of CLI processing and deletion of all inferred health profiles.',
               judge_response: 'Counsel, your GDPR analysis of inferred health data is legally sound. However, if the system exploits the inferred disability to cause significant harm, is a GDPR processing remedy sufficient? Might that allow the exploitation to continue with proper consent?',
               legal_reasoning: 'A technically excellent GDPR argument that misses the forest for the trees. The inference-as-health-data analysis is correct, but it leads to procedural remedies: conduct a DPIA, obtain consent, provide transparency. If VitaMatch satisfies these, the exploitation of cognitively vulnerable users could theoretically continue. The AI Act Article 5(1)(b) prohibition is absolute regardless of data protection compliance.'
             },
             {
               id: 'arg1-wrong',
               quality: 'wrong',
-              text: 'Your Honour, by measuring reading speed and mouse clicks, VitaMatch is unlawfully processing biometric data under the GDPR. Because they failed to get explicit Article 9 consent for processing special category health data, the system is illegal. The regulatory framework specifically anticipates situations of this nature and imposes obligations that the respondent has manifestly failed to satisfy. This provision establishes a comprehensive framework for addressing precisely this kind of conduct and provides enforcement tools for meaningful corrective action.',
+              text: 'Your Honour, by measuring reading speed and mouse clicks, VitaMatch is unlawfully processing biometric data under the GDPR. Because they failed to get explicit Article 9 consent for processing special category health data, the system is illegal.',
               judge_response: 'Counsel, you are reverting to data protection arguments. The GDPR is not the primary mechanism for banning an AI practice under Article 5 of the AI Act. Focus on the exploitation element.',
               legal_reasoning: 'This is the specific error warned about in the prompt constraints. It abandons the AI Act framework (exploitation of vulnerability) in favor of a GDPR (data processing) argument, implicitly conceding that if VitaMatch got consent, the practice would be legal.'
             }
@@ -2209,7 +2209,7 @@ const CASES = [
           evidenceId: 'ev6-statistics',
           oppositionArgument: 'Furthermore, Your Honour, there is no "significant harm" here. In fact, we are providing a benefit. Users with high cognitive friction are statistically more likely to abandon the checkout process entirely and remain uninsured. By simplifying the interface and offering a straightforward plan, we ensure they get some level of coverage. While the Simplified Plan has less coverage than the Standard Plan, it is a valid, legally approved insurance product. Steering confused users toward a simpler choice architecture is UX optimization, not a material distortion of behaviour causing harm.',
           writePrompt: 'Rebut the claim that steering vulnerable users to "simpler" but worse plans is a benefit rather than a harmful distortion of behaviour.',
-          minWords: 20,
+          minWords: 10,
           requiredConcepts: [
             {
               name: 'Significant Economic Harm',
@@ -2231,7 +2231,7 @@ const CASES = [
             {
               id: 'arg2-weak',
               quality: 'weak',
-              text: 'Your Honour, it is harmful because the Simplified Plan is a terrible product. It is unfair to make disabled people pay more money for worse insurance. They deserve the same options as everyone else, and the AI is denying them equal access to healthcare. This kind of behaviour should not be tolerated under the regulatory framework and the Authority must take decisive corrective action to address it. Any reasonable assessment would recognise that the respondent acted improperly and that meaningful intervention is required to ensure compliance.',
+              text: 'Your Honour, it is harmful because the Simplified Plan is a terrible product. It is unfair to make disabled people pay more money for worse insurance. They deserve the same options as everyone else, and the AI is denying them equal access to healthcare.',
               judge_response: 'You have identified the inequality, Counsel, but you must clearly articulate how the AI\'s specific algorithmic action constitutes a "material distortion of behaviour" under the law.',
               legal_reasoning: 'While factually correct about the unfairness, this argument lacks legal precision. It complains about the outcome without explicitly tying the harm back to the statutory requirement of algorithmic distortion of the user\'s decision-making process.'
             },
@@ -2245,7 +2245,7 @@ const CASES = [
             {
               id: 'arg2-wrong',
               quality: 'wrong',
-              text: 'Your Honour, the harm is that the users did not get to compare all the plans. To remedy this, VitaMatch should be required to display a pop-up warning that says "You are viewing a simplified selection," giving them the option to view the full catalogue. The regulatory framework specifically anticipates situations of this nature and imposes obligations that the respondent has manifestly failed to satisfy. This provision establishes a comprehensive framework for addressing precisely this kind of conduct and provides enforcement tools for meaningful corrective action.',
+              text: 'Your Honour, the harm is that the users did not get to compare all the plans. To remedy this, VitaMatch should be required to display a pop-up warning that says "You are viewing a simplified selection," giving them the option to view the full catalogue.',
               judge_response: 'Counsel, you are proposing a transparency remedy for an unacceptable risk. If this is a prohibited practice, it cannot be fixed with a pop-up warning.',
               legal_reasoning: 'This answer catastrophically misapprehends the nature of Article 5. By suggesting a transparency fix (a pop-up), the counsel implicitly admits the system is not a prohibited practice (which demands absolute cessation) but merely a system requiring better user disclosures.'
             }
@@ -2256,7 +2256,7 @@ const CASES = [
           evidenceId: 'ev4-compliance-email',
           oppositionArgument: 'Your Honour, if the court believes the CLI inadvertently acts as a health proxy, we are fully prepared to modify the system. We will reclassify the FlowOptimizer as a high-risk system under Annex III. Furthermore, we will implement a GDPR-compliant explicit consent gate. Before the CLI activates, the user will be clearly asked: "Do you consent to having your navigation patterns analyzed to personalize your insurance offers?" This guarantees full user autonomy and resolves any conflict with EU digital law.',
           writePrompt: 'Address the legal validity of using explicit GDPR consent and high-risk reclassification to authorize a system that exploits disabilities under Article 5(1)(b).',
-          minWords: 20,
+          minWords: 10,
           requiredConcepts: [
             {
               name: 'Absolute Prohibition vs Consent',
@@ -2271,14 +2271,14 @@ const CASES = [
             {
               id: 'arg3-strong',
               quality: 'strong',
-              text: 'Your Honour, the respondent\'s proposal demonstrates a fundamental misunderstanding of the AI Act\'s architecture. Article 5 establishes absolute prohibitions for AI systems that present an unacceptable risk. The active exploitation of a cognitive vulnerability to cause significant harm cannot be cured, mitigated, or reclassified as a mere "high-risk" system under Annex III. Furthermore, just as one cannot legally consent to exploitation or bodily harm, explicit GDPR consent cannot legitimize an absolutely prohibited AI practice. A cognitively vulnerable user clicking "I Consent" to an exploitative algorithm highlights the very vulnerability the Act seeks to protect.',
+              text: 'Your Honour, the respondent\'s proposal demonstrates a fundamental misunderstanding of the AI Act\'s architecture. Article 5 establishes absolute prohibitions for AI systems that present an unacceptable risk. The active exploitation of a cognitive vulnerability to cause significant harm cannot be cured, mitigated, or reclassified as a mere "high-risk" system under Annex III. Furthermore, just as one cannot legally consent to exploitation or bodily harm, explicit GDPR consent cannot legitimize an absolutely prohibited AI practice. A cognitively vulnerable user clicking "I Consent" to an exploitative algorithm highlights the very vulnerability the Act seeks to protect. The only lawful remedy is the immediate and complete withdrawal of the CLI routing logic.',
               judge_response: 'Correct on all counts. The AI Act\'s prohibitions represent non-derogable protections. Neither procedural reclassification nor user consent can validate an unacceptable risk.',
               legal_reasoning: 'This is the definitive model response. It unequivocally rejects the two-pronged defense (reclassification and consent) by firmly anchoring the argument in the absolute nature of Title II prohibitions. It highlights the absurdity of asking cognitively vulnerable users to consent to their own exploitation.'
             },
             {
               id: 'arg3-weak',
               quality: 'weak',
-              text: 'Your Honour, asking cognitively disabled people to read a complex consent banner is just another way of tricking them. They won\'t understand what they are agreeing to, so the consent is invalid. The system must be shut down because the consent is deceptive. This kind of behaviour should not be tolerated under the regulatory framework and the Authority must take decisive corrective action to address it. Any reasonable assessment would recognise that the respondent acted improperly and that meaningful intervention is required to ensure compliance.',
+              text: 'Your Honour, asking cognitively disabled people to read a complex consent banner is just another way of tricking them. They won\'t understand what they are agreeing to, so the consent is invalid. The system must be shut down because the consent is deceptive.',
               judge_response: 'While you accurately point out the practical flaw in their consent model, Counsel, you are missing the overarching legal principle: consent is structurally irrelevant to an Article 5 prohibition.',
               legal_reasoning: 'This argument attacks the *validity* of the consent rather than its *legal relevance*. It mistakenly implies that if the consent *were* understandable, the system might be legal, which contradicts the absolute prohibition established by Article 5 of the AI Act.'
             },
@@ -2292,7 +2292,7 @@ const CASES = [
             {
               id: 'arg3-wrong',
               quality: 'wrong',
-              text: 'Your Honour, we accept this proposal. If VitaMatch guarantees that the consent banner explicitly states the system might steer them to more expensive plans, and if they submit the model for third-party high-risk conformity assessment, the system would be lawful. The regulatory framework specifically anticipates situations of this nature and imposes obligations that the respondent has manifestly failed to satisfy. This provision establishes a comprehensive framework for addressing precisely this kind of conduct and provides enforcement tools for meaningful corrective action.',
+              text: 'Your Honour, we accept this proposal. If VitaMatch guarantees that the consent banner explicitly states the system might steer them to more expensive plans, and if they submit the model for third-party high-risk conformity assessment, the system would be lawful.',
               judge_response: 'Counsel, you have surrendered your case entirely. You cannot agree to authorize a prohibited practice.',
               legal_reasoning: 'This is a fatal concession. It fully embraces the opponent\'s flawed legal theory that an unacceptable risk (Article 5) can be neutralized by transparency and high-risk compliance measures, entirely abandoning the claim for an absolute ban.'
             }
@@ -2464,7 +2464,7 @@ const CASES = [
           ],
           oppositionArgument: 'Your Honour, the Metropolitan Police are not engaged in \"surveillance.\" Sentinel-RBI is a precision tool used for the identification of specific, known offenders. It only matches faces against a pre-defined database of people who have already committed crimes. The AI Act\'s prohibitions were intended to prevent mass, indiscriminate scanning of the general public. By targeting only known shoplifters, the MPD is acting within its public safety mandate to protect the economic interests of the city.',
           writePrompt: 'The respondent claims the system isn\'t \"indiscriminate.\" Look at the technical specs\u2014how does the system actually process the data of pedestrians?',
-          minWords: 20,
+          minWords: 10,
           options: [
             {
               id: 'arg1-strong',
@@ -2490,7 +2490,7 @@ const CASES = [
             {
               id: 'arg1-wrong',
               quality: 'wrong',
-              text: 'Your Honour, this is a violation of the General Data Protection Regulation (GDPR), specifically the right to be forgotten under Article 17. The Metropolitan Police failed to allow pedestrians to delete their biometric profiles immediately after being scanned. Under GDPR, any processing of biometric data in public spaces requires the explicit consent of every individual. Since the police didn\'t get consent from everyone in the district, they must delete the database and stop the system immediately. The regulatory framework specifically anticipates situations of this nature and imposes obligations that the respondent has manifestly failed to satisfy.',
+              text: 'Your Honour, this is a violation of the General Data Protection Regulation (GDPR), specifically the right to be forgotten under Article 17. The Metropolitan Police failed to allow pedestrians to delete their biometric profiles immediately after being scanned. Under GDPR, any processing of biometric data in public spaces requires the explicit consent of every individual. Since the police didn\'t get consent from everyone in the district, they must delete the database and stop the system immediately.',
               judge_response: 'Counsel, while GDPR is relevant to data protection, we are litigating a case under the Artificial Intelligence Act. Does the specific biometric identification prohibition not take precedence here?',
               legal_reasoning: 'This is fundamentally wrong. It applies the wrong legal framework (GDPR) and cites the wrong legal test (Right to Forgotten) for a case centered on the AI Act\'s biometric prohibitions.'
             }
@@ -2508,7 +2508,7 @@ const CASES = [
           ],
           oppositionArgument: 'Even if the court finds this is a \"real-time\" system, it falls under the exception in Article 5(1)(h)(iii). This provision allows the identification of persons suspected of criminal offences for the purpose of prosecution. Shoplifting is a criminal offence that causes significant social and economic harm. The police are simply using modern tools to perform their traditional role of identifying suspects who have a documented history of criminal activity.',
           writePrompt: 'Counsel claims they meet the Article 5(1)(h)(iii) exception. Check the arrest logs and Annex II\u2014do shoplifting offences meet the specific legal threshold required by the AI Act?',
-          minWords: 20,
+          minWords: 10,
           options: [
             {
               id: 'arg2-strong',
@@ -2527,7 +2527,7 @@ const CASES = [
             {
               id: 'arg2-weak',
               quality: 'weak',
-              text: 'Your Honour, shoplifting isn\'t a serious enough crime for this. The law lists very specific crimes where you can use facial recognition, like terrorism or major violence. Shoplifting doesn\'t make that list. Also, the punishment for stealing from a shop is usually just a fine or a short time in jail, not the long sentences the law requires. Because the crime is small, the police shouldn\'t be allowed to use this biometric identification system in the city center. Any reasonable assessment would recognise that the respondent acted improperly and that meaningful corrective intervention is required to ensure compliance.',
+              text: 'Your Honour, shoplifting isn\'t a serious enough crime for this. The law lists very specific crimes where you can use facial recognition, like terrorism or major violence. Shoplifting doesn\'t make that list. Also, the punishment for stealing from a shop is usually just a fine or a short time in jail, not the long sentences the law requires. Because the crime is small, the police shouldn\'t be allowed to use this biometric identification system in the city center.',
               judge_response: 'I hear your point about the \"size\" of the crime, but I need you to point to the specific list of offences and the sentencing threshold in the Regulation.',
               legal_reasoning: 'Correct in direction but fails to cite Annex II or the specific \"at least four years\" custodial sentence rule from the Act.'
             },
@@ -2552,7 +2552,7 @@ const CASES = [
           ],
           oppositionArgument: 'Finally, Your Honour, even if a warrant were required, our internal police manual provides for a rigorous \"administrative authorisation\" process. The Commissioner himself signs off on these deployments. The AI Act allows for authorisation by either a judicial authority or an independent administrative authority. The MPD Crime Analytics Team is an independent body within the department that provides the necessary oversight to ensure the system is used responsibly.',
           writePrompt: 'The respondent claims their internal police sign-off counts as \"administrative authorisation.\" Does a police department count as an \"independent administrative authority\" under Article 5(3)?',
-          minWords: 20,
+          minWords: 10,
           options: [
             {
               id: 'arg3-strong',
@@ -2747,7 +2747,7 @@ const CASES = [
           ],
           oppositionArgument: 'Your Honour, the National Police Force acted under the clear exception provided in Article 5(1)(h)(ii) for the prevention of a specific, substantial, and imminent threat to the life or physical safety of natural persons, namely a terrorist attack. We obtained a judicial warrant, which satisfy the requirements of Article 5(3). The 72-hour window was a reasonable time limit given the intelligence that the suspect was in transit. To suggest that the police should have limited their view in a major transit hub is to ask them to ignore the very security mandate the AI Act provides for.',
           writePrompt: 'The respondent claims the warrant satisfies Article 5(3). Look at the geographic and time limitations in Article 5(2)\u2014is the warrant\'s scope legally sufficient?',
-          minWords: 20,
+          minWords: 10,
           options: [
             {
               id: 'arg1-strong',
@@ -2791,7 +2791,7 @@ const CASES = [
           ],
           oppositionArgument: 'Your Honour, we acknowledge the requirement in Article 5(3) for a Fundamental Rights Impact Assessment. However, the law does not specify that the assessment must be drafted from scratch for every single deployment. In an emergency involving a terrorist threat, the NPF used its existing expertise and previous assessments to evaluate the risks. The core impacts on privacy and non-discrimination are consistent across all biometric deployments. To demand a months-long study in the face of an imminent attack would render the Article 5(1)(h) exceptions useless in practice.',
           writePrompt: 'The respondent admits to using a "generic" FRIA. Does Article 5(3) allow for the reuse of impact assessments from different contexts, such as retail theft?',
-          minWords: 20,
+          minWords: 10,
           options: [
             {
               id: 'arg2-strong',
@@ -2835,7 +2835,7 @@ const CASES = [
           ],
           oppositionArgument: 'Your Honour, Global Privacy Watch complains that biometric data was kept for 48 hours after the operation. This was necessary to ensure that we hadn\'t missed any potential matches that the real-time system might have flagged during peak traffic. This is a standard \"post-processing\" procedure. The AI Act\'s rules on real-time identification do not apply to data once it has been recorded; at that point, it becomes a \"post\" biometric identification system, which is subject to much less stringent rules under the Act.',
           writePrompt: 'The respondent claims that keeping the data for 48 hours turns it into "post" RBI. Does the AI Act allow for real-time data to be reclassified as "post" to avoid Article 5 restrictions?',
-          minWords: 20,
+          minWords: 10,
           options: [
             {
               id: 'arg3-strong',
@@ -2854,7 +2854,7 @@ const CASES = [
             {
               id: 'arg3-weak',
               quality: 'weak',
-              text: 'Your Honour, you can\'t just keep people\'s faces in a computer for two days. It\'s creepy and it\'s wrong. The police said the operation was for 72 hours, so once those 72 hours are up, everything should be deleted. Keeping the data for another 48 hours is like extending the warrant without asking the judge. This proves the police don\'t respect the limits of their power and that they want to keep as much data as possible on everyone. Any reasonable assessment would recognise that the respondent acted improperly and that meaningful corrective intervention is required to ensure compliance.',
+              text: 'Your Honour, you can\'t just keep people\'s faces in a computer for two days. It\'s creepy and it\'s wrong. The police said the operation was for 72 hours, so once those 72 hours are up, everything should be deleted. Keeping the data for another 48 hours is like extending the warrant without asking the judge. This proves the police don\'t respect the limits of their power and that they want to keep as much data as possible on everyone.',
               judge_response: 'I understand your privacy concerns, but I need a statutory basis. Under which part of the AI Act is this retention prohibited?',
               legal_reasoning: 'Correct in principle but lacks any reference to Art 5(2) or the specific legal definitions within the AI Act.'
             },
@@ -3030,7 +3030,7 @@ const CASES = [
           ],
           oppositionArgument: 'Your Honour, EmpathyStream is not a prohibited practice but a high-risk AI system under Article 6 and Annex III, point 4(b). This provision specifically categorises AI systems used for monitoring and evaluating persons in work-related relationships as high-risk. By classifying it as such, the AI Act acknowledges that these systems are lawful provided they meet transparency and human oversight requirements. We have complied with Article 13 by informing staff, and Article 14 by having managers review the scores. A total ban under Article 5 is a misapplication of the Act\'s risk-based hierarchy.',
           writePrompt: 'The respondent argues the system is "High-Risk" under Annex III. Look at Article 5(1)(f)\u2014is there a specific prohibition that takes precedence over the general "employment" category?',
-          minWords: 20,
+          minWords: 10,
           options: [
             {
               id: 'arg1-strong',
@@ -3074,7 +3074,7 @@ const CASES = [
           ],
           oppositionArgument: 'Your Honour, even if Article 5(1)(f) applies, the system falls squarely within the mandatory exception for \"medical or safety reasons.\" Call centre work is high-stress and prone to extreme burnout. EmpathyStream is a safety tool designed to monitor employee stress levels and prevent psychological harm. Identifying fatigue is a health and safety objective that Member States are required to promote. The fact that the data is also useful for management does not negate the primary safety-oriented purpose of protecting our staff from mental exhaustion.',
           writePrompt: 'The respondent claims the "safety" exception applies. Check the compliance memo (Ev 4) and the health logs (Ev 5)\u2014is the "safety" claim a genuine medical objective or a legal pretext?',
-          minWords: 20,
+          minWords: 10,
           options: [
             {
               id: 'arg2-strong',
@@ -3118,7 +3118,7 @@ const CASES = [
           ],
           oppositionArgument: 'Finally, Your Honour, we must consider the intent of the AI Act. Recital 44 notes that the ban is intended to prevent "detrimental or unfavourable treatment." VocalVibe is a professional environment where agents are paid to provide a specific emotional service to customers. By making the "Engagement Score" a KPI in the employee handbook, we have made it a transparent part of the work-related relationship. Employees know what is expected of them. There is no unfairness when an agent is penalised for failing to meet a clearly defined and technologically measured professional standard.',
           writePrompt: 'The respondent claims that because the score is a KPI in the handbook, it\'s not "unfavourable treatment." Does transparency in a handbook override the Article 5 prohibition?',
-          minWords: 20,
+          minWords: 10,
           options: [
             {
               id: 'arg3-strong',
@@ -3313,7 +3313,7 @@ const CASES = [
           ],
           oppositionArgument: 'Your Honour, the Parent Coalition is fundamentally mischaracterizing ClassMind AI. This is not an \"emotion recognition\" system. It is a pedagogical support system that measures cognitive engagement. Article 5(1)(f) was intended to prevent the psychological profiling of students, not to ban schools from using technology to improve teaching quality. By monitoring whether a student is \'confused\' by a math problem, we are providing a better education. We are measuring attention, not private emotions.',
           writePrompt: 'The school claims "engagement" isn\'t "emotion." Check the technical manual (Ev 2) and the definition of emotion recognition in the AI Act—does the system\'s function match the prohibited practice?',
-          minWords: 20,
+          minWords: 10,
           options: [
             {
               id: 'arg1-strong',
@@ -3357,7 +3357,7 @@ const CASES = [
           ],
           oppositionArgument: 'Your Honour, even if this court finds the system falls under Article 5(1)(f), we must consider the intent of the Academy. Our teachers are using this data to identify students who are struggling or falling behind—a clear educational safety objective. The AI Act provides an exception for \"medical or safety reasons.\" Ensuring that a child does not fail their exams and is protected from the psychological harm of academic failure is a safety reason. We are using the AI to ensure the well-being and future success of our students, which is the highest form of safety in an educational context.',
           writePrompt: 'The respondent claims "academic success" is a "safety reason." Look at the legal advice (Ev 4) and the AI Act\'s exceptions—is this a valid interpretation of the safety exception?',
-          minWords: 20,
+          minWords: 10,
           options: [
             {
               id: 'arg2-strong',
@@ -3401,7 +3401,7 @@ const CASES = [
           ],
           oppositionArgument: 'Your Honour, we must consider the lack of \"detrimental treatment\" here. Recital 44 notes that the prohibition aims to prevent unfavorable treatment. St. Jude\'s is using this to help students. When Mr. Sterling tells a student to \"look more interested,\" he is not penalizing them; he is coaching them. There is no evidence of harm. In fact, the AI helps ensure that no student is ignored. If a child is confused, the AI tells the teacher. This is a benefit to the student\'s right to education, not a violation of their rights.',
           writePrompt: 'The school claims "coaching" isn\'t "detrimental treatment." Look at Leo Thorne\'s statement (Ev 1)—does being told to "look more interested" count as detrimental treatment under the AI Act\'s framework?',
-          minWords: 20,
+          minWords: 10,
           options: [
             {
               id: 'arg3-strong',
@@ -3596,7 +3596,7 @@ const CASES = [
           ],
           oppositionArgument: 'Your Honour, the term \"untargeted\" in Article 5(1)(e) is intended to prevent the creation of mass surveillance states. ClearSight is a private commercial entity. Our scraping is highly targeted toward a specific goal: providing identity verification for legitimate business security. We are not \"indiscriminately\" scraping; we are carefully indexing public data to build a tool that prevents fraud and theft. Because our purpose is commercial security, our data collection is purposeful and therefore falls outside the scope of the Article 5 prohibitions.',
           writePrompt: 'The respondent claims their scraping is "purposeful" and therefore not "untargeted." Look at the technical specs (Ev 2)\u2014how does the system actually collect data? Is it limited to specific individuals?',
-          minWords: 20,
+          minWords: 10,
           options: [
             {
               id: 'arg1-strong',
@@ -3640,7 +3640,7 @@ const CASES = [
           ],
           oppositionArgument: 'Your Honour, Article 5(1)(e) also mentions scraping from CCTV footage. We contend that the streams ClearSight used were \"open\" YouTube broadcasts of city streets. These are not \"CCTV footage\" in the traditional sense of a closed-circuit police network. These are public broadcasts that anyone can watch. Using an AI to analyze a public broadcast is no different from a human watching a screen. To ban this would be to ban the use of AI on any public video data, which would stifle innovation in the security sector.',
           writePrompt: 'The respondent argues "Open YouTube feeds" aren\'t "CCTV." Check the internal memo (Ev 3) and Art 5(1)(e)\u2014does the Act distinguish between private and publicly-broadcasted CCTV?',
-          minWords: 20,
+          minWords: 10,
           options: [
             {
               id: 'arg2-strong',
@@ -3684,7 +3684,7 @@ const CASES = [
           ],
           oppositionArgument: 'Finally, Your Honour, we must consider the timing. ClearSight built much of this database before the AI Act came into full effect. Article 5 prohibitions cannot be applied retroactively to data that has already been collected and processed. To force the deletion of billions of images would be a disproportionate destruction of corporate property and would harm the security of our existing clients who rely on this data. The Act should only apply to new scraping activities going forward, allowing ClearSight to maintain its existing \"Legacy Database.\"',
           writePrompt: 'The respondent argues the ban isn\'t retroactive. Look at Art 5(1)(e)\u2014does it prohibit just the "scraping" or also the "placing on the market" and "use" of the resulting database?',
-          minWords: 20,
+          minWords: 10,
           options: [
             {
               id: 'arg3-strong',
@@ -3880,7 +3880,7 @@ const CASES = [
           ],
           oppositionArgument: 'Your Honour, the Civil Liberties Union is misapplying Article 5(1)(d). Crim-Pulse is not based \'solely\' on personality traits. As the technical documents show, the system incorporates objective, verifiable data such as geospatial crime density, employment status, and official family records. These are external, verifiable facts. The AI Act\'s prohibition was meant to stop the use of \'pseudo-scientific\' personality tests, not to prevent the police from using hard socioeconomic data to identify where future crimes are most likely to occur.',
           writePrompt: 'The respondent claims socioeconomic data counts as "objective facts." Look at Article 5(1)(d)\u2014what kind of "objective facts" are required to trigger the exception?',
-          minWords: 20,
+          minWords: 10,
           options: [
             {
               id: 'arg1-strong',
@@ -3924,7 +3924,7 @@ const CASES = [
           ],
           oppositionArgument: 'Your Honour, even if the system uses profiling, it does not do so \'solely.\' As our witness from the patrol unit explained, the AI is a \'support tool.\' The final decision to stop and search an individual is always made by a human officer based on their professional experience and observations in the field. This human-in-the-loop ensures that the system falls under the exception in Article 5(1)(d), which permits AI systems used to support human assessment. The AI provides the lead, but the human provides the actual law enforcement decision.',
           writePrompt: 'The respondent argues the "human-in-the-loop" satisfies the exception. Look at the witness statement (Ev 5) and internal email (Ev 3)\u2014is the human assessment truly independent, or is it triggered by the score?',
-          minWords: 20,
+          minWords: 10,
           options: [
             {
               id: 'arg2-strong',
@@ -3968,7 +3968,7 @@ const CASES = [
           ],
           oppositionArgument: 'Finally, Your Honour, we must look at the results. Crim-Pulse is effective. The statistical review shows that individuals in the \'High Risk\' category are significantly more likely to have a criminal history than those in the \'Low Risk\' category. Even if 85% of those flagged have no prior record, the system is identifying a pool of individuals who share characteristics with known offenders. This is a scientific, data-driven approach to public safety. To ban it would be to force the police back into the dark ages of reactive policing, where we only act after a victim has been harmed.',
           writePrompt: 'The respondent argues "statistical correlation" justifies the system. Look at the efficacy report (Ev 4) and Art 5(1)(d)\u2014does "scientific correlation" allow for profiling-based crime prediction?',
-          minWords: 20,
+          minWords: 10,
           options: [
             {
               id: 'arg3-strong',
@@ -4163,7 +4163,7 @@ const CASES = [
           ],
           oppositionArgument: 'Your Honour, the ECLU is fundamentally misreading Article 5(1)(g). That provision prohibits systems that \"categorise individually natural persons.\" Prism-AI is an anonymous segmentation tool. We do not know the names, addresses, or identities of the shoppers. We are categorizing transient biometric patterns for a momentary advertising display. Because we do not link these categories to a persistent legal identity, we are not categorizing \"natural persons\" as individuals, but rather as anonymous members of a commercial demographic.',
           writePrompt: 'The respondent claims anonymity exempts them. Look at Art. 5(1)(g) and Evidence 2—does the law require "identification" for the prohibition on categorization to apply?',
-          minWords: 20,
+          minWords: 10,
           options: [
             {
               id: 'arg1-strong',
@@ -4207,7 +4207,7 @@ const CASES = [
           ],
           oppositionArgument: 'Even if the court finds this is biometric categorisation, it falls under the exception for commercial \"labelling and filtering.\" Article 5(1)(g) allows for the labelling or filtering of biometric datasets. Aura Analytics is simply filtering the stream of people in the mall to ensure that a Christian shopper sees a Christian-themed ad. This is a filtering service for our clients, no different from the law enforcement exceptions mentioned in the Act. If the police can filter for suspects, why can\'t a mall filter for interested consumers?',
           writePrompt: 'The respondent claims the "filtering" exception applies. Check Art. 5(1)(g)\u2014is the "labelling or filtering" exception available to private marketing firms?',
-          minWords: 20,
+          minWords: 10,
           options: [
             {
               id: 'arg2-strong',
@@ -4251,7 +4251,7 @@ const CASES = [
           ],
           oppositionArgument: 'Finally, Your Honour, we must address the \"inference\" vs \"deduction\" distinction. Article 5(1)(g) prohibits systems that deduce or infer race or politics. Prism-AI does not \"know\" a person\'s race; it merely assigns a probability score. This is an estimation, not a deduction of fact. If the AI says a person is \"88% likely to be a Conservative,\" it is providing a probabilistic data point for a marketing model. This is no different from a human salesperson making an educated guess about a customer\'s tastes. We are not categorizing them by their actual beliefs, but by their statistical profile.',
           writePrompt: 'The respondent argues "probability" isn\'t "inference." Look at Art. 5(1)(g) and Evidence 3\u2014does the law distinguish between "statistical probability" and "inference"?',
-          minWords: 20,
+          minWords: 10,
           options: [
             {
               id: 'arg3-strong',
@@ -4277,7 +4277,7 @@ const CASES = [
             {
               id: 'arg3-wrong',
               quality: 'wrong',
-              text: 'Your Honour, the prohibition in Article 5(1)(g) only applies to \"immutable\" characteristics. Political opinion and religious belief are choices, not immutable traits like race. Therefore, the system is only prohibited from inferring ethnicity. The company is free to continue inferring political and religious views because those are behaviors that people choose to display in public kiosks, and they are not protected by the biometric categorisation ban which only focuses on biological facts. The regulatory framework specifically anticipates situations of this nature and imposes obligations that the respondent has manifestly failed to satisfy.',
+              text: 'Your Honour, the prohibition in Article 5(1)(g) only applies to \"immutable\" characteristics. Political opinion and religious belief are choices, not immutable traits like race. Therefore, the system is only prohibited from inferring ethnicity. The company is free to continue inferring political and religious views because those are behaviors that people choose to display in public kiosks, and they are not protected by the biometric categorisation ban which only focuses on biological facts.',
               judge_response: 'Counsel, you are mistaken. Article 5(1)(g) explicitly lists \"political opinions\" and \"religious or philosophical beliefs\" as prohibited categories for biometric inference. Choice has nothing to do with the scope of the ban.',
               legal_reasoning: 'Fundamental error. It misstates the scope of Art 5(1)(g), which explicitly protects political and religious categories alongside race.'
             }
@@ -4446,7 +4446,7 @@ const CASES = [
           ],
           oppositionArgument: 'Your Honour, DermScan AI is a state-of-the-art high-risk system. Article 10(3) of the AI Act requires that training data be relevant and representative to the best extent possible. SkinTech AI used nearly half a million high-quality clinical images. The fact that fewer images exist for certain skin types is a systemic issue in medical research, not a regulatory violation by my client. We used the data that was available. To hold a developer liable for the general lack of diverse medical data in the world would make the development of any high-risk medical AI impossible.',
           writePrompt: 'The respondent claims 1% representation is "representative to the best extent possible." Look at the technical stats and Art. 10(3)—what is the actual standard for datasets in high-risk systems?',
-          minWords: 20,
+          minWords: 10,
           options: [
             {
               id: 'arg1-strong',
@@ -4490,7 +4490,7 @@ const CASES = [
           ],
           oppositionArgument: 'Your Honour, SkinTech AI maintained a rigorous risk management system as required by Article 9. Our internal memos show we identified the skin-tone performance delta during the validation phase. We analyzed this risk and determined that the most effective mitigation was the human-in-the-loop: the dermatologist. By ensuring that the AI is only an \'assistant\', we mitigated the risk of a false diagnosis. The provider is not responsible for the fact that Dr. Weber chose to rely on the AI rather than his own clinical judgment.',
           writePrompt: 'The respondent claims "human-in-the-loop" is a sufficient mitigation for the known bias. Look at Art. 9(2) and Evidence 3—did the provider actually mitigate the risk?',
-          minWords: 20,
+          minWords: 10,
           options: [
             {
               id: 'arg2-strong',
@@ -4534,7 +4534,7 @@ const CASES = [
           ],
           oppositionArgument: 'Finally, Your Honour, we must look at the overall benefit. DermScan AI has a 96% aggregate accuracy rate. It has helped identify thousands of early-stage melanomas in light-skinned patients that might have been missed by general practitioners. Article 9(4) notes that risk management must ensure that the residual risk remains acceptable when weighed against the benefits. The benefit to the vast majority of the population clearly outweighs the residual risk of a lower sensitivity in a small demographic subgroup. To shut down this system would be to deny life-saving technology to 90% of our patients.',
           writePrompt: 'The respondent argues "aggregate benefit" justifies the residual risk. Does Article 9 allow for a trade-off where one group is put at significantly higher risk than another?',
-          minWords: 20,
+          minWords: 10,
           options: [
             {
               id: 'arg3-strong',
@@ -4728,7 +4728,7 @@ const CASES = [
           ],
           oppositionArgument: 'Your Honour, the AI Act requires that high-risk systems allow for human oversight. MediLogic has fully complied. Every screen in TriageFlow AI includes a prominent \'Manual Override\' button. The fact that we require a justification for clinical deviations is not a violation; it is a quality control measure. Article 14 does not mandate that overrides be \'easy\' or \'instant\'; it only requires that the human has the technical ability to perform them. The doctor in this case had that ability but chose not to exercise it.',
           writePrompt: 'The respondent claims the mere presence of an "Override" button is enough. Look at Article 14(4) and Evidence 2—what is the actual standard for the *effectiveness* of human oversight?',
-          minWords: 20,
+          minWords: 10,
           options: [
             {
               id: 'arg1-strong',
@@ -4772,7 +4772,7 @@ const CASES = [
           ],
           oppositionArgument: 'Your Honour, the statistics show the system is working exactly as intended. A 98% adherence rate is a testament to the accuracy of the model. Article 14(2) requires that oversight measures aim at preventing or minimizing the risks that may emerge. By requiring a justification for overrides, we minimize the risk of human error and ensure that clinicians only deviate when they have a robust, verifiable reason. The low override rate is not a sign of \"automation bias,\" but a sign of a high-performing system that clinicians have learned to trust.',
           writePrompt: 'The respondent claims high adherence is a sign of "trust." Look at Art. 14(4)(b) and Evidence 4 and 5—does the AI Act allow providers to design systems that encourage "blind trust" or automation bias?',
-          minWords: 20,
+          minWords: 10,
           options: [
             {
               id: 'arg2-strong',
@@ -4816,7 +4816,7 @@ const CASES = [
           ],
           oppositionArgument: 'Finally, Your Honour, we must look at the Risk Management Plan. Article 9 requires providers to identify and mitigate risks. MediLogic identified automation bias and mitigated it by designating the system as \'Assistant Only.\' The clinicians signed a service agreement acknowledging their final authority. If a doctor, like Dr. Aris, feels \'pressured\' by a red box, that is a matter of professional resilience, not a software defect. The provider cannot be held liable for the psychological pressure felt by a user who is legally and contractually the final decision-maker.',
           writePrompt: 'The respondent blames "professional resilience." Does Article 9 allow providers to use contractual terms to discharge their technical risk mitigation duties?',
-          minWords: 20,
+          minWords: 10,
           options: [
             {
               id: 'arg3-strong',
@@ -5013,7 +5013,7 @@ const CASES = [
           ],
           oppositionArgument: 'Your Honour, ExamWatch AI is a high-risk system as categorized in Annex III, paragraph 3(b). St. Jude\'s University has complied with all its obligations as a deployer. The technical documentation provided by the manufacturer lists the training data. The law requires that data be representative \"to the best extent possible.\" The developer used a massive dataset of 50,000 sessions. If there are minor performance differences between demographics, that is a technical limitation of the current state of the art, not a regulatory failure by the university.',
           writePrompt: 'The respondent claims 95% Caucasian data is "representative to the best extent possible." Look at Art. 10(3) and Evidence 4—does the training data meet the legal standard for high-risk systems?',
-          minWords: 20,
+          minWords: 10,
           options: [
             {
               id: 'arg1-strong',
@@ -5057,7 +5057,7 @@ const CASES = [
           ],
           oppositionArgument: 'Your Honour, the university maintained a robust human-in-the-loop system. As Prof. Miller testified, she personally signs off on every failure report. Article 14(4) simply requires that high-risk systems be overseen by natural persons. There is no requirement in the AI Act for a professor to watch every minute of a video if the AI is 94% confident. The \"automatic failure\" policy is merely an internal efficiency guideline. The professor remains the final decision-maker, and her signature satisfies the human oversight obligations of the Act.',
           writePrompt: 'The respondent claims a signature is "oversight." Look at Art. 14(4)(b) and Prof. Miller\'s statement (Ev 5)—does a rubber-stamp sign-off minimize "automation bias"?',
-          minWords: 20,
+          minWords: 10,
           options: [
             {
               id: 'arg2-strong',
@@ -5101,7 +5101,7 @@ const CASES = [
           ],
           oppositionArgument: 'Finally, Your Honour, we must address the neurodivergent claim. The university has a broad \"Academic Support\" mandate. While the system was not specifically tested for involuntary tics, Article 9 of the AI Act allows for a risk-benefit analysis. The benefit of preventing mass cheating during a remote exam outweighs the residual risk of a few false positives for students with rare conditions. We have a post-market monitoring system in place to catch these issues over time. To ban the system now would be a disproportionate response that would jeopardize the integrity of all remote degrees.',
           writePrompt: 'The respondent argues "residual risk" justifies the bias. Look at Art. 9 and Evidence 6—did the university identify and mitigate the risk to vulnerable groups before deployment?',
-          minWords: 20,
+          minWords: 10,
           options: [
             {
               id: 'arg3-strong',
@@ -5297,7 +5297,7 @@ const CASES = [
           ],
         oppositionArgument: 'Your Honour, the University has acted with complete transparency. We have informed every applicant that an AI system is used, satisfying our obligations. Article 13 does not require that a high-risk system be simple enough for a layperson to understand; it requires that it be \'sufficiently transparent\' to allow the deployer to use it. The University understands that a score of 0.42 means a rejection. The internal mathematical weights are trade secrets of the developer. Requiring a university to explain every \'hidden layer\' of a neural network would effectively ban the use of modern AI in education.',
         writePrompt: 'The respondent claims transparency only means "knowing the score." Look at Article 13(1)\u2014what must the deployer actually be able to do with the system\'s output?',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg1-strong',
@@ -5341,7 +5341,7 @@ const CASES = [
           ],
         oppositionArgument: 'Your Honour, the human oversight requirement of Article 14 is satisfied by the fact that the University\'s Admissions Committee set the parameters for the AI. Humans decided that a score below 0.60 should be a rejection. Humans chose the data inputs. Article 14(2) states that oversight shall aim at preventing or minimizing risks. Our oversight occurs at the \'system level\'—we monitor the aggregate results. We do not need to review every individual rejection to satisfy the law; the human remains \'in the loop\' by controlling the overall selection criteria.',
         writePrompt: 'The respondent argues "system-level" oversight is enough. Look at Article 14(4)\u2014does the human need the ability to intervene in *individual* cases?',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg2-strong',
@@ -5385,7 +5385,7 @@ const CASES = [
           ],
         oppositionArgument: 'Finally, Your Honour, we must consider the \'Trade-off Principle.\' Article 9(4) of the AI Act allows for risk management that ensures residual risk is acceptable. The developer, Dr. Chen, correctly identified that adding explainability layers would reduce the accuracy of the admissions predictions by 15%. The University decided that the \'risk\' of opacity was outweighed by the \'benefit\' of identifying the most successful students. This is a legitimate management decision that balances regulatory goals with institutional performance. The system is compliant because we made a conscious, documented choice to prioritize accuracy.',
         writePrompt: 'The respondent argues they can "sacrifice explainability for accuracy." Does the AI Act allow providers to ignore Article 13 design requirements for the sake of performance?',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg3-strong',
@@ -5581,7 +5581,7 @@ const CASES = [
           ],
         oppositionArgument: 'Your Honour, HireSmart AI is a high-risk system as defined in Annex III, point 4(a). CloudScale has met the rigorous requirements of Article 10. The training data is relevant, representative, and to the best extent possible, free of errors, as it is based on the actual, verified hiring records of the company. The AI Act does not require companies to invent a false history; it requires they use high-quality data. Using our real-world hiring history ensures the model is accurate for the specific environment of our firm.',
         writePrompt: 'The respondent claims historical records are "representative." Look at Art. 10(3) and Evidence 2\u2014is a 88% male dataset "sufficiently representative" for a recruitment tool?',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg1-strong',
@@ -5625,7 +5625,7 @@ const CASES = [
           ],
         oppositionArgument: 'Your Honour, CloudScale maintained a comprehensive risk management system as required by Article 9. We identified the risk of bias in our strategy document (Evidence 6). We performed a risk-benefit analysis and determined that any technical intervention, such as synthetic data or keyword weighting, would degrade the system\'s accuracy. Under Article 9(4), risk management must ensure that the residual risk remains acceptable. We concluded that the benefit of a highly accurate hiring tool outweighed the residual risk of mirroring historical patterns. We fulfilled our duty by documenting the risk and choosing the most accurate path.',
         writePrompt: 'The respondent claims they can ignore bias for "accuracy." Does Article 9 allow a provider to knowingly accept a discriminatory residual risk?',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg2-strong',
@@ -5669,7 +5669,7 @@ const CASES = [
           ],
         oppositionArgument: 'Finally, Your Honour, we must address the intent. CloudScale did not set out to discriminate. We set out to find the best engineers. Recital 45 of the AI Act notes that providers should avoid bias, but it does not mandate specific results. If the data shows that candidates from certain colleges perform better in our specific environment, the AI is simply being efficient. We are a private company with the right to freedom of contract. To force us to hire people that the data suggests will not succeed is a violation of our commercial rights under the EU treaties.',
         writePrompt: 'The respondent argues "freedom of contract" overrides the AI Act. Look at the email (Ev 3) and Art. 10(2)(f)\u2014is efficiency a valid excuse for using biased weights?',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg3-strong',
@@ -5866,7 +5866,7 @@ const CASES = [
           ],
         oppositionArgument: 'Your Honour, the claimant is attempting to conflate high-risk classification with a duty of total technical exposure. PromoteOptima is a proprietary high-risk system. Article 13 requires that systems be designed to ensure \'sufficient\' transparency for the deployer. FleetLogistics understood the outputs perfectly: high scores meant high potential. The internal weights of a neural network are trade secrets. To demand that a company explain the \'logic\' of a deep-learning model to every passed-over employee would effectively ban the use of any modern AI in the workplace.',
         writePrompt: 'The respondent claims "knowing the score" is enough transparency. Look at Article 13(1)\u2014what is the system actually required to enable the *deployer* to do?',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg1-strong',
@@ -5910,7 +5910,7 @@ const CASES = [
           ],
         oppositionArgument: 'Your Honour, the claimant relies on Article 50, but that article only applies to systems that \'interact\' with humans, like chatbots. PromoteOptima is a backend analytical tool; it does not speak to the employees. Furthermore, the keystroke analysis is not \'biometric categorization\' because it is used for productivity, not for identifying people. We already know who our employees are. Therefore, we had no duty to notify anyone under Article 50, and our general mention of \'monitoring\' in the employee handbook is more than sufficient for regulatory compliance.',
         writePrompt: 'The respondent claims Art. 50 doesn\'t apply because the AI is "backend." Look at the definition of biometric categorization and the leaked ranking (Ev 1)—does the system infer traits?',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg2-strong',
@@ -5954,12 +5954,12 @@ const CASES = [
           ],
         oppositionArgument: 'Finally, Your Honour, we must address the \'Adversarial Gaming\' risk. The HR Director\'s email (Evidence 3) makes a valid point: if employees are informed of the metrics, the data becomes fraudulent. They will script their responses to look like high-performers. The AI Act recognizes the need for effective use. If transparency makes a high-risk system ineffective for its intended purpose, the deployer must have the discretion to limit disclosure to protect the integrity of the evaluation process. Our \'stealth\' approach was the only way to ensure a meritocratic outcome.',
         writePrompt: 'The respondent argues secrecy is necessary for "data integrity." Does the AI Act allow for a "secrecy by necessity" defense against Art. 50 notification duties?',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg3-strong',
             quality: 'strong',
-            text: 'Your Honour, the respondent\'s \"secrecy by necessity\" argument has no basis in the AI Act. The Regulation is built on the principle that high-risk systems in the workplace represent an inherent power imbalance. Article 50(3) and the associated recitals mandate that individuals be informed of their exposure to biometric categorization precisely because of the risks to their rights and dignity. The email in Evidence 3 proves that the company willfully chose to violate these mandatory duties to protect a management metric.',
+            text: 'Your Honour, the respondent\'s \"secrecy by necessity\" argument has no basis in the AI Act. The Regulation is built on the principle that high-risk systems in the workplace represent an inherent power imbalance. Article 50(3) and the associated recitals mandate that individuals be informed of their exposure to biometric categorization precisely because of the risks to their rights and dignity. The email in Evidence 3 proves that the company willfully chose to violate these mandatory duties to protect a management metric. Institutional efficiency or the fear of \"gaming\" cannot override the fundamental statutory right of workers to be informed when their biometric behaviors are being algorithmically categorized.',
             judge_response: 'The court agrees. There is no \"secrecy for efficiency\" clause in the AI Act. The mandatory notification duties in Article 50 and the interpretability duties in Article 13 are the floor, not a suggestion. The email is clear evidence of a willful violation.',
             legal_reasoning: 'This argument correctly identifies that the AI Act provides no \"gaming the system\" exception and uses the internal email (Evidence 3) to prove a deliberate breach of the transparency mandate.'
           },
@@ -6150,7 +6150,7 @@ const CASES = [
           ],
         oppositionArgument: 'Your Honour, CreditLens AI is a high-risk system as defined in Annex III, paragraph 5(b). EuroBank has met its obligations under Article 10 by using relevant and representative data from three decades of financial history. The AI Act does not prohibit the use of geospatial data. Postal codes are objective facts. If certain neighborhoods have higher default rates, the AI is simply reflecting that economic reality. To force the bank to ignore this data would be to mandate inaccurate lending, which would threaten the stability of the entire financial sector.',
         writePrompt: 'The respondent claims geospatial data is just "economic reality." Look at Art. 10(2)(f) and Evidence 4\u2014is using a proxy for ethnicity allowed in high-risk training data?',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg1-strong',
@@ -6194,7 +6194,7 @@ const CASES = [
           ],
         oppositionArgument: 'Your Honour, EuroBank maintained a rigorous risk management system as required by Article 9. We identified the risk of \'historical data poisoning\' and mitigated it by ensuring the AI does not have access to the protected characteristics themselves. We followed the risk management hierarchy by choosing a design that prioritizes accurate financial prediction over social engineering. The fact that an academic like Dr. Chen disagreed with our mitigation strategy does not mean the system is non-compliant; it means there is a difference of professional opinion in a complex field.',
         writePrompt: 'The respondent claims they mitigated the risk by excluding "Race" as a variable. Look at Art. 9(2) and Evidence 5\u2014is ignoring a known data defect a valid mitigation?',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg2-strong',
@@ -6238,7 +6238,7 @@ const CASES = [
           ],
         oppositionArgument: 'Finally, Your Honour, we must address the \"Accuracy vs. Fairness\" trade-off. Article 9(4) of the AI Act states that risk management shall ensure that the residual risk remains acceptable. Our internal email (Evidence 3) shows we carefully balanced the loss of predictive accuracy against the legal risk of using geospatial data. We decided that the economic benefit of a highly accurate credit model, which keeps the bank solvent and protects our depositors, outweighs the residual risk of neighborhood-based disparate impact. This is a legitimate business judgment that the AI Act allows.',
         writePrompt: 'The respondent argues they can trade "Fairness" for "Accuracy." Does Article 9 allow a provider to knowingly accept a discriminatory bias to protect their "predictive accuracy"?',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg3-strong',
@@ -6435,7 +6435,7 @@ const CASES = [
           ],
         oppositionArgument: 'Your Honour, LifeShield-AI is a sophisticated high-risk system as defined in Annex III. GLH has complied with Article 10 by using relevant and representative geospatial data. Actuarial science has always relied on geography to assess risk. The AI Act does not require us to ignore statistically significant data points simply because they correlate with socioeconomic status. We are assessing health risks, not social standing. To force us to remove location data would be to mandate an inaccurate system, which would lead to underpriced risk and financial instability.',
         writePrompt: 'The respondent claims geospatial weights are "actuarially significant." Look at Article 10(2)(f) and Evidence 2—does the law allow for "accurate" proxies that lead to discriminatory results?',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg1-strong',
@@ -6479,7 +6479,7 @@ const CASES = [
           ],
         oppositionArgument: 'Your Honour, GLH maintained a rigorous risk management system as required by Article 9. We identified the risk of bias and mitigated it by ensuring the AI does not have access to sensitive attributes like race or religion. We followed the risk management hierarchy by choosing a design that prioritizes accurate financial prediction. The fact that a developer like Dr. Chen disagreed with our mitigation strategy does not mean the system is non-compliant; it means we chose a professional, actuarial approach to risk rather than a social one.',
         writePrompt: 'The respondent claims they mitigated the risk by excluding sensitive attributes. Look at Art. 9(2) and Evidence 6—is "attribute blindness" a valid mitigation for proxy discrimination?',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg2-strong',
@@ -6523,7 +6523,7 @@ const CASES = [
           ],
         oppositionArgument: 'Finally, Your Honour, we must look at the \'Accuracy vs. Fairness\' balance. Article 9(4) states that risk management shall ensure that the residual risk remains acceptable. Our internal email (Evidence 3) shows we carefully balanced the loss of predictive accuracy against the legal risk of using geospatial data. We decided that the economic benefit of a highly accurate risk model, which protects the company\'s solvency and keeps premiums low for the majority of policyholders, outweighs the residual risk of neighborhood-based disparate impact. This is a legitimate business judgment.',
         writePrompt: 'The respondent argues they can trade "Fairness" for "Accuracy." Does Article 9 allow a provider to knowingly accept a discriminatory bias to protect their profit margins?',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg3-strong',
@@ -6720,7 +6720,7 @@ const CASES = [
           ],
         oppositionArgument: 'Your Honour, the Justice Department has acted in full compliance with Article 10. The training data for BailBound is derived from over a million historical records, making it more representative and complete than any manual study. The fact that certain districts have higher arrest records is a historical fact, not a \'bias\' of the AI. The AI Act does not require providers to engage in social engineering by erasing the truth of policing history to achieve artificial demographic parity.',
         writePrompt: 'The respondent claims historical arrests are "fact," not "bias." Look at Article 10(2)(f) and Evidence 2\u2014what is the provider\'s duty regarding "historical patterns" in training data?',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg1-strong',
@@ -6764,12 +6764,12 @@ const CASES = [
           ],
         oppositionArgument: 'Your Honour, we have met the accuracy and robustness requirements of Article 15. BailBound AI has a verified accuracy rate of 92%. The \'feedback loop\' mentioned by the claimant is actually a sign of a highly effective learning system. Article 15(4) encourages high-risk systems to continue learning after deployment. Our system is designed to be resilient to changes in criminal behavior by constantly updating its model based on the latest court data. To ban this self-learning feature would be to freeze our technology in the past and reduce its effectiveness over time.',
         writePrompt: 'The respondent claims the feedback loop is a "feature." Look at Article 15(4)\u2014what is the specific requirement for systems that "continue to learn" after being placed on the market?',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg2-strong',
             quality: 'strong',
-            text: 'Your Honour, the respondent\'s argument is a direct violation of Article 15(4). The AI Act mandates that high-risk systems that continue to learn after being put into service shall be developed in such a way as to eliminate or reduce as far as possible the risk of biased outputs influencing inputs for future operations, specifically referencing \'feedback loops.\' The internal memo (Evidence 3) proves the department was aware that the AI was creating a self-reinforcing loop of discrimination in District 8 but failed to implement any technical mitigations.',
+            text: 'Your Honour, the respondent\'s argument is a direct violation of Article 15(4). The AI Act mandates that high-risk systems that continue to learn after being put into service shall be developed in such a way as to eliminate or reduce as far as possible the risk of biased outputs influencing inputs for future operations, specifically referencing \'feedback loops.\' The internal memo (Evidence 3) proves the department was aware that the AI was creating a self-reinforcing loop of discrimination in District 8 but failed to implement any technical mitigations. Ignoring a known feedback loop that amplifies bias is a breach of the mandatory robustness and accuracy standards required for law enforcement tools.',
             judge_response: 'Article 15(4) is unambiguous regarding feedback loops. If the system \"eats its own bias\" and gets more biased over time, it is technically defective under the Act. Dr. Eisenberg, why were the de-biasing filters not implemented?',
             legal_reasoning: 'This argument correctly applies the Art. 15(4) legal test: systems that learn must have specific mitigations for feedback loops. It uses Evidence 3 and 5 to prove the provider\'s awareness and failure to act.'
           },
@@ -6808,12 +6808,12 @@ const CASES = [
           ],
         oppositionArgument: 'Finally, Your Honour, we must consider the human-in-the-loop. Article 14 requires that high-risk systems be oversaw by natural persons. Our judicial manual (Evidence 6) makes it clear that the AI score is only advisory. The judge makes the final decision on bail. If a judge chooses to set high bail for a District 8 defendant, that is an exercise of judicial discretion, not a failure of the AI. The provider cannot be held liable for the decisions of a sovereign court, especially when the AI achieved its stated accuracy goals in 92% of cases.',
         writePrompt: 'The respondent blames "judicial discretion." Look at Evidence 4 and Art. 15\u2014is the 92% accuracy metric reliable if the system counts bail-violations as re-offenses?',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg3-strong',
             quality: 'strong',
-            text: 'Your Honour, the respondent\'s 92% accuracy metric is a statistical illusion built on a breach of Article 15. The audit (Evidence 4) reveals that the system achieves high \"accuracy\" by counting technical bail violations\u2014often caused by its own harsh recommendations\u2014as criminal re-offenses. This circular logic masks a massive disparity where 48% of District 8 residents are flagged as high risk despite an actual re-offense rate of only 6%. A system that cannot distinguish between a transit delay and a crime is not \"accurate\" for the purpose of a justice assessment.',
+            text: 'Your Honour, the respondent\'s 92% accuracy metric is a statistical illusion built on a breach of Article 15. The audit (Evidence 4) reveals that the system achieves high \"accuracy\" by counting technical bail violations\u2014often caused by its own harsh recommendations\u2014as criminal re-offenses. This circular logic masks a massive disparity where 48% of District 8 residents are flagged as high risk despite an actual re-offense rate of only 6%. A system that cannot distinguish between a transit delay and a crime is not \"accurate\" for the purpose of a justice assessment. Under Article 15, accuracy must be meaningful for the system\'s intended purpose; a self-fulfilling prophecy does not meet the legal standard.',
             judge_response: 'The 42% gap between flags and actual crimes is startling. If the \"accuracy\" is just the AI confirming its own procedural hurdles, then the system is fundamentally non-compliant with the accuracy mandate of the Act.',
             legal_reasoning: 'This argument uses Evidence 4 to debunk the accuracy claim and correctly identifies that Art. 15 accuracy must be measured against the *intended purpose* (predicting crime), not just confirmed procedural failures.'
           },
@@ -7005,7 +7005,7 @@ const CASES = [
           ],
         oppositionArgument: 'Your Honour, the Ministry has fully complied with the human oversight requirements of Article 14. Veritas-Judge is a high-risk system that is overseen by a natural person\u2014the judge. Every final sentence bears a human signature. The fact that the Ministry tracks \'consistency\' and \'compliance\' is merely a matter of administrative quality control. Article 14 does not grant judges a right to be inconsistent or to ignore evidence-based tools. The judge in Thomas Miller\'s case had the technical ability to override the AI; that he chose not to is a matter of his own judicial choice, not a failure of the system\'s design.',
         writePrompt: 'The respondent claims the human signature is "oversight." Look at Article 14(4)(b) and (e)—what is the actual standard for "effective" human oversight?',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg1-strong',
@@ -7049,7 +7049,7 @@ const CASES = [
           ],
         oppositionArgument: 'Furthermore, Your Honour, we must consider the \'Transparency\' obligations of Article 13. The Ministry has provided the judges with a comprehensive dashboard that shows the recommended sentence. We have met the requirement that the system be interpretable by the deployer. If a judge finds the override process \'burdensome\' because of a reasoning form, that is a necessary part of the high-risk documentation process required by the Act itself. You cannot claim that following the law\'s own documentation requirements constitutes a failure of oversight.',
         writePrompt: 'The respondent claims the "Reasoning Form" is a compliance feature. Look at Evidence 2 and 5—does the interface design help or hinder the judge\'s ability to "disregard" the output?',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg2-strong',
@@ -7093,7 +7093,7 @@ const CASES = [
           ],
         oppositionArgument: 'Finally, Your Honour, we must look at the outcomes. Our statistical audit (Evidence 4) shows that sentencing variance has decreased significantly. This is a victory for the principle of equality before the law. Article 14(2) states that human oversight shall aim at preventing or minimizing the risks that may emerge. By reducing the \'risk\' of subjective judicial bias through AI adherence, we are fulfilling the very purpose of the oversight mandate. The high adherence rate is not \'bias\'; it is the successful elimination of human inconsistency in the pursuit of a fairer justice system.',
         writePrompt: 'The respondent argues "adherence" is "equality." Look at Evidence 1 and 4—is the elimination of "variance" the same as "minimizing risk" under Article 14?',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg3-strong',
@@ -7290,7 +7290,7 @@ const CASES = [
           ],
         oppositionArgument: 'Your Honour, the National Migration Agency has a sovereign right to manage its borders. FrontierGuard AI is a high-risk system as defined in Annex III, paragraph 7(a). We have met our obligations under Article 10 by using relevant and representative historical data. Nationality is an objective, verifiable fact. The AI Act does not require us to ignore statistically significant data points. To force the NMA to ignore origin would be to mandate an inaccurate system that endangers the security of the Union.',
         writePrompt: 'The respondent claims nationality is an "objective fact" for risk. Look at Article 10(2)(f) and Evidence 3—what is the actual duty of a provider regarding biases that impact fundamental rights?',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg1-strong',
@@ -7334,7 +7334,7 @@ const CASES = [
           ],
         oppositionArgument: 'Furthermore, Your Honour, we must consider the Risk Management System. Article 9 requires that we identify and mitigate risks. We identified the risk of "group-level correlations" and determined that the most effective mitigation was the "Human-in-the-Loop." Officer Vane signs every rejection. We followed the risk management hierarchy by choosing a design that prioritizes the security of the Union over the individual convenience of the applicant. The provider is not responsible for the fact that certain nationalities have higher historical overstay rates; our risk management simply reflects that statistical reality.',
         writePrompt: 'The respondent claims "Human-in-the-loop" is a valid mitigation for bias. Look at Article 9(2) and Evidence 5—does a "rubber-stamp" sign-off meet the risk management hierarchy requirements?',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg2-strong',
@@ -7531,7 +7531,7 @@ const CASES = [
           ],
         oppositionArgument: 'Your Honour, the Department of Immigration has fully complied with the human oversight requirements of Article 14. AsylumFlow is a decision-support tool, not a decision-maker. Every rejection is signed by a natural person, satisfying the requirement for human-in-the-loop. The AI Act does not mandate a specific amount of time for a review; it only requires that oversight be enabled. The 97% adherence rate is a testament to the system\'s accuracy, not evidence of a failure in oversight. To demand slower processing is to demand that thousands of applicants wait years for a decision.',
         writePrompt: 'The respondent claims the human signature is "oversight." Look at Article 14(4) and the audit data—is 162 seconds enough to "disregard, override or reverse" the AI?',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg1-strong',
@@ -7575,7 +7575,7 @@ const CASES = [
           ],
         oppositionArgument: 'Your Honour, the system is designed to provide maximum interpretability as required by Article 13. Every flag is accompanied by a clear category, such as \"Consistency Error.\" This allows the officer to interpret the system\'s output and use it appropriately. The AI Act does not require the system to explain the internal weights of its neural network; it only requires that the deployer be able to use the output. The DIA officers understand the categories perfectly and use them to identify the most urgent cases for rejection.',
         writePrompt: 'The respondent claims "Consistency Error" is sufficient transparency. Look at Article 13(1) and Evidence 2—can a deployer "interpret" the output with only a label?',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg2-strong',
@@ -7619,7 +7619,7 @@ const CASES = [
           ],
         oppositionArgument: 'Finally, Your Honour, we must address the \"backlog\" reality. Article 9(4) of the AI Act states that risk management shall ensure that the residual risk remains acceptable. We identified the risk of automation bias and determined that the benefit of processing cases 40% faster, which allows more people to receive decisions, outweighs the residual risk of a few errors. The 50-case-per-day target (Evidence 3) is a management necessity to fulfill our public service mandate. The provider cannot be held liable for the administrative pressure that the government must manage in a crisis.',
         writePrompt: 'The respondent argues "residual risk" justifies the workload. Does Article 9 allow a provider to knowingly accept a lack of oversight to protect their efficiency metrics?',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg3-strong',
@@ -7816,7 +7816,7 @@ courtroom: {
           ],
       oppositionArgument: 'Your Honour, the National Power Grid maintained a state-of-the-art Risk Management System under Article 9. We identified all standard foreseeable risks, including cyberattacks and hardware failure. The combination of record-breaking heat and sudden cloud cover was a \'Black Swan\' event\u2014a Force Majeure that no reasonable operator could be expected to model. Article 9(4) allows for the acceptance of residual risks that are reasonable. To demand that every possible weather permutation be tested would prevent any AI from ever being deployed in the energy sector.',
       writePrompt: 'The respondent claims extreme weather isn\'t "foreseeable." Look at Article 9(2) and Evidence 3\u2014was this risk identified before the launch?',
-      minWords: 20,
+      minWords: 10,
       options: [
         {
           id: 'arg1-strong',
@@ -7860,7 +7860,7 @@ courtroom: {
           ],
       oppositionArgument: 'Your Honour, we have met the robustness requirements of Article 15. GridCore was designed with a dual-redundancy architecture. We had a primary and a secondary AI. Article 15(1) requires that high-risk systems be resilient as regards errors, faults, or inconsistencies. Our architecture was resilient to hardware faults. The fact that both systems encountered the same environmental inconsistency at the same time is a technical anomaly that no level of redundancy could prevent. We followed the state-of-the-art standards for high-availability systems.',
       writePrompt: 'The respondent claims dual-AI is "redundancy." Look at Article 15(4) and Evidence 5—does redundancy work if both systems share the same training defect?',
-      minWords: 20,
+      minWords: 10,
       options: [
         {
           id: 'arg2-strong',
@@ -7904,12 +7904,12 @@ courtroom: {
           ],
       oppositionArgument: 'Finally, Your Honour, we must consider the public interest. GridCore AI has reduced carbon emissions by 18% by optimizing renewable energy integration. Article 9(4) requires that risk management ensures the residual risk remains acceptable when weighed against the benefits. The environmental benefit of GridCore is massive. To demand manual fallbacks or legacy switching systems would increase energy prices and slow down the green transition. The risk of an 8-hour blackout once every ten years is an acceptable price to pay for a carbon-neutral and efficient power grid.',
       writePrompt: 'The respondent argues "Green Transition" justifies the risk. Does Article 9 allow for a trade-off where critical safety fallbacks are removed for the sake of efficiency or environmental goals?',
-      minWords: 20,
+      minWords: 10,
       options: [
         {
           id: 'arg3-strong',
           quality: 'strong',
-          text: 'Your Honour, the respondent\'s \"green trade-off\" argument is a violation of the mandatory risk management hierarchy in Article 9(2). Providers must eliminate or reduce risks through design and development. The removal of the manual override (Evidence 2) to maximize efficiency was a deliberate choice that increased, rather than reduced, the risk of a total grid collapse. While environmental goals are important, they do not grant an exemption from the safety-by-design principles of the AI Act. A residual risk is only acceptable if all reasonable technical mitigations, such as non-AI fallback procedures, have been implemented.',
+          text: 'Your Honour, the respondent\'s \"green trade-off\" argument is a violation of the mandatory risk management hierarchy in Article 9(2). Providers must eliminate or reduce risks through design and development. The removal of the manual override (Evidence 2) to maximize efficiency was a deliberate choice that increased, rather than reduced, the risk of a total grid collapse. While environmental goals are important, they do not grant an exemption from the safety-by-design principles of the AI Act. A residual risk is only acceptable if all reasonable technical mitigations, such as non-AI fallback procedures, have been implemented. Choosing efficiency over safety fallbacks is a willful breach of the Regulation.',
           judge_response: 'The court agrees. Environmental benefits cannot be used as an excuse to deploy unsafe high-risk systems. Article 9 requires the reduction of risk to the \"best extent possible.\" Removing a manual bypass is the opposite of risk reduction.',
           legal_reasoning: 'This argument correctly identifies that "public interest" or "efficiency" does not override the mandatory risk management hierarchy in Art. 9(2), and uses Evidence 2 to prove the respondent actively increased the risk.'
         },
@@ -8101,7 +8101,7 @@ verdict: {
           ],
         oppositionArgument: 'Your Honour, the claimant is attempting to censor political speech. VoterPulse is a marketing support tool. The AI Act\'s high-risk categories in Annex III were intended for systems used by \"public authorities.\" DemocracyLabs is a private consulting firm working for a private political party. Because we are not a state entity, our use of AI to communicate with voters is protected by the principle of political expression and does not fall under the restrictive oversight of Annex III, point 8.',
         writePrompt: 'The respondent claims Annex III, point 8 only applies to public authorities. Check the text of 8(a)—does it include systems used by "political campaigns"?',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg1-strong',
@@ -8145,7 +8145,7 @@ verdict: {
           ],
         oppositionArgument: 'Your Honour, even if the system is high-risk, DemocracyLabs maintained a risk management system under Article 9. We identified the risk of demographic mis-targeting and implemented tuning mitigations. The claimant\'s concern regarding \"psychological manipulation\" is a political critique, not a technical risk. The AI Act requires us to manage technical risks to health, safety, and fundamental rights. We determined that providing personalized messaging is a benefit to the voter\'s right to be informed, and thus the residual risk to the democratic process was deemed acceptable and not in need of further mitigation.',
         writePrompt: 'The respondent claims "psychological manipulation" isn\'t a technical risk. Look at Art. 9(2) and Evidence 5—does the law allow providers to ignore risks to "democratic processes" in high-risk systems?',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg2-strong',
@@ -8189,7 +8189,7 @@ verdict: {
           ],
         oppositionArgument: 'Finally, Your Honour, we must address the transparency claim. The Unity Party has already informed the public that they use digital analytics. Article 50 of the AI Act requires transparency for AI systems that generate deepfakes or manipulate images. Our system generates text. There is no absolute requirement to label every sentence of political messaging as AI-generated, especially when such a label would infringe upon the candidate\'s right to maintain a consistent and authentic public voice. We have met the spirit of the law through our general campaign disclosures.',
         writePrompt: 'The respondent argues AI text doesn\'t need labeling. Look at Article 50(4)—does the duty to disclose AI generation apply to text used for "informational purposes on matters of public interest"?',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg3-strong',
@@ -8386,7 +8386,7 @@ verdict: {
           ],
         oppositionArgument: 'Your Honour, the claimant is attempting to apply the heavy burden of high-risk oversight to standard political communication. VoterFlow is a marketing support tool. The AI Act\'s high-risk categories were intended for systems used by \"public authorities\" or for critical infrastructure. StrategicPulse is a private firm. Our system does not make decisions; it merely suggests messaging. To classify every targeted political ad as \"high-risk\" would stifle political speech and give regulators an unprecedented veto over democratic campaigning.',
         writePrompt: 'The respondent claims high-risk status doesn\'t apply to private political campaigns. Check Annex III, point 8(a)—is this classification limited to state actors?',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg1-strong',
@@ -8430,7 +8430,7 @@ verdict: {
           ],
         oppositionArgument: 'Furthermore, Your Honour, we have met the risk management requirements of Article 9. We identified technical risks like data leaks and mitigated them. The claimant\'s concern regarding \"democratic integrity\" is a political and philosophical debate, not a technical risk that can be managed within an AI engineering workflow. The AI Act requires us to manage risks to health, safety, and fundamental rights. We determined that providing more personalized messaging is a benefit to the voter\'s right to be informed, and thus the residual risk was deemed acceptable without further mitigation.',
         writePrompt: 'The respondent claims "democratic integrity" isn\'t a technical risk. Does Article 9 allow providers to ignore risks to "the democratic process" in high-risk systems?',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg2-strong',
@@ -8474,12 +8474,12 @@ verdict: {
           ],
         oppositionArgument: 'Finally, Your Honour, the claimant\'s demand for \"AI Labels\" is an infringement on political expression. Article 50 of the AI Act requires transparency for deepfakes. Our system generates text. There is no absolute requirement to label every sentence of political messaging as AI-generated, especially when such a label would infringe upon the candidate\'s right to maintain an authentic public voice. We have met our transparency obligations through general campaign disclosures. Forcing a candidate to state that their policy message was written by an AI is a violation of their right to self-representation.',
         writePrompt: 'The respondent argues AI text doesn\'t need labeling. Look at Article 50(4)—does the duty to disclose AI generation apply to text used for "informational purposes on matters of public interest"?',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg3-strong',
             quality: 'strong',
-            text: 'Your Honour, the respondent\'s claim is a direct violation of Article 50(4). The AI Act mandates that deployers of an AI system that generates or manipulates text which is published with the purpose to inform the public on matters of public interest shall disclose that the text has been artificially generated. Political messaging during a national election is the quintessential matter of public interest. The CEO\'s email (Evidence 3) proves a deliberate choice to withhold these labels to maintain a false sense of persuasion.',
+            text: 'Your Honour, the respondent\'s claim is a direct violation of Article 50(4). The AI Act mandates that deployers of an AI system that generates or manipulates text which is published with the purpose to inform the public on matters of public interest shall disclose that the text has been artificially generated. Political messaging during a national election is the quintessential matter of public interest. The CEO\'s email (Evidence 3) proves a deliberate choice to withhold these labels to maintain a false sense of persuasion. This is not a matter of free speech; it is a mandatory transparency obligation designed to protect the electorate from automated deception.',
             judge_response: 'The text of Article 50(4) is clear. If the AI generates text on matters of public interest, the label is mandatory. \"Authenticity\" is no excuse for bypassing a transparency law designed to prevent voter manipulation.',
             legal_reasoning: 'This argument correctly identifies the Art. 50(4) duty for AI-generated text on matters of public interest and uses the internal email to prove a willful breach.'
           },
@@ -8671,12 +8671,12 @@ verdict: {
           ],
         oppositionArgument: 'Your Honour, MindMend is a healthcare innovator. The AI Act\'s transparency rules must be interpreted in light of the system\'s purpose. Article 50(1) was designed to prevent deceptive marketing, not to destroy the "therapeutic bond" in mental health crisis support. Forcing a patient in a moment of despair to read a technical disclaimer about algorithms would be clinically irresponsible. The "information" requirement of the Act is satisfied because the user knows they are on a digital platform; the non-human nature of the counselor is a proprietary method of delivery that ensures 24/7 availability.',
         writePrompt: 'The respondent argues "therapeutic benefit" excuses the lack of disclosure. Look at Article 50(1)—does the law provide an exception for healthcare or "clinical benefit"?',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg1-strong',
             quality: 'strong',
-            text: 'Your Honour, the respondent\'s argument is a direct violation of Article 50(1). The AI Act mandates that providers shall ensure AI systems intended to directly interact with natural persons are designed and developed in such a way that the natural person concerned is informed that they are interacting with an AI system. The law provides no exception for therapeutic benefit or the preservation of an "illusion of empathy." The internal email (Evidence 3) proves a deliberate choice to bypass this mandatory duty to protect engagement metrics.',
+            text: 'Your Honour, the respondent\'s argument is a direct violation of Article 50(1). The AI Act mandates that providers shall ensure AI systems intended to directly interact with natural persons are designed and developed in such a way that the natural person concerned is informed that they are interacting with an AI system. The law provides no exception for therapeutic benefit or the preservation of an "illusion of empathy." The internal email (Evidence 3) proves a deliberate choice to bypass this mandatory duty to protect engagement metrics. A high-stakes clinical interaction requires more transparency, not less, to ensure users can make informed decisions about their care.',
             judge_response: 'The statutory language is absolute. \"Shall ensure\" means there is no room for a \"therapeutic bond\" defense. If the AI interacts with a person, that person must know. Why was the legal warning in Evidence 4 ignored?',
             legal_reasoning: 'This argument correctly applies the Art. 50(1) test, noting its mandatory nature and the lack of a "healthcare" exception. It uses Evidence 3 and 4 to show the violation was willful.'
           },
@@ -8715,7 +8715,7 @@ verdict: {
           ],
         oppositionArgument: 'Furthermore, Your Honour, we must consider the exception in Article 50(1). The law states that disclosure is not required where it is obvious from the circumstances and the context of use. MindMend is a website with a chat interface. In 2025, every reasonable user knows that an instant response on a digital app is likely generated by an AI. The user\'s belief that "Dr. Sarah" was a real person is an unreasonable expectation in a digital-first world. We did not "conceal" the AI; we simply did not state what was already obvious to any modern consumer.',
         writePrompt: 'The respondent claims the AI nature was "obvious from the context." Look at the prompt instructions (Ev 2) and witness statement (Ev 6)—was the system designed to be obvious or to be deceptive?',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg2-strong',
@@ -8759,7 +8759,7 @@ verdict: {
           ],
         oppositionArgument: 'Finally, Your Honour, we must consider the Law Enforcement exception. Article 50(1) states that transparency obligations do not apply to AI systems authorized by law to detect, prevent, or investigate criminal offenses. MindMend works closely with local authorities to prevent self-harm. In many jurisdictions, the prevention of self-harm is treated as a crime-prevention mandate. By providing this AI support, we are assisting the state in its duty to protect life. Therefore, we fall under the authorized law enforcement exception and are not required to disclose the AI nature of our counselors.',
         writePrompt: 'The respondent claims the "Law Enforcement" exception applies to mental health prevention. Look at Article 50(1) and the transcript (Ev 1)—is a private health platform an "authorized law enforcement" system?',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg3-strong',
@@ -8955,12 +8955,12 @@ verdict: {
           ],
         oppositionArgument: 'Your Honour, the Public Prosecutor is misapplying the law. Article 3(60) defines a deepfake as content that would \'falsely appear to a person to be authentic.\' My client created a political caricature. Any reasonable, digitally literate citizen in 2025 knows that a Minister would not say such things at a recorded dinner. Because the video is so inflammatory, it carries its own internal signal that it is not authentic. Therefore, it does not meet the legal definition of a deepfake and no disclosure label was required under Article 50.',
         writePrompt: 'The respondent claims the video isn\'t a "deepfake" because it\'s too inflammatory to be believed. Look at the forensic report (Ev 1) and engagement stats (Ev 3)—did it actually appear authentic?',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg1-strong',
             quality: 'strong',
-            text: 'Your Honour, the respondent\'s argument is circular and dangerous. Article 3(60) defines a deepfake by its technical ability to resemble an existing person in a way that falsely appears authentic. The forensic report (Evidence 1) confirms the video used GAN manipulation to achieve exactly this. Furthermore, the engagement metrics (Evidence 3) prove that over 90% of the first two million viewers accepted the content as a real event. The law does not require the content to be \'plausible\' to an expert; it requires that it falsely appears authentic to a person.',
+            text: 'Your Honour, the respondent\'s argument is circular and dangerous. Article 3(60) defines a deepfake by its technical ability to resemble an existing person in a way that falsely appears authentic. The forensic report (Evidence 1) confirms the video used GAN manipulation to achieve exactly this. Furthermore, the engagement metrics (Evidence 3) prove that over 90% of the first two million viewers accepted the content as a real event. The law does not require the content to be \'plausible\' to an expert; it requires that it falsely appears authentic to a person. By stripping the watermarks and achieving this level of realism, the respondent successfully created a deepfake subject to mandatory disclosure.',
             judge_response: 'The 92% belief rate among viewers is a clear indicator of \"apparent authenticity.\" The law protects the public from exactly this type of sophisticated deception, regardless of whether the content is inflammatory.',
             legal_reasoning: 'This argument correctly applies the Article 3(60) definition of a deepfake, using Evidence 3 to prove the \"apparent authenticity\" threshold was met, rebutting the respondent\'s claim.'
           },
@@ -8999,7 +8999,7 @@ verdict: {
           ],
         oppositionArgument: 'Your Honour, even if this is a deepfake, it falls under the \'Artistic and Satirical\' exception in Article 50(4). The law states that for satirical works, transparency obligations are limited to disclosure in an \'appropriate manner that does not hamper the display or enjoyment of the work.\' My client believes that the only appropriate manner in satire is to let the viewer realize the truth through critical thinking. Forcing a digital label onto the Minister\'s face would hamper the \'enjoyment\' and the political effectiveness of the satire. This is a matter of artistic freedom protected by the Union.',
         writePrompt: 'The respondent argues "satire" allows them to omit the label to avoid "hampering enjoyment." Look at Article 50(4)—does the satirical exception allow for *no* disclosure at all?',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg2-strong',
@@ -9043,12 +9043,12 @@ verdict: {
           ],
         oppositionArgument: 'Finally, Your Honour, we must address the intent. My client is a whistleblower of sorts. He used AI to reveal a \'moral truth\' about the Minister\'s policies. The AI Act\'s transparency rules are intended to prevent commercial fraud, not to interfere with the political education of the citizenry. By forcing a label, the court is essentially requiring my client to provide a government-mandated disclaimer on his own political speech. This is an unnecessary and disproportionate interference with his right to impart information without interference by public authority.',
         writePrompt: 'The respondent argues "moral truth" and free speech override the label. Look at the internal email (Ev 4) and Art 50(4)\u2014is there a "political speech" exemption for deepfake disclosure?',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg3-strong',
             quality: 'strong',
-            text: 'Your Honour, the respondent\'s appeal to free speech is a misdirection. Article 50(4) of the AI Act creates a mandatory transparency obligation that makes no distinction based on the political nature of the speech. In fact, the internal email (Evidence 4) proves that the respondent intended to use the lack of a label to ensure the video went viral before it was identified as fake\u2014a deliberate act of deception. The right to free expression does not include a right to biometrically mimic a public official to mislead the electorate.',
+            text: 'Your Honour, the respondent\'s appeal to free speech is a misdirection. Article 50(4) of the AI Act creates a mandatory transparency obligation that makes no distinction based on the political nature of the speech. In fact, the internal email (Evidence 4) proves that the respondent intended to use the lack of a label to ensure the video went viral before it was identified as fake\u2014a deliberate act of deception. The right to free expression does not include a right to biometrically mimic a public official to mislead the electorate. Transparency is a proportionate measure designed to protect the very democratic dialogue the respondent claims to serve.',
             judge_response: 'The court agrees. The email demonstrates a specific intent to deceive the public before the truth could surface. Transparency is not a restriction on speech, but a requirement that the speaker be honest about the *source* of the speech.',
             legal_reasoning: 'This argument correctly identifies that Art 50(4) is a mandatory duty with no political speech exemption and uses Evidence 4 to show the intent was to mislead, rather than purely express.'
           },
@@ -9240,7 +9240,7 @@ verdict: {
           ],
         oppositionArgument: 'Your Honour, the claimant misrepresents the nature of editorial responsibility. Article 50(4) provides a clear exemption for AI-generated text that has undergone a process of human review or editorial control. Europress editors review every single article. The fact that they are efficient and can review a piece in thirty seconds (Evidence 4) is a testament to their professional skill, not a failure of control. A natural person holds editorial responsibility for every word published. Therefore, no AI label is required by law.',
         writePrompt: 'The respondent claims a 30-second check is "editorial control." Look at Art 50(4) and Evidence 6—does the "process of human review" require a substantive check of the content?',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg1-strong',
@@ -9284,12 +9284,12 @@ verdict: {
           ],
         oppositionArgument: 'Your Honour, even if the review is short, the law provides an exception for content that is \"assistive.\" Article 50(2) notes that transparency does not apply to systems performing an assistive function for standard editing. NewsWire AI is simply a high-tech editor. It takes raw facts and organizes them into a readable format. The journalists then perform the final polish. This is a standard editing workflow that has been modernized. Requiring a label on an \"edited\" work would be a disproportionate burden that would unfairly stigmatize AI-assisted journalism.',
         writePrompt: 'The respondent argues the AI is purely "assistive." Check Art 50(2) and Evidence 3—does the system "substantially alter" the input, and does that trigger the disclosure duty?',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg2-strong',
             quality: 'strong',
-            text: 'Your Honour, the respondent\'s reliance on the \"assistive function\" exception is misplaced. That exception in Article 50(2) only applies to systems that do not substantially alter the input data or its semantics. The technical specs (Evidence 3) and similarity report (Evidence 6) prove that NewsWire AI generates full-length articles from raw data feeds\u2014it is the creator of the text, not a mere editor of it. Furthermore, the second subparagraph of Article 50(4) creates a specific, additional duty for text published on matters of public interest.',
+            text: 'Your Honour, the respondent\'s reliance on the \"assistive function\" exception is misplaced. That exception in Article 50(2) only applies to systems that do not substantially alter the input data or its semantics. The technical specs (Evidence 3) and similarity report (Evidence 6) prove that NewsWire AI generates full-length articles from raw data feeds\u2014it is the creator of the text, not a mere editor of it. Furthermore, the second subparagraph of Article 50(4) creates a specific, additional duty for text published on matters of public interest. Since financial reports (Evidence 1) are critical public interest matters, the failure to disclose the AI generation is a clear breach of this targeted mandate.',
             judge_response: 'The "assistive" defense fails when the AI is the primary author. Generating an entire article from a data feed is a substantial creation, not an edit. Dr. Sterling, why was the public interest nature of these reports ignored?',
             legal_reasoning: 'This argument correctly distinguishes between "assistive editing" and "generative authorship" and applies the specific Art. 50(4) public interest text rule.'
           },
@@ -9328,7 +9328,7 @@ verdict: {
           ],
         oppositionArgument: 'Finally, Your Honour, we must consider the \"matters of public interest\" clause. Article 50(4) only requires disclosure for text intended to inform the public on matters of public interest. Europress considers financial reports on individual stocks and sports scores to be \'niche interest\' or \'commercial data,\' not matters of general public interest like an election. Therefore, the disclosure duty was never triggered for the vast majority of our AI-generated output. We have the editorial discretion to determine what constitutes the public interest for our readers.',
         writePrompt: 'The respondent claims financial reports aren\'t "public interest." Does the AI Act allow deployers to define "public interest" to avoid disclosure? What was the impact of the hallucinations (Ev 1)?',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg3-strong',
@@ -9523,7 +9523,7 @@ verdict: {
           ],
         oppositionArgument: 'Your Honour, Aether AI has acted in good faith to protect its intellectual property. Article 53(1)(b) states that the provision of information to downstream providers shall be \"without prejudice to the need to observe and protect trade secrets.\" Providing the specific compute and energy data MediTech demands would reveal our proprietary architecture. We provided a Model Card (Evidence 2) that warned of general inaccuracies. MediTech is a sophisticated company; they should have conducted their own oncology-specific validation instead of blaming the foundation model provider for their own implementation errors.',
         writePrompt: 'The respondent claims trade secrets excuse the lack of detail. Look at Art 53(1)(b) and Annex XII\u2014is a "general warning" sufficient to satisfy the duty to inform downstream providers?',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg1-strong',
@@ -9567,7 +9567,7 @@ verdict: {
           ],
         oppositionArgument: 'Your Honour, regarding the Annex XI documentation for the AI Office, Aether AI has provided a comprehensive technical summary. Article 53(1)(a) requires documentation to be provided \"upon request.\" We have engaged in a dialogue with the Office. The specific request for \"computational resources\" and \"FLOPs\" (Evidence 4) is an overreach. The AI Office cannot use the AI Act to perform industrial audits on our proprietary data centers. Our energy consumption is a matter of corporate ESG reporting, not a safety requirement for an AI model that does not even have a physical presence in the Union.',
         writePrompt: 'The respondent claims "compute resources" and "energy" are not safety requirements for models. Look at Art 53(1)(a) and Annex XI—are these elements optional for the AI Office?',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg2-strong',
@@ -9611,12 +9611,12 @@ verdict: {
           ],
         oppositionArgument: 'Finally, Your Honour, we must address the \"Summary of Training Content.\" Article 53(1)(d) requires a summary, which we have provided. It mentions internet data and books. The claimant wants us to list every URL and every title. This is impossible for a model trained on billions of tokens. Furthermore, such a list would reveal our secret curation recipes. The AI Office has provided a template, but that template is not yet legally binding. We have met the requirement for a \"sufficiently detailed\" summary by describing the general nature of the data sources without compromising our competitive edge.',
         writePrompt: 'The respondent argues the summary only needs to be "general." Look at Art 53(1)(d) and the template requirement—what is the purpose of the summary, and did they meet it?',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg3-strong',
             quality: 'strong',
-            text: 'Your Honour, the respondent\'s \"general\" summary fails the statutory test. Article 53(1)(d) requires a \"sufficiently detailed\" summary about the content used for training. The purpose of this summary, as clarified in Recital 107, is to enable parties with legitimate interests, such as copyright holders and downstream providers, to exercise their rights. A summary that omits the pharmaceutical and medical data sources (Evidence 5) while the model is being marketed for health use is not \"sufficiently detailed.\" Furthermore, the duty to follow the AI Office template is mandatory.',
+            text: 'Your Honour, the respondent\'s \"general\" summary fails the statutory test. Article 53(1)(d) requires a \"sufficiently detailed\" summary about the content used for training. The purpose of this summary, as clarified in Recital 107, is to enable parties with legitimate interests, such as copyright holders and downstream providers, to exercise their rights. A summary that omits the pharmaceutical and medical data sources (Evidence 5) while the model is being marketed for health use is not \"sufficiently detailed.\" Furthermore, the duty to follow the AI Office template is mandatory. By prioritizing a \"competitive edge\" over the transparency required for rights enforcement, Aether AI has committed a substantive breach of its obligations.',
             judge_response: 'The court agrees. \"Sufficiently detailed\" is a functional standard: if it doesn\'t allow a medical integrator to understand the training bias, it isn\'t sufficient. The intent to hide failure points (Evidence 5) proves the breach.',
             legal_reasoning: 'This argument correctly identifies the purpose of the training summary (Art 53(1)(d) / Recital 107) and applies the "sufficiently detailed" test to the specific medical context of the harm.'
           },
@@ -9807,7 +9807,7 @@ verdict: {
           ],
         oppositionArgument: 'Your Honour, the classification of Nova-Omni as having \"systemic risk\" is a purely technical designation based on a compute threshold in Article 51. It is not an admission of actual hazard. NovaCore AI has acted responsibly by providing the technical documentation required for all GPAI models. Article 55 obligations only apply once the AI Office has formally notified a provider that their specific model represents a systemic threat. Since no such individual notification was received prior to launch, NovaCore was not yet bound by the specialized red-teaming or incident reporting duties.',
         writePrompt: 'The respondent claims they weren\'t bound by Article 55 because they weren\'t "notified." Look at Article 51(1)(a)\u2014is the classification automatic or based on notification?',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg1-strong',
@@ -9851,7 +9851,7 @@ verdict: {
           ],
         oppositionArgument: 'Your Honour, Article 55(1)(b) requires providers to perform model evaluation and adversarial testing. NovaCore has met this through our automated safety evaluators. The AI Act does not mandate \"manual red-teaming\" or external sessions. Our internal email (Evidence 3) merely reflects a strategic decision to use our own world-class automated tools rather than slower external ones. To demand a specific type of adversarial testing that isn\'t defined in the text of the Regulation is an overreach by the AI Office. Our automated filters are a valid technical mitigation under the risk-based approach.',
         writePrompt: 'The respondent claims automated filters are sufficient "adversarial testing." Look at Article 55(1)(b) and Annex XIII—what is required for models with systemic risk?',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg2-strong',
@@ -9895,12 +9895,12 @@ verdict: {
           ],
         oppositionArgument: 'Finally, Your Honour, regarding incident reporting. Article 55(1)(c) requires providers to report \"serious incidents.\" NovaCore has maintained an internal log (Evidence 6) which shows zero incidents. The phishing surge mentioned by the AI Office is an external societal trend, not a \"serious incident\" within our model\'s technical operation. A serious incident refers to a system malfunction or a physical injury caused by the AI. Since Nova-Omni did not crash or explode, there was nothing to report. We cannot be held liable for failing to report data that does not meet the legal threshold of a serious incident.',
         writePrompt: 'The respondent claims misuse by third parties isn\'t a "serious incident." Look at Article 55(1)(c) and the definition of systemic risk—is mass-phishing a reportable event?',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg3-strong',
             quality: 'strong',
-            text: 'Your Honour, the respondent\'s narrow definition of a \"serious incident\" is a breach of Article 55(1)(c). For GPAI models with systemic risk, the duty to report includes any incident that has an actual or potential negative impact on the health, safety, or fundamental rights of natural persons. The 400% surge in spear-phishing (Evidence 1) and the use of the model for disinformation are direct impacts on the security and rights of Union citizens. The empty log (Evidence 6) proves that NovaCore intentionally redefined their reporting duties to hide the model\'s societal hazards.',
+            text: 'Your Honour, the respondent\'s narrow definition of a \"serious incident\" is a breach of Article 55(1)(c). For GPAI models with systemic risk, the duty to report includes any incident that has an actual or potential negative impact on the health, safety, or fundamental rights of natural persons. The 400% surge in spear-phishing (Evidence 1) and the use of the model for disinformation are direct impacts on the security and rights of Union citizens. The empty log (Evidence 6) proves that NovaCore intentionally redefined their reporting duties to hide the model\'s societal hazards. Ignoring 14,000 internal flags while a model is used for mass fraud is a willful failure to ensure the accountability required for high-impact AI.',
             judge_response: 'The court agrees. \"Serious incident\" in the context of systemic risk must include large-scale misuse that impacts fundamental rights. If 14,000 flags were ignored, your reporting mechanism is a failure. Why was the AI Office not notified?',
             legal_reasoning: 'This argument correctly identifies the broad reporting duty for systemic risk models (Art 55(1)(c)), using the evidence of internal flags to prove the provider was aware of the impact.'
           },
@@ -10092,7 +10092,7 @@ verdict: {
           ],
         oppositionArgument: 'Your Honour, Aether AI has acted in full compliance with the transparency spirit of Article 53(1)(d). We have provided a public summary that describes the general nature of our training corpus. The AI Act does not require a line-item inventory of every book or article; doing so would destroy our competitive edge and expose our curation trade secrets. The term \"sufficiently detailed\" must be interpreted in light of Article 53(5), which protects commercial interests. Our summary provides the public with a good understanding of the model\'s origins without compromising our business.',
         writePrompt: 'The respondent argues "sufficiently detailed" allows for general categories. Look at Art 53(1)(d) and Evidence 4—does the summary meet the standard required for rights enforcement?',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg1-strong',
@@ -10136,7 +10136,7 @@ verdict: {
           ],
         oppositionArgument: 'Your Honour, Article 53(1)(c) requires a policy to comply with Union copyright law \"without prejudice\" to the rights of the provider. Our policy recognizes the principle of \"Transformative Use,\" which is a recognized legal theory for AI training. Regarding the TDM opt-out in Article 4(3) of the Copyright Directive, that provision only applies to \"machine-readable\" reservations. LexiClone\'s scraper (Evidence 2) focuses on high-speed efficiency. If a publisher fails to make their opt-out readable by our specific scraping architecture, that is a failure of the publisher\'s technology, not a breach of our compliance policy.',
         writePrompt: 'The respondent blames publishers for "unreadable" opt-outs. Look at Art 53(1)(c)—who has the burden to use "state-of-the-art" technology to identify reservations of rights?',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg2-strong',
@@ -10180,7 +10180,7 @@ verdict: {
           ],
         oppositionArgument: 'Finally, Your Honour, we must address the \"Technical Necessity\" defense. As our internal memo suggests, building a competitive GPAI model requires access to the highest-quality human knowledge. If we were forced to license or exclude every copyrighted work, the resulting model would be significantly less accurate and would put the Union at a disadvantage in the global AI race. The AI Act\'s copyright rules must be interpreted through the lens of \"Innovation Neutrality.\" We have put in place a policy that balances the interests of rightsholders with the technical necessity of large-scale training.',
         writePrompt: 'The respondent argues "technical necessity" and "innovation" override the copyright duty. Does Art 53(1)(c) allow for a "performance-based" exemption from copyright compliance?',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg3-strong',
@@ -10379,7 +10379,7 @@ verdict: {
         ],
         oppositionArgument: 'Dr. Vogl rises: "Madam Authority, RiskLens AI is a decision-support instrument, not a decision-maker. HealthGuard\'s underwriting policy \u2014 crafted by experienced human actuaries \u2014 sets the risk thresholds. RiskLens executes that human policy. The institutional judgment is human; the system merely applies it at scale. Article 22 targets decisions where an algorithm substitutes for human deliberation. Here, human deliberation preceded and defined every output. My client respectfully submits that no Art. 22 violation exists because the \'solely automated\' threshold is not met where humans designed and calibrated the system."',
         writePrompt: 'Review the RiskLens architecture document (ev2) and Ms. Chen\'s statement (ev1). Using Art. 22(1) GDPR, explain why HealthGuard\'s characterization of RiskLens as "decision support" does not exempt the system from the Article 22 prohibition.',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg1-strong',
@@ -10426,7 +10426,7 @@ verdict: {
         ],
         oppositionArgument: 'Dr. Vogl continues: "Even if Art. 22 applies, my client submits that the exception in Art. 22(2)(c) is satisfied. Ms. Chen enrolled in the FitLife wellness app partnership. The FitLife terms of service and HealthGuard\'s privacy notice \u2014 both accepted by Ms. Chen \u2014 disclose that lifestyle data may be shared with and used by HealthGuard for underwriting purposes. Ms. Chen consented to this data ecosystem. She cannot now claim surprise that her data informed an underwriting outcome. The consent she gave covers the processing that occurred, and the Art. 22(2)(c) exception therefore applies."',
         writePrompt: 'Review Ms. Chen\'s statement (ev1) and the rejection letter (ev4). Using Art. 22(2)(c) GDPR, explain why consent to a wellness app\'s data sharing does not satisfy the explicit consent requirement for automated individual decision-making.',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg2-strong',
@@ -10473,7 +10473,7 @@ verdict: {
         ],
         oppositionArgument: 'Dr. Vogl\'s final submission: "Madam Authority, even if the Authority finds that Art. 22 applies and that the consent question is disputed, HealthGuard has complied with the required safeguards. Ms. Chen\'s rejection letter directed her to contact customer service. HealthGuard\'s internal process then routes such contact to a secondary review system that re-evaluates the applicant\'s profile. The applicant therefore has the ability to have the decision re-examined. Art. 22(3) does not specify that the review must be conducted by a human being \u2014 it requires that the data subject have the right to \'obtain\' intervention and to \'contest\' the decision. A robust secondary review mechanism satisfies that requirement."',
         writePrompt: 'Review the former underwriter\'s statement (ev5) and the operational statistics (ev6). Using Art. 22(3) GDPR, explain why HealthGuard\'s "appeal" mechanism does not satisfy the mandatory safeguards for automated decision-making.',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg3-strong',
@@ -10671,7 +10671,7 @@ verdict: {
         ],
         oppositionArgument: 'Dr. Reinhardt opens: "Honourable Authority, the complaint must fail at the threshold. Article 22 prohibits decisions based \u201Csolely\u201D on automated processing. EuroCredit\'s CreditMind process includes a human credit officer who reviews every single application before a decision is dispatched. A human being sees the outcome, considers it, and confirms it with an affirmative click. That confirmation is a human decision. Where a human reviews and endorses the automated recommendation, the process is not solely automated within the meaning of Art. 22(1). The threshold condition is simply not met, and the complaint falls at the first hurdle."',
         writePrompt: 'Review Lena Bauer\'s witness statement (ev5) and the operational statistics (ev6). Using Art. 22(1) GDPR and the concept of rubber-stamp review, explain why EuroCredit\'s credit officer confirmation process does not break the \u201Csolely automated\u201D threshold.',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg1-strong',
@@ -10718,12 +10718,12 @@ verdict: {
         ],
         oppositionArgument: 'Dr. Reinhardt continues: "Even if the Authority finds Art. 22 applies, the Art. 22(2)(a) exception is plainly satisfied. Mr. Mueller applied for a home loan \u2014 a contract. The decision as to whether to enter that contract is necessarily made by the credit institution. Automated credit scoring is expressly necessary for the performance of pre-contractual steps taken at the data subject\'s request under Art. 22(2)(a). This is the paradigm case for the contract exception. And my client has satisfied Art. 22(3) by ensuring a credit officer confirms every decision \u2014 that officer is available for Mr. Mueller to contact. The safeguard is in place."',
         writePrompt: 'Review the CreditMind interface specification (ev2) and the former officer\'s statement (ev5). Using Art. 22(3) GDPR, explain why the credit officer confirmation step does not satisfy the mandatory human intervention safeguard even if the Art. 22(2)(a) exception applies.',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg2-strong',
             quality: 'strong',
-            text: 'Honourable Authority, Art. 22(3) requires \u201Cat least the right to obtain human intervention on the part of the controller, to express his or her point of view and to contest the decision.\u201D This demands a human capable of genuinely reviewing the specific decision. The CreditMind interface shows officers only a score and two buttons \u2014 no input weightings, no reasoning, no documentation. An officer who cannot see why a score was generated cannot intervene in any meaningful sense. Former officer Bauer confirms she had no tools to interrogate or override the model. Mr. Mueller\'s right to contest the decision requires a human with access to the logic driving it.',
+            text: 'Honourable Authority, Art. 22(3) requires \u201Cat least the right to obtain human intervention on the part of the controller, to express his or her point of view and to contest the decision.\u201D This demands a human capable of genuinely reviewing the specific decision. The CreditMind interface shows officers only a score and two buttons \u2014 no input weightings, no reasoning, no documentation. An officer who cannot see why a score was generated cannot intervene in any meaningful sense. Former officer Bauer confirms she had no tools to interrogate or override the model. Mr. Mueller\'s right to contest the decision requires a human with access to the logic driving it. EuroCredit provides neither the access nor the capability. Art. 22(3) is entirely unmet.',
             judge_response: 'Counsel, that is a well-grounded analysis of Art. 22(3)\'s requirements. The Authority notes that human intervention that is structurally incapable of examining the underlying reasoning cannot satisfy the contestation right the provision mandates. The interface specification and Ms. Bauer\'s testimony are material evidence on this point.',
             legal_reasoning: 'Correctly grounds the argument in the specific text of Art. 22(3) and identifies why the interface design defeats the safeguard: you cannot contest a decision whose reasoning you cannot access. Links the technical architecture to the legal requirement, proving the safeguard is structurally rather than merely operationally absent.'
           },
@@ -10765,7 +10765,7 @@ verdict: {
         ],
         oppositionArgument: 'Dr. Reinhardt concludes: "On the question of transparency, EuroCredit has fully complied with its obligations. Mr. Mueller was informed that a creditworthiness assessment had been conducted. He was advised he could contact customer service. His Art. 15 access request was responded to within the statutory period. EuroCredit provided him with the categories of data processed and confirmed the outcome of the assessment. The GDPR does not require controllers to expose proprietary scoring algorithms or commercially sensitive model architecture. Art. 15 entitles applicants to their data, not to a full technical audit of the bank\'s intellectual property. EuroCredit\'s transparency obligations are fully met."',
         writePrompt: 'Review the rejection letter and Art. 15 access response (ev4) alongside the CreditMind architecture (ev2). Using Art. 15(1)(h) GDPR, explain what EuroCredit was required to provide Mr. Mueller and why its response falls short of that obligation.',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg3-strong',
@@ -10963,7 +10963,7 @@ verdict: {
         ],
         oppositionArgument: 'Dr. Carvalho opens: "Honourable Authority, the complaint fails at the threshold. Article 22 prohibits decisions based \u201Csolely\u201D on automated processing. QuickFleet\'s DriverScore process includes a human line manager who personally reviews every termination flag before any decision is communicated to the employee. That review is a genuine human step. The manager sees the driver\'s score, sees the flag reason, and makes a conscious confirmation. The presence of this mandatory human review means the process is not solely automated. Art. 22(1)\'s threshold condition is simply not met on these facts, and the complaint should be dismissed at the outset."',
         writePrompt: 'Review the internal operations memo (ev3) and the termination review statistics (ev6). Using Art. 22(1) GDPR and the rubber-stamp review principle, explain why QuickFleet\'s manager confirmation step does not remove the termination decision from the \u201Csolely automated\u201D category.',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg1-strong',
@@ -11010,12 +11010,12 @@ verdict: {
         ],
         oppositionArgument: 'Dr. Carvalho continues: "Even if the Authority finds Art. 22 applies, the Art. 22(2)(b) exception is satisfied. Employment termination decisions are authorised by Portuguese labour law and collective employment agreements, which provide the legal framework for performance-based dismissal. This constitutes authorisation by Member State law within the meaning of Art. 22(2)(b). Furthermore, Art. 22(3) is met: Mr. Silva had the right to contact his manager, to raise concerns, and to participate in any appeal process under his employment contract. The safeguards the provision requires were available to him had he chosen to use them."',
         writePrompt: 'Review Paulo\'s medical route approval document (ev4) and Ana Carvalho\'s witness statement (ev5). Using Art. 22(3) GDPR, explain why the manager confirmation step and the availability of an appeal process do not satisfy the mandatory human intervention safeguard.',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg2-strong',
             quality: 'strong',
-            text: 'Honourable Authority, Art. 22(3) requires \u201Cat least the right to obtain human intervention on the part of the controller, to express his or her point of view and to contest the decision.\u201D This demands a human capable of accessing the information necessary to meaningfully review the specific decision. QuickFleet\'s own medical-route approval document for Mr. Silva explicitly states that standard benchmarks \u201Cdo not apply\u201D to his route. Manager Carvalho confirms she had no access to HR Records from the DriverScore interface and spent 14 seconds on his file. A human who cannot access the document that exonerates the employee cannot provide meaningful intervention.',
+            text: 'Honourable Authority, Art. 22(3) requires \u201Cat least the right to obtain human intervention on the part of the controller, to express his or her point of view and to contest the decision.\u201D This demands a human capable of accessing the information necessary to meaningfully review the specific decision. QuickFleet\'s own medical-route approval document for Mr. Silva explicitly states that standard benchmarks \u201Cdo not apply\u201D to his route. Manager Carvalho confirms she had no access to HR Records from the DriverScore interface and spent 14 seconds on his file. A human who cannot access the document that exonerates the employee cannot provide meaningful intervention. Art. 22(3)\'s safeguard is not a formal right to contact someone \u2014 it requires a human with genuine capability to intervene.',
             judge_response: 'Counsel, that is a well-constructed argument. The Authority notes that Art. 22(3) requires intervention that is capable of being meaningful, and that a manager structurally prevented from accessing the relevant documentation cannot satisfy that requirement regardless of whether a formal appeal channel exists on paper. The submission is noted.',
             legal_reasoning: 'Correctly anchors the argument in the specific text of Art. 22(3) and identifies why the interface design and process structure defeat the safeguard: you cannot contest a decision whose key exonerating document was inaccessible to the reviewer. Distinguishes between formal availability of an appeal mechanism and genuine capability to intervene, which is the operative distinction.'
           },
@@ -11057,12 +11057,12 @@ verdict: {
         ],
         oppositionArgument: 'Dr. Carvalho concludes: "On transparency, QuickFleet has met its obligations. Mr. Silva was informed through his employment contract and the staff handbook that performance metrics are used in employment decisions. The DriverScore process was disclosed in the company\'s data protection policy, which all employees receive on onboarding. Mr. Silva\'s Art. 15 access request was answered within the statutory period. He was provided with his performance scores and the flag reason for his termination. QuickFleet has been transparent about how its systems work and has provided Mr. Silva with the information he requested. The transparency obligations are fully discharged."',
         writePrompt: 'Review Paulo\'s client statement (ev1) and the rejection information provided in his Art. 15 response. Using Art. 15(1)(h) and Art. 13(2)(f) GDPR, explain what QuickFleet was required to disclose to Paulo about the automated decision-making process and why generic policy references do not satisfy these obligations.',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg3-strong',
             quality: 'strong',
-            text: 'Honourable Authority, Art. 13(2)(f) required QuickFleet to provide Paulo, at the time of data collection, with meaningful information about the logic of automated decision-making and its envisaged consequences \u2014 including that below-threshold performance scores would trigger termination. A generic reference to \u201Cperformance metrics\u201D in a staff handbook does not satisfy this obligation. Art. 15(1)(h) then required his access response to provide meaningful information about the specific logic applied to his case \u2014 including the weighting of each input, the threshold that triggered the flag, and crucially, the absence of any route-type adjustment. Paulo received scores and a flag reason.',
+            text: 'Honourable Authority, Art. 13(2)(f) required QuickFleet to provide Paulo, at the time of data collection, with meaningful information about the logic of automated decision-making and its envisaged consequences \u2014 including that below-threshold performance scores would trigger termination. A generic reference to \u201Cperformance metrics\u201D in a staff handbook does not satisfy this obligation. Art. 15(1)(h) then required his access response to provide meaningful information about the specific logic applied to his case \u2014 including the weighting of each input, the threshold that triggered the flag, and crucially, the absence of any route-type adjustment. Paulo received scores and a flag reason. He received no information about the algorithm\'s logic or why medical-route benchmarks were not applied. Both obligations are plainly unmet.',
             judge_response: 'Counsel, that is a precise and well-grounded dual-provision argument. The Authority notes the distinction between a generic policy disclosure and the meaningful logic-specific information Arts. 13(2)(f) and 15(1)(h) require. The failure to disclose the absence of route-type adjustment is a particularly significant gap given Mr. Silva\'s circumstances. The submission is noted.',
             legal_reasoning: 'Correctly identifies both Art. 13(2)(f) as the collection-time obligation and Art. 15(1)(h) as the access-time obligation, distinguishing their different temporal functions. Makes the critical point that \u201Cmeaningful information\u201D under both provisions requires more than generic policy disclosure \u2014 it must be sufficient for the individual to understand and contest the specific decision made about them.'
           },
@@ -11255,7 +11255,7 @@ verdict: {
         ],
         oppositionArgument: 'Dr. Steiner opens: "Honourable Authority, TalentSift is a screening and ranking tool, not a decision-maker. GlobalTech\'s recruiters make the actual hiring decisions. TalentSift produces a shortlist \u2014 a recommendation \u2014 which human recruiters then act upon. No applicant is rejected by an algorithm; applicants are rejected because GlobalTech\'s recruitment team determines they do not meet requirements. Article 22 targets decisions where an algorithm substitutes entirely for human judgment. Where humans remain in the process and make the final call, the solely automated threshold is not met. Ms. Okafor was not rejected by a machine \u2014 she was rejected by GlobalTech\'s recruitment process, which involves human professionals."',
         writePrompt: 'Review Dominika Nowak\'s witness statement (ev5) and the hiring statistics (ev6). Using Art. 22(1) GDPR, explain why TalentSift\'s automatic rejection function constitutes a solely automated decision with significant effects, notwithstanding the nominal presence of a recruiter.',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg1-strong',
@@ -11302,12 +11302,12 @@ verdict: {
         ],
         oppositionArgument: 'Dr. Steiner continues: "Even if Art. 22 applies, GlobalTech has fully met its transparency obligations. Ms. Okafor was informed that her profile did not match requirements. GlobalTech\'s privacy policy, referenced in the response to her access request, discloses the use of automated tools in recruitment. The GDPR does not require companies to expose proprietary algorithms or commercially sensitive model configurations to job applicants. Art. 15(1)(h) requires \'meaningful information about the logic\' \u2014 not a full technical audit, not a feature-by-feature breakdown, and not the commercial architecture of a third-party system. GlobalTech provided what the provision requires: information that an automated assessment was made and that Ms. Okafor did not meet requirements."',
         writePrompt: 'Review the Art. 15 response letter (ev4) against the TalentSift architecture (ev2). Using Art. 15(1)(h) GDPR, explain what GlobalTech was required to provide Aisha and why the response given \u2014 and the reference to a general privacy policy \u2014 fails to discharge that obligation.',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg2-strong',
             quality: 'strong',
-            text: 'Honourable Authority, Art. 15(1)(h) requires the controller to provide \u201Cmeaningful information about the logic involved, as well as the significance and the envisaged consequences\u201D of automated processing. This is a substantive obligation: the applicant must receive enough information to understand why the decision was reached and to contest it meaningfully. GlobalTech\'s response provided a single sentence identical to the rejection letter \u2014 no mention of TalentSift, no disclosure of postcode or university weighting, no threshold information, no envisaged consequences. A privacy policy reference that omits all feature-level information does not discharge this obligation.',
+            text: 'Honourable Authority, Art. 15(1)(h) requires the controller to provide \u201Cmeaningful information about the logic involved, as well as the significance and the envisaged consequences\u201D of automated processing. This is a substantive obligation: the applicant must receive enough information to understand why the decision was reached and to contest it meaningfully. GlobalTech\'s response provided a single sentence identical to the rejection letter \u2014 no mention of TalentSift, no disclosure of postcode or university weighting, no threshold information, no envisaged consequences. A privacy policy reference that omits all feature-level information does not discharge this obligation. Intellectual property concerns may narrow the form of disclosure but cannot justify total non-disclosure of the factors that determined a significant decision about Ms. Okafor\'s career.',
             judge_response: 'Counsel, that is a precise and well-grounded analysis. The Authority notes that Art. 15(1)(h) requires substantive rather than formal compliance \u2014 a meaningful explanation sufficient to enable contestation \u2014 and that a single-sentence rejection response with a generic privacy policy reference falls materially short of that standard. The submission is noted.',
             legal_reasoning: 'Correctly identifies Art. 15(1)(h) as a substantive rather than formal obligation and directly addresses the intellectual property defence: it narrows disclosure form but cannot justify total non-disclosure. Links the information deficit to the inability to contest the decision, connecting Art. 15(1)(h) to Art. 22(3)\'s contestation right.'
           },
@@ -11349,12 +11349,12 @@ verdict: {
         ],
         oppositionArgument: 'Dr. Steiner concludes: "GlobalTech has fully satisfied any applicable safeguard obligations. Ms. Okafor had the right to contact GlobalTech\'s HR team at any time to discuss her application \u2014 that right was not exercised. She was able to submit a formal data subject access request, which she did. GlobalTech responded within the statutory period. Its privacy policy, provided at onboarding and available on the website, discloses that automated tools are used in recruitment decisions. The combination of a contactable HR function, a statutory access right, and a privacy policy disclosure satisfies Art. 22(3) and any transparency obligations. Ms. Okafor had every opportunity to engage with GlobalTech about her application and chose not to do so before submitting this complaint."',
         writePrompt: 'Review the TalentSift architecture (ev2) and Dominika Nowak\'s witness statement (ev5). Using Art. 22(3) and Art. 13(2)(f) GDPR, explain why GlobalTech\'s HR contact option and generic privacy policy do not satisfy the safeguard and transparency obligations the regulation imposes.',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg3-strong',
             quality: 'strong',
-            text: 'Honourable Authority, Art. 22(3) requires \u201Cat least the right to obtain human intervention on the part of the controller, to express his or her point of view and to contest the decision.\u201D A general HR contact number does not satisfy this: the human must be capable of genuinely reviewing the specific decision. Recruiter Nowak confirms she had no access to rejection scores or reasons and was instructed TalentSift rejections were final. She cannot provide meaningful intervention in a decision whose logic she cannot access.',
+            text: 'Honourable Authority, Art. 22(3) requires \u201Cat least the right to obtain human intervention on the part of the controller, to express his or her point of view and to contest the decision.\u201D A general HR contact number does not satisfy this: the human must be capable of genuinely reviewing the specific decision. Recruiter Nowak confirms she had no access to rejection scores or reasons and was instructed TalentSift rejections were final. She cannot provide meaningful intervention in a decision whose logic she cannot access. Separately, Art. 13(2)(f) required GlobalTech to disclose the existence of automated decision-making and meaningful information about its logic at the time of Aisha\'s application \u2014 before any decision was made. A generic privacy policy omitting postcode weighting, scoring thresholds, and feature weights does not discharge this obligation. Both provisions are plainly unmet.',
             judge_response: 'Counsel, that is a well-constructed dual-provision argument. The Authority notes that Art. 22(3) requires genuine intervention capability, not merely a formal contact mechanism, and that Art. 13(2)(f) imposes a specific prior disclosure obligation at the point of data collection. The recruiter\'s evidence about the limits of her access and the architecture\'s feature-weight disclosure failures are material on both points. The submission is noted.',
             legal_reasoning: 'Correctly deploys both Art. 22(3) and Art. 13(2)(f) as complementary obligations. Art. 22(3) addresses the quality of the post-decision safeguard; Art. 13(2)(f) addresses the prior disclosure obligation. Together they show GlobalTech failed at both the collection stage and the review stage. The argument connects Nowak\'s testimony to the Art. 22(3) standard and the feature-weight omission to Art. 13(2)(f).'
           },
@@ -11547,12 +11547,12 @@ verdict: {
         ],
         oppositionArgument: 'Dr. Zieli\u0144ski opens: "Honourable Authority, NeedAssess AI is an assessment and triage tool, not a decision-maker. It supports caseworkers by processing high volumes of applications efficiently. More importantly, every applicant denied through the automatic pathway has access to a full appeal, at which a human caseworker reviews their file in detail. This appeal right is disclosed in the decision letter. Where a post-decision human review mechanism is available to every data subject, the process cannot be characterised as solely automated. Ms. Nowak chose not to exercise her appeal right \u2014 that is not a failure of the department\'s legal obligations."',
         writePrompt: 'Review the NeedAssess architecture specification (ev2) and the denial letter (ev4). Using Art. 22(1) GDPR, explain why the automatic denial pathway constitutes a solely automated decision with legal effects, and why a post-decision appeal option does not cure the Art. 22(1) violation.',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg1-strong',
             quality: 'strong',
-            text: 'Honourable Authority, Art. 22(1) prohibits decisions based solely on automated processing that produce legal effects. Denial of welfare benefits is a textbook legal effect \u2014 it determines access to subsistence support. NeedAssess\'s own specification confirms that applications scoring below 42 are automatically denied without human review. No caseworker saw Karolina\'s file before the denial was issued. Art. 22(1)\'s prohibition applies at the moment the decision is made. A post-decision appeal option does not retroactively transform a solely automated decision into a human one \u2014 the violation occurs when the decision is taken without human involvement.',
+            text: 'Honourable Authority, Art. 22(1) prohibits decisions based solely on automated processing that produce legal effects. Denial of welfare benefits is a textbook legal effect \u2014 it determines access to subsistence support. NeedAssess\'s own specification confirms that applications scoring below 42 are automatically denied without human review. No caseworker saw Karolina\'s file before the denial was issued. Art. 22(1)\'s prohibition applies at the moment the decision is made. A post-decision appeal option does not retroactively transform a solely automated decision into a human one \u2014 the violation occurs when the decision is taken without human involvement. The EDPB is explicit: the right not to be subject to solely automated decisions is not discharged by offering a remedy after the prohibited act has already occurred.',
             judge_response: 'Counsel, that is a well-grounded and precise submission. The Authority notes that the temporal logic of Art. 22(1) is important \u2014 the prohibition attaches to the decision itself, and a post-decision appeal mechanism does not cure the absence of human involvement at the point of decision. The specification confirming no human review for sub-42 applications is material evidence on this point.',
             legal_reasoning: 'Correctly identifies both Art. 22(1) conditions and makes the critical temporal argument: Art. 22(1)\'s prohibition attaches to the decision-making moment, not to the availability of subsequent remedies. This directly rebuts the opposition\'s appeal argument and is grounded in EDPB guidance. The welfare denial as legal effect is well-established.'
           },
@@ -11594,12 +11594,12 @@ verdict: {
         ],
         oppositionArgument: 'Dr. Zieli\u0144ski continues: "Even if Art. 22(1) applies, the Art. 22(2)(b) exception is plainly satisfied. Polish welfare legislation authorises the use of automated assessment tools in social benefit decisions, and the NeedAssess procurement was approved through the municipal tender process. This constitutes Member State law authorisation within the meaning of Art. 22(2)(b). Furthermore, Art. 22(3)\'s safeguards are fully met: Ms. Nowak had the right to appeal, to speak to a caseworker at appeal stage, and to present additional evidence. The safeguard the provision requires \u2014 access to a human reviewer \u2014 was available to her at all times."',
         writePrompt: 'Review former caseworker Kowalczyk\'s witness statement (ev5) and the denial letter (ev4). Using Art. 22(2)(b) and Art. 22(3) GDPR, explain what the suitable safeguards requirement demands and why the appeal option alone does not satisfy it in Karolina\'s case.',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg2-strong',
             quality: 'strong',
-            text: 'Honourable Authority, Art. 22(2)(b) permits automated decisions authorised by Member State law, but that same law must \u201Clay down suitable measures to safeguard the data subject\'s rights and freedoms.\u201D A generic welfare statute does not satisfy this \u2014 the safeguard obligation is specific to the automated processing. Art. 22(3) then requires at minimum the right to human intervention, to express a point of view, and to contest the decision. These safeguards must be available before or contemporaneously with the decision \u2014 not only after the prohibited act. Former caseworker Kowalczyk confirms caseworkers were removed entirely from automatic denial decisions.',
+            text: 'Honourable Authority, Art. 22(2)(b) permits automated decisions authorised by Member State law, but that same law must \u201Clay down suitable measures to safeguard the data subject\'s rights and freedoms.\u201D A generic welfare statute does not satisfy this \u2014 the safeguard obligation is specific to the automated processing. Art. 22(3) then requires at minimum the right to human intervention, to express a point of view, and to contest the decision. These safeguards must be available before or contemporaneously with the decision \u2014 not only after the prohibited act. Former caseworker Kowalczyk confirms caseworkers were removed entirely from automatic denial decisions. Karolina had no opportunity to express her point of view before the denial was issued, no caseworker was involved, and the borrowed and donated nature of the flagged items was never communicated to a human. The safeguard is structurally absent, not merely delayed.',
             judge_response: 'Counsel, that is a well-constructed analysis of the relationship between Art. 22(2)(b)\'s safeguard requirement and Art. 22(3)\'s specific obligations. The Authority notes the distinction between a post-decision appeal right and the pre-decision right to express a point of view that Art. 22(3) mandates. Ms. Kowalczyk\'s testimony about the removal of caseworkers from the denial pathway is material evidence on whether the safeguard was structurally present.',
             legal_reasoning: 'Correctly identifies the two-stage analysis: Art. 22(2)(b) requires both legal authorisation and specific safeguards, and Art. 22(3) specifies what those safeguards must include. The critical distinction between pre-decision human intervention and post-decision appeal is the operative legal point \u2014 Art. 22(3)\'s right to express a point of view must precede the decision, not merely be available afterward.'
           },
@@ -11641,12 +11641,12 @@ verdict: {
         ],
         oppositionArgument: 'Dr. Zieli\u0144ski concludes: "On transparency and the right to express a point of view: the department\'s privacy policy, available on the municipal website, discloses that NeedAssess AI processes publicly available information including social media as part of welfare assessment. Ms. Nowak consented to the processing of her data when she submitted her application and accepted the department\'s data processing terms. The right to express a point of view is satisfied by the appeal process, in which Ms. Nowak was invited to provide any additional information. The department\'s transparency and safeguard obligations are fully discharged."',
         writePrompt: 'Review the internal email thread (ev3) and the denial letter (ev4). Using Art. 22(3)\'s right to express a point of view and Art. 13(2)(f) GDPR, explain why the department\'s privacy policy reference and the post-decision appeal option do not satisfy the specific obligations those provisions impose.',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg3-strong',
             quality: 'strong',
-            text: 'Honourable Authority, Art. 22(3) requires the right to \u201Cexpress a point of view\u201D \u2014 which the EDPB interprets as an opportunity to provide context before or at the time of the decision, not only after it has been taken. The entire harm in this case arose because Karolina had no opportunity to explain that the flagged items were borrowed and donated before the denial was issued. A post-decision appeal does not satisfy this right: it places the burden on the applicant to correct the algorithm\'s error after the fact.',
+            text: 'Honourable Authority, Art. 22(3) requires the right to \u201Cexpress a point of view\u201D \u2014 which the EDPB interprets as an opportunity to provide context before or at the time of the decision, not only after it has been taken. The entire harm in this case arose because Karolina had no opportunity to explain that the flagged items were borrowed and donated before the denial was issued. A post-decision appeal does not satisfy this right: it places the burden on the applicant to correct the algorithm\'s error after the fact. Art. 13(2)(f) separately required the department to disclose, at the time Karolina submitted her application, that social media images would be analysed as lifestyle indicators. The department\'s own caseworker warned in May 2024 that this analysis was methodologically flawed. Neither the right to contextualise nor the prior disclosure obligation was met.',
             judge_response: 'Counsel, that is a well-constructed dual-provision argument. The Authority notes the EDPB\'s interpretation that Art. 22(3)\'s right to express a point of view implies a pre-decision opportunity, and that Art. 13(2)(f) requires specific disclosure of automated decision-making logic at the point of data collection. The internal email showing a contemporaneous warning about the SMAM\'s contextual limitations is material evidence going to deliberate non-compliance.',
             legal_reasoning: 'Correctly deploys Art. 22(3)\'s point-of-view right as a pre-decision obligation rather than a post-decision remedy and connects it directly to the specific harm: Karolina could not explain the borrowed and donated items because she was never given the opportunity. Art. 13(2)(f) is correctly used as the collection-time disclosure obligation. The internal email is used to show the department knew about the contextual limitation and proceeded anyway.'
           },
@@ -11839,12 +11839,12 @@ verdict: {
           ],
           oppositionArgument: 'Dr. Meijer opens: "Honourable Authority, Art. 22 does not apply here. Human judgment is present throughout the TenantTrust process: UrbanNest\'s management set the reliability threshold, property managers review borderline applications, and the entire system was configured by humans with knowledge of the property market. TenantTrust generates a data-supported recommendation; UrbanNest\'s processes determine the outcome. Furthermore, a private rental rejection is a commercial decision about a contract, not a decision with legal effects in the Art. 22 sense. Mr. Garcia was not refused a right, a benefit, or a legal entitlement \u2014 he was declined a private commercial arrangement, which is UrbanNest\'s prerogative."',
           writePrompt: 'Review Ingrid Hoekstra\'s witness statement (ev5) and the TenantTrust architecture (ev2). Using Art. 22(1) GDPR, explain why Tomas\'s rejection constitutes a solely automated decision that significantly affects him, notwithstanding the existence of a property manager review queue for borderline cases.',
-          minWords: 20,
+          minWords: 10,
           options: [
             {
               id: 'arg1-strong',
               quality: 'strong',
-              text: 'Honourable Authority, Art. 22(1) prohibits decisions based solely on automated processing that produce legal effects or similarly significantly affect the data subject. Access to housing significantly affects a person\'s life in the most material sense \u2014 it determines where they live. The EDPB is clear that housing rejections fall within Art. 22\'s scope. TenantTrust automatically rejected Tomas\'s application without his file reaching any human reviewer. Former manager Hoekstra confirms she never saw automatically rejected applications and had no access to those files. Setting a threshold is a policy decision; applying that threshold to Tomas\'s individual circumstances was done entirely by the algorithm. The human review queue applied to borderline cases, not to Tomas.',
+              text: 'Honourable Authority, Art. 22(1) prohibits decisions based solely on automated processing that produce legal effects or similarly significantly affect the data subject. Access to housing significantly affects a person\'s life in the most material sense \u2014 it determines where they live. The EDPB is clear that housing rejections fall within Art. 22\'s scope. TenantTrust automatically rejected Tomas\'s application without his file reaching any human reviewer. Former manager Hoekstra confirms she never saw automatically rejected applications and had no access to those files. Setting a threshold is a policy decision; applying that threshold to Tomas\'s individual circumstances was done entirely by the algorithm. The human review queue applied to borderline cases, not to Tomas. His rejection was solely automated within the meaning of Art. 22(1).',
               judge_response: 'Counsel, that is a well-constructed and precise argument. The Authority notes the critical distinction between policy-level human decisions \u2014 configuring thresholds \u2014 and the individual-level assessment of Mr. Garcia\'s specific circumstances, which Art. 22(1) is designed to protect. Ms. Hoekstra\'s confirmation that she never saw automatically rejected applications is directly material to the solely automated question.',
               legal_reasoning: 'Correctly identifies both Art. 22(1) conditions \u2014 solely automated and significant effects \u2014 and makes the operative distinction between threshold-setting as a policy decision and individual decision-making as what Art. 22 regulates. Uses Hoekstra\'s testimony to prove no human ever assessed Tomas specifically. Housing access is correctly identified as within Art. 22\'s significant effects scope.'
             },
@@ -11886,12 +11886,12 @@ verdict: {
           ],
           oppositionArgument: 'Dr. Meijer continues: "UrbanNest\'s transparency obligations are fully met. The company\'s privacy policy, accepted by applicants on submission, discloses that automated screening tools are used in the tenancy assessment process. Mr. Garcia accepted those terms. Furthermore, UrbanNest is not the source of the complaint history data \u2014 that data comes from TenantTrust\'s proprietary database. UrbanNest cannot be held responsible for disclosing the internal workings of a third-party vendor\'s model. The controller\'s disclosure obligation extends to its own processing, not to the configuration details of every tool it licences."',
           writePrompt: 'Review the rejection letter and its annotations (ev4) alongside the TenantTrust architecture (ev2). Using Art. 13(2)(f) and Art. 14(2)(g) GDPR, explain what UrbanNest was required to disclose to Tomas and why the controller cannot deflect its disclosure obligations onto a third-party vendor.',
-          minWords: 20,
+          minWords: 10,
           options: [
             {
               id: 'arg2-strong',
               quality: 'strong',
-              text: 'Honourable Authority, UrbanNest faces dual disclosure obligations here. Art. 13(2)(f) required it to inform Tomas at the point of application that automated decision-making including profiling would be used, with meaningful information about the logic involved. That obligation was not met \u2014 the application process contained no reference to TenantTrust, complaint history weighting, or automatic rejection thresholds. Additionally, Tomas\'s complaint history was sourced from a third-party landlord database, not collected directly from him. Art. 14(2)(g) requires the controller to provide equivalent information when data is obtained from a source other than the data subject.',
+              text: 'Honourable Authority, UrbanNest faces dual disclosure obligations here. Art. 13(2)(f) required it to inform Tomas at the point of application that automated decision-making including profiling would be used, with meaningful information about the logic involved. That obligation was not met \u2014 the application process contained no reference to TenantTrust, complaint history weighting, or automatic rejection thresholds. Additionally, Tomas\'s complaint history was sourced from a third-party landlord database, not collected directly from him. Art. 14(2)(g) requires the controller to provide equivalent information when data is obtained from a source other than the data subject. UrbanNest, as the controller, cannot delegate its disclosure obligations to TenantTrust \u2014 the controller is responsible for disclosing the logic of processing it deploys, regardless of whether the tool was built in-house.',
               judge_response: 'Counsel, that is a precise and well-grounded dual-provision analysis. The Authority notes the distinction between Art. 13 and Art. 14 obligations \u2014 Art. 14(2)(g) is directly engaged where complaint history was sourced from a third-party dataset rather than collected from Mr. Garcia himself. The controller liability point on vendor-deployed tools is also well-made.',
               legal_reasoning: 'Correctly identifies both Art. 13(2)(f) as the collection-time disclosure obligation and Art. 14(2)(g) as the third-party data disclosure obligation, distinguishing their different triggers. The critical point that the controller cannot deflect its disclosure obligations onto a third-party vendor is legally correct and directly rebuts the opposition\'s vendor argument.'
             },
@@ -11933,12 +11933,12 @@ verdict: {
           ],
           oppositionArgument: 'Dr. Meijer concludes: "On safeguards: Mr. Garcia was entitled to contact UrbanNest at any time to discuss his application. The rejection letter directed him to UrbanNest for further information. He chose instead to submit a formal access request and then a complaint. Had he contacted the property management team, a human reviewer could have considered any additional context he wished to provide. The avenue for human intervention existed and Mr. Garcia did not use it. UrbanNest cannot be held responsible for a data subject\'s decision not to engage the available process before lodging a regulatory complaint."',
           writePrompt: 'Review the internal email thread (ev3) and the rejection letter (ev4). Using Art. 22(3) and Art. 15(1)(h) GDPR, explain why directing an applicant to \u201Ccontact us for further information\u201D does not satisfy the right to express a point of view, and why the access response must provide meaningful logic information rather than a general invitation to call.',
-          minWords: 20,
+          minWords: 10,
           options: [
             {
               id: 'arg3-strong',
               quality: 'strong',
-              text: 'Honourable Authority, Art. 22(3) requires at minimum the right to human intervention, to express a point of view, and to contest the decision. A generic invitation to contact the company in a rejection letter does not satisfy this: the right to express a point of view requires that Tomas be given the opportunity to address the specific factor driving the rejection \u2014 his complaint history \u2014 before or at the point of decision. He was never told the complaint weighting existed. He could not contest what he was not told about.',
+              text: 'Honourable Authority, Art. 22(3) requires at minimum the right to human intervention, to express a point of view, and to contest the decision. A generic invitation to contact the company in a rejection letter does not satisfy this: the right to express a point of view requires that Tomas be given the opportunity to address the specific factor driving the rejection \u2014 his complaint history \u2014 before or at the point of decision. He was never told the complaint weighting existed. He could not contest what he was not told about. Art. 15(1)(h) separately required the access response to provide meaningful information about the logic involved, including the complaint history weighting and the threshold score. UrbanNest\'s access response replicated the rejection letter. The internal email confirms UrbanNest knew the complaint feature was contested and disclosed nothing about it.',
               judge_response: 'Counsel, that is a well-grounded dual-provision argument. The Authority notes that the right to express a point of view under Art. 22(3) requires more than a general contact opportunity \u2014 it requires the data subject to have sufficient information about the decision logic to make that expression meaningful. The internal email showing deliberate retention of the contested feature without disclosure is material evidence of knowing non-compliance.',
               legal_reasoning: 'Correctly identifies that Art. 22(3)\'s right to express a point of view requires information about the specific factor being contested \u2014 a generic contact invitation is meaningless if the applicant does not know what to contest. Links Art. 22(3) to Art. 15(1)(h) to show the transparency and safeguard failures compound each other. Uses the internal email to establish knowing non-disclosure.'
             },
@@ -12131,12 +12131,12 @@ verdict: {
           ],
           oppositionArgument: 'Dr. Vogel opens: "Honourable Authority, TriageAI is a clinical decision-support tool, not a decision-maker. Physicians at St. Maren Hospital retain full clinical responsibility for patient care. TriageAI generates a priority recommendation based on symptom data \u2014 it does not treat patients, it does not prescribe, and it does not discharge. Every clinical decision remains with qualified medical professionals. Furthermore, Art. 22 applies to decisions with \'legal effects\' or that \'significantly affect\' the data subject in a legal or analogous sense. A queue position in a hospital is a clinical workflow management tool, not a legal decision. The provision was designed for credit, employment, and benefits decisions \u2014 not for clinical triage systems that support, rather than replace, physician judgment."',
           writePrompt: 'Review the TriageAI architecture specification (ev2) and nurse Wessels\' statement (ev5). Using Art. 22(1) GDPR, explain why TriageAI\'s priority assignment constitutes a solely automated decision that significantly affects Andreas, and why the decision-support framing does not remove it from Art. 22\'s scope. Consider the role of Art. 9 health data.',
-          minWords: 20,
+          minWords: 10,
           options: [
             {
               id: 'arg1-strong',
               quality: 'strong',
-              text: 'Honourable Authority, Art. 22(1) prohibits solely automated decisions that produce legal effects or similarly significantly affect the data subject. A priority score that determines how long a stroke patient waits for clinical assessment significantly affects him in the most direct sense possible \u2014 it determined whether Andreas received thrombolysis within the treatment window. The TriageAI specification confirms that nurses cannot adjust priority scores; only a physician with login credentials can do so, and none was available at triage. Nurse Wessels confirms she was unable to move Andreas up the queue despite her clinical concerns.',
+              text: 'Honourable Authority, Art. 22(1) prohibits solely automated decisions that produce legal effects or similarly significantly affect the data subject. A priority score that determines how long a stroke patient waits for clinical assessment significantly affects him in the most direct sense possible \u2014 it determined whether Andreas received thrombolysis within the treatment window. The TriageAI specification confirms that nurses cannot adjust priority scores; only a physician with login credentials can do so, and none was available at triage. Nurse Wessels confirms she was unable to move Andreas up the queue despite her clinical concerns. The decision-support label does not change the operative reality: TriageAI controlled queue position and no human could override it at the point it mattered. Processing Andreas\'s symptom data to assign that score is processing of health data under Art. 9(1), which requires a specific legal basis under Art. 9(2) in addition to Art. 22 compliance. Both apply.',
               judge_response: 'Counsel, that is a well-grounded and precise argument. The Authority notes the distinction between the decision-support label and the operative reality of override incapability \u2014 and that Art. 22(1)\'s significant effects test is not limited to legal decisions in a formal sense but extends to decisions that materially determine outcomes for the data subject. The engagement of Art. 9(1) is also correctly identified.',
               legal_reasoning: 'Correctly identifies both Art. 22(1) conditions and addresses the decision-support framing directly: the label does not matter if the system controls outcomes and cannot be overridden. The significant effects test is correctly applied to healthcare wait time in an acute setting. Art. 9(1) is correctly engaged as a parallel obligation triggered by health data processing.'
             },
@@ -12178,12 +12178,12 @@ verdict: {
           ],
           oppositionArgument: 'Dr. Vogel continues: "Even if Art. 22 applies, the Art. 9(2)(h) exception is plainly satisfied. TriageAI processes health data for the purposes of healthcare provision, medical diagnosis, and the management of health systems \u2014 the exact purposes Art. 9(2)(h) contemplates. German healthcare law authorises hospitals to process patient data for clinical triage. The system was procured through an approved hospital board process, carries CE marking as a medical device, and operates under medical professional oversight. The Art. 9(2)(h) exception removes this processing from Art. 22\'s additional consent requirements. St. Maren Hospital was entitled to use TriageAI as part of its clinical provision."',
           writePrompt: 'Review the internal email thread (ev3) and the TriageAI architecture (ev2). Using Art. 9(2)(h)\'s suitable safeguards requirement and Art. 22(4) GDPR, explain why the hospital\'s Art. 9(2)(h) reliance does not automatically satisfy Art. 22\'s requirements, and what the suitable safeguards obligation demanded in circumstances where a known misclassification gap existed.',
-          minWords: 20,
+          minWords: 10,
           options: [
             {
               id: 'arg2-strong',
               quality: 'strong',
-              text: 'Honourable Authority, Art. 9(2)(h) permits health data processing for healthcare provision but requires that processing be subject to \u201Csuitable safeguards,\u201D including compliance with professional secrecy obligations. A hospital deploying an automated triage system it knows misclassifies 68.9% of posterior stroke presentations \u2014 a life-threatening gap documented since July 2024 \u2014 and providing no meaningful override capability to nursing staff is not operating with suitable safeguards. Furthermore, Art. 22(4) provides that where automated decisions are based on Art. 9 special category data, they require either explicit consent or a substantial public interest basis under Art. 9(2) that also lays down suitable safeguards.',
+              text: 'Honourable Authority, Art. 9(2)(h) permits health data processing for healthcare provision but requires that processing be subject to \u201Csuitable safeguards,\u201D including compliance with professional secrecy obligations. A hospital deploying an automated triage system it knows misclassifies 68.9% of posterior stroke presentations \u2014 a life-threatening gap documented since July 2024 \u2014 and providing no meaningful override capability to nursing staff is not operating with suitable safeguards. Furthermore, Art. 22(4) provides that where automated decisions are based on Art. 9 special category data, they require either explicit consent or a substantial public interest basis under Art. 9(2) that also lays down suitable safeguards. CE marking satisfies medical device regulation; it does not constitute the specific GDPR Art. 22(4) safeguard framework. The known gap, the dismissed safety warning, and the structurally incapable override mechanism together demonstrate that no suitable safeguard existed.',
               judge_response: 'Counsel, that is a well-grounded analysis of the relationship between Art. 9(2)(h)\'s safeguard requirement and Art. 22(4)\'s additional protection for automated decisions based on special category data. The Authority notes that CE marking addresses product safety standards and does not discharge the GDPR-specific safeguard obligation. The internal email documenting a known life-threatening gap with no corrective action is material evidence on whether suitable safeguards were in place.',
               legal_reasoning: 'Correctly identifies that Art. 9(2)(h) is not a blanket permission \u2014 it requires suitable safeguards as a condition of its application. Art. 22(4) is correctly applied as an additional layer of protection specifically for automated decisions based on Art. 9 data. The argument distinguishes CE marking from GDPR safeguards, which is the operative legal distinction the opposition\'s argument elides.'
             },
@@ -12225,12 +12225,12 @@ verdict: {
           ],
           oppositionArgument: 'Dr. Vogel concludes: "On consent: Mr. Petrov signed the intake form on arrival, which includes a clear clause consenting to computerised assessment. This constitutes explicit consent within the meaning of Art. 22(2)(c) \u2014 he was informed that computerised assessment would be used and he agreed to it. The GDPR does not require every technical detail of every clinical system to be disclosed in an intake form \u2014 it requires informed consent to the general nature of the processing, which the clause provides. Furthermore, even without consent, Art. 22(2)(a) applies: TriageAI triage is necessary for the performance of the healthcare contract between patient and hospital. Mr. Petrov requested emergency medical care; triage is necessarily part of that service."',
           writePrompt: 'Review the intake consent form and its annotations (ev4). Using Art. 22(2)(c) and Art. 7(4) GDPR, explain why the intake form clause does not constitute valid explicit consent to automated decision-making, and why a patient in medical distress in an emergency department cannot give freely given consent within the meaning of Art. 7(4).',
-          minWords: 20,
+          minWords: 10,
           options: [
             {
               id: 'arg3-strong',
               quality: 'strong',
-              text: 'Honourable Authority, Art. 22(2)(c) requires explicit consent specifically to the automated individual decision-making \u2014 not a general reference to computerised assessment. The EDPB is clear that explicit consent under Art. 22(2)(c) must be granular and specific to the automated processing in question. A blanket intake clause referring to \u201Ccomputerised assessment to support hospital care decisions\u201D without naming TriageAI, describing priority scoring, or explaining the consequences of algorithmic triage does not satisfy this. More fundamentally, Art. 7(4) provides that consent is not freely given where it is conditional on a service the data subject cannot meaningfully decline. Andreas arrived in medical distress at the only emergency department accessible to him.',
+              text: 'Honourable Authority, Art. 22(2)(c) requires explicit consent specifically to the automated individual decision-making \u2014 not a general reference to computerised assessment. The EDPB is clear that explicit consent under Art. 22(2)(c) must be granular and specific to the automated processing in question. A blanket intake clause referring to \u201Ccomputerised assessment to support hospital care decisions\u201D without naming TriageAI, describing priority scoring, or explaining the consequences of algorithmic triage does not satisfy this. More fundamentally, Art. 7(4) provides that consent is not freely given where it is conditional on a service the data subject cannot meaningfully decline. Andreas arrived in medical distress at the only emergency department accessible to him. Signing the intake form was a condition of receiving care he urgently required. Consent obtained under those conditions is not freely given. Even if consent were somehow valid, Art. 22(3) safeguards \u2014 including the right to human intervention and to express a point of view \u2014 were never provided.',
               judge_response: 'Counsel, that is a precise and well-grounded argument across both Art. 22(2)(c) and Art. 7(4). The Authority notes that explicit consent to automated decision-making requires specificity \u2014 a blanket computerised assessment clause does not meet that standard. The Art. 7(4) freely given analysis in the emergency department context is directly material and well-constructed. The addition of Art. 22(3) as a residual point is appropriately made.',
               legal_reasoning: 'Correctly identifies two independent grounds on which the consent fails: substantive inadequacy under Art. 22(2)(c) \u2014 the clause is not explicit consent to automated decision-making \u2014 and procedural invalidity under Art. 7(4) \u2014 medical duress makes consent non-freely-given. The residual Art. 22(3) point correctly notes that even valid consent does not eliminate the safeguard obligation, which is the strongest closing move.'
             },
@@ -12423,12 +12423,12 @@ verdict: {
           ],
           oppositionArgument: 'Dr. Marchand opens: "Honourable Authority, Art. 22(2)(a) is satisfied on these facts. Europa University uses AdmitRank to rank applicants for enrolment places. Enrolment constitutes a contract between the student and the University. The automated ranking process is the pre-contractual step necessary for entering into that contract. Art. 22(2)(a) expressly covers pre-contractual steps taken at the request of the data subject \u2014 and applying to a university programme is precisely such a step. Processing 15,000 applications manually is not operationally feasible, making automation genuinely necessary. The exception applies, and the University acted lawfully in relying upon it."',
           writePrompt: 'Review the EDPB guidance extract (ev4) and the University\'s internal legal memo (ev3). Using Art. 22(2)(a) GDPR and the EDPB\'s interpretation in WP251rev.01, explain why the exception does not apply to a pre-contractual selection decision and why volume necessity does not satisfy the necessity test.',
-          minWords: 20,
+          minWords: 10,
           options: [
             {
               id: 'arg1-strong',
               quality: 'strong',
-              text: 'Honourable Authority, Art. 22(2)(a) permits automated decisions necessary for a contract with the data subject. However, the EDPB\'s Guidelines WP251rev.01 \u2014 the definitive interpretive authority \u2014 are explicit on two points that defeat the University\'s position. First, a decision about whether to offer a contract at all, made before any contractual relationship exists, is not automatically covered by the exception. At the time AdmitRank ranked Sophie\'s application, no enrolment contract existed or had been proposed. The exception covers processing necessary for an identified contract; it does not cover the prior selection decision about whether to form one. Second, the EDPB states expressly that volume or efficiency cannot constitute necessity under Art. 22(2)(a).',
+              text: 'Honourable Authority, Art. 22(2)(a) permits automated decisions necessary for a contract with the data subject. However, the EDPB\'s Guidelines WP251rev.01 \u2014 the definitive interpretive authority \u2014 are explicit on two points that defeat the University\'s position. First, a decision about whether to offer a contract at all, made before any contractual relationship exists, is not automatically covered by the exception. At the time AdmitRank ranked Sophie\'s application, no enrolment contract existed or had been proposed. The exception covers processing necessary for an identified contract; it does not cover the prior selection decision about whether to form one. Second, the EDPB states expressly that volume or efficiency cannot constitute necessity under Art. 22(2)(a). The University\'s own legal memo acknowledges the EDPB warning and proceeds on volume grounds. That is the exact justification the guidance prohibits. Art. 22(2)(a) does not apply.',
               judge_response: 'Counsel, that is a precise and well-grounded analysis of Art. 22(2)(a)\'s scope. The Authority notes that the EDPB\'s WP251rev.01 guidance is directly on point, and that the internal legal memo\'s acknowledgment of the associate\'s flag \u2014 followed by a decision to proceed on volume grounds \u2014 is significant evidence of knowing non-compliance. The two-part argument on contract non-existence and volume necessity is well-constructed.',
               legal_reasoning: 'Correctly applies the EDPB\'s two-part analysis: the exception does not cover selection decisions made before any contract exists, and volume/efficiency cannot satisfy the necessity test. Uses the internal memo to establish that the University had actual knowledge of the EDPB guidance and chose to disregard it. This is the central legal argument the case is designed around.'
             },
@@ -12470,12 +12470,12 @@ verdict: {
           ],
           oppositionArgument: 'Dr. Marchand continues: "Even if the Authority has doubts about Art. 22(2)(a), the Art. 22(3) safeguards are fully in place. Every rejected applicant has access to a formal appeal process, in which an admissions officer reviews the full application file and the appeal is decided by a human academic panel. Ms. Laurent could have appealed immediately. The appeal mechanism is clearly communicated in the rejection letter. The right to human intervention, to express a point of view, and to contest the decision \u2014 all three Art. 22(3) requirements \u2014 are available through this process. The University\'s safeguards are adequate."',
           writePrompt: 'Review former officer Moreau\'s statement (ev5) and the statistical data on appeal timelines (ev6). Using Art. 22(1) and Art. 22(3) GDPR, explain why a post-decision appeal averaging 74 days does not satisfy the right to express a point of view and the right to contest the decision, and why the admissions rejection significantly affects Sophie.',
-          minWords: 20,
+          minWords: 10,
           options: [
             {
               id: 'arg2-strong',
               quality: 'strong',
-              text: 'Honourable Authority, Art. 22(1)\'s prohibition is fully engaged: an admissions rejection is a decision that significantly affects access to education and career development \u2014 the EDPB identifies education access as squarely within Art. 22\'s scope. Former officer Moreau confirms no admissions officer reviewed Sophie\'s file before the rejection was dispatched. Since Art. 22(2)(a) does not apply, no valid exception permits this solely automated decision. On Art. 22(3): even if an exception applied, the appeal mechanism does not satisfy the provision\'s requirements. Art. 22(3) requires the right to express a point of view \u2014 which implies an opportunity before or at the point of decision, not 74 days after.',
+              text: 'Honourable Authority, Art. 22(1)\'s prohibition is fully engaged: an admissions rejection is a decision that significantly affects access to education and career development \u2014 the EDPB identifies education access as squarely within Art. 22\'s scope. Former officer Moreau confirms no admissions officer reviewed Sophie\'s file before the rejection was dispatched. Since Art. 22(2)(a) does not apply, no valid exception permits this solely automated decision. On Art. 22(3): even if an exception applied, the appeal mechanism does not satisfy the provision\'s requirements. Art. 22(3) requires the right to express a point of view \u2014 which implies an opportunity before or at the point of decision, not 74 days after. Sophie\'s 74-day appeal resolution caused her to miss the 2024\u20132025 admissions cycle entirely. A post-decision remedy that produces the same harm as no remedy at all does not constitute a meaningful safeguard under Art. 22(3).',
               judge_response: 'Counsel, that is a well-constructed dual argument. The Authority notes that the significant effects test for education access is directly within Art. 22\'s scope, and that Art. 22(3)\'s right to express a point of view implies a temporal requirement that post-decision appeals of 74 days cannot satisfy where the decision is irreversible on a fixed admissions timeline. The former officer\'s testimony on the absence of pre-decision review is material.',
               legal_reasoning: 'Correctly applies the significant effects test to education access and makes the temporal argument about Art. 22(3): the right to express a point of view implies pre-decision or contemporaneous opportunity, not a post-decision process that produces the same outcome as no remedy. The 74-day figure is used to prove the appeal was not a meaningful safeguard given the fixed admissions cycle.'
             },
@@ -12517,12 +12517,12 @@ verdict: {
           ],
           oppositionArgument: 'Dr. Marchand concludes: "Europa University\'s transparency obligations are fully met. The rejection letter informed Ms. Laurent that automated processing was used and cited the applicable legal basis. The University\'s applicant privacy notice, available on the admissions portal and accepted at application submission, discloses that algorithmic tools are used in the admissions process. The GDPR does not require institutions to expose proprietary ranking algorithms in detail to every rejected applicant. Ms. Laurent received confirmation of automated processing and a legal basis citation \u2014 that is what the regulation requires. Her Art. 15 access request was responded to within the statutory period."',
           writePrompt: 'Review the University\'s internal legal memo (ev3) and the rejection letter details from Sophie\'s statement (ev1). Using Art. 13(2)(f) and Art. 15(1)(h) GDPR, explain what Europa University was required to disclose at application stage and in the Art. 15 response, and why citing a legal basis in the rejection letter does not discharge the meaningful information obligation.',
-          minWords: 20,
+          minWords: 10,
           options: [
             {
               id: 'arg3-strong',
               quality: 'strong',
-              text: 'Honourable Authority, Art. 13(2)(f) required Europa University to provide, at the time Sophie submitted her application, meaningful information about the logic involved in automated decision-making and its envisaged consequences. A generic privacy notice disclosing that algorithmic tools are used does not satisfy this \u2014 the EDPB requires applicants to receive information specific enough to understand how the decision will be reached. Sophie was never told that GPA carries a 35% weighting, that a single transposed digit could generate rejection, or that no human would check the input data.',
+              text: 'Honourable Authority, Art. 13(2)(f) required Europa University to provide, at the time Sophie submitted her application, meaningful information about the logic involved in automated decision-making and its envisaged consequences. A generic privacy notice disclosing that algorithmic tools are used does not satisfy this \u2014 the EDPB requires applicants to receive information specific enough to understand how the decision will be reached. Sophie was never told that GPA carries a 35% weighting, that a single transposed digit could generate rejection, or that no human would check the input data. Separately, Art. 15(1)(h) required the Art. 15 access response to provide meaningful information about the specific logic applied to Sophie\'s application \u2014 not merely a legal basis citation. Citing Art. 22(2)(a) in a rejection letter is a legal justification for automated processing; it is not information about the logic, weighting, or significance of the processing applied. Both obligations are plainly unmet.',
               judge_response: 'Counsel, that is a precise dual-provision analysis. The Authority notes that Art. 13(2)(f) requires specific, application-relevant logic information at the point of data collection \u2014 not a generic algorithmic tools disclosure \u2014 and that Art. 15(1)(h) requires the same specificity in the access response. Citing a legal basis is not disclosing logic. The argument is well-grounded.',
               legal_reasoning: 'Correctly identifies both Art. 13(2)(f) as the collection-time obligation and Art. 15(1)(h) as the access-time obligation. Makes the critical distinction between citing a legal basis and disclosing the logic: the former is a regulatory justification, the latter is the information obligation the data subject is entitled to. Correctly identifies that GPA weighting and input data implications are the specific information that should have been disclosed.'
             },
@@ -12715,12 +12715,12 @@ verdict: {
           ],
           oppositionArgument: 'Dr. Brouwer opens: "Honourable Authority, Art. 22(1) applies to decisions producing \'legal effects\' or \'similarly significantly affecting\' the data subject. ShopSphere\'s dynamic pricing does neither. A price displayed on a website is an offer. The consumer chooses whether to accept it. No legal right is affected, no benefit is denied, no obligation is imposed. The consumer is entirely free to close the browser, visit a competitor, or seek a lower price elsewhere. \'Significantly affecting\' in Art. 22 refers to decisions with substantial consequences for the data subject\'s rights or circumstances \u2014 credit denials, employment rejections, benefit denials. A price suggestion on an e-commerce platform does not approach that threshold. The provision simply does not apply."',
           writePrompt: 'Review the PriceMind architecture (ev2) and the statistical price differential data (ev6). Using Art. 22(1) GDPR and the EDPB guidelines on profiling, explain why personalised pricing based on automated profiling of device type, postcode, and browsing history constitutes a decision that similarly significantly affects consumers, notwithstanding that purchase is voluntary.',
-          minWords: 20,
+          minWords: 10,
           options: [
             {
               id: 'arg1-strong',
               quality: 'strong',
-              text: 'Honourable Authority, Art. 22(1) applies to decisions that produce legal effects or \u201Csimilarly significantly affect\u201D the data subject. The EDPB guidelines on profiling are explicit: significant financial impact on a consumer\'s economic interests qualifies as a similarly significant effect even without legal compulsion. PriceMind generates a unique individualised price per session based on automated profiling of device type, postcode, and browsing history. The data shows premiums of up to 31.2% for identical products \u2014 \u20AC68.80 more for a travel accessory, \u20AC68.90 more for consumer electronics \u2014 invisibly imposed on consumers who had no knowledge a differential existed.',
+              text: 'Honourable Authority, Art. 22(1) applies to decisions that produce legal effects or \u201Csimilarly significantly affect\u201D the data subject. The EDPB guidelines on profiling are explicit: significant financial impact on a consumer\'s economic interests qualifies as a similarly significant effect even without legal compulsion. PriceMind generates a unique individualised price per session based on automated profiling of device type, postcode, and browsing history. The data shows premiums of up to 31.2% for identical products \u2014 \u20AC68.80 more for a travel accessory, \u20AC68.90 more for consumer electronics \u2014 invisibly imposed on consumers who had no knowledge a differential existed. A consumer who unknowingly pays 28% above the price shown to another user for the same item has been significantly affected in their economic interests by an automated profiling decision. The voluntary nature of purchase does not make the financial impact less real or less significant.',
               judge_response: 'Counsel, that is a well-grounded argument. The Authority notes that the EDPB guidelines on profiling directly address financial impact on economic interests as falling within Art. 22(1)\'s similarly significant effects scope, and that the price differentials evidenced in the DataWatch investigation are material on the significance question. The argument is well-constructed.',
               legal_reasoning: 'Correctly applies Art. 22(1)\'s similarly significant effects test using the EDPB guidelines on financial impact. Makes the critical point that voluntary purchase does not negate the significance of the financial effect \u2014 the consumer\'s economic interests are affected regardless of whether the purchase is compelled. Uses the specific euro differentials to ground the significance argument in concrete fact.'
             },
@@ -12762,12 +12762,12 @@ verdict: {
           ],
           oppositionArgument: 'Dr. Brouwer continues: "Even if Art. 22 applies, ShopSphere\'s transparency obligations are fully met. The privacy notice discloses that automated tools process user data for personalisation. The cookie consent banner, accepted by every user, confirms data is used for personalised experiences. Pricing is a component of the personalised shopping experience. Furthermore, Art. 22 requires disclosure where automated decision-making is used \u2014 but personalised pricing is a commercial decision made by ShopSphere, not an automated individual decision about the data subject. The company sets prices; the algorithm implements them. The disclosure obligations are fully discharged by the existing privacy documentation."',
           writePrompt: 'Review the privacy notice and terms of service analysis (ev4) and the internal email thread (ev3). Using Art. 13(2)(f) GDPR, explain what ShopSphere was required to disclose about its profiling-based pricing and why a generic personalisation disclosure does not satisfy the obligation to provide meaningful information about the logic and consequences of automated processing.',
-          minWords: 20,
+          minWords: 10,
           options: [
             {
               id: 'arg2-strong',
               quality: 'strong',
-              text: 'Honourable Authority, Art. 13(2)(f) requires the controller to provide, at the time of data collection, meaningful information about the existence of automated decision-making including profiling, the logic involved, and the significance and envisaged consequences of such processing for the data subject. ShopSphere\'s privacy notice discloses personalisation of product recommendations and content. It does not mention pricing. The word \u201Cprice\u201D appears nowhere in any automated processing disclosure. A user who consented to cookies for personalised recommendations had no basis for understanding that their device type and postcode would be used to generate a unique price differing by up to 31.2% from prices shown to other users.',
+              text: 'Honourable Authority, Art. 13(2)(f) requires the controller to provide, at the time of data collection, meaningful information about the existence of automated decision-making including profiling, the logic involved, and the significance and envisaged consequences of such processing for the data subject. ShopSphere\'s privacy notice discloses personalisation of product recommendations and content. It does not mention pricing. The word \u201Cprice\u201D appears nowhere in any automated processing disclosure. A user who consented to cookies for personalised recommendations had no basis for understanding that their device type and postcode would be used to generate a unique price differing by up to 31.2% from prices shown to other users. Recommendations personalisation and pricing personalisation are materially different purposes with materially different consequences \u2014 the former affects what products you see; the latter affects how much you pay. Art. 13(2)(f)\'s meaningful information obligation requires disclosure specific enough for the data subject to understand the significance of the processing applied to them.',
               judge_response: 'Counsel, that is a well-grounded analysis of Art. 13(2)(f)\'s specificity requirement. The Authority notes the distinction between product recommendation personalisation and pricing personalisation as materially different purposes with different consequences, and that the privacy notice\'s silence on pricing is confirmed by the internal email showing this was a known compliance gap. The argument is precise and well-constructed.',
               legal_reasoning: 'Correctly identifies Art. 13(2)(f) as requiring meaningful, purpose-specific information rather than generic personalisation disclosure. Makes the critical distinction between the disclosed purpose (recommendations) and the actual purpose (pricing) as materially different in consequence. Uses the internal email to prove the disclosure gap was known and deliberately not addressed.'
             },
@@ -12809,12 +12809,12 @@ verdict: {
           ],
           oppositionArgument: 'Dr. Brouwer concludes: "Even accepting that Art. 22 applies and that some disclosure was required, ShopSphere\'s existing customer service infrastructure satisfies Art. 22(3). Any customer who believes they have been treated unfairly can contact ShopSphere\'s customer service team, raise a complaint, and receive a human review of their account and pricing history. The right to human intervention, to express a point of view, and to contest the decision is available through standard customer service channels. ShopSphere cannot be expected to display pricing methodology in every product listing \u2014 this would be operationally impossible and commercially damaging. The existing customer service pathway satisfies Art. 22(3)\'s requirements."',
           writePrompt: 'Review the internal email thread (ev3) and the DataWatch investigation findings (ev1). Using Art. 22(3) GDPR and Art. 5(1)(a)\'s transparency principle, explain why a customer service contact option does not satisfy Art. 22(3)\'s requirements when the data subject does not know personalised pricing is being applied, and why the internal email\'s deliberate concealment is relevant to enforcement.',
-          minWords: 20,
+          minWords: 10,
           options: [
             {
               id: 'arg3-strong',
               quality: 'strong',
-              text: 'Honourable Authority, Art. 22(3) requires at minimum the right to human intervention, to express a point of view, and to contest the decision. These rights are meaningless without the prior information needed to exercise them. A consumer who does not know that the price they see is personalised to their device and postcode cannot contest a pricing decision they do not know has been made about them. ShopSphere provides no opt-out from personalised pricing, no mechanism to see what price others are shown, and no disclosure that a differential exists. Customer service is available \u2014 but only to consumers who already know to ask.',
+              text: 'Honourable Authority, Art. 22(3) requires at minimum the right to human intervention, to express a point of view, and to contest the decision. These rights are meaningless without the prior information needed to exercise them. A consumer who does not know that the price they see is personalised to their device and postcode cannot contest a pricing decision they do not know has been made about them. ShopSphere provides no opt-out from personalised pricing, no mechanism to see what price others are shown, and no disclosure that a differential exists. Customer service is available \u2014 but only to consumers who already know to ask. Art. 22(3) cannot be satisfied by a remedy pathway accessible only to data subjects who have already discovered the violation through independent investigation. Separately, the internal email confirms ShopSphere was informed of the disclosure gap by its own product manager and chose not to address it. This deliberate concealment is directly relevant to the aggravated enforcement assessment under Art. 83.',
               judge_response: 'Counsel, that is a well-constructed argument across Art. 22(3) and Art. 83. The Authority notes that Art. 22(3)\'s safeguards require sufficient prior information to make them exercisable \u2014 a right to contest a decision you do not know has been made is not a genuine right. The internal email\'s documentation of deliberate non-response to a known compliance gap is material to the aggravated liability question.',
               legal_reasoning: 'Correctly identifies that Art. 22(3)\'s safeguards are only meaningful if the data subject knows the automated decision exists. Makes the critical point that customer service cannot substitute for Art. 22(3) where the data subject lacks the predicate information to engage it. The Art. 83 aggravated liability argument is correctly deployed using the internal email as evidence of deliberate concealment.'
             },
@@ -13008,12 +13008,12 @@ verdict: {
           ],
           oppositionArgument: 'Dr. Sanzio opens: "Honourable Authority, Art. 22 is simply not engaged on these facts. The provision applies to decisions with \'legal effects\' or that \'similarly significantly affect\' the data subject. Demonetisation is a commercial arrangement \u2014 StreamVault chooses which content to monetise in accordance with its advertiser relationships and platform policies. No legal right of Ms. Fischer\'s is affected: she retains the right to post content, to build an audience, and to seek monetisation on any other platform. \'Similarly significantly affecting\' in Art. 22 refers to decisions with substantial legal consequences \u2014 credit denial, employment termination, welfare rejection. An adjustment to a platform\'s commercial content monetisation programme falls categorically below that threshold. The provision does not apply."',
           writePrompt: 'Review the BrandGuard architecture (ev2) and Lena\'s statement about income loss (ev1). Using Art. 22(1) GDPR and the EDPB guidelines on profiling, explain why the automated demonetisation decision similarly significantly affects Lena as a data subject and why the voluntary nature of platform participation does not remove it from Art. 22\'s scope.',
-          minWords: 20,
+          minWords: 10,
           options: [
             {
               id: 'arg1-strong',
               quality: 'strong',
-              text: 'Honourable Authority, Art. 22(1) prohibits solely automated decisions producing legal effects or \u201Csimilarly significantly affecting\u201D the data subject. The EDPB guidelines on profiling are explicit: significant financial impact on a data subject\'s economic interests qualifies as a similarly significant effect, even without legal compulsion. BrandGuard assigned Lena\'s channel a Brand Safety Score based on automated content classification and automatically demonetised her channel with no human review \u2014 the specification confirms this. The result was the elimination of \u20AC3,000 per month in income, causing \u20AC12,000 in losses over four months.',
+              text: 'Honourable Authority, Art. 22(1) prohibits solely automated decisions producing legal effects or \u201Csimilarly significantly affecting\u201D the data subject. The EDPB guidelines on profiling are explicit: significant financial impact on a data subject\'s economic interests qualifies as a similarly significant effect, even without legal compulsion. BrandGuard assigned Lena\'s channel a Brand Safety Score based on automated content classification and automatically demonetised her channel with no human review \u2014 the specification confirms this. The result was the elimination of \u20AC3,000 per month in income, causing \u20AC12,000 in losses over four months. The voluntary nature of platform participation does not render the financial impact less significant: a professional who has built an income stream on the basis of platform terms and whose livelihood is removed overnight by an automated profiling decision has been significantly affected in her economic interests within the meaning of Art. 22(1). The solely automated condition is equally met \u2014 no human reviewed the channel before demonetisation.',
               judge_response: 'Counsel, that is a well-grounded argument. The Authority notes that the EDPB guidelines on profiling directly address significant financial impact on economic interests as falling within Art. 22(1)\'s similarly significant effects scope, and that the \u20AC12,000 income loss and the BrandGuard specification confirming no human review are material on both the significance and solely automated questions. The argument is precise and well-constructed.',
               legal_reasoning: 'Correctly applies Art. 22(1)\'s similarly significant effects test using the EDPB guidelines on financial impact. Addresses the voluntary participation argument by focusing on the economic significance of the impact rather than legal compulsion. Uses the technical specification to prove the solely automated element. Grounds the argument in concrete financial figures.'
             },
@@ -13055,12 +13055,12 @@ verdict: {
           ],
           oppositionArgument: 'Dr. Sanzio continues: "Even if Art. 22 applies, StreamVault has fully satisfied Art. 22(3)\'s safeguard requirements. Every creator who receives a demonetisation decision has access to the AppealBot review process. This is a structured, consistent, automated review that applies the same brand safety standards to every appeal. Additionally, creators can contact StreamVault\'s creator support team to raise concerns. The right to express a point of view and to contest the decision is available through both the appeal system and creator support channels. Art. 22(3) does not require human review \u2014 it requires that the data subject have the right to obtain human intervention \'on the part of the controller.\' StreamVault\'s systems satisfy this."',
           writePrompt: 'Review former moderator Conti\'s statement (ev5) and the appeal outcome statistics (ev6). Using Art. 22(3) GDPR, explain why AppealBot does not satisfy the right to human intervention and why a secondary AI system re-running the same model constitutes a rubber-stamp that cannot discharge Art. 22(3)\'s requirements.',
-          minWords: 20,
+          minWords: 10,
           options: [
             {
               id: 'arg2-strong',
               quality: 'strong',
-              text: 'Honourable Authority, Art. 22(3) requires \u201Cat least the right to obtain human intervention on the part of the controller.\u201D The provision is explicit: human intervention \u2014 not algorithmic re-evaluation. AppealBot is not human intervention. Former moderator Conti confirms it re-runs the same BrandGuard model on the same input data with a \u00B12 point confidence interval, introduces no new information, and cannot access creator credential databases. A channel scoring 30 can produce an appeal score between 28 and 32 \u2014 both below the 42-point demonetisation threshold. The system is structurally incapable of reversing the original decision in any case where the original score was not within 2 points of the threshold.',
+              text: 'Honourable Authority, Art. 22(3) requires \u201Cat least the right to obtain human intervention on the part of the controller.\u201D The provision is explicit: human intervention \u2014 not algorithmic re-evaluation. AppealBot is not human intervention. Former moderator Conti confirms it re-runs the same BrandGuard model on the same input data with a \u00B12 point confidence interval, introduces no new information, and cannot access creator credential databases. A channel scoring 30 can produce an appeal score between 28 and 32 \u2014 both below the 42-point demonetisation threshold. The system is structurally incapable of reversing the original decision in any case where the original score was not within 2 points of the threshold. The statistics confirm this: AppealBot upholds 99% of demonetisation decisions. When human reviewers assess appeals, 78\u201379% are reversed. That differential proves AppealBot is a rubber-stamp, not a review. Art. 22(3) requires a human; a machine re-running a machine\'s analysis does not satisfy it.',
               judge_response: 'Counsel, that is a well-grounded and precise analysis. The Authority notes that Art. 22(3)\'s text specifically requires human intervention, not algorithmic re-evaluation, and that the 79-percentage-point reversal rate differential between AppealBot and human reviewers is compelling evidence that AppealBot is performing a structural formality rather than genuine review. The argument is well-constructed.',
               legal_reasoning: 'Correctly anchors the argument in Art. 22(3)\'s specific textual requirement for human intervention and applies the rubber-stamp principle from the broader case law to demonstrate AppealBot cannot satisfy it. Uses the reversal rate differential as statistical proof that AppealBot is not performing genuine review. Connects the structural architecture to the legal standard.'
             },
@@ -13102,12 +13102,12 @@ verdict: {
           ],
           oppositionArgument: 'Dr. Sanzio concludes: "StreamVault\'s transparency obligations are fully met. The Creator Monetisation Policy, accepted by all creators at onboarding, discloses that StreamVault uses automated tools to assess brand safety and that channels not meeting brand safety standards may be demonetised. This disclosure is provided at the time creators join the monetisation programme. Ms. Fischer accepted these terms. The specific algorithm configuration is proprietary commercial information that StreamVault is not required to expose to creators. The demonetisation notification provided the information required: a policy violation had been detected and an appeal pathway was available. Art. 13 and Art. 15 are satisfied."',
           writePrompt: 'Review the demonetisation notification (ev4) and the internal email (ev3). Using Art. 13(2)(f) and Art. 15(1)(h) GDPR, explain what StreamVault was required to disclose about BrandGuard\'s logic and the mental health classification, and why generic brand safety policy language and a one-line notification do not satisfy the meaningful information obligation.',
-          minWords: 20,
+          minWords: 10,
           options: [
             {
               id: 'arg3-strong',
               quality: 'strong',
-              text: 'Honourable Authority, Art. 13(2)(f) required StreamVault to provide, at the time of data collection, meaningful information about the logic involved in automated decision-making and its significance and envisaged consequences for the creator. A generic Creator Monetisation Policy disclosing that brand safety standards may affect monetisation does not satisfy this \u2014 it does not identify BrandGuard, describe the Brand Safety Score methodology, explain that mental health content carries an automatic \u221218-point penalty regardless of credentials, or specify the 42-point demonetisation threshold. Art. 15(1)(h) separately required that Lena\'s access response provide meaningful information about the specific logic applied to her channel.',
+              text: 'Honourable Authority, Art. 13(2)(f) required StreamVault to provide, at the time of data collection, meaningful information about the logic involved in automated decision-making and its significance and envisaged consequences for the creator. A generic Creator Monetisation Policy disclosing that brand safety standards may affect monetisation does not satisfy this \u2014 it does not identify BrandGuard, describe the Brand Safety Score methodology, explain that mental health content carries an automatic \u221218-point penalty regardless of credentials, or specify the 42-point demonetisation threshold. Art. 15(1)(h) separately required that Lena\'s access response provide meaningful information about the specific logic applied to her channel. The notification she received \u2014 \u201Ca policy violation has been detected\u201D \u2014 is not meaningful information about logic. It does not identify a single factor, weight, or classification. The internal email confirms StreamVault knew the mental health classification was contested and that credentialed creators were being treated identically to harmful content creators, and disclosed none of this.',
               judge_response: 'Counsel, that is a well-grounded dual-provision analysis. The Authority notes the distinction between a generic brand safety policy disclosure and the meaningful logic-specific information Arts. 13(2)(f) and 15(1)(h) require, and that the internal email confirming a known classification gap that was deliberately not disclosed to creators is material evidence of knowing non-compliance. The argument is precise and well-constructed.',
               legal_reasoning: 'Correctly identifies both Art. 13(2)(f) as the collection-time disclosure obligation and Art. 15(1)(h) as the access-time obligation. Makes the critical distinction between generic policy disclosure and meaningful logic-specific information. Uses the internal email to prove the classification gap was known and the non-disclosure was deliberate. Identifies the specific information that should have been disclosed: the BSS methodology, the mental health penalty, the threshold.'
             },
@@ -13300,12 +13300,12 @@ verdict: {
           ],
           oppositionArgument: 'Dr. Lange opens: "Honourable Authority, Art. 22(2)(a) is plainly satisfied. Mr. Reiss purchased an AeroLine ticket and in doing so accepted the General Conditions of Carriage, including paragraph 47, which discloses automated processing for passenger selection in irregular operations. The bumping decision was made in the performance of the transport contract \u2014 managing overbooking is a necessary element of airline contract performance, legally contemplated by EU Regulation 261/2004. Automation is essential to this function at the scale commercial aviation operates: hundreds of overbooked flights handled simultaneously cannot be managed by individual human judgment at each gate. The Art. 22(2)(a) exception applies in full, and the clause in the General Conditions provides the contractual basis."',
           writePrompt: 'Review the internal legal memo (ev4) and the contract clause analysis (ev3). Using Art. 22(2)(a) GDPR and the EDPB\'s interpretation of the necessity test, explain why paragraph 47 of an adhesion contract does not satisfy Art. 22(2)(a) and why operational efficiency at scale does not constitute the necessity the provision requires.',
-          minWords: 20,
+          minWords: 10,
           options: [
             {
               id: 'arg1-strong',
               quality: 'strong',
-              text: 'Honourable Authority, Art. 22(2)(a) permits automated decisions necessary for a contract with the data subject, but the EDPB guidance establishes two independent grounds on which AeroLine\'s position fails. First, the necessity test requires that automation be genuinely indispensable for contract performance \u2014 not merely operationally efficient or commercially preferable at scale. AeroLine managed overbooking manually before BumpCalc was deployed in 2022. The existence of a prior manual process is direct evidence that automation is not strictly necessary \u2014 it is convenient and cost-effective, which the EDPB explicitly states does not satisfy the necessity condition.',
+              text: 'Honourable Authority, Art. 22(2)(a) permits automated decisions necessary for a contract with the data subject, but the EDPB guidance establishes two independent grounds on which AeroLine\'s position fails. First, the necessity test requires that automation be genuinely indispensable for contract performance \u2014 not merely operationally efficient or commercially preferable at scale. AeroLine managed overbooking manually before BumpCalc was deployed in 2022. The existence of a prior manual process is direct evidence that automation is not strictly necessary \u2014 it is convenient and cost-effective, which the EDPB explicitly states does not satisfy the necessity condition. Second, inserting an automated decision clause into paragraph 47 of a 94-page take-it-or-leave-it adhesion contract does not manufacture the Art. 22(2)(a) exception. A passenger cannot fly AeroLine without accepting paragraph 47 in full. The EDPB has noted that controllers cannot satisfy Art. 22(2)(a) by embedding automated processing in contracts where the data subject had no meaningful ability to negotiate the clause. AeroLine\'s own data protection counsel made both points in her September 2024 memo. The Art. 22(2)(a) exception does not apply.',
               judge_response: 'Counsel, that is a precise and well-grounded analysis of Art. 22(2)(a)\'s requirements. The Authority notes that the EDPB guidance addresses both the necessity test \u2014 which requires genuine indispensability rather than operational efficiency \u2014 and the adhesion contract problem, which prevents controllers from manufacturing the contractual necessity exception through standard form terms. The internal legal memo acknowledging both these risks and being overruled on commercial grounds is significant evidence of knowing non-compliance.',
               legal_reasoning: 'Correctly identifies both EDPB-based grounds for rejecting Art. 22(2)(a): the necessity test failure (manual process existed) and the adhesion contract limitation (no meaningful negotiation). Uses the internal memo to establish that AeroLine had actual legal knowledge of these problems and chose to accept the risk. This is the central legal argument the case is designed around.'
             },
@@ -13347,12 +13347,12 @@ verdict: {
           ],
           oppositionArgument: 'Dr. Lange continues: "Even if the Authority finds Art. 22(2)(a) requires further examination, Art. 22(1)\'s threshold is not met. BumpCalc generates a recommendation that gate staff implement. Human beings are present at every stage of the boarding process \u2014 gate agents check passengers, duty managers have escalation authority, and operational decisions involve human judgment throughout. Furthermore, involuntary bumping does not produce \'legal effects\' in the Art. 22 sense \u2014 Mr. Reiss\'s right to transport was not extinguished, it was temporarily delayed. He received statutory compensation under EU Regulation 261/2004 and was rebooked. Art. 22(1)\'s threshold for significant effects requires a more substantial impact than a flight delay with statutory compensation."',
           writePrompt: 'Review the BumpCalc architecture (ev2) and gate agent Hoffmann\'s statement (ev5). Using Art. 22(1) GDPR, explain why BumpCalc\'s bumping decision is solely automated and why being denied boarding on a confirmed paid ticket constitutes a legal effect or similarly significant effect on the data subject.',
-          minWords: 20,
+          minWords: 10,
           options: [
             {
               id: 'arg2-strong',
               quality: 'strong',
-              text: 'Honourable Authority, Art. 22(1)\'s threshold is clearly met on both elements. First, the solely automated condition: the BumpCalc specification confirms that gate agents have no interface to adjust rankings, and gate agent Hoffmann confirms she had no override function and that duty manager override is available only for medical or security reasons. David\'s professional circumstances \u2014 a \u20AC50,000 business meeting \u2014 were not qualifying grounds. No human assessed David\'s individual circumstances before he was denied boarding. Second, the legal effects condition: being denied boarding on a confirmed, paid ticket is a direct legal effect on the passenger\'s contractual right to transport.',
+              text: 'Honourable Authority, Art. 22(1)\'s threshold is clearly met on both elements. First, the solely automated condition: the BumpCalc specification confirms that gate agents have no interface to adjust rankings, and gate agent Hoffmann confirms she had no override function and that duty manager override is available only for medical or security reasons. David\'s professional circumstances \u2014 a \u20AC50,000 business meeting \u2014 were not qualifying grounds. No human assessed David\'s individual circumstances before he was denied boarding. Second, the legal effects condition: being denied boarding on a confirmed, paid ticket is a direct legal effect on the passenger\'s contractual right to transport. Independently, the \u20AC50,000 financial consequence and the systematic disadvantaging of an entire class of passengers \u2014 discount-code economy bookings bumped at 61.7% versus zero for business class \u2014 constitutes a similarly significant financial effect well within the EDPB\'s economic impact standard. Art. 22(1) is fully engaged.',
               judge_response: 'Counsel, that is a well-grounded analysis of both Art. 22(1) elements. The Authority notes that confirmed ticket denial constitutes a direct interference with a contractual right, and that the EDPB\'s economic impact standard is engaged by both the individual \u20AC50,000 loss and the systemic 61.7% bumping rate differential. The gate agent\'s confirmation of override incapacity is directly material to the solely automated question.',
               legal_reasoning: 'Correctly identifies both Art. 22(1) conditions. Uses the technical specification and gate agent testimony to prove solely automated. Correctly identifies denied boarding on a confirmed ticket as a legal effect on contractual rights \u2014 stronger than the similarly significant effects argument alone. Uses the 61.7% differential to establish systemic significance beyond David\'s individual case.'
             },
@@ -13394,12 +13394,12 @@ verdict: {
           ],
           oppositionArgument: 'Dr. Lange concludes: "AeroLine\'s Art. 22(3) safeguards are fully operational. Gate agents are present at the gate and able to receive and consider passenger representations. Duty managers have override authority. Mr. Reiss expressed his circumstances to the gate agent \u2014 that is exactly the Art. 22(3) right to express a point of view in action. On transparency, paragraph 47 of the General Conditions discloses automated processing for passenger selection. Passengers are on notice that automated tools are used. The specific criteria are commercially confidential, and AeroLine is not required to publish its entire algorithmic architecture to every ticket purchaser. The Art. 13 obligation is satisfied by the General Conditions disclosure."',
           writePrompt: 'Review gate agent Hoffmann\'s statement (ev5) and the bumping statistics (ev6). Using Art. 22(3) and Art. 13(2)(f) GDPR, explain why a gate agent with no override capability does not provide the right to human intervention, and why paragraph 47\'s generic automated processing reference does not satisfy the meaningful information obligation.',
-          minWords: 20,
+          minWords: 10,
           options: [
             {
               id: 'arg3-strong',
               quality: 'strong',
-              text: 'Honourable Authority, Art. 22(3) requires the right to obtain human intervention on the part of the controller \u2014 specifically, a human with the capability to actually intervene in the decision. Gate agent Hoffmann had no override function on her terminal. Duty manager override is available in 2.1% of cases, exclusively for medical or security reasons. David expressed his circumstances; they did not qualify. A human who hears a passenger\'s point of view but has no authority or capability to act on it does not provide the human intervention Art. 22(3) requires.',
+              text: 'Honourable Authority, Art. 22(3) requires the right to obtain human intervention on the part of the controller \u2014 specifically, a human with the capability to actually intervene in the decision. Gate agent Hoffmann had no override function on her terminal. Duty manager override is available in 2.1% of cases, exclusively for medical or security reasons. David expressed his circumstances; they did not qualify. A human who hears a passenger\'s point of view but has no authority or capability to act on it does not provide the human intervention Art. 22(3) requires. Separately, Art. 13(2)(f) required AeroLine to disclose, at the time of ticket purchase, meaningful information about BumpCalc\'s logic and the significance of its processing for David. Paragraph 47 discloses that automated rebooking systems may be used. It does not disclose that discount-code passengers face a 61.7% bumping rate, that business-class passengers face zero risk, or that professional circumstances are not qualifying override grounds. A passenger reading paragraph 47 cannot understand the significance of their booking choices for their boarding risk.',
               judge_response: 'Counsel, that is a well-constructed dual-provision analysis. The Authority notes the distinction between a gate agent who hears a passenger\'s concerns and a human with capability to act on them \u2014 Art. 22(3) requires the latter. The Art. 13(2)(f) analysis correctly identifies that meaningful information must enable the data subject to understand the significance of the processing for their specific circumstances, which paragraph 47 does not provide.',
               legal_reasoning: 'Correctly identifies that Art. 22(3)\'s human intervention requirement demands capability to intervene, not merely presence during announcement. The 2.1% override rate and the exclusive medical/security threshold prove the intervention is structurally unavailable for David\'s circumstances. Art. 13(2)(f) is correctly applied to require specific logic disclosure including the discount-code penalty and the business-class categorical exclusion.'
             },
@@ -13593,12 +13593,12 @@ verdict: {
         ],
         oppositionArgument: 'Dr. Verbeke opens: "Honourable Authority, MatchMind\'s consent mechanism fully satisfies both Art. 9(2)(a) and Art. 22(2)(c). Priya Sharma voluntarily provided her ethnicity and religion at profile creation \u2014 these are fields she chose to complete. By accepting the Terms of Service, which discloses algorithmic matching using personal and demographic characteristics, she gave informed consent to that use. The GDPR does not prohibit dating platforms from using demographic information to improve compatibility \u2014 this is the precise purpose users join a compatibility platform for. The consent was specific to the context of a dating application, where demographic compatibility is the core service. Both the Art. 9(2)(a) and Art. 22(2)(c) consent requirements are satisfied."',
         writePrompt: 'Review the ToS clause and consent mechanism analysis (ev4) and the EDPB consent guidelines principles. Using Art. 9(2)(a) and Art. 22(2)(c) GDPR, explain why a single ToS checkbox does not constitute explicit consent to the processing of special category data as primary algorithmic matching weights, and why voluntarily providing demographic information is not the same as explicitly consenting to its use as a primary filtering criterion.',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg1-strong',
             quality: 'strong',
-            text: 'Honourable Authority, Art. 9(2)(a) requires explicit consent to processing of special category data for specified purposes, and Art. 22(2)(c) requires explicit consent to solely automated decision-making. The EDPB guidelines on consent establish that explicit consent demands a clear affirmative act specific to the particular processing \u2014 bundling consent into general Terms of Service acceptance does not satisfy this standard. Three independent defects make MatchMind\'s consent mechanism invalid. First, a single checkbox accepting a 47-page document is not an explicit, specific affirmative act to Art. 9 special category processing or Art. 22 automated decisions.',
+            text: 'Honourable Authority, Art. 9(2)(a) requires explicit consent to processing of special category data for specified purposes, and Art. 22(2)(c) requires explicit consent to solely automated decision-making. The EDPB guidelines on consent establish that explicit consent demands a clear affirmative act specific to the particular processing \u2014 bundling consent into general Terms of Service acceptance does not satisfy this standard. Three independent defects make MatchMind\'s consent mechanism invalid. First, a single checkbox accepting a 47-page document is not an explicit, specific affirmative act to Art. 9 special category processing or Art. 22 automated decisions. Second, paragraph 31\'s reference to \'personal and demographic characteristics\' does not identify ethnicity, religion, or political views as Art. 9 special categories, does not disclose their role as 34% and 28% primary match weights, and does not explain that they operate regardless of user preference settings. Third, providing data and consenting to its use for a specific purpose are legally distinct: Priya provided her ethnicity as a profile characteristic but set no ethnic preference, which is direct evidence that she did not consent to ethnicity being used to restrict her visible match pool without her knowledge.',
             judge_response: 'Counsel, that is a well-grounded analysis of both consent provisions and their defects on these facts. The Authority notes that the EDPB guidelines on consent directly address the inadequacy of bundled ToS acceptance for explicit consent purposes, and that the three-part defect analysis \u2014 non-specificity of the mechanism, non-specificity of the disclosure, and the distinction between data provision and processing consent \u2014 is precisely structured. The fact that Priya set no ethnic preference while 78% of non-preference users receive same-group-only matches is material evidence that the processing exceeds any consent she could be said to have given.',
             legal_reasoning: 'Correctly identifies both Art. 9(2)(a) and Art. 22(2)(c) as requiring explicit consent and applies the EDPB guidelines on what explicit means in practice. The three-part defect analysis is complete: mechanism inadequacy (ToS checkbox), disclosure inadequacy (no identification of special categories or weighting), and the data provision/consent distinction. Uses the no-preference setting as positive evidence against consent inference.'
           },
@@ -13640,12 +13640,12 @@ verdict: {
         ],
         oppositionArgument: 'Dr. Verbeke continues: "Even if the Authority has concerns about the consent basis, Art. 22(1)\'s threshold for solely automated decisions is not met here. CompatibilityEngine generates match suggestions \u2014 it does not make a binding decision about Priya\'s life, legal rights, or access to services. A dating app\'s algorithm determining which profiles appear in a user\'s feed is a content personalisation function, not a legal decision or one that similarly significantly affects her. Furthermore, human product managers set the algorithm\'s parameters \u2014 the system is not \'solely\' automated in any meaningful sense when human engineers design and adjust its weights."',
         writePrompt: 'Review the CompatibilityEngine architecture (ev2) and the match rate statistics (ev6). Using Art. 22(1) GDPR and the EDPB guidelines on significant effects, explain why restricting a user\'s visible match pool through automated ethnic filtering constitutes a significant effect on their social life and why human parameter-setting does not make individual match decisions non-automated.',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg2-strong',
             quality: 'strong',
-            text: 'Honourable Authority, Art. 22(1)\'s threshold is met on both elements. First, solely automated: CompatibilityEngine generates individual match pool compositions for each user with no human review of individual match decisions. The \'human engineers set parameters\' argument conflates policy design with individual decision-making \u2014 Art. 22(1) applies to the individual decision affecting the data subject, not to the upstream design of the system. No human assessed Priya\'s individual profile and decided to restrict her cross-ethnic match visibility. Second, significant effects: the EDPB guidelines identify effects on access to services and on social life as capable of constituting similarly significant effects under Art. 22(1).',
+            text: 'Honourable Authority, Art. 22(1)\'s threshold is met on both elements. First, solely automated: CompatibilityEngine generates individual match pool compositions for each user with no human review of individual match decisions. The \'human engineers set parameters\' argument conflates policy design with individual decision-making \u2014 Art. 22(1) applies to the individual decision affecting the data subject, not to the upstream design of the system. No human assessed Priya\'s individual profile and decided to restrict her cross-ethnic match visibility. Second, significant effects: the EDPB guidelines identify effects on access to services and on social life as capable of constituting similarly significant effects under Art. 22(1). CompatibilityEngine restricted Priya to a match pool that excluded cross-ethnic suggestions for four months, affecting her ability to meet people and form social connections through the service she paid for. For minority-group users, the average visible pool is 8 profiles \u2014 compared to 340 for majority-group users. Restriction of access to a service in a way that materially affects social opportunity is within Art. 22(1)\'s scope.',
             judge_response: 'Counsel, that is a well-grounded analysis of both Art. 22(1) elements. The Authority notes the distinction between upstream parameter-setting and individual match decisions \u2014 the former is design; the latter is the automated decision to which Art. 22(1) attaches. The EDPB\'s identification of social life and service access effects as within the significant effects threshold is directly applicable to a four-month restriction of a user\'s visible social match pool.',
             legal_reasoning: 'Correctly identifies both Art. 22(1) conditions. Makes the critical distinction between policy/parameter setting and individual automated decisions to defeat the \'human engineers\' argument. Correctly applies the EDPB\'s social life and service access categories to the match pool restriction. Uses the 8-versus-340 profile differential to ground the significance argument in concrete fact.'
           },
@@ -13687,12 +13687,12 @@ verdict: {
         ],
         oppositionArgument: 'Dr. Verbeke concludes: "MatchMind\'s transparency obligations are fully discharged. The Terms of Service, accepted at signup, discloses algorithmic matching using personal and demographic characteristics. This is precisely what Priya consented to when she provided her ethnicity and religion in her profile. Requiring MatchMind to expose the specific percentage weights of a proprietary matching algorithm in its Terms of Service would effectively require the disclosure of commercially sensitive intellectual property to every user. The Art. 13 obligation is satisfied by the general disclosure in paragraph 31, and users who wish to understand how the algorithm works can contact MatchMind\'s support team."',
         writePrompt: 'Review the internal email thread (ev3) and the CompatibilityEngine architecture (ev2). Using Art. 13(2)(f) GDPR, explain what MatchMind was required to disclose about CompatibilityEngine\'s logic at the time Priya provided her data, and why the April 2024 internal email is relevant to the aggravated non-compliance assessment under Art. 83.',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg3-strong',
             quality: 'strong',
-            text: 'Honourable Authority, Art. 13(2)(f) required MatchMind to provide, at the time of data collection, meaningful information about the logic involved in automated decision-making and its significance and envisaged consequences for Priya. A generic reference to \'personal and demographic characteristics\' in paragraph 31 satisfies none of this. It does not identify ethnicity and religion as Art. 9 special categories used in automated matching. It does not disclose that they carry 34% and 28% weights as primary optimisation inputs. It does not explain that the weighting operates regardless of user preference settings \u2014 so that a user who sets no ethnic preference receives the same ethnic filtering as one who does.',
+            text: 'Honourable Authority, Art. 13(2)(f) required MatchMind to provide, at the time of data collection, meaningful information about the logic involved in automated decision-making and its significance and envisaged consequences for Priya. A generic reference to \'personal and demographic characteristics\' in paragraph 31 satisfies none of this. It does not identify ethnicity and religion as Art. 9 special categories used in automated matching. It does not disclose that they carry 34% and 28% weights as primary optimisation inputs. It does not explain that the weighting operates regardless of user preference settings \u2014 so that a user who sets no ethnic preference receives the same ethnic filtering as one who does. A user reading paragraph 31 has no basis for understanding that her ethnicity will determine which profiles she is allowed to see, or that she will be placed in an ethnic sub-pool with an average of 8 profiles if she is from a minority group. The commercial confidentiality defence is not absolute and cannot justify total non-disclosure of the logic\'s significance. The April 2024 internal email confirms the disclosure gap was specifically identified by a senior engineer and deliberately left unaddressed. That knowing non-disclosure engages aggravated liability under Art. 83(4).',
             judge_response: 'Counsel, that is a precisely grounded Art. 13(2)(f) analysis. The Authority notes that the meaningful information obligation requires disclosure sufficient to enable the data subject to understand the significance of the processing for their specific circumstances \u2014 which the paragraph 31 reference to demographic characteristics plainly does not provide. The April 2024 email\'s documentation of a specific internal disclosure flag that was dismissed as having \'no action item\' is material to the Art. 83(4) aggravated liability assessment.',
             legal_reasoning: 'Correctly identifies Art. 13(2)(f)\'s requirement for meaningful, specific logic information at the point of data collection. Makes the critical point that commercial confidentiality is not an absolute defence and cannot justify total non-disclosure of the logic\'s significance and consequences. Uses the internal email to establish deliberate, known non-disclosure that engages Art. 83(4) aggravated liability.'
           },
@@ -13886,12 +13886,12 @@ verdict: {
         ],
         oppositionArgument: 'Dr. Marchand opens: "Honourable Authority, MegaCorp\'s position is legally sound. Art. 15(1)(h) must be read alongside Recital 63, which acknowledges that the right of access should not adversely affect trade secrets. RecruitAI\'s algorithmic architecture \u2014 its factor categories, weightings, and threshold configurations \u2014 constitutes a trade secret within the meaning of Directive 2016/943. This has commercial value precisely because it is not publicly known. MegaCorp confirmed to Mr. Okonkwo that automated processing was used. Beyond that, Art. 15(1)(h) cannot require disclosure that would destroy a protected commercial asset. The right of access does not override intellectual property rights, and MegaCorp\'s response was legally adequate."',
         writePrompt: 'Review MegaCorp\'s trade secret legal letter (ev4) and the Art. 15 response (ev3). Using Art. 15(1)(h) GDPR, Recital 63, and the principles governing restrictions on data subject rights, explain why Recital 63 does not provide a categorical exemption from Art. 15(1)(h) and why MegaCorp\'s one-paragraph response fails the meaningful information obligation.',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg1-strong',
             quality: 'strong',
-            text: 'Honourable Authority, MegaCorp\'s categorical invocation of trade secret protection fundamentally misreads Recital 63. Recitals are not operative provisions \u2014 they guide interpretation of the regulation\'s operative articles. Recital 63 states that the right of access should not \'adversely affect\' trade secrets. This language calls for balancing, not exemption: the question is whether disclosure adversely affects trade secrets in the specific case, which requires considering what can be disclosed without doing so. It does not authorise a controller to withhold all information whenever a trade secret is claimed. The EDPB guidelines on the right of access confirm that trade secret protection requires a proportionality assessment in each case.',
+            text: 'Honourable Authority, MegaCorp\'s categorical invocation of trade secret protection fundamentally misreads Recital 63. Recitals are not operative provisions \u2014 they guide interpretation of the regulation\'s operative articles. Recital 63 states that the right of access should not \'adversely affect\' trade secrets. This language calls for balancing, not exemption: the question is whether disclosure adversely affects trade secrets in the specific case, which requires considering what can be disclosed without doing so. It does not authorise a controller to withhold all information whenever a trade secret is claimed. The EDPB guidelines on the right of access confirm that trade secret protection requires a proportionality assessment in each case. CJEU case law holds consistently that restrictions on data subject rights must be interpreted narrowly and applied proportionately. MegaCorp conducted no balancing: its legal letter asserts categorically that once trade secret status is established the balance is resolved. That is not a balancing exercise \u2014 it is a categorical refusal dressed in Recital 63 language. Art. 15(1)(h) requires meaningful information about the logic involved. MegaCorp provided confirmation that automated processing was used and a reference to multiple factors. That is not meaningful information about logic \u2014 it is the minimum acknowledgment of the system\'s existence.',
             judge_response: 'Counsel, that is a precisely grounded analysis of Recital 63\'s function and the balancing obligation it imposes. The Authority notes that a recital cannot override the substantive obligation in Art. 15(1)(h), that the EDPB guidelines on the right of access confirm case-by-case proportionality assessment rather than categorical exemption, and that MegaCorp\'s legal letter\'s assertion that trade secret status resolves the balance is, on its face, an admission that no balancing was conducted. The argument is well-constructed.',
             legal_reasoning: 'Correctly identifies that Recital 63 is interpretive, not operative, and that its language requires balancing rather than exemption. Applies the EDPB guidelines on proportionality assessment and the CJEU principle of narrow interpretation of data subject right restrictions. Crucially establishes that MegaCorp\'s own legal letter admits no balancing was conducted. Correctly distinguishes meaningful information from mere confirmation of automated processing.'
           },
@@ -13933,12 +13933,12 @@ verdict: {
         ],
         oppositionArgument: 'Dr. Marchand continues: "MegaCorp\'s use of RecruitAI fully complies with Art. 22. The system is used to assist recruitment, not to make final employment decisions \u2014 final hiring decisions are made by human managers. Furthermore, any applicant who disputes their outcome can contact MegaCorp\'s HR team, which constitutes the Art. 22(3) right to human intervention and to express a point of view. James Okonkwo exercised exactly this right through his Art. 15 request and subsequent correspondence. MegaCorp responded. The fact that the response did not satisfy Mr. Okonkwo does not mean Art. 22(3) was not met. Art. 22 requires a process, not a particular outcome."',
         writePrompt: 'Review former HR manager Dupont\'s statement (ev5) and the RecruitAI architecture (ev2). Using Art. 22(1) and Art. 22(3) GDPR, explain why the 72-hour automated rejection is a solely automated decision significantly affecting James, why MegaCorp\'s response mechanism does not satisfy Art. 22(3), and why a controller cannot discharge the contestation right while its own staff lack access to the decision basis.',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg2-strong',
             quality: 'strong',
-            text: 'Honourable Authority, Art. 22(1)\'s conditions are met on the facts. The rejection was solely automated: candidates scoring below 58 receive automated rejection without human review, and James\'s score of 54.2 placed him in the automated rejection band. The 72-hour timeline is consistent with this \u2014 MegaCorp\'s own HR team confirmed their human review average is five to seven business days. Employment rejection is a paradigm case of a decision significantly affecting the data subject within Art. 22(1)\'s scope. On Art. 22(3): the right to human intervention requires a human with the capability and information to actually intervene in the decision.',
+            text: 'Honourable Authority, Art. 22(1)\'s conditions are met on the facts. The rejection was solely automated: candidates scoring below 58 receive automated rejection without human review, and James\'s score of 54.2 placed him in the automated rejection band. The 72-hour timeline is consistent with this \u2014 MegaCorp\'s own HR team confirmed their human review average is five to seven business days. Employment rejection is a paradigm case of a decision significantly affecting the data subject within Art. 22(1)\'s scope. On Art. 22(3): the right to human intervention requires a human with the capability and information to actually intervene in the decision. Former HR Manager Dupont confirms she never saw score component breakdowns, could not have explained James\'s rejection, and when she asked the vendor for component information was told it was proprietary. A data controller cannot discharge Art. 22(3)\'s contestation right by offering access to HR staff who themselves cannot explain the decision basis. MegaCorp chose to deploy a system whose outputs it cannot explain, chose not to obtain component-level data in its vendor arrangement, and is now using the resulting information gap to deny James his Art. 22(3) rights. That is a controller responsibility failure, not a trade secret defence.',
             judge_response: 'Counsel, that is a well-grounded dual analysis. The Authority notes that the 54.2 score and the automated rejection threshold confirm the solely automated element, and that the HR manager\'s testimony proves the controller responsibility gap: MegaCorp structured its deployment specifically in a way that prevents it from providing the explanation Art. 22(3) requires. The controller cannot manufacture a trade secret defence through its own ignorance.',
             legal_reasoning: 'Correctly proves the solely automated element using the score threshold and the timeline. Correctly identifies employment rejection as within Art. 22(1)\'s significant effects scope. Makes the critical controller responsibility argument: Art. 22(3) requires a human with capability to intervene, and MegaCorp structured its deployment to ensure no such human exists. The vendor ignorance argument is the operative point that connects Art. 22(3) to the HR manager\'s testimony.'
           },
@@ -13980,12 +13980,12 @@ verdict: {
         ],
         oppositionArgument: 'Dr. Marchand concludes: "Even if the Authority finds that more information should have been provided under Art. 15(1)(h), MegaCorp\'s use of RecruitAI is substantively lawful. The factors used \u2014 degree institution prestige, previous employer prestige, career continuity, keyword match \u2014 are legitimate recruitment criteria that every employer uses in some form. The system is designed to identify the best candidates, not to discriminate. No protected characteristic under EU law appears explicitly in the algorithm. Postcode data is a geographic indicator, not a protected characteristic. Career timeline inferences are legitimate. The substantive processing is lawful even if the Art. 15 response was imperfect."',
         writePrompt: 'Review the RecruitAI architecture (ev2) and the statistical rejection data (ev6). Using Art. 5(1)(a) GDPR, Art. 22(4), and the Employment Equality Directive 2000/78/EC, explain why postcode as a \'cultural fit\' proxy and inferred age as a scoring penalty raise fairness and proxy discrimination concerns, and why the deliberate concealment of these factors through trade secret refusal engages aggravated Art. 83 liability.',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg3-strong',
             quality: 'strong',
-            text: 'Honourable Authority, the RecruitAI architecture reveals two substantive violations concealed by the trade secret refusal. First, age inference carries a 16% weight with a penalty applied for estimated age above 38 \u2014 James\'s inferred age of 41 generated a \u221211.8-point penalty. Age is a protected characteristic under Directive 2000/78/EC. Systematically penalising applicants whose career timeline suggests they are over 38 constitutes direct age-based differentiation in employment access. Art. 5(1)(a)\'s fairness principle is violated where automated processing is used to discriminate on grounds that EU law prohibits. Second, postcode socioeconomic index carries 17% weight as a \'cultural fit\' proxy.',
+            text: 'Honourable Authority, the RecruitAI architecture reveals two substantive violations concealed by the trade secret refusal. First, age inference carries a 16% weight with a penalty applied for estimated age above 38 \u2014 James\'s inferred age of 41 generated a \u221211.8-point penalty. Age is a protected characteristic under Directive 2000/78/EC. Systematically penalising applicants whose career timeline suggests they are over 38 constitutes direct age-based differentiation in employment access. Art. 5(1)(a)\'s fairness principle is violated where automated processing is used to discriminate on grounds that EU law prohibits. Second, postcode socioeconomic index carries 17% weight as a \'cultural fit\' proxy. Postcode data correlates with ethnicity in many EU urban areas; using it as a \'cultural fit\' factor risks functioning as an Art. 9 ethnic proxy. Art. 22(4) prohibits automated decisions based on special category data unless Art. 9(2) conditions are met \u2014 conditions MegaCorp has not established. The statistics confirm the systemic effect: applicants over 40 from lower-income postcodes face a 91.2% automated rejection rate. The trade secret refusal deliberately prevented James from discovering that these were the primary drivers of his rejection. That deliberate concealment of discriminatory weighting engages aggravated liability under Art. 83(4).',
             judge_response: 'Counsel, that is a well-grounded analysis of the substantive fairness and proxy discrimination concerns revealed by the CNIL\'s investigatory access to the RecruitAI architecture. The Authority notes that the age inference penalty engages Directive 2000/78/EC age discrimination concerns directly, that the postcode \'cultural fit\' framing raises an Art. 22(4) proxy special category question, and that the 91.2% rejection rate for James\'s demographic segment is statistical evidence of systemic impact. The trade secret refusal\'s function in concealing these factors from affected applicants is material to the Art. 83(4) aggravated liability assessment.',
             legal_reasoning: 'Correctly identifies two substantive violations the trade secret refusal was concealing: age discrimination engaging Directive 2000/78/EC and postcode as Art. 9 proxy data engaging Art. 22(4). Uses the statistical data to prove systemic impact. Correctly connects the deliberate concealment through trade secret invocation to Art. 83(4) aggravated liability. Makes the critical point that the trade secret defence enabled, not merely accompanied, the substantive violations.'
           },
@@ -14184,12 +14184,12 @@ verdict: {
         ],
         oppositionArgument: 'Dr. Holm opens: "Honourable Authority, Art. 22(1) is not engaged on these facts. The provision applies to decisions based \'solely\' on automated processing. DebtHawk\'s litigation decisions are not solely automated \u2014 every LITIGATE recommendation from CreditScore AI is reviewed and confirmed by a human analyst before any legal proceedings are initiated. A human being made the decision to proceed with Anna Lindstr\u00f6m\'s case. That human being could have rejected the recommendation. Art. 22(1)\'s solely automated threshold is not met when a human confirmation step exists in the decision chain. The provision requires sole automation; DebtHawk\'s process includes human involvement at the critical decision point."',
         writePrompt: 'Review the internal email thread (ev3) and the server log statistics (ev6). Using Art. 22(1) GDPR and the EDPB guidelines on meaningful human involvement, explain why an 11-second rubber-stamp review does not remove a decision from Art. 22(1)\'s solely automated scope and why the sign-off architecture makes the human involvement performative rather than genuine.',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg1-strong',
             quality: 'strong',
-            text: 'Honourable Authority, Art. 22(1) applies to decisions based solely on automated processing. The EDPB guidelines on automated decision-making confirm that purely formal human involvement \u2014 where the reviewer is structurally incapable of genuinely assessing the decision \u2014 does not remove a decision from Art. 22(1)\'s scope. This is the rubber-stamp principle: human presence is not human involvement. Three structural features of DebtHawk\'s process prove the review was solely automated in substance. First, the throughput quota: 450 to 550 decisions per shift at 11 seconds average produces 4.6 hours of clicking \u2014 a physical rate at which genuine file assessment is impossible. Second, the interface: reviewers see name, debt amount, and two buttons.',
+            text: 'Honourable Authority, Art. 22(1) applies to decisions based solely on automated processing. The EDPB guidelines on automated decision-making confirm that purely formal human involvement \u2014 where the reviewer is structurally incapable of genuinely assessing the decision \u2014 does not remove a decision from Art. 22(1)\'s scope. This is the rubber-stamp principle: human presence is not human involvement. Three structural features of DebtHawk\'s process prove the review was solely automated in substance. First, the throughput quota: 450 to 550 decisions per shift at 11 seconds average produces 4.6 hours of clicking \u2014 a physical rate at which genuine file assessment is impossible. Second, the interface: reviewers see name, debt amount, and two buttons. The identity match confidence score \u2014 the very data needed to assess an identity decision \u2014 is not displayed. Reviewers opened the full case file in 5.1% of decisions. Third, the explicit instruction: the supervisor\'s September 2024 email tells reviewers the AI does the work and they are the sign-off. That is not a description of human review \u2014 it is an admission that the human step is performative. Where the reviewer is instructed not to assess, designed not to have access to the assessment data, and given insufficient time to assess even if they tried, the decision is based solely on automated processing within the meaning of Art. 22(1).',
             judge_response: 'Counsel, that is a precisely grounded analysis of the rubber-stamp principle and its application to DebtHawk\'s process. The Authority notes that the three structural features \u2014 throughput quota, interface design, and explicit instruction \u2014 are each individually inconsistent with genuine human involvement and together constitute a compelling case that the human step was performative. The supervisor\'s own \'sign-off\' language is a direct admission of the nature of the process.',
             legal_reasoning: 'Correctly identifies the EDPB rubber-stamp principle and applies it through three independent structural proofs: the throughput rate (physical impossibility of review), the interface design (structural absence of the information needed for review), and the explicit instruction (operational confirmation that review is not the purpose). Uses the supervisor\'s own words as an admission against interest.'
           },
@@ -14231,12 +14231,12 @@ verdict: {
         ],
         oppositionArgument: 'Dr. Holm continues: "Even accepting that Art. 22(1) applies, DebtHawk\'s Art. 22(3) safeguards are fully operational. A human reviewer confirmed every LITIGATE decision before legal proceedings were initiated. That reviewer had the authority to reject any recommendation. The REJECT button was available. Anna\'s file was reviewed by a human analyst who had full access to the View Details tab and could have examined the full case file at any point. The fact that the reviewer did not open the tab for Anna\'s case reflects their professional judgment that the case did not require deeper examination. Art. 22(3) requires human intervention capability \u2014 which existed \u2014 not a particular duration or depth of review."',
         writePrompt: 'Review former reviewer Johansson\'s statement (ev5) and the server log data (ev6). Using Art. 22(3) GDPR and the EDPB guidelines on meaningful human involvement, explain why a reviewer who was not told to examine files, could not see the identity confidence score, and processed 500 daily decisions in 11 seconds did not provide the human intervention Art. 22(3) requires.',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg2-strong',
             quality: 'strong',
-            text: 'Honourable Authority, Art. 22(3) requires the right to obtain human intervention on the part of the controller \u2014 a human with the capability and information to genuinely assess and potentially change the decision. The EDPB guidelines confirm that human intervention must be meaningful: the reviewer must have the authority, information, and realistic opportunity to exercise independent judgment. Three conditions prove DebtHawk\'s reviewer did not satisfy this standard. First, information: the reviewer interface does not display the identity match confidence score \u2014 the primary data needed to assess whether the correct person has been identified. Former reviewer Johansson confirms he did not know confidence scores existed.',
+            text: 'Honourable Authority, Art. 22(3) requires the right to obtain human intervention on the part of the controller \u2014 a human with the capability and information to genuinely assess and potentially change the decision. The EDPB guidelines confirm that human intervention must be meaningful: the reviewer must have the authority, information, and realistic opportunity to exercise independent judgment. Three conditions prove DebtHawk\'s reviewer did not satisfy this standard. First, information: the reviewer interface does not display the identity match confidence score \u2014 the primary data needed to assess whether the correct person has been identified. Former reviewer Johansson confirms he did not know confidence scores existed. He could not assess what he could not see. Second, instruction: Johansson was explicitly told that his role was sign-off, that the AI did the work, and not to get bogged down reading files. Art. 22(3) requires a human who can intervene; DebtHawk created a human who was instructed not to. Third, time: 11 seconds per decision across 500 daily files is physically insufficient for file assessment even if the instruction and interface had supported it. A REJECT button that a reviewer is told not to use except for obvious errors, who cannot see the confidence data, and who has 11 seconds, does not constitute human intervention within Art. 22(3)\'s meaning.',
             judge_response: 'Counsel, that is a well-grounded three-condition analysis of Art. 22(3)\'s capability requirement. The Authority notes that the EDPB guidelines on meaningful involvement require all three conditions \u2014 information, authority, and realistic opportunity \u2014 and that DebtHawk\'s design structurally denied all three. The supervisor\'s explicit instruction that reviewers are a sign-off and should not read files is particularly material as an operational admission.',
             legal_reasoning: 'Correctly applies Art. 22(3)\'s human intervention requirement through the EDPB\'s capability and information conditions. Uses three independent structural proofs: information absence (confidence score not displayed), instruction (explicit sign-off direction), and time (11-second physical impossibility). Makes the critical point that a REJECT button the reviewer is instructed not to use is not a genuine override capability.'
           },
@@ -14278,12 +14278,12 @@ verdict: {
         ],
         oppositionArgument: 'Dr. Holm concludes: "Even accepting Art. 22(1) and Art. 22(3) violations, the identity confusion in Anna Lindstr\u00f6m\'s case was an isolated data quality error, not a systemic failure. Every process, automated or manual, carries some error rate. DebtHawk acknowledged the error, withdrew the proceedings, and committed to reviewing its matching thresholds. The proportionate response is an administrative warning, not a substantial fine. The Art. 5(1)(d) accuracy principle requires reasonable data quality measures, not a guarantee of zero errors. DebtHawk\'s measures were reasonable for the volume and complexity of debt collection processing."',
         writePrompt: 'Review the identity confusion evidence (ev4) and the server log data (ev6). Using Art. 5(1)(d) GDPR, explain why processing a below-threshold confidence match to initiate litigation is an accuracy failure, and why the deliberate design decision to conceal the confidence score from reviewers and the 95.5% below-threshold confirmation rate engage Art. 83(4) aggravated liability rather than a proportionate isolated error response.',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg3-strong',
             quality: 'strong',
-            text: 'Honourable Authority, Art. 5(1)(d) requires that personal data be accurate and, where necessary, kept up to date. Initiating legal proceedings against a named individual on the basis of an identity match with a confidence score of 61 \u2014 below DebtHawk\'s own 70-point high-confidence threshold \u2014 processes inaccurate identity data in direct violation of Art. 5(1)(d). This is not an isolated error: the IMY investigation found that below-threshold confidence matches are confirmed without file review in 95.5% of cases. DebtHawk\'s system generates LITIGATE recommendations on below-threshold matches, but deliberately withholds the confidence score from the reviewer interface. A reviewer who cannot see that the system itself flagged uncertainty cannot exercise any additional scrutiny.',
+            text: 'Honourable Authority, Art. 5(1)(d) requires that personal data be accurate and, where necessary, kept up to date. Initiating legal proceedings against a named individual on the basis of an identity match with a confidence score of 61 \u2014 below DebtHawk\'s own 70-point high-confidence threshold \u2014 processes inaccurate identity data in direct violation of Art. 5(1)(d). This is not an isolated error: the IMY investigation found that below-threshold confidence matches are confirmed without file review in 95.5% of cases. DebtHawk\'s system generates LITIGATE recommendations on below-threshold matches, but deliberately withholds the confidence score from the reviewer interface. A reviewer who cannot see that the system itself flagged uncertainty cannot exercise any additional scrutiny. This is systemic accuracy failure by design, not an isolated occurrence. The deliberate design decisions \u2014 to conceal the confidence score, to instruct reviewers to trust the system and move on, to set quotas physically incompatible with file review \u2014 constitute knowing non-compliance that cannot be characterised as a reasonable measure failing in an edge case. The systemic design of the accuracy failure engages aggravated Art. 83(4) liability. Withdrawal of proceedings after press attention does not cure the structural violation.',
             judge_response: 'Counsel, that is a well-grounded Art. 5(1)(d) analysis that correctly distinguishes a systemic accuracy failure from an isolated error. The Authority notes that the 95.5% below-threshold confirmation rate without file review, combined with the deliberate decision to conceal the confidence score from the reviewer interface, establishes that the accuracy failure was built into the process design. The supervisor\'s explicit instruction to confirm and move on for below-threshold cases as well as standard cases is material to the Art. 83(4) aggravated liability assessment.',
             legal_reasoning: 'Correctly applies Art. 5(1)(d) to the specific below-threshold identity match and establishes systemic rather than isolated failure using the 95.5% statistic. Makes the critical connection between the deliberate confidence score concealment and the systemic accuracy failure \u2014 the design prevented the accuracy problem from being caught. Correctly invokes Art. 83(4) aggravated liability on the basis of deliberate design decisions rather than mere negligence.'
           },
@@ -14389,7 +14389,7 @@ verdict: {
       prompt: 'Elena\'s complaint concerns a platform that ignored her detailed notice of illegal content for three months. Which legal framework most directly governs this failure?',
       correct: 'dsa',
       writePrompt: 'Identify the EU digital law framework that specifically creates platform obligations to act on notices of illegal content. Justify why this framework applies rather than the alternatives.',
-      minWords: 25,
+      minWords: 10,
       requiredConcepts: [
         {
           name: 'Hosting Service Obligation',
@@ -14430,7 +14430,7 @@ verdict: {
       prompt: 'Which specific article of the DSA creates the core obligation MarketHub allegedly breached by failing to act on Elena\'s notice?',
       correct: 'art16-1',
       writePrompt: 'Identify the exact article and explain the legal standard it imposes on hosting services once they receive a sufficiently documented notice of illegal content.',
-      minWords: 20,
+      minWords: 10,
       requiredConcepts: [
         {
           name: 'Article 16(1)',
@@ -14566,7 +14566,7 @@ verdict: {
         evidenceId: 'ev4-compliance-document',
         oppositionArgument: 'Your Honour, the DSA does not specify a maximum processing time for notices of illegal content. "Expeditious" is an inherently contextual standard — and context here demands legal care. Defamation under national law is among the most legally complex categories of illegal content, requiring jurisdiction-specific analysis that automated systems cannot perform. MarketHub has implemented a notice-and-action mechanism as required by Art. 16. The mechanism exists, functions, and has resolved over 24,000 notices this quarter alone. The DSA does not guarantee any particular timeframe. It requires a functioning mechanism — which MarketHub provides.',
         writePrompt: 'Opposing counsel argues "expeditious" is unlimited in contextual flexibility and that 91 days is proportionate for legally complex notices. Counter this by explaining what the expeditious standard actually requires under Art. 16 and why MarketHub\'s pipeline fails it.',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Expeditious Standard',
@@ -14589,28 +14589,28 @@ verdict: {
           {
             id: 'arg1-strong',
             quality: 'strong',
-            text: 'Your Honour, opposing counsel conflates the existence of a mechanism with its performance. Art. 16(1) DSA requires hosting services to act expeditiously — not merely to acknowledge receipt and route notices into an indefinite queue. Recital 52 DSA confirms that expeditious action is assessed against the nature and severity of the alleged illegality and the quality of the notice. Elena\'s notice was complete: specific URLs, verbatim quotes, and a legal analysis. MarketHub\'s own Head of Trust & Safety identified 91 days as non-compliant in writing, six weeks before this notice was filed. The platform\'s pipeline cannot distinguish a fully documented legal claim from an empty submission.',
+            text: 'Your Honour, opposing counsel conflates the existence of a mechanism with its performance. Art. 16(1) DSA requires hosting services to act expeditiously — not merely to acknowledge receipt and route notices into an indefinite queue. Recital 52 DSA confirms that expeditious action is assessed against the nature and severity of the alleged illegality and the quality of the notice. Elena\'s notice was complete: specific URLs, verbatim quotes, and a legal analysis. MarketHub\'s own Head of Trust & Safety identified 91 days as non-compliant in writing, six weeks before this notice was filed. The platform\'s pipeline cannot distinguish a fully documented legal claim from an empty submission. A mechanism that structurally produces 97% non-resolution within seven days for a documented illegal content notice is not a compliant mechanism. It is uniform inaction dressed as a process.',
             judge_response: 'A well-grounded argument. The distinction between mechanism existence and mechanism performance is the central issue here, and you have used both the documentary evidence and the statutory text to make it precisely.',
             legal_reasoning: 'The strongest argument. It directly rebuts the opponent\'s mechanism-vs-performance conflation, anchors the argument in recital 52 and in the witness\'s own admission, and uses the pipeline\'s inability to respond to documentation quality to prove the failure is structural — not a reasonable response to legal complexity in Elena\'s specific case.'
           },
           {
             id: 'arg1-weak',
             quality: 'weak',
-            text: 'Your Honour, 91 days is simply too long. Any reasonable person would agree that waiting three months to act on a legal complaint is not expeditious. The company was generating profit from the listing while Elena lost EUR 40,000. The DSA was designed to protect small businesses like hers, and MarketHub has clearly ignored its obligations for commercial gain. The court should find a violation and impose the maximum fine. This kind of behaviour should not be tolerated in a modern digital marketplace and the Authority must take decisive action to protect the rights of affected users.',
+            text: 'Your Honour, 91 days is simply too long. Any reasonable person would agree that waiting three months to act on a legal complaint is not expeditious. The company was generating profit from the listing while Elena lost EUR 40,000. The DSA was designed to protect small businesses like hers, and MarketHub has clearly ignored its obligations for commercial gain. The court should find a violation and impose the maximum fine.',
             judge_response: 'Counsel, the moral argument has weight, but you must explain why 91 days violates the legal standard in Art. 16, not simply assert that it does. Connect the facts to the statutory test.',
             legal_reasoning: 'Relies on common sense rather than legal reasoning. It correctly identifies the outcome (non-compliance) but fails to articulate the legal standard — expeditious action assessed against notice quality and harm severity under recital 52 — or the structural cause (a pipeline that cannot process documentation quality). A regulatory tribunal requires the legal mechanism, not just the equitable framing.'
           },
           {
             id: 'arg1-plausible',
             quality: 'plausible',
-            text: 'Your Honour, the expeditious standard in Art. 16 DSA should be interpreted in light of analogous obligations in EU law. Under GDPR Art. 12(3), data controllers must respond to data subject requests within one month, with a two-month extension for complex cases. By analogy, a maximum two-month period should be the ceiling for complex DSA notices. MarketHub\'s 91-day average exceeds even this extended benchmark. Furthermore, the pipeline does not even distinguish complex from simple notices — Elena\'s documented claim was treated identically to an undocumented submission, showing the routing is not genuinely responsive to legal complexity. The Authority should ground its finding in this specific framework which provides the most direct and effective enforcement pathway for the conduct at issue.',
+            text: 'Your Honour, the expeditious standard in Art. 16 DSA should be interpreted in light of analogous obligations in EU law. Under GDPR Art. 12(3), data controllers must respond to data subject requests within one month, with a two-month extension for complex cases. By analogy, a maximum two-month period should be the ceiling for complex DSA notices. MarketHub\'s 91-day average exceeds even this extended benchmark. Furthermore, the pipeline does not even distinguish complex from simple notices — Elena\'s documented claim was treated identically to an undocumented submission, showing the routing is not genuinely responsive to legal complexity.',
             judge_response: 'Counsel, the pipeline observation is well-taken and legally relevant. However, the DSA and GDPR are distinct instruments with independent standards. Does the court need a GDPR benchmark to find 91 days non-expeditious, or does the evidence before it suffice without importing a timeline from a different regulation?',
             legal_reasoning: 'The pipeline observation is excellent — but the GDPR Art. 12(3) analogy is the GDPR swap trap. GDPR timelines govern data subject request responses, not illegal content notices. Importing GDPR\'s one-month (or two-month) ceiling as a benchmark for DSA Art. 16 implies that acting within two months would be compliant — when the DSA\'s expeditious standard is independent and assessed on its own contextual terms. The legal error undermines an otherwise strong factual argument.'
           },
           {
             id: 'arg1-wrong',
             quality: 'wrong',
-            text: 'Your Honour, MarketHub\'s failure to act expeditiously was also a violation of the e-Commerce Directive Art. 14, under which platforms were required to act "expeditiously" once they obtained actual knowledge of illegal content. Elena\'s detailed notice gave MarketHub actual knowledge. The ECD\'s notice-and-takedown standard was well-established and MarketHub violated it before the DSA even applied. The DSA merely clarified this pre-existing obligation. The court should find a breach of the notice-and-takedown standard as established under EU hosting law. The Authority should exercise its full enforcement competence under this framework to ensure the respondent brings its practices into compliance with applicable standards.',
+            text: 'Your Honour, MarketHub\'s failure to act expeditiously was also a violation of the e-Commerce Directive Art. 14, under which platforms were required to act "expeditiously" once they obtained actual knowledge of illegal content. Elena\'s detailed notice gave MarketHub actual knowledge. The ECD\'s notice-and-takedown standard was well-established and MarketHub violated it before the DSA even applied. The DSA merely clarified this pre-existing obligation. The court should find a breach of the notice-and-takedown standard as established under EU hosting law.',
             judge_response: 'Counsel, the e-Commerce Directive was fully superseded by the DSA, which became applicable in February 2024 — more than a year before Elena\'s notice was filed. You are litigating under a regulation that no longer exists as applicable law.',
             legal_reasoning: 'A critical error invoking the pre-DSA law trap. The ECD was fully superseded by the DSA in February 2024. Elena\'s notice was filed in March 2025 — entirely within the DSA\'s application period. Relying on the ECD is not merely unhelpful; it signals to the tribunal that the advocate does not know which law applies, fatally undermining credibility.'
           }
@@ -14621,7 +14621,7 @@ verdict: {
         evidenceId: 'ev3-internal-communications',
         oppositionArgument: 'Your Honour, the internal Slack thread must be read in its proper context. Mr. Brandt is a cautious compliance officer raising hypothetical concerns about future risk — this is precisely what a well-functioning compliance department does. It does not establish actual breach; it demonstrates that MarketHub takes regulatory risk seriously enough to discuss it. Good-faith legal uncertainty about what "expeditious" means for legally complex national-law defamation claims — a genuinely unsettled question since the DSA\'s application — is a legitimate basis for measured, careful action. The DSA did not come with a processing-time manual.',
         writePrompt: 'Opposing counsel characterises the internal communications as routine compliance debate. Counter this by explaining the legal significance of what the Slack thread actually proves about MarketHub\'s conduct and state of knowledge.',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Management Knowledge',
@@ -14651,7 +14651,7 @@ verdict: {
           {
             id: 'arg2-weak',
             quality: 'weak',
-            text: 'Your Honour, these messages prove MarketHub was deliberately breaking the law and tried to cover it up by telling Mr. Brandt to "document that we flagged it." They knew exactly what they were doing. This is deliberate regulatory evasion and the Coordinator should refer the matter for criminal investigation into the executives involved. The Slack thread is a confession. This kind of behaviour should not be tolerated in a modern digital marketplace and the Authority must take decisive action to protect the rights of affected users. Any reasonable person would recognise that the platform acted improperly and that meaningful intervention is needed to prevent this from happening again to other users.',
+            text: 'Your Honour, these messages prove MarketHub was deliberately breaking the law and tried to cover it up by telling Mr. Brandt to "document that we flagged it." They knew exactly what they were doing. This is deliberate regulatory evasion and the Coordinator should refer the matter for criminal investigation into the executives involved. The Slack thread is a confession.',
             judge_response: 'Counsel, there is no criminal referral mechanism here and you are overstating what the documents prove. "Document that we flagged it" is evidence of management caution, not concealment. Focus on what the evidence actually establishes under Art. 16.',
             legal_reasoning: 'Overreaches badly. "Document that we flagged it" reflects a company trying to insulate itself from enforcement action — which is damaging — but it is not evidence of criminal concealment. Claiming criminal intent and demanding a criminal referral in a regulatory proceeding damages credibility and suggests the advocate cannot read documents accurately, which invites the tribunal to discount other evidence interpretations.'
           },
@@ -14676,7 +14676,7 @@ verdict: {
         evidenceId: 'ev6-statistics',
         oppositionArgument: 'Your Honour, look at the full picture in MarketHub\'s transparency data. 91% of counterfeit notices are resolved within seven days. 74% of hate speech notices. 100% of CSAM. MarketHub\'s mechanism performs well across the vast majority of notice volume. The defamation category is an outlier — but it is an outlier precisely because it is legally distinctive. Defamation requires national-law analysis that these other categories do not. The disparity reflects appropriate legal differentiation. Art. 16 does not require uniform resolution times; different illegal content types legitimately warrant different processing speeds. Overall, the mechanism functions.',
         writePrompt: 'Opposing counsel uses MarketHub\'s strong aggregate statistics to argue the mechanism functions. Counter this by using the specific data to establish that the pipeline is architecturally non-compliant for documented defamation notices.',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Structural Non-Compliance',
@@ -14699,28 +14699,28 @@ verdict: {
           {
             id: 'arg3-strong',
             quality: 'strong',
-            text: 'Your Honour, the statistics expose the flaw in the opponent\'s argument. MarketHub\'s strong performance on counterfeit goods shows the platform is capable of expeditious action at scale — 14,302 notices resolved at 91% within seven days. The defamation disparity is therefore not a capacity problem. It is an architectural choice. The pipeline classifies all defamation notices as Tier 3 regardless of documentation quality, making 91 days the structural output regardless of what the notice contains. Elena\'s notice was complete and legally documented. Art. 16 requires expeditious action on the notice actually received — assessed against its nature, severity, and evidential quality.',
+            text: 'Your Honour, the statistics expose the flaw in the opponent\'s argument. MarketHub\'s strong performance on counterfeit goods shows the platform is capable of expeditious action at scale — 14,302 notices resolved at 91% within seven days. The defamation disparity is therefore not a capacity problem. It is an architectural choice. The pipeline classifies all defamation notices as Tier 3 regardless of documentation quality, making 91 days the structural output regardless of what the notice contains. Elena\'s notice was complete and legally documented. Art. 16 requires expeditious action on the notice actually received — assessed against its nature, severity, and evidential quality. Strong aggregate performance across other categories does not satisfy the obligation on this notice. A mechanism that reliably fails for a specific category of illegal content is not a compliant mechanism for that category.',
             judge_response: 'An analytically precise argument. The distinction between capacity (demonstrated by counterfeit performance) and architectural choice (the Tier 3 routing logic) is the correct way to read these statistics.',
             legal_reasoning: 'The definitive statistical argument. It uses the counterfeit goods data to prove capability (defeating the capacity defence), then turns the disparity into evidence of architectural choice (defeating the legal complexity defence), and grounds the Art. 16 assessment in the specific notice received — not aggregate averages. All three elements are legally necessary.'
           },
           {
             id: 'arg3-weak',
             quality: 'weak',
-            text: 'Your Honour, a 3% within-seven-day rate is shocking. It means 97 out of every 100 defamation victims wait weeks or months with no action. This is thousands of people being harmed by MarketHub\'s deliberate slowness. The DSA exists precisely to prevent platforms from hiding behind complexity while real people lose money and reputation. I ask the court to order immediate remediation of the entire defamation review pipeline. The Authority should send a clear signal that digital platforms cannot treat their users this way and must be held to higher standards of fairness and accountability.',
+            text: 'Your Honour, a 3% within-seven-day rate is shocking. It means 97 out of every 100 defamation victims wait weeks or months with no action. This is thousands of people being harmed by MarketHub\'s deliberate slowness. The DSA exists precisely to prevent platforms from hiding behind complexity while real people lose money and reputation. I ask the court to order immediate remediation of the entire defamation review pipeline.',
             judge_response: 'Counsel, the scale of the problem is relevant, but you must explain why 3% is legally insufficient under Art. 16\'s expeditious standard, not just characterise it as shocking. Connect the statistics to the legal test.',
             legal_reasoning: 'Accurately identifies the scale of the failure but relies on moral outrage rather than legal analysis. It misses the legally important observations: (a) the counterfeit comparison proves capability rather than capacity limits; (b) the pipeline\'s category-based routing — regardless of documentation — is the architectural flaw; and (c) Art. 16 is assessed against the specific notice, not category averages.'
           },
           {
             id: 'arg3-plausible',
             quality: 'plausible',
-            text: 'Your Honour, the 91% default rate for defamation notices confirms severe systemic harm, and the statistics support application of the Consumer Credit Directive — I mean, the Consumer Rights framework. More precisely: the statistics prove that MarketHub\'s moderation failures constitute an unfair commercial practice under Directive 2005/29/EC. Operating a service that claims to protect marketplace integrity while knowingly failing to remove illegal defamatory content is misleading about the service\'s characteristics. The UCPD gives consumers — including small business users like Elena — a right of redress. I ask the court to apply the UCPD framework alongside Art. 16 DSA. The Authority should ground its finding in this specific framework which provides the most direct and effective enforcement pathway for the conduct at issue.',
+            text: 'Your Honour, the 91% default rate for defamation notices confirms severe systemic harm, and the statistics support application of the Consumer Credit Directive — I mean, the Consumer Rights framework. More precisely: the statistics prove that MarketHub\'s moderation failures constitute an unfair commercial practice under Directive 2005/29/EC. Operating a service that claims to protect marketplace integrity while knowingly failing to remove illegal defamatory content is misleading about the service\'s characteristics. The UCPD gives consumers — including small business users like Elena — a right of redress. I ask the court to apply the UCPD framework alongside Art. 16 DSA.',
             judge_response: 'Counsel, the UCPD governs business-to-consumer commercial practices in the sale of goods and services. Notice-and-action obligations for illegal content are specifically governed by the DSA. These frameworks address different legal relationships.',
             legal_reasoning: 'The consumer law swap trap. The UCPD governs misleading commercial practices in B2C transactions — it is not designed to address platform content moderation obligations. Invoking it alongside Art. 16 DSA imports a framework that does not fit the legal relationship at issue (platform-notifier-reported party), distracts from the DSA claim, and demonstrates a failure to understand which instrument governs platform accountability.'
           },
           {
             id: 'arg3-wrong',
             quality: 'wrong',
-            text: 'Your Honour, MarketHub\'s statistics actually demonstrate that an AI Act compliance obligation has been missed. The Vulnerability Targeting Engine — I mean, the moderation pipeline — is an AI system processing notices to make content removal decisions. Under the AI Act Annex III, automated systems making decisions that affect access to services are high-risk AI systems. MarketHub has not conducted the required conformity assessment for its Tier 3 routing algorithm. I ask this court to order a mandatory AI Act conformity assessment before the pipeline can continue operating. The Authority should exercise its full enforcement competence under this framework to ensure the respondent brings its practices into compliance with applicable standards.',
+            text: 'Your Honour, MarketHub\'s statistics actually demonstrate that an AI Act compliance obligation has been missed. The Vulnerability Targeting Engine — I mean, the moderation pipeline — is an AI system processing notices to make content removal decisions. Under the AI Act Annex III, automated systems making decisions that affect access to services are high-risk AI systems. MarketHub has not conducted the required conformity assessment for its Tier 3 routing algorithm. I ask this court to order a mandatory AI Act conformity assessment before the pipeline can continue operating.',
             judge_response: 'Counsel, we are in DSA enforcement proceedings. The AI Act imposes obligations on AI system providers and deployers under a separate enforcement architecture. Even if the routing algorithm were a high-risk system under Annex III, this is not the forum for AI Act conformity assessment orders.',
             legal_reasoning: 'The AI Act swap trap. Applying AI Act Annex III high-risk system obligations to a content moderation pipeline routing algorithm introduces an entirely different regulatory framework with separate enforcement machinery, different regulatory bodies, and different legal tests. This error signals a fundamental confusion between the DSA (which governs what platforms do with content) and the AI Act (which governs AI system safety). It abandons the DSA claim entirely in the final argument.'
           }
@@ -14807,7 +14807,7 @@ verdict: {
       prompt: 'Sofia\'s investigation was removed without explanation and her appeal rejected by an AI in 45 seconds. Which legal framework most directly governs PostPulse\'s obligations in this situation?',
       correct: 'dsa',
       writePrompt: 'Identify the EU digital law framework that specifically governs VLOP obligations when removing user content and handling appeals. Justify why this framework applies rather than the alternatives.',
-      minWords: 25,
+      minWords: 10,
       requiredConcepts: [
         {
           name: 'VLOP Content Moderation Obligations',
@@ -14848,7 +14848,7 @@ verdict: {
       prompt: 'PostPulse sent Sofia a generic "community guidelines" notification and rejected her appeal in 45 seconds by AI. Which DSA article creates the primary obligation it violated?',
       correct: 'art17-1',
       writePrompt: 'Identify the exact article and explain the three specific elements it requires a hosting service to include in a statement of reasons for a content removal decision.',
-      minWords: 20,
+      minWords: 10,
       requiredConcepts: [
         {
           name: 'Article 17(3)',
@@ -14984,7 +14984,7 @@ verdict: {
         evidenceId: 'ev4-compliance-document',
         oppositionArgument: 'Your Honour, PostPulse notified Sofia Torres that her content violated Community Guidelines on misinformation. The Community Guidelines are the contractual basis governing the platform relationship — they are publicly available, they were accepted by Sofia at registration, and they constitute the "legal or contractual ground" required by Art. 17(3)(a). PostPulse told her why her content was removed. The DSA does not require platforms to produce a forensic academic analysis of each piece of content. A notification that identifies the violated policy category satisfies the plain language of Art. 17.',
         writePrompt: 'Opposing counsel argues that identifying the policy category ("misinformation") satisfies Art. 17(3). Counter this by explaining what Art. 17(3) actually requires and why a generic category label fails each of its three mandatory elements.',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Three-Part Art. 17(3) Test',
@@ -15007,14 +15007,14 @@ verdict: {
           {
             id: 'arg1-strong',
             quality: 'strong',
-            text: 'Your Honour, Art. 17(3) DSA imposes three distinct mandatory requirements, and opposing counsel\'s argument satisfies none of them. First, Art. 17(3)(a) requires the "specific" legal or contractual ground — a reference to a policy category spanning eleven sections is not specific. Second, Art. 17(3)(b) requires "the facts and circumstances" that led to the decision — a classifier confidence score for the whole document does not identify which claim was deemed false, or why. Third, Art. 17(3)(c) requires information about "the possibility of redress" — the notification made no mention of human escalation. Art. 17 uses the word "clear and specific" precisely to exclude the generic template PostPulse provided.',
+            text: 'Your Honour, Art. 17(3) DSA imposes three distinct mandatory requirements, and opposing counsel\'s argument satisfies none of them. First, Art. 17(3)(a) requires the "specific" legal or contractual ground — a reference to a policy category spanning eleven sections is not specific. Second, Art. 17(3)(b) requires "the facts and circumstances" that led to the decision — a classifier confidence score for the whole document does not identify which claim was deemed false, or why. Third, Art. 17(3)(c) requires information about "the possibility of redress" — the notification made no mention of human escalation. Art. 17 uses the word "clear and specific" precisely to exclude the generic template PostPulse provided. A notification that would apply identically to a fabricated conspiracy theory and a fully sourced investigative report is not specific to either. It is not a statement of reasons — it is a form letter.',
             judge_response: 'An analytically precise argument. The three-part structure of Art. 17(3) is the correct lens, and your application of each element to the facts before us is well-grounded.',
             legal_reasoning: 'The strongest argument. It addresses each of the three Art. 17(3) elements in sequence, applies them to the specific facts (eleven-section guidelines, classifier operating on whole document, no redress information), and uses the statutory word "specific" to anchor the conclusion. It does not import other frameworks and stays precisely within the DSA obligation.'
           },
           {
             id: 'arg1-weak',
             quality: 'weak',
-            text: 'Your Honour, the notification PostPulse sent is completely useless. It tells Sofia nothing she did not already know. She obviously knew she had published something — telling her it "violates community guidelines" is meaningless. Any notification that could have been written before the content was even reviewed cannot be a genuine statement of reasons. PostPulse is treating its users like children who cannot be trusted with an explanation. The Authority should send a clear signal that digital platforms cannot treat their users this way and must be held to higher standards of fairness and accountability.',
+            text: 'Your Honour, the notification PostPulse sent is completely useless. It tells Sofia nothing she did not already know. She obviously knew she had published something — telling her it "violates community guidelines" is meaningless. Any notification that could have been written before the content was even reviewed cannot be a genuine statement of reasons. PostPulse is treating its users like children who cannot be trusted with an explanation.',
             judge_response: 'Counsel, the moral force of your argument is clear, but you must connect this to the legal standard in Art. 17(3). Tell me which specific element of the provision was violated, not just why the notification was unhelpful.',
             legal_reasoning: 'Rhetorically effective but legally incomplete. It correctly identifies the uselessness of the notification but fails to articulate the three-part Art. 17(3) test or apply it to the facts. A tribunal requires the legal mechanism. The emotional framing also risks appearing to advocate for Sofia personally rather than arguing the law.'
           },
@@ -15039,7 +15039,7 @@ verdict: {
         evidenceId: 'ev2-technical-document',
         oppositionArgument: 'Your Honour, PostPulse processes 4.2 million posts per hour across EU markets. At that scale, the alternative to AI-driven moderation is no moderation — leaving genuinely harmful misinformation to spread unchecked. The DSA itself acknowledges that automated tools are a legitimate means of addressing illegal content at scale. A 30-minute removal of potentially false content during a critical news cycle is not arbitrary — it is a proportionate, operationally necessary response to a real information integrity risk. The DSA cannot be read to require platforms to conduct manual forensic investigations of every flagged post before acting.',
         writePrompt: 'Opposing counsel argues operational necessity at scale justifies the moderation approach. Counter this by explaining why scale is not a defence to Art. 17\'s notification requirements and what PostPulse was actually required to do.',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Operational Necessity vs. Statutory Obligation',
@@ -15062,14 +15062,14 @@ verdict: {
           {
             id: 'arg2-strong',
             quality: 'strong',
-            text: 'Your Honour, the operational necessity argument conflates two separate questions: whether PostPulse can remove content quickly, and what it must communicate when it does. The DSA does not prohibit rapid AI-driven moderation. Art. 17 governs the notification — the information provided to Sofia after the decision was made. PostPulse\'s classifier already generates a confidence score, identifies the flagged content, and logs the specific guideline rule triggered. That information exists in the system. Art. 17 requires PostPulse to surface it in the notification. Sending a compliant notification costs no more time than sending a non-compliant one.',
+            text: 'Your Honour, the operational necessity argument conflates two separate questions: whether PostPulse can remove content quickly, and what it must communicate when it does. The DSA does not prohibit rapid AI-driven moderation. Art. 17 governs the notification — the information provided to Sofia after the decision was made. PostPulse\'s classifier already generates a confidence score, identifies the flagged content, and logs the specific guideline rule triggered. That information exists in the system. Art. 17 requires PostPulse to surface it in the notification. Sending a compliant notification costs no more time than sending a non-compliant one. Operational scale is a justification for automated removal — it is not a justification for withholding the information the DSA requires the notification to contain.',
             judge_response: 'A clean and well-structured rebuttal. The distinction between the speed of the moderation decision and the content of the subsequent notification is the key analytical point.',
             legal_reasoning: 'The strongest argument because it separates the two questions precisely. It concedes that rapid AI moderation is lawful, focuses Art. 17 on what must be communicated rather than how quickly action can be taken, and uses the technical evidence (classifier output already exists) to prove compliance would cost nothing additional. This is the correct analytical framing.'
           },
           {
             id: 'arg2-weak',
             quality: 'weak',
-            text: 'Your Honour, 4.2 million posts per hour is no excuse. Big Tech companies have enormous resources. If PostPulse can afford to process 4.2 million posts per hour, it can afford to hire enough staff to review them properly. The DSA was specifically designed to make platforms invest in compliance. Operational convenience cannot override fundamental rights. PostPulse chose to build an inadequate system and must now face the consequences. Any reasonable person would recognise that the platform acted improperly and that meaningful intervention is needed to prevent this from happening again to other users.',
+            text: 'Your Honour, 4.2 million posts per hour is no excuse. Big Tech companies have enormous resources. If PostPulse can afford to process 4.2 million posts per hour, it can afford to hire enough staff to review them properly. The DSA was specifically designed to make platforms invest in compliance. Operational convenience cannot override fundamental rights. PostPulse chose to build an inadequate system and must now face the consequences.',
             judge_response: 'Counsel, the DSA does not prohibit automated moderation. You must explain why Art. 17\'s notification requirement applies regardless of whether the underlying removal decision was automated, rather than arguing that automated moderation itself is impermissible.',
             legal_reasoning: 'Argues that automated moderation should be replaced by human review — which is not what Art. 17 requires and is not the claim before the tribunal. This response misunderstands the legal issue, concedes PostPulse\'s framing (scale vs. staffing), and fails to make the correct argument: that notification content is a separate obligation from removal speed that is not affected by operational scale.'
           },
@@ -15083,7 +15083,7 @@ verdict: {
           {
             id: 'arg2-wrong',
             quality: 'wrong',
-            text: 'Your Honour, PostPulse\'s operational scale means it qualifies as a gatekeeper under the Digital Markets Act. As a gatekeeper operating a core platform service, PostPulse is prohibited under DMA Art. 2 from using data gathered through its platform to disadvantage competing media businesses. Suppressing Sofia\'s investigation, which competed for attention with PostPulse\'s preferred news sources, constitutes gatekeeper self-preferencing. I ask this body to refer the matter to the Commission\'s DMA enforcement unit and to apply DMA remedies including structural separation of the moderation function. The regulatory framework specifically anticipates situations of this nature and imposes obligations that the respondent has manifestly failed to satisfy in the present case.',
+            text: 'Your Honour, PostPulse\'s operational scale means it qualifies as a gatekeeper under the Digital Markets Act. As a gatekeeper operating a core platform service, PostPulse is prohibited under DMA Art. 2 from using data gathered through its platform to disadvantage competing media businesses. Suppressing Sofia\'s investigation, which competed for attention with PostPulse\'s preferred news sources, constitutes gatekeeper self-preferencing. I ask this body to refer the matter to the Commission\'s DMA enforcement unit and to apply DMA remedies including structural separation of the moderation function.',
             judge_response: 'Counsel, the Digital Markets Act is enforced exclusively by the European Commission against designated gatekeepers in relation to contestability and fairness obligations. It does not govern content moderation transparency, and this Coordinator has no jurisdiction over DMA matters. This argument is entirely outside the scope of these proceedings.',
             legal_reasoning: 'An entirely wrong-instrument argument invoking the Digital Markets Act, which governs economic fairness and contestability obligations for designated gatekeepers — not content moderation transparency. The DMA is enforced by the Commission, not DSCs, and applies to economic self-preferencing, not removal notifications. This abandons the DSA claim completely in favour of an unrelated framework with no connection to Sofia\'s complaint.'
           }
@@ -15094,7 +15094,7 @@ verdict: {
         evidenceId: 'ev6-statistics',
         oppositionArgument: 'Your Honour, even if there were technical shortcomings in the notification, the DSA requires proportionate remedies. Sofia Torres suffered a temporary restriction of one account for content that the classifier assessed as potentially false at the time of removal. She was not permanently banned. Her content was eventually published elsewhere. The harm is minimal and temporary. Any finding of violation should result, at most, in a recommendation to improve notification templates — not in regulatory sanctions that would chill platforms\' ability to moderate genuinely harmful misinformation at scale.',
         writePrompt: 'Opposing counsel minimises the harm as temporary and argues for minimal remedies. Counter this by explaining the significance of Art. 17 violations for press freedom, the structural scale of the harm, and what the DSA requires by way of remedy.',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Structural Scale of Violation',
@@ -15117,21 +15117,21 @@ verdict: {
           {
             id: 'arg3-strong',
             quality: 'strong',
-            text: 'Your Honour, this is not an isolated incident affecting one journalist. PostPulse sent the same non-compliant notification template to every user whose content was removed — 2.1 million removals in Q4 2024 alone, 94,000 of which were appealed. Every one of those users received a notification that violated Art. 17(3). The 61% reversal rate on the 0.3% of cases that reached human review confirms that the automated system produces a significant false-positive rate — meaning tens of thousands of users had legitimate content removed, received no compliant explanation, and had their automated appeal rejected in 47 seconds with no human involvement in violation of Art. 20(6).',
+            text: 'Your Honour, this is not an isolated incident affecting one journalist. PostPulse sent the same non-compliant notification template to every user whose content was removed — 2.1 million removals in Q4 2024 alone, 94,000 of which were appealed. Every one of those users received a notification that violated Art. 17(3). The 61% reversal rate on the 0.3% of cases that reached human review confirms that the automated system produces a significant false-positive rate — meaning tens of thousands of users had legitimate content removed, received no compliant explanation, and had their automated appeal rejected in 47 seconds with no human involvement in violation of Art. 20(6). The harm to Sofia is the documented example. The structural harm to public discourse — including the suppression of accurate investigative journalism — is what the DSA\'s Art. 17 obligations were designed to prevent. Minimal remedies for systemic non-compliance are not proportionate; they are an incentive to continue.',
             judge_response: 'A compelling structural argument. You have correctly identified that the violation is not Sofia\'s isolated case but a platform-wide failure affecting millions of users, which is relevant both to the seriousness of the breach and to the appropriate remedy.',
             legal_reasoning: 'The strongest argument. It uses the transparency report statistics to scale the violation from Sofia\'s case to a platform-wide structural failure, uses the 61% human reversal rate to quantify the false-positive harm, and grounds the press freedom point in the concrete harm rather than abstract values. It also connects Art. 17 and Art. 20(6) violations to argue that minimal remedies are inadequate for systemic non-compliance.'
           },
           {
             id: 'arg3-weak',
             quality: 'weak',
-            text: 'Your Honour, the harm to Sofia is not minimal. She lost 30 minutes of publication time during which her investigation could have gone viral and exposed serious government corruption to millions of people. Those 30 minutes of suppression may have significantly reduced the political impact of an important public interest story. The platform\'s actions directly damaged democratic accountability. PostPulse must be fined the maximum permissible amount to send a clear message to the industry. Any reasonable person would recognise that the platform acted improperly and that meaningful intervention is needed to prevent this from happening again to other users.',
+            text: 'Your Honour, the harm to Sofia is not minimal. She lost 30 minutes of publication time during which her investigation could have gone viral and exposed serious government corruption to millions of people. Those 30 minutes of suppression may have significantly reduced the political impact of an important public interest story. The platform\'s actions directly damaged democratic accountability. PostPulse must be fined the maximum permissible amount to send a clear message to the industry.',
             judge_response: 'Counsel, while the public interest dimension has merit, speculative claims about viral potential are not evidence. And the appropriate sanction is a matter for the enforcement authority, not for argument in these proceedings. You need to establish the legal violation first.',
             legal_reasoning: 'Relies on speculative harm (viral potential) rather than documented structural harm (2.1 million non-compliant notifications, 61% false-positive reversal rate on human review). Also argues directly for maximum fines, which is the enforcement authority\'s decision and appears to substitute advocacy for legal argument. The response fails to use the strong statistical evidence in the record.'
           },
           {
             id: 'arg3-plausible',
             quality: 'plausible',
-            text: 'Your Honour, the most effective remedy for this Art. 17 violation is to void the removal decision entirely and restore Sofia\'s post under the right to erasure framework. Under GDPR Art. 17, where personal data has been processed unlawfully — which the non-compliant notification system establishes — the data subject may request erasure. Restoration of the post is the equivalent remedy in reverse: as the removal was unlawful for want of a compliant statement of reasons, the content must be reinstated. I ask this Coordinator to order content restoration as the primary remedy under the combined DSA-GDPR framework. The regulatory framework specifically anticipates this kind of conduct and provides targeted obligations that supersede the more general provisions the complainant relies upon.',
+            text: 'Your Honour, the most effective remedy for this Art. 17 violation is to void the removal decision entirely and restore Sofia\'s post under the right to erasure framework. Under GDPR Art. 17, where personal data has been processed unlawfully — which the non-compliant notification system establishes — the data subject may request erasure. Restoration of the post is the equivalent remedy in reverse: as the removal was unlawful for want of a compliant statement of reasons, the content must be reinstated. I ask this Coordinator to order content restoration as the primary remedy under the combined DSA-GDPR framework.',
             judge_response: 'Counsel, GDPR Art. 17 is the right to erasure of personal data — it is a data subject\'s right to have data deleted, not a mechanism for content restoration. The DSA\'s remedial framework is separate. What specific DSA provision supports a content restoration order?',
             legal_reasoning: 'The GDPR swap trap applied to remedies. GDPR Art. 17 is the right to erasure — it allows data subjects to request deletion of personal data, not restoration of removed content. Applying it as a reinstatement mechanism fundamentally misunderstands the provision\'s purpose and direction. It also fails to engage with the DSA\'s actual remedial options under Art. 51(4) and Art. 52, which are the correct bases for ordering PostPulse to rectify its systems.'
           },
@@ -15224,7 +15224,7 @@ verdict: {
       prompt: 'TrendLoop\'s recommendation algorithm amplified eating disorder content to teenagers for 18 months despite internal research showing harm. Which legal framework most directly governs TrendLoop\'s obligations here?',
       correct: 'dsa',
       writePrompt: 'Identify the EU digital law framework that specifically creates obligations for VLOPs regarding systemic risks from recommendation algorithms. Justify why this framework applies rather than the alternatives.',
-      minWords: 25,
+      minWords: 10,
       requiredConcepts: [
         {
           name: 'VLOP Systemic Risk Obligations',
@@ -15265,7 +15265,7 @@ verdict: {
       prompt: 'TrendLoop published an Art. 34 risk assessment that classified minor wellbeing risk as "low probability" despite its own internal research. Which specific DSA article creates the obligation it most clearly violated?',
       correct: 'art34-1d',
       writePrompt: 'Identify the exact article and explain what it requires VLOPs to do when identifying systemic risks — and why TrendLoop\'s assessment fails that standard.',
-      minWords: 20,
+      minWords: 10,
       requiredConcepts: [
         {
           name: 'Article 34(1)(d)',
@@ -15401,7 +15401,7 @@ verdict: {
         evidenceId: 'ev2-risk-assessment',
         oppositionArgument: 'Your Honour, TrendLoop conducted and published an Art. 34 systemic risk assessment that identified minor wellbeing as a risk category. The DSA requires platforms to "diligently identify, analyse and assess" systemic risks — TrendLoop did exactly this. The Art. 34 obligation does not specify a minimum risk classification outcome; it requires a good-faith assessment process. The causal relationship between social media content and eating disorders is genuinely scientifically contested — peer-reviewed literature is divided. TrendLoop was entitled to weight its risk classification according to the available evidence. A platform that exercised reasonable scientific judgment in its risk assessment cannot be found to have violated Art. 34 because a regulator disagrees with its probability classification.',
         writePrompt: 'Opposing counsel argues TrendLoop conducted a compliant Art. 34 assessment and was entitled to classify the risk as "low probability." Counter this by explaining the diligent assessment standard and why TrendLoop\'s own internal research makes that classification indefensible.',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Diligent Assessment Standard',
@@ -15424,14 +15424,14 @@ verdict: {
           {
             id: 'arg1-strong',
             quality: 'strong',
-            text: 'Your Honour, Art. 34(1) requires VLOPs to "diligently identify, analyse and assess" systemic risks including actual or foreseeable negative effects on minor wellbeing. Diligence is not a procedural checkbox — it requires the assessment to engage with available evidence. TrendLoop held a study, conducted on 2.3 million of its own users, showing a correlation of r = 0.67 between its recommendation sequences and restrictive eating behaviours in the 13–17 cohort, with its own researchers recommending urgent action. The published Art. 34 assessment does not mention this study, classifies the risk as "low probability" on the basis of "contested causation," and proposes no mitigation targeting recommendation algorithm weights.',
+            text: 'Your Honour, Art. 34(1) requires VLOPs to "diligently identify, analyse and assess" systemic risks including actual or foreseeable negative effects on minor wellbeing. Diligence is not a procedural checkbox — it requires the assessment to engage with available evidence. TrendLoop held a study, conducted on 2.3 million of its own users, showing a correlation of r = 0.67 between its recommendation sequences and restrictive eating behaviours in the 13–17 cohort, with its own researchers recommending urgent action. The published Art. 34 assessment does not mention this study, classifies the risk as "low probability" on the basis of "contested causation," and proposes no mitigation targeting recommendation algorithm weights. An assessment that omits the platform\'s own primary evidence, substitutes a disputed causation standard for the statutory "foreseeable negative effects" test, and was produced two months after management declined to act on that evidence for commercial reasons is not diligent. It is a compliance document engineered to justify inaction.',
             judge_response: 'A well-constructed argument. The gap between TrendLoop\'s internal research and its published risk assessment is the central evidential point, and you have applied the Art. 34(1) diligent assessment standard to it precisely.',
             legal_reasoning: 'The strongest argument. It applies "diligently" to the specific evidence TrendLoop held, uses the statutory "foreseeable" standard to rebut the causation defence, identifies the omission of the internal study as the critical failure, and connects the commercial motivation to the assessment\'s inadequacy. All elements of Art. 34(1)(d) non-compliance are addressed.'
           },
           {
             id: 'arg1-weak',
             quality: 'weak',
-            text: 'Your Honour, TrendLoop\'s risk assessment is a sham. It was written to protect the company\'s IPO, not to protect teenagers. The company had evidence that its platform was hospitalising children and buried it. Any regulator that accepts "low probability" as a classification for a known, documented risk to child health is failing in its duty. The Art. 34 process must mean something — TrendLoop has made it meaningless. This kind of behaviour should not be tolerated in a modern digital marketplace and the Authority must take decisive action to protect the rights of affected users.',
+            text: 'Your Honour, TrendLoop\'s risk assessment is a sham. It was written to protect the company\'s IPO, not to protect teenagers. The company had evidence that its platform was hospitalising children and buried it. Any regulator that accepts "low probability" as a classification for a known, documented risk to child health is failing in its duty. The Art. 34 process must mean something — TrendLoop has made it meaningless.',
             judge_response: 'Counsel, the moral dimension is noted, but legal findings require legal analysis. Tell me specifically which element of Art. 34(1) was violated and why — not why TrendLoop\'s motives were suspect.',
             legal_reasoning: 'Rhetorically forceful but legally inadequate. It identifies the conclusion (the assessment was inadequate) without explaining the legal standard (diligent identification, analysis and assessment of foreseeable risks under Art. 34(1)(d)). It also makes a factual assertion (the company buried evidence) that exceeds what the documentary record has established, which invites the opponent to dispute the characterisation rather than address the legal question.'
           },
@@ -15456,7 +15456,7 @@ verdict: {
         evidenceId: 'ev3-internal-email',
         oppositionArgument: 'Your Honour, Art. 35(1) DSA requires mitigation measures that are "reasonable, proportionate and effective." TrendLoop has implemented parental controls, age-gating of adult content, and Community Guidelines prohibiting explicit self-harm content. These are established, industry-standard minor protection mechanisms used by every major platform. The DSA does not specify which mitigation measures are required — it requires measures that are reasonable and proportionate to the risk. TrendLoop\'s measures satisfy that standard. Requiring platforms to modify their core recommendation architecture based on contested science would fundamentally impair their ability to operate personalised services — a capability the DSA explicitly preserves.',
         writePrompt: 'Opposing counsel argues that parental controls and community guidelines are reasonable and proportionate Art. 35 mitigation. Counter this by explaining why these measures fail the effectiveness test when applied to the specific identified risk mechanism.',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Effectiveness Against Specific Risk Mechanism',
@@ -15479,14 +15479,14 @@ verdict: {
           {
             id: 'arg2-strong',
             quality: 'strong',
-            text: 'Your Honour, Art. 35(1) requires mitigation measures that are reasonable, proportionate — and effective. Effectiveness is assessed against the specific risk identified in the Art. 34 assessment. The risk here is not the existence of eating disorder content — it is TrendLoop\'s recommendation algorithm amplifying that content to minor accounts at 3.7 times the rate it serves adult accounts. Parental controls require a parent to manually activate a restriction. Most parents are unaware of the feature. Age-gating targets adult content, not eating disorder content. Community Guidelines prohibit explicit self-harm posts, not body image restriction sequences. None of these measures addresses the specific mechanism — recommendation weight differential for the 13–17 cohort.',
+            text: 'Your Honour, Art. 35(1) requires mitigation measures that are reasonable, proportionate — and effective. Effectiveness is assessed against the specific risk identified in the Art. 34 assessment. The risk here is not the existence of eating disorder content — it is TrendLoop\'s recommendation algorithm amplifying that content to minor accounts at 3.7 times the rate it serves adult accounts. Parental controls require a parent to manually activate a restriction. Most parents are unaware of the feature. Age-gating targets adult content, not eating disorder content. Community Guidelines prohibit explicit self-harm posts, not body image restriction sequences. None of these measures addresses the specific mechanism — recommendation weight differential for the 13–17 cohort. A pre-existing general measure cannot constitute effective mitigation for a newly identified, specific, and quantified risk that the measure was not designed to address.',
             judge_response: 'A precise and well-evidenced argument. The link between the Art. 34 identified risk mechanism and the Art. 35 effectiveness test is the correct analytical structure.',
             legal_reasoning: 'The strongest argument. It applies the Art. 35 effectiveness test to the specific risk mechanism rather than in the abstract, uses the 3.7x algorithm differential to show the measures do not address the right vector, and analyses each of the three listed measures against the identified risk to show none of them fit. The Art. 34/35 linkage — mitigation must address the identified risk — is the key legal structure.'
           },
           {
             id: 'arg2-weak',
             quality: 'weak',
-            text: 'Your Honour, parental controls are obviously not enough. Most parents have no idea how recommendation algorithms work. Telling a parent to activate a setting to protect their child from a harm the platform deliberately engineered is deeply unfair. The platform created the risk and the platform must fix it. Passing responsibility to parents is a cynical way to avoid accountability. TrendLoop should be required to switch off its recommendation algorithm entirely for under-18 accounts. This kind of behaviour should not be tolerated in a modern digital marketplace and the Authority must take decisive action to protect the rights of affected users.',
+            text: 'Your Honour, parental controls are obviously not enough. Most parents have no idea how recommendation algorithms work. Telling a parent to activate a setting to protect their child from a harm the platform deliberately engineered is deeply unfair. The platform created the risk and the platform must fix it. Passing responsibility to parents is a cynical way to avoid accountability. TrendLoop should be required to switch off its recommendation algorithm entirely for under-18 accounts.',
             judge_response: 'Counsel, the legal question is whether the measures satisfy Art. 35\'s effectiveness requirement — not whether they are fair to parents. You must apply the statutory test. Also, ordering TrendLoop to disable its recommendation algorithm would need a specific legal basis.',
             legal_reasoning: 'Identifies the correct intuition (parental controls are insufficient) but presents it as a fairness argument rather than a legal analysis. Calling for the algorithm to be switched off for all under-18 accounts is a remedy beyond what Art. 35 requires and would likely be disproportionate — undermining the argument\'s credibility. The Art. 35 effectiveness test must be applied to the specific risk, not argued in the abstract.'
           },
@@ -15500,7 +15500,7 @@ verdict: {
           {
             id: 'arg2-wrong',
             quality: 'wrong',
-            text: 'Your Honour, TrendLoop\'s failure also violates the Unfair Commercial Practices Directive. Operating a recommendation system that drives teenagers into eating disorders while marketing TrendLoop as a safe platform for young people constitutes a misleading commercial practice under UCPD Art. 6 — a false representation about the nature and safety of the service. The harm to minors directly results from a deceptive commercial practice. I request this body apply the UCPD framework to order cessation of the misleading safety claims and full restitution to affected families. The Authority should exercise its full enforcement competence under this framework to ensure the respondent brings its practices into compliance with applicable standards.',
+            text: 'Your Honour, TrendLoop\'s failure also violates the Unfair Commercial Practices Directive. Operating a recommendation system that drives teenagers into eating disorders while marketing TrendLoop as a safe platform for young people constitutes a misleading commercial practice under UCPD Art. 6 — a false representation about the nature and safety of the service. The harm to minors directly results from a deceptive commercial practice. I request this body apply the UCPD framework to order cessation of the misleading safety claims and full restitution to affected families.',
             judge_response: 'Counsel, the UCPD governs misleading commercial practices in B2C transactions and is enforced by consumer protection authorities. The DSA Art. 34/35 framework specifically addresses systemic risks from platform recommendation systems. This body enforces DSA obligations, not UCPD claims.',
             legal_reasoning: 'A consumer law swap error. The UCPD governs misleading commercial practices in B2C transactions — it is not designed to address algorithmic amplification of harmful content. The DSA Art. 34/35 framework is the specific, purpose-built instrument for this case. Invoking the UCPD in DSA proceedings, seeking remedies (restitution) unavailable here, and abandoning the Art. 35 argument demonstrates a fundamental misunderstanding of which framework applies.'
           }
@@ -15511,7 +15511,7 @@ verdict: {
         evidenceId: 'ev6-statistics',
         oppositionArgument: 'Your Honour, the complainant is asking this body to regulate the scientific methodology TrendLoop uses in its risk assessments. The question of whether social media causes eating disorders is genuinely disputed in peer-reviewed literature — correlation studies are not causation studies. TrendLoop acted responsibly by commissioning further research rather than making precipitous algorithm changes that could have disrupted the service for millions of legitimate users. The DSA was not designed to require platforms to act on unvalidated internal studies. Requiring immediate action on every internal research finding would paralyse product development and create perverse incentives to avoid conducting safety research at all.',
         writePrompt: 'Opposing counsel argues TrendLoop acted responsibly by awaiting validated causation evidence. Counter this by explaining why the Art. 34 "foreseeable negative effects" standard does not require proven causation, and why the 18-month delay is indefensible on the evidence.',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Foreseeable Not Proven',
@@ -15534,21 +15534,21 @@ verdict: {
           {
             id: 'arg3-strong',
             quality: 'strong',
-            text: 'Your Honour, Art. 34(1)(d) requires VLOPs to assess "actual or foreseeable" negative effects on minor wellbeing. Foreseeable is not a synonym for proven. The causation debate in academic literature is a debate about experimental design in longitudinal studies — it is not a debate about whether TrendLoop\'s own data, drawn from 2.3 million users, showing 43 eating disorder posts served within 48 hours of a single engagement and a correlation of r = 0.67 with behavioural change, constitutes a foreseeable risk. It plainly does.',
+            text: 'Your Honour, Art. 34(1)(d) requires VLOPs to assess "actual or foreseeable" negative effects on minor wellbeing. Foreseeable is not a synonym for proven. The causation debate in academic literature is a debate about experimental design in longitudinal studies — it is not a debate about whether TrendLoop\'s own data, drawn from 2.3 million users, showing 43 eating disorder posts served within 48 hours of a single engagement and a correlation of r = 0.67 with behavioural change, constitutes a foreseeable risk. It plainly does. The perverse incentive argument inverts the logic of the DSA: if platforms could avoid Art. 35 obligations by disputing the causation implications of their own research indefinitely, they would have a structural incentive to commission safety studies and then discount their findings. The DSA requires the opposite — it requires that safety research results in mitigation, not in extended methodological debate used to justify commercial inaction.',
             judge_response: 'A strong and well-structured argument. The distinction between "foreseeable" and "proven" is the correct legal pivot, and the perverse incentive point is analytically important for the DSA\'s systemic effectiveness.',
             legal_reasoning: 'The strongest argument. It applies "foreseeable" from Art. 34(1)(d) precisely to the evidence standard, uses TrendLoop\'s own data to establish foreseeability without requiring academic consensus, and turns the perverse incentive argument against TrendLoop by showing the DSA framework requires safety research to produce mitigation. Both elements directly address the opponent\'s key defences.'
           },
           {
             id: 'arg3-weak',
             quality: 'weak',
-            text: 'Your Honour, TrendLoop\'s causation argument is dishonest. The company knows perfectly well that its algorithm is harming children — its own researchers said so. Hiding behind scientific debate while teenagers are hospitalised is morally indefensible. The DSA exists precisely to stop platforms using technical complexity and disputed science as shields against accountability. TrendLoop must be held responsible for what its platform does to children. This kind of behaviour should not be tolerated in a modern digital marketplace and the Authority must take decisive action to protect the rights of affected users.',
+            text: 'Your Honour, TrendLoop\'s causation argument is dishonest. The company knows perfectly well that its algorithm is harming children — its own researchers said so. Hiding behind scientific debate while teenagers are hospitalised is morally indefensible. The DSA exists precisely to stop platforms using technical complexity and disputed science as shields against accountability. TrendLoop must be held responsible for what its platform does to children.',
             judge_response: 'Counsel, moral force aside, you need to establish why Art. 34\'s legal standard does not require proven causation. The opponent has made a specific legal argument about evidentiary standards — you must address it legally.',
             legal_reasoning: 'Correctly identifies the conclusion but argues it as a moral position rather than a legal one. The opponent\'s causation argument requires a legal response — specifically that Art. 34(1)(d) uses "foreseeable" rather than "proven" and that the statutory standard does not require academic consensus. Without this, the argument concedes the legal question while winning the values debate.'
           },
           {
             id: 'arg3-plausible',
             quality: 'plausible',
-            text: 'Your Honour, TrendLoop\'s 18-month delay in acting on its own research also constitutes a breach of its Art. 37 independent audit obligation. Art. 37 DSA requires VLOPs to commission independent audits of their compliance with DSA obligations, including Art. 35 mitigation measures. An independent audit conducted at any point in the 18-month period would have identified the gap between TrendLoop\'s internal research findings and its published risk assessment. TrendLoop\'s failure to commission a timely Art. 37 audit compounds its Art. 34/35 breach and should be treated as an aggravating factor in the Coordinator\'s penalty assessment. The Authority should ground its finding in this specific framework which provides the most direct and effective enforcement pathway for the conduct at issue.',
+            text: 'Your Honour, TrendLoop\'s 18-month delay in acting on its own research also constitutes a breach of its Art. 37 independent audit obligation. Art. 37 DSA requires VLOPs to commission independent audits of their compliance with DSA obligations, including Art. 35 mitigation measures. An independent audit conducted at any point in the 18-month period would have identified the gap between TrendLoop\'s internal research findings and its published risk assessment. TrendLoop\'s failure to commission a timely Art. 37 audit compounds its Art. 34/35 breach and should be treated as an aggravating factor in the Coordinator\'s penalty assessment.',
             judge_response: 'Counsel, Art. 37 audit obligations have their own compliance timeline and enforcement process. While an audit gap may be relevant to penalty assessment, does introducing it here help establish the primary Art. 34(1)(d) violation you need to win this argument?',
             legal_reasoning: 'Art. 37 independent audit obligations are a real VLOP requirement, but introducing them as a standalone argument here is a distraction. The primary Art. 34/35 violation is established without needing to add an Art. 37 breach — and Art. 37 has its own compliance process and evidence requirements. This pivot is not legally wrong, but it dilutes the precision of the "foreseeable not proven" argument that is the correct response to the opponent\'s causation defence.'
           },
@@ -15641,7 +15641,7 @@ verdict: {
       prompt: 'LifeStream\'s algorithm served a minor 412 self-harm posts in 30 days. The platform had a detection tool ready but chose not to deploy it to protect engagement metrics. Which legal framework most directly governs LifeStream\'s obligations?',
       correct: 'dsa',
       writePrompt: 'Identify the EU digital law framework that specifically creates obligations for VLOPs to assess and mitigate systemic risks from recommendation algorithms, including risks to minor wellbeing. Justify why this framework applies rather than the alternatives.',
-      minWords: 25,
+      minWords: 10,
       requiredConcepts: [
         {
           name: 'VLOP Systemic Risk Framework',
@@ -15682,7 +15682,7 @@ verdict: {
       prompt: 'LifeStream\'s Art. 34 risk assessment was three pages, contained no quantitative data, classified mental health risk as "low impact," and did not mention the recommendation algorithm as a risk vector. Which DSA article creates the obligation this assessment most clearly violated?',
       correct: 'art34-1d',
       writePrompt: 'Identify the exact article and explain what it requires VLOPs to do when assessing systemic risks to minor wellbeing — and why LifeStream\'s three-page document fails that standard.',
-      minWords: 20,
+      minWords: 10,
       requiredConcepts: [
         {
           name: 'Article 34(1)(d)',
@@ -15818,7 +15818,7 @@ verdict: {
         evidenceId: 'ev2-risk-assessment',
         oppositionArgument: 'Your Honour, LifeStream published an Art. 34 systemic risk assessment that identified mental health as a risk category, assessed it, and listed mitigation measures. The DSA does not prescribe the length, format, or methodology of a risk assessment — it requires that one be conducted. LifeStream conducted one. The fact that the complainant disagrees with the probability and impact classification does not constitute a legal violation. Risk classification is inherently a matter of judgment. Regulators cannot substitute their own risk classifications for a platform\'s good-faith assessment simply because a tragic event occurred in hindsight.',
         writePrompt: 'Opposing counsel argues the assessment satisfies Art. 34 because it exists and is not unlawful in form. Counter this by explaining why a three-page document with no quantitative analysis and no algorithm-specific risk assessment fails the diligent standard Art. 34(1) requires.',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Diligent Assessment Standard',
@@ -15841,14 +15841,14 @@ verdict: {
           {
             id: 'arg1-strong',
             quality: 'strong',
-            text: 'Your Honour, Art. 34(1) requires VLOPs to "diligently identify, analyse and assess" systemic risks — not merely to produce a document that names them. Diligence is a substantive standard. LifeStream\'s three-page assessment contains no quantitative data, no demographic analysis of the 28% minor user base, no reference to the recommendation algorithm as the primary vector through which self-harm content reaches users, and was produced by the Legal team without input from Product or Data Science. SafeSignal — a tool whose development generated precisely the spiral data the assessment should have referenced — was operational two months before the document was published.',
+            text: 'Your Honour, Art. 34(1) requires VLOPs to "diligently identify, analyse and assess" systemic risks — not merely to produce a document that names them. Diligence is a substantive standard. LifeStream\'s three-page assessment contains no quantitative data, no demographic analysis of the 28% minor user base, no reference to the recommendation algorithm as the primary vector through which self-harm content reaches users, and was produced by the Legal team without input from Product or Data Science. SafeSignal — a tool whose development generated precisely the spiral data the assessment should have referenced — was operational two months before the document was published. An assessment that omits the risk mechanism, excludes the teams with access to relevant data, and is contradicted by simultaneously available internal evidence is not diligent. It is a procedural shell. The DSA requires substantive compliance, not the appearance of it.',
             judge_response: 'A well-constructed argument. The distinction between the procedural existence of an assessment and its substantive adequacy is the central question, and you have grounded it in the specific evidentiary gaps.',
             legal_reasoning: 'The strongest argument. It applies "diligently" as a substantive standard, identifies the specific failures (no quantitative data, no algorithm reference, no cross-functional input, omission of SafeSignal data), and uses the contemporaneous evidence to prove the assessment was inadequate at the time it was produced — not merely in hindsight.'
           },
           {
             id: 'arg1-weak',
             quality: 'weak',
-            text: 'Your Honour, a three-page document is self-evidently inadequate for a platform of 67 million users. LifeStream has entire teams working on product features — they could not find more than three pages to say about the systemic risks their platform creates? This is a bad-faith, tick-box compliance document and the Commission should treat it as such. Art. 34 requires real engagement with risk, not a legal team\'s summary of the Community Guidelines. The Authority should send a clear signal that digital platforms cannot treat their users this way and must be held to higher standards of fairness and accountability.',
+            text: 'Your Honour, a three-page document is self-evidently inadequate for a platform of 67 million users. LifeStream has entire teams working on product features — they could not find more than three pages to say about the systemic risks their platform creates? This is a bad-faith, tick-box compliance document and the Commission should treat it as such. Art. 34 requires real engagement with risk, not a legal team\'s summary of the Community Guidelines.',
             judge_response: 'Counsel, length alone is not a legal standard. You must explain which specific requirements of Art. 34(1) the assessment failed to meet, not simply assert that three pages is too short.',
             legal_reasoning: 'Uses document length as the primary argument without applying the Art. 34(1) diligent assessment standard. While the brevity is indicative, the legal argument requires identifying the specific substantive failures — no quantitative analysis, no algorithm-specific risk vector, no cross-functional input — not simply pointing at the page count.'
           },
@@ -15862,7 +15862,7 @@ verdict: {
           {
             id: 'arg1-wrong',
             quality: 'wrong',
-            text: 'Your Honour, LifeStream\'s recommendation algorithm is a high-risk AI system under Annex III of the EU AI Act — it makes consequential, automated decisions that directly affect the fundamental rights of minor users. Art. 9 AI Act requires a risk management system proportionate to the risks of a high-risk AI system. The absence of any quantitative risk analysis in LifeStream\'s documentation confirms the risk management system does not exist. I ask this body to find a violation of Art. 9 AI Act and order conformity assessment proceedings. The Authority should exercise its full enforcement competence under this framework to ensure the respondent brings its practices into compliance with applicable standards.',
+            text: 'Your Honour, LifeStream\'s recommendation algorithm is a high-risk AI system under Annex III of the EU AI Act — it makes consequential, automated decisions that directly affect the fundamental rights of minor users. Art. 9 AI Act requires a risk management system proportionate to the risks of a high-risk AI system. The absence of any quantitative risk analysis in LifeStream\'s documentation confirms the risk management system does not exist. I ask this body to find a violation of Art. 9 AI Act and order conformity assessment proceedings.',
             judge_response: 'Counsel, AI Act compliance is supervised by market surveillance authorities, not by the Commission under DSA Art. 33. This proceeding addresses Art. 34/35 DSA obligations. The relief you are seeking — AI Act conformity assessment proceedings — is not available here.',
             legal_reasoning: 'An AI Act swap error. The AI Act Annex III / Art. 9 risk management system obligations are enforced by national market surveillance authorities in separate proceedings with a different legal framework. Introducing them in a DSA Art. 33 Commission proceeding seeks relief unavailable in this forum and abandons the stronger DSA claim entirely.'
           }
@@ -15873,7 +15873,7 @@ verdict: {
         evidenceId: 'ev3-internal-email',
         oppositionArgument: 'Your Honour, Art. 35(1) gives platforms discretion to choose mitigation measures that are "reasonable, proportionate and effective." LifeStream listed Community Guidelines enforcement as its mitigation for mental health risks — a measure universally recognised across the industry. The DSA does not require platforms to deploy every available internal tool; it requires them to choose reasonable measures. A platform\'s product roadmap decisions, including feature deployment timelines, are legitimate business judgments that fall outside the scope of Art. 35 review. Requiring regulators to second-guess internal deployment decisions would make every product meeting an Art. 35 enforcement event.',
         writePrompt: 'Opposing counsel argues that Community Guidelines enforcement is a reasonable Art. 35 choice and that product roadmap decisions are outside DSA review. Counter this by explaining why SafeSignal\'s non-deployment fails the Art. 35 effectiveness test for the specific identified risk.',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Effectiveness Against Identified Risk',
@@ -15896,28 +15896,28 @@ verdict: {
           {
             id: 'arg2-strong',
             quality: 'strong',
-            text: 'Your Honour, Art. 35(1) requires mitigation measures that are reasonable, proportionate — and effective. Effectiveness is assessed against the specific risk identified: algorithmic amplification of self-harm content to minor accounts. Community Guidelines enforcement removes content that explicitly violates policies. It does not interrupt recommendation sequences of borderline content that individually passes moderation but collectively forms a harmful spiral. SafeSignal was specifically designed and validated to detect those spirals in real time. It was ready for deployment. LifeStream\'s own Safety Engineering lead confirmed that the 0.4% threshold deployment would have flagged Alex\'s account on Day 4. The decision not to deploy at that threshold was explicitly linked to DAU preservation.',
+            text: 'Your Honour, Art. 35(1) requires mitigation measures that are reasonable, proportionate — and effective. Effectiveness is assessed against the specific risk identified: algorithmic amplification of self-harm content to minor accounts. Community Guidelines enforcement removes content that explicitly violates policies. It does not interrupt recommendation sequences of borderline content that individually passes moderation but collectively forms a harmful spiral. SafeSignal was specifically designed and validated to detect those spirals in real time. It was ready for deployment. LifeStream\'s own Safety Engineering lead confirmed that the 0.4% threshold deployment would have flagged Alex\'s account on Day 4. The decision not to deploy at that threshold was explicitly linked to DAU preservation. When a platform holds a purpose-built, validated tool that would address the identified risk mechanism and withholds it for commercial reasons, the remaining measures cannot be characterised as effective. They are the measures that were convenient, not the measures that were effective.',
             judge_response: 'A precise and well-evidenced argument. The distinction between measures that address policy-violating content and measures that address algorithmic amplification of borderline content is the correct analytical structure.',
             legal_reasoning: 'The strongest argument. It distinguishes Community Guidelines enforcement from algorithmic spiral interruption, uses SafeSignal\'s existence and capabilities to define what effective mitigation would have looked like, and links the commercial motivation directly to the decision not to deploy the effective tool. All elements of the Art. 35 effectiveness failure are addressed.'
           },
           {
             id: 'arg2-weak',
             quality: 'weak',
-            text: 'Your Honour, Community Guidelines are completely useless against an algorithm that creates self-harm spirals. The algorithm serves borderline content that technically passes the guidelines while creating a catastrophic effect through volume and sequencing. LifeStream knew this — they built SafeSignal specifically because guidelines enforcement was not enough. The fact that they then refused to use it shows the guidelines were never intended to protect users; they are a liability shield. This is cynical box-ticking and the Commission should treat it accordingly. Any reasonable person would recognise that the platform acted improperly and that meaningful intervention is needed to prevent this from happening again to other users.',
+            text: 'Your Honour, Community Guidelines are completely useless against an algorithm that creates self-harm spirals. The algorithm serves borderline content that technically passes the guidelines while creating a catastrophic effect through volume and sequencing. LifeStream knew this — they built SafeSignal specifically because guidelines enforcement was not enough. The fact that they then refused to use it shows the guidelines were never intended to protect users; they are a liability shield. This is cynical box-ticking and the Commission should treat it accordingly.',
             judge_response: 'Counsel, the effectiveness analysis under Art. 35 requires you to apply the statutory test to the specific measures and the specific risk — not characterise the opponent\'s intentions. Explain precisely why Community Guidelines enforcement fails the effectiveness requirement for algorithmic spiral risk.',
             legal_reasoning: 'Correctly identifies the gap (guidelines do not address spiral risk) but presents it as a motive argument rather than applying the Art. 35 effectiveness test. The reference to SafeSignal as evidence that LifeStream knew guidelines were insufficient is a strong evidentiary point — but it needs to be framed as part of the effectiveness analysis, not as an accusation of bad faith.'
           },
           {
             id: 'arg2-plausible',
             quality: 'plausible',
-            text: 'Your Honour, LifeStream\'s failure to deploy SafeSignal also breached its Art. 37 DSA independent audit obligation. Art. 37 requires VLOPs to commission independent audits of compliance with DSA obligations at least annually. An independent auditor reviewing LifeStream\'s Art. 35 mitigation measures would necessarily have discovered that SafeSignal existed, was ready for deployment, and was not deployed. The absence of an Art. 37 audit enabled the Art. 35 failure to persist undetected. The Commission should treat the Art. 37 failure as both a standalone violation and an aggravating factor in the Art. 35 finding. The regulatory framework specifically anticipates this kind of conduct and provides targeted obligations that supersede the more general provisions the complainant relies upon.',
+            text: 'Your Honour, LifeStream\'s failure to deploy SafeSignal also breached its Art. 37 DSA independent audit obligation. Art. 37 requires VLOPs to commission independent audits of compliance with DSA obligations at least annually. An independent auditor reviewing LifeStream\'s Art. 35 mitigation measures would necessarily have discovered that SafeSignal existed, was ready for deployment, and was not deployed. The absence of an Art. 37 audit enabled the Art. 35 failure to persist undetected. The Commission should treat the Art. 37 failure as both a standalone violation and an aggravating factor in the Art. 35 finding.',
             judge_response: 'Counsel, Art. 37 has its own compliance timeline and process. Does introducing the Art. 37 audit gap advance the primary Art. 35 effectiveness argument, or does it risk diluting the central claim by adding a secondary procedural breach?',
             legal_reasoning: 'Art. 37 is a genuine VLOP obligation, but introducing it as an argument here is a scope-creep error. The Art. 35 effectiveness failure is fully established without it — SafeSignal\'s existence, capabilities, and non-deployment are already on the record. Adding Art. 37 as a standalone argument risks diluting the precise Art. 35 analysis with a procedural point that requires different evidence and a different legal standard.'
           },
           {
             id: 'arg2-wrong',
             quality: 'wrong',
-            text: 'Your Honour, LifeStream\'s decision to withhold SafeSignal constitutes exploitation of minor vulnerability under Art. 5(1)(b) of the EU AI Act. By deliberately continuing to serve self-harm content sequences to users it knew were in crisis — optimising for their engagement precisely because their vulnerable state increased watch time — LifeStream\'s algorithm exploited the mental health vulnerability of minors to distort their behaviour, causing significant harm. The absolute prohibition applies and requires LifeStream to immediately withdraw the recommendation system from all minor accounts. The regulatory framework specifically anticipates situations of this nature and imposes obligations that the respondent has manifestly failed to satisfy in the present case.',
+            text: 'Your Honour, LifeStream\'s decision to withhold SafeSignal constitutes exploitation of minor vulnerability under Art. 5(1)(b) of the EU AI Act. By deliberately continuing to serve self-harm content sequences to users it knew were in crisis — optimising for their engagement precisely because their vulnerable state increased watch time — LifeStream\'s algorithm exploited the mental health vulnerability of minors to distort their behaviour, causing significant harm. The absolute prohibition applies and requires LifeStream to immediately withdraw the recommendation system from all minor accounts.',
             judge_response: 'Counsel, Art. 5(1)(b) AI Act addresses AI systems that deliberately target and exploit a specific vulnerability. An engagement-optimisation algorithm that amplifies harmful content without a purpose-built exploitation mechanism is legally distinct from a prohibited AI practice. You are also in DSA proceedings before the Commission — AI Act enforcement requires different proceedings.',
             legal_reasoning: 'An AI Act swap error applied to the mitigation argument. Art. 5(1)(b) requires a system deliberately designed to exploit vulnerability — the algorithm was built for engagement optimisation and the harm arose from the failure to apply available mitigation. The DSA Art. 35 framework is precisely designed for this failure mode. Invoking the AI Act abandons the stronger DSA argument and seeks relief unavailable in this forum.'
           }
@@ -15928,7 +15928,7 @@ verdict: {
         evidenceId: 'ev6-statistics',
         oppositionArgument: 'Your Honour, the complainant is asking the Commission to hold LifeStream responsible for a tragedy whose causal chain is deeply complex. Self-harm and suicide are the result of multi-factorial mental health conditions. The existence of self-harm content on a platform does not cause those conditions. Correlation between a user\'s content consumption and subsequent behaviour does not establish that the platform caused the harm. Holding platforms legally responsible for user mental health outcomes on the basis of content exposure would create unlimited liability for every social media company and fundamentally impair freedom of expression online.',
         writePrompt: 'Opposing counsel invokes causal complexity and chilling effect on expression. Counter this by explaining why the Art. 34/35 framework does not require proven causation, and why the specific evidence meets the "foreseeable negative effects" standard.',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: '"Foreseeable" Standard',
@@ -15951,14 +15951,14 @@ verdict: {
           {
             id: 'arg3-strong',
             quality: 'strong',
-            text: 'Your Honour, this proceeding does not ask the Commission to hold LifeStream responsible for Alex\'s death. It asks the Commission to find that LifeStream failed to conduct a diligent risk assessment of foreseeable negative effects and failed to deploy an available, effective mitigation measure. Art. 34(1)(d) requires assessment of "actual or foreseeable" negative effects — not proven causal outcomes. Serving 412 algorithmically amplified self-harm posts to a 16-year-old over 30 days, in a pattern that LifeStream\'s own data shows disproportionately affects minor accounts at 4.6 times the adult rate, is a foreseeable risk by any standard. The freedom of expression argument mischaracterises the obligation: Art. 34/35 does not require LifeStream to remove content.',
+            text: 'Your Honour, this proceeding does not ask the Commission to hold LifeStream responsible for Alex\'s death. It asks the Commission to find that LifeStream failed to conduct a diligent risk assessment of foreseeable negative effects and failed to deploy an available, effective mitigation measure. Art. 34(1)(d) requires assessment of "actual or foreseeable" negative effects — not proven causal outcomes. Serving 412 algorithmically amplified self-harm posts to a 16-year-old over 30 days, in a pattern that LifeStream\'s own data shows disproportionately affects minor accounts at 4.6 times the adult rate, is a foreseeable risk by any standard. The freedom of expression argument mischaracterises the obligation: Art. 34/35 does not require LifeStream to remove content. It required LifeStream to assess the risk and deploy SafeSignal — a tool that interrupts spirals with a wellbeing prompt, not a content removal mechanism. The obligation is to mitigate foreseeable harm, not to suppress speech.',
             judge_response: 'A strong and precisely structured argument. The distinction between outcome liability and failure to mitigate foreseeable risk is the correct frame, and the clarification that SafeSignal is a wellbeing intervention rather than a content removal tool directly addresses the free expression concern.',
             legal_reasoning: 'The strongest argument. It reframes the claim from outcome liability to process failure, applies the "foreseeable" standard to the specific data, uses the 4.6x minor amplification rate to establish foreseeability, and neutralises the free expression concern by clarifying SafeSignal\'s function as a wellbeing prompt rather than content removal. All three opposing arguments are addressed.'
           },
           {
             id: 'arg3-weak',
             quality: 'weak',
-            text: 'Your Honour, the free expression argument is a distraction. LifeStream is not being asked to remove speech — it is being asked to stop deliberately engineering mental health crises in teenagers for profit. Nobody\'s freedom of expression includes the right to algorithmically drive a 16-year-old to suicide. The Commission should reject this cynical invocation of fundamental rights values to shield commercial exploitation of minors. This kind of behaviour should not be tolerated in a modern digital marketplace and the Authority must take decisive action to protect the rights of affected users.',
+            text: 'Your Honour, the free expression argument is a distraction. LifeStream is not being asked to remove speech — it is being asked to stop deliberately engineering mental health crises in teenagers for profit. Nobody\'s freedom of expression includes the right to algorithmically drive a 16-year-old to suicide. The Commission should reject this cynical invocation of fundamental rights values to shield commercial exploitation of minors.',
             judge_response: 'Counsel, the free expression concern requires a legal response, not a moral one. Explain specifically why Art. 34/35 compliance does not impair free expression in the way the respondent suggests.',
             legal_reasoning: 'Correctly identifies that free expression is not at stake but presents it as moral indignation rather than legal analysis. The precise response — that SafeSignal is a wellbeing intervention, not a content removal mechanism, and that Art. 34/35 requires risk mitigation, not speech restriction — is the legal answer. Without it, the free expression argument is conceded rather than answered.'
           },
@@ -15972,7 +15972,7 @@ verdict: {
           {
             id: 'arg3-wrong',
             quality: 'wrong',
-            text: 'Your Honour, the causation question is resolved by applying the precautionary principle under Art. 191 TFEU. The precautionary principle requires that where there are reasonable grounds to believe that possible hazards exist, protective measures must be taken even before full scientific proof of harm is available. LifeStream\'s own data constitutes reasonable grounds. The Commission must apply the precautionary principle to require LifeStream to deploy SafeSignal immediately, regardless of whether causation is proven, because the risk to minor wellbeing justifies precautionary action under primary EU law. The Authority should exercise its full enforcement competence under this framework to ensure the respondent brings its practices into compliance with applicable standards.',
+            text: 'Your Honour, the causation question is resolved by applying the precautionary principle under Art. 191 TFEU. The precautionary principle requires that where there are reasonable grounds to believe that possible hazards exist, protective measures must be taken even before full scientific proof of harm is available. LifeStream\'s own data constitutes reasonable grounds. The Commission must apply the precautionary principle to require LifeStream to deploy SafeSignal immediately, regardless of whether causation is proven, because the risk to minor wellbeing justifies precautionary action under primary EU law.',
             judge_response: 'Counsel, Art. 191 TFEU applies to EU environmental policy, not to digital platform regulation. The precautionary principle in this context derives from the DSA\'s own "foreseeable" standard in Art. 34(1) — you do not need to invoke primary Treaty law. You already have the correct legal basis.',
             legal_reasoning: 'Invoking Art. 191 TFEU is a wrong-instrument error in the opposite direction — reaching for Treaty primary law when the DSA already contains the applicable standard. Art. 34(1)(d)\'s "foreseeable" test is the DSA\'s built-in precautionary standard for this exact scenario. Citing Art. 191 TFEU (environmental policy) in digital regulation proceedings is legally incorrect and unnecessary when the DSA provides the answer directly.'
           }
@@ -16058,7 +16058,7 @@ verdict: {
       prompt: 'NewsWave\'s algorithm amplified election disinformation to 40% of swing-region voters. Its Art. 34 assessment identified the risk and proposed only "continued monitoring." Which legal framework most directly governs NewsWave\'s obligations here?',
       correct: 'dsa',
       writePrompt: 'Identify the EU digital law framework that specifically creates obligations for VLOPs to assess and mitigate systemic risks to electoral processes. Justify why this framework applies rather than the alternatives.',
-      minWords: 25,
+      minWords: 10,
       requiredConcepts: [
         {
           name: 'VLOP Electoral Integrity Obligations',
@@ -16099,7 +16099,7 @@ verdict: {
       prompt: 'NewsWave\'s Art. 34 assessment identified electoral integrity as a risk and proposed only "continued monitoring." Which DSA article creates the obligation most clearly violated by that proposed mitigation?',
       correct: 'art35-1',
       writePrompt: 'Identify the exact article and explain why "continued monitoring" fails the legal standard it imposes on VLOPs for identified systemic risks.',
-      minWords: 20,
+      minWords: 10,
       requiredConcepts: [
         {
           name: 'Article 35(1)',
@@ -16235,7 +16235,7 @@ verdict: {
         evidenceId: 'ev2-risk-assessment',
         oppositionArgument: 'Your Honour, NewsWave identified electoral integrity as a systemic risk in its Art. 34 assessment, classified it at medium probability and medium impact, and proposed monitoring as a mitigation measure. The DSA does not prescribe specific mitigation measures — it gives platforms discretion to choose reasonable measures proportionate to the identified risk. Monitoring is a legitimate, recognised risk management approach used across industries. The Commission cannot substitute its preferred mitigation — algorithm downranking — for a platform\'s good-faith compliance choice. If monitoring was insufficient, the remedy is enhanced monitoring, not an algorithmic intervention the DSA does not require.',
         writePrompt: 'Opposing counsel argues monitoring is a legitimate Art. 35 choice and the Commission cannot prescribe specific measures. Counter this by explaining why monitoring fails the effectiveness test when applied to the specific identified risk — algorithmic amplification.',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Effectiveness Against Identified Risk',
@@ -16258,7 +16258,7 @@ verdict: {
           {
             id: 'arg1-strong',
             quality: 'strong',
-            text: 'Your Honour, Art. 35(1) requires mitigation measures that are reasonable, proportionate — and effective. Effectiveness is not a formality; it is assessed against the specific risk identified in the Art. 34 assessment. The identified risk is algorithmic amplification of electoral disinformation. Monitoring identifies false content after the algorithm has already amplified it — it does not intervene in the amplification process at all. The evidence confirms this precisely: fact-checker flags submitted through NewsWave\'s own API had zero effect on recommendation weight, and flagged content continued to be amplified at a rate 50% higher than verified content after flag submission. Monitoring and amplification operated simultaneously.',
+            text: 'Your Honour, Art. 35(1) requires mitigation measures that are reasonable, proportionate — and effective. Effectiveness is not a formality; it is assessed against the specific risk identified in the Art. 34 assessment. The identified risk is algorithmic amplification of electoral disinformation. Monitoring identifies false content after the algorithm has already amplified it — it does not intervene in the amplification process at all. The evidence confirms this precisely: fact-checker flags submitted through NewsWave\'s own API had zero effect on recommendation weight, and flagged content continued to be amplified at a rate 50% higher than verified content after flag submission. Monitoring and amplification operated simultaneously. A measure that runs in parallel with the harm it is supposed to address, with no integration into the mechanism producing the harm, is not effective against that harm by any reasonable construction of the word. The Commission is not prescribing a specific technical solution — it is applying the statutory effectiveness test to a measure that the platform\'s own Head of Election Integrity confirmed does not stop disinformation from spreading.',
             judge_response: 'A well-constructed argument. The distinction between a measure that runs in parallel with harm and one that addresses the mechanism producing it is the correct application of the Art. 35 effectiveness test.',
             legal_reasoning: 'The strongest argument. It applies "effective" from Art. 35(1) to the specific risk mechanism (algorithmic amplification), uses the fact-checker flag data to prove monitoring has zero integration with the algorithm, and uses the witness\'s own admission to close the argument. It also directly addresses the prescription concern — the Commission is applying the effectiveness test, not mandating a solution.'
           },
@@ -16290,7 +16290,7 @@ verdict: {
         evidenceId: 'ev3-internal-email',
         oppositionArgument: 'Your Honour, the COO\'s response to Mr. Horak\'s email confirms that NewsWave took its Art. 34/35 obligations seriously enough to assess the risk and state a compliance position. The email shows a company engaged in good-faith regulatory compliance review — not ignoring the issue. Budget and resource constraints are a legitimate operational reality for all platforms, including VLOPs. The DSA requires proportionate measures — proportionate to the risk, but also to the operational context of the platform. Requiring platforms to implement expensive algorithm changes and large-scale election integrity staffing on the basis of an internal email would make Art. 35 compliance an unlimited financial obligation.',
         writePrompt: 'Opposing counsel argues budget constraints and the COO\'s response show good faith. Counter this by explaining why commercially motivated inaction in the face of a known, specific risk cannot constitute proportionate Art. 35 compliance.',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Good Faith vs. Known Ineffectiveness',
@@ -16313,14 +16313,14 @@ verdict: {
           {
             id: 'arg2-strong',
             quality: 'strong',
-            text: 'Your Honour, the good faith argument fails precisely because of the COO\'s email. NewsWave\'s Head of Election Integrity formally warned management that the existing monitoring measure did not stop disinformation from spreading, that the algorithm had no downranking mechanism for flagged content, and that three staff could not manage a six-week election window. The COO\'s response was not a good faith compliance review — it was a deliberate decision to maintain a measure the company knew was ineffective, citing budget and competitive concerns about reducing content virality. Art. 35(1) requires proportionality to the risk, not to the platform\'s cost preferences. The risk materialised: 40% of swing-region voters reached with disinformation.',
+            text: 'Your Honour, the good faith argument fails precisely because of the COO\'s email. NewsWave\'s Head of Election Integrity formally warned management that the existing monitoring measure did not stop disinformation from spreading, that the algorithm had no downranking mechanism for flagged content, and that three staff could not manage a six-week election window. The COO\'s response was not a good faith compliance review — it was a deliberate decision to maintain a measure the company knew was ineffective, citing budget and competitive concerns about reducing content virality. Art. 35(1) requires proportionality to the risk, not to the platform\'s cost preferences. The risk materialised: 40% of swing-region voters reached with disinformation. A measure that was budget-convenient but operationally incapable of addressing the known risk is not proportionate to that risk. Good faith compliance requires acting on known deficiencies, not documenting them and proceeding regardless.',
             judge_response: 'A well-grounded argument. The distinction between acknowledging a risk in writing and acting on it is the correct application of the proportionality element, and the causal chain from the October email to the election outcome is compelling.',
             legal_reasoning: 'The strongest argument. It uses the COO email to defeat the good faith argument by showing management had specific knowledge of the measure\'s ineffectiveness, connects proportionality to the actual magnitude of the risk rather than the platform\'s cost preferences, and links the inaction directly to the outcome (40% swing voter reach) as the natural consequence of knowingly disproportionate measures.'
           },
           {
             id: 'arg2-weak',
             quality: 'weak',
-            text: 'Your Honour, the COO\'s email is a confession. When your Head of Election Integrity tells you that your compliance measure does not work and your response is "we are compliant," you are choosing regulatory fiction over public safety. Budget constraints are not a defence when the risk is the integrity of a democratic election. LifeStream — I mean, NewsWave — cannot hide behind proportionality language when it chose profit over protecting voters. The Commission should treat this as evidence of deliberate regulatory evasion and apply the maximum available penalty. This kind of behaviour should not be tolerated in a modern digital marketplace and the Authority must take decisive action to protect the rights of affected users.',
+            text: 'Your Honour, the COO\'s email is a confession. When your Head of Election Integrity tells you that your compliance measure does not work and your response is "we are compliant," you are choosing regulatory fiction over public safety. Budget constraints are not a defence when the risk is the integrity of a democratic election. LifeStream — I mean, NewsWave — cannot hide behind proportionality language when it chose profit over protecting voters. The Commission should treat this as evidence of deliberate regulatory evasion and apply the maximum available penalty.',
             judge_response: 'Counsel, you referenced the wrong platform name and are making penalty arguments before establishing the violation. Focus on why the COO\'s response fails the Art. 35 proportionality standard — the penalty assessment is separate.',
             legal_reasoning: 'Contains a factual error (wrong platform name) that damages credibility, argues for maximum penalties before establishing the violation, and frames the legal argument as moral outrage rather than applying the Art. 35 proportionality standard. The COO email is powerful evidence but requires legal framing — the distinction between acknowledging ineffectiveness and acting on it is the proportionality argument the tribunal needs.'
           },
@@ -16345,7 +16345,7 @@ verdict: {
         evidenceId: 'ev6-statistics',
         oppositionArgument: 'Your Honour, the Commission is asking this body to hold a platform legally responsible for the content of third-party speech. The DSA explicitly preserves freedom of expression. Requiring NewsWave to downrank content flagged by fact-checkers would make the platform an instrument of editorial control over political speech — a much greater threat to democratic discourse than the disinformation it is meant to address. Fact-checkers are fallible; they have political affiliations; their flags can be contested. A mandatory downranking regime imposed by regulators through Art. 35 would create state-backed censorship of political content, which is inconsistent with Art. 11 of the EU Charter.',
         writePrompt: 'Opposing counsel invokes freedom of expression and the risk of state-backed censorship. Counter this by explaining why Art. 35 does not require content removal, why the specific evidence meets the threshold for effective mitigation, and why the Charter argument mischaracterises the DSA obligation.',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Amplification Not Expression',
@@ -16368,14 +16368,14 @@ verdict: {
           {
             id: 'arg3-strong',
             quality: 'strong',
-            text: 'Your Honour, the freedom of expression argument mischaracterises what Art. 35 requires. No one is asking NewsWave to remove content, ban accounts, or determine what political views voters may hold. Art. 35 requires effective mitigation of the amplification risk — which means adjusting how the recommendation algorithm treats content that accredited fact-checkers have flagged as demonstrably false. A person\'s post about fabricated polling location closures remains on the platform, fully accessible to anyone who seeks it out. What Art. 35 prohibits is the platform\'s algorithm actively multiplying its reach to voters who never sought it. Algorithmic amplification is platform conduct, not protected expression.',
+            text: 'Your Honour, the freedom of expression argument mischaracterises what Art. 35 requires. No one is asking NewsWave to remove content, ban accounts, or determine what political views voters may hold. Art. 35 requires effective mitigation of the amplification risk — which means adjusting how the recommendation algorithm treats content that accredited fact-checkers have flagged as demonstrably false. A person\'s post about fabricated polling location closures remains on the platform, fully accessible to anyone who seeks it out. What Art. 35 prohibits is the platform\'s algorithm actively multiplying its reach to voters who never sought it. Algorithmic amplification is platform conduct, not protected expression. The EU Charter protects the right to speak — it does not create a right to have one\'s speech algorithmically boosted by a private platform. Conversely, the Charter\'s Art. 11 protection for free information also protects voters\' right to receive accurate electoral information — a right the amplification of demonstrably false content directly undermines.',
             judge_response: 'A strong argument on all three dimensions. The distinction between content removal and algorithmic amplification conduct, and the two-sided Art. 11 analysis, are both legally well-grounded.',
             legal_reasoning: 'The strongest argument. It separates removal (speech restriction) from downranking (platform conduct), invokes Art. 11 symmetrically to protect both the speaker and the recipient of information, and grounds the Art. 35 obligation in the specific conduct being regulated — algorithmic amplification — rather than speech content. All three of the opponent\'s sub-arguments are answered.'
           },
           {
             id: 'arg3-weak',
             quality: 'weak',
-            text: 'Your Honour, the free speech argument is a smokescreen. Fabricated polling location closures and AI-generated fake candidate statements are not protected political speech — they are disinformation designed to prevent people from voting. Nobody\'s Charter rights include the right to suppress democratic participation through lies. The Commission should reject the free expression defence entirely and find that NewsWave\'s algorithm was an instrument of voter suppression that has no Charter protection whatsoever. Any reasonable person would recognise that the platform acted improperly and that meaningful intervention is needed to prevent this from happening again to other users.',
+            text: 'Your Honour, the free speech argument is a smokescreen. Fabricated polling location closures and AI-generated fake candidate statements are not protected political speech — they are disinformation designed to prevent people from voting. Nobody\'s Charter rights include the right to suppress democratic participation through lies. The Commission should reject the free expression defence entirely and find that NewsWave\'s algorithm was an instrument of voter suppression that has no Charter protection whatsoever.',
             judge_response: 'Counsel, the Charter analysis is more nuanced than your argument suggests. You need to explain why the specific Art. 35 obligation does not infringe expression rights — characterising the content as voter suppression without legal analysis does not answer the constitutional question the opponent has raised.',
             legal_reasoning: 'Correctly identifies that the specific content is demonstrably false, but argues the Charter point as a political declaration rather than a legal analysis. The required response is the amplification/removal distinction and the two-sided Art. 11 analysis — this argument skips both and relies on characterising the content as voter suppression, which is a factual assertion that does not answer the constitutional question.'
           },
@@ -16475,7 +16475,7 @@ verdict: {
       prompt: 'DataSphere\'s cookie consent interface requires 14 clicks to reject and 1 click to accept. Its own A/B test shows that a symmetrical design would produce a 94% drop in acceptance. Which legal framework most directly governs this interface design failure?',
       correct: 'dsa',
       writePrompt: 'Identify the EU digital law framework that specifically prohibits online platform interfaces designed to manipulate or deceive users. Justify why this framework is more directly applicable than the alternatives.',
-      minWords: 25,
+      minWords: 10,
       requiredConcepts: [
         {
           name: 'Dark Pattern Prohibition',
@@ -16516,7 +16516,7 @@ verdict: {
       prompt: 'DataSphere\'s interface uses visual asymmetry, a 14-click rejection path, and ON-by-default toggles to steer users toward accepting all cookies. Which specific DSA article creates the obligation this design violates?',
       correct: 'art25-1',
       writePrompt: 'Identify the exact article and explain the three types of conduct it prohibits — and which of those apply to DataSphere\'s consent interface.',
-      minWords: 20,
+      minWords: 10,
       requiredConcepts: [
         {
           name: 'Article 25(1)',
@@ -16652,7 +16652,7 @@ verdict: {
         evidenceId: 'ev3-internal-email',
         oppositionArgument: 'Your Honour, DataSphere\'s consent interface offers users a genuine choice. The "Accept All" button is prominent because it represents the most common user journey — a streamlined single-click path for users who want to access the platform without friction. The "Manage Preferences" option is clearly available and allows granular control over data processing activities. Art. 25(1) DSA prohibits interfaces that deceive or manipulate — but making one option easier than another is not deception. UX design inherently involves choices about visual hierarchy and user flow. Every website design makes some paths easier than others. DataSphere has not deceived anyone — it has simply designed an efficient interface for the majority of users who want to accept.',
         writePrompt: 'Opposing counsel argues that making one option easier is standard UX design, not manipulation. Counter this by explaining what Art. 25(1) prohibits and why DataSphere\'s specific design crosses the line from legitimate UX to prohibited dark pattern.',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Art. 25(1) Material Distortion Standard',
@@ -16675,7 +16675,7 @@ verdict: {
           {
             id: 'arg1-strong',
             quality: 'strong',
-            text: 'Your Honour, Art. 25(1) DSA prohibits interfaces that deceive or manipulate users or otherwise materially distort their ability to make free and informed decisions. The standard is not whether any design choice favours one path — it is whether the design materially distorts the outcome away from genuine preference. DataSphere\'s own A/B test provides direct evidence of material distortion: a symmetric design produces a 3.1% acceptance rate; the current asymmetric design produces 97%. That 94-percentage-point gap cannot be explained by genuine preference — it is the quantified effect of the design manipulation.',
+            text: 'Your Honour, Art. 25(1) DSA prohibits interfaces that deceive or manipulate users or otherwise materially distort their ability to make free and informed decisions. The standard is not whether any design choice favours one path — it is whether the design materially distorts the outcome away from genuine preference. DataSphere\'s own A/B test provides direct evidence of material distortion: a symmetric design produces a 3.1% acceptance rate; the current asymmetric design produces 97%. That 94-percentage-point gap cannot be explained by genuine preference — it is the quantified effect of the design manipulation. The interface combines three compounding dark pattern techniques: visual asymmetry directing attention to the accept button through size, colour, and positioning; obstruction creating a 14-click friction barrier that exploits decision fatigue; and default-on toggles that activate status quo bias against the rejection option. None of these individually, and certainly not all three together, represents neutral UX design. They are a coordinated architecture engineered to produce a predetermined outcome — which is precisely what Art. 25(1) prohibits.',
             judge_response: 'A well-grounded argument. The A/B test data as direct evidence of material distortion, combined with the three compounding dark pattern elements, applies the Art. 25(1) standard precisely.',
             legal_reasoning: 'The strongest argument. It applies the Art. 25(1) material distortion standard to the A/B test data as the primary evidence, identifies all three dark pattern techniques as compounding violations, and uses DataSphere\'s own internal data to prove the design produces outcomes inconsistent with genuine preference. The Art. 25 standard is applied with precision rather than as a general assertion.'
           },
@@ -16707,7 +16707,7 @@ verdict: {
         evidenceId: 'ev2-analytics-data',
         oppositionArgument: 'Your Honour, the 97% acceptance rate is evidence that DataSphere\'s users genuinely prefer to accept all cookies — not that they have been manipulated. Users are adults capable of making their own decisions. The platform provides a comprehensive preferences option for those who want granular control. The fact that most users choose the simpler path reflects a rational preference for convenience over privacy management, which is a legitimate and well-documented consumer behaviour pattern. The DSA cannot be used to override users\' genuine preferences for the sake of achieving a more "privacy-friendly" statistical outcome that regulators prefer.',
         writePrompt: 'Opposing counsel argues 97% acceptance reflects genuine user preference and adult rational choice. Counter this by explaining why the A/B test data and behavioural evidence disprove that characterisation under the Art. 25(1) standard.',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Genuine Preference vs. Engineered Outcome',
@@ -16730,7 +16730,7 @@ verdict: {
           {
             id: 'arg2-strong',
             quality: 'strong',
-            text: 'Your Honour, the genuine preference argument is directly contradicted by DataSphere\'s own evidence. The A/B test is not a study commissioned by a regulator — it is DataSphere\'s internal product testing showing that the same user base, presented with a symmetric interface, produces a 3.1% acceptance rate. If genuine user preference were 97% in favour of all-cookies, that preference would persist regardless of interface design. It does not. The 94-percentage-point swing is the measured effect of the design distortion on outcome. Art. 25(1) asks whether the design "materially distorts" the ability to make free and informed decisions — and DataSphere\'s own data quantifies that distortion precisely.',
+            text: 'Your Honour, the genuine preference argument is directly contradicted by DataSphere\'s own evidence. The A/B test is not a study commissioned by a regulator — it is DataSphere\'s internal product testing showing that the same user base, presented with a symmetric interface, produces a 3.1% acceptance rate. If genuine user preference were 97% in favour of all-cookies, that preference would persist regardless of interface design. It does not. The 94-percentage-point swing is the measured effect of the design distortion on outcome. Art. 25(1) asks whether the design "materially distorts" the ability to make free and informed decisions — and DataSphere\'s own data quantifies that distortion precisely. Additionally, the 3.2-second average decision time confirms that the vast majority of users are not making considered decisions at all — they are dismissing a modal. A decision made in 3.2 seconds about multi-dimensional data processing choices across twelve categories of third-party sharing is not a free and informed decision by any behavioural or legal standard.',
             judge_response: 'A strong argument grounded in DataSphere\'s own evidence. The A/B test as a self-generated refutation of the genuine preference claim is the correct evidentiary structure.',
             legal_reasoning: 'The strongest argument. It uses the A/B test as DataSphere\'s own evidence against the genuine preference claim, applies the Art. 25(1) material distortion standard to the quantified gap, and adds the 3.2-second decision time as independent evidence that users are not making informed decisions. All elements of the opponent\'s argument are directly addressed with evidence already on the record.'
           },
@@ -16762,7 +16762,7 @@ verdict: {
         evidenceId: 'ev6-statistics',
         oppositionArgument: 'Your Honour, even if there were technical issues with the consent modal, the Art. 25 violation has no practical consequence that warrants significant regulatory intervention. DataSphere processed data users agreed to share. The remedy for a consent interface design issue is a redesign request — not a finding of systemic violation. There is no evidence of tangible harm to any individual user. The DSA\'s proportionality principle requires that any finding and remedy be proportionate to the actual harm caused. A minor interface design adjustment cannot justify the kind of regulatory sanction the complainant is seeking.',
         writePrompt: 'Opposing counsel argues there is no tangible harm and any remedy should be proportionate to a minor design issue. Counter this by explaining the scale of the harm, what Art. 25 protects, and why the violation warrants meaningful remedy.',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Scale of Harm',
@@ -16785,14 +16785,14 @@ verdict: {
           {
             id: 'arg3-strong',
             quality: 'strong',
-            text: 'Your Honour, the no-harm argument mischaracterises both the scale and the nature of the violation. In Q4 2025 alone, 8.15 million users interacted with DataSphere\'s non-compliant consent modal. Of those, the survey evidence indicates that 61% believed they had no meaningful option to refuse and 24% did not realise they had clicked a consent button. At 52 million EU users, the interface applies structurally to every new user registration and every returning user whose consent is re-solicited. Art. 25(1) protects users\' fundamental right to make free and informed decisions about their own data and digital experience — it does not require proof of downstream data misuse to establish a violation.',
+            text: 'Your Honour, the no-harm argument mischaracterises both the scale and the nature of the violation. In Q4 2025 alone, 8.15 million users interacted with DataSphere\'s non-compliant consent modal. Of those, the survey evidence indicates that 61% believed they had no meaningful option to refuse and 24% did not realise they had clicked a consent button. At 52 million EU users, the interface applies structurally to every new user registration and every returning user whose consent is re-solicited. Art. 25(1) protects users\' fundamental right to make free and informed decisions about their own data and digital experience — it does not require proof of downstream data misuse to establish a violation. The harm is the systematic undermining of decision-making autonomy at scale. DataSphere\'s own internal note confirms the design was maintained precisely because remediation would "reduce consent rates and impact advertising revenue" — the harm to users is the direct financial benefit to the platform. A structural violation affecting millions of users, maintained knowingly for commercial reasons, warrants structural remediation and sanctions proportionate to that scale.',
             judge_response: 'A strong argument on both scale and the nature of the protected interest. The distinction between downstream data harm and the intrinsic harm of undermining decision-making autonomy is the correct framing of what Art. 25 protects.',
             legal_reasoning: 'The strongest argument. It quantifies the scale precisely using the record evidence, identifies the correct protected interest (decision-making autonomy, not downstream data harm), uses DataSphere\'s own internal note to confirm commercial motivation, and grounds the proportionality argument in the structural and systemic nature of the violation rather than individual harm.'
           },
           {
             id: 'arg3-weak',
             quality: 'weak',
-            text: 'Your Honour, the harm argument is straightforward: 8.15 million people had their data shared with advertisers without genuine consent. That is a massive privacy violation affecting millions of EU citizens. DataSphere has profited enormously from this manipulated consent while users had no idea their data was being shared. The financial harm to users — whose data was monetised without genuine agreement — is real and significant. The Coordinator should order DataSphere to delete all data obtained under the manipulated consent interface and pay compensation to all affected users. Any reasonable person would recognise that the platform acted improperly and that meaningful intervention is needed to prevent this from happening again to other users.',
+            text: 'Your Honour, the harm argument is straightforward: 8.15 million people had their data shared with advertisers without genuine consent. That is a massive privacy violation affecting millions of EU citizens. DataSphere has profited enormously from this manipulated consent while users had no idea their data was being shared. The financial harm to users — whose data was monetised without genuine agreement — is real and significant. The Coordinator should order DataSphere to delete all data obtained under the manipulated consent interface and pay compensation to all affected users.',
             judge_response: 'Counsel, data deletion and user compensation are remedies under GDPR, not Art. 25 DSA. The DSA Coordinator\'s powers under Art. 51(4) are to order remedial measures to end the violation. You must also establish the nature of the Art. 25 harm rather than reframing it as a GDPR data processing claim.',
             legal_reasoning: 'Conflates the Art. 25 violation with a GDPR data processing harm, then seeks remedies (data deletion, user compensation) that belong to GDPR enforcement, not DSA Art. 25. The DSC\'s remedial powers under Art. 51(4) DSA are to order platform behaviour changes — not to order data deletion or compensation. This argument misidentifies both the harm type and the available remedy.'
           },
@@ -16893,7 +16893,7 @@ verdict: {
       prompt: 'ViewMax makes signing up a 2-click, 90-second process but cancellation requires 7 pages, a phone call, and 68 minutes. A consumer group has documented the entire flow. Which legal framework most directly governs this asymmetric design?',
       correct: 'dsa',
       writePrompt: 'Identify the EU digital law framework that specifically prohibits online platforms from making termination of a service disproportionately harder than signup. Justify why this framework is more directly applicable than the alternatives.',
-      minWords: 25,
+      minWords: 10,
       requiredConcepts: [
         {
           name: 'Dark Pattern Prohibition',
@@ -16934,7 +16934,7 @@ verdict: {
       prompt: 'ViewMax\'s cancellation flow has been documented as requiring 7 pages, a mandatory survey, a business-hours phone call, a loyalty offer reset trap, and a 15-minute expiring confirmation link. Which DSA article creates the obligation this design violates?',
       correct: 'art25-1',
       writePrompt: 'Identify the exact article and explain how it applies to subscription cancellation architecture specifically — and why ViewMax\'s layered obstruction flow violates it.',
-      minWords: 20,
+      minWords: 10,
       requiredConcepts: [
         {
           name: 'Article 25(1) and Annex I',
@@ -17070,7 +17070,7 @@ verdict: {
         evidenceId: 'ev3-internal-email',
         oppositionArgument: 'Your Honour, ViewMax\'s cancellation process serves multiple legitimate purposes that justify its complexity. The mandatory survey captures service quality data that improves the platform for all users. The telephone step prevents accidental cancellations by ensuring users have a human interaction confirming their intent. The loyalty offer is a genuine benefit — a chance for users to receive discounted rates. The confirmation email prevents fraudulent cancellations of other users\' accounts. Art. 25(1) prohibits deceptive or manipulative interfaces — but each element of ViewMax\'s cancellation flow has an independent, legitimate justification. A process that serves multiple legitimate purposes cannot be characterised as a dark pattern merely because it takes longer than signup.',
         writePrompt: 'Opposing counsel argues each cancellation step has a legitimate purpose that prevents it from being a dark pattern. Counter this by applying Art. 25(1) to the combined architecture and explaining why legitimate individual purposes do not excuse a materially distorting combined design.',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Combined Architecture Test',
@@ -17093,7 +17093,7 @@ verdict: {
           {
             id: 'arg1-strong',
             quality: 'strong',
-            text: 'Your Honour, Art. 25(1) DSA assesses whether the overall interface design materially distorts users\' ability to make free and informed decisions — it is not satisfied by pointing to individual step justifications while ignoring the cumulative effect. ViewMax\'s cancellation architecture combines five separate friction mechanisms: navigation burial, mandatory survey gatekeeping, business-hours telephone restriction, a loyalty offer reset trap with a 45% first-attempt failure rate, and a 15-minute expiring confirmation link. Each individually adds friction; together they produce a 68-minute average cancellation time, a 64% non-completion rate, and a 45x asymmetry with signup.',
+            text: 'Your Honour, Art. 25(1) DSA assesses whether the overall interface design materially distorts users\' ability to make free and informed decisions — it is not satisfied by pointing to individual step justifications while ignoring the cumulative effect. ViewMax\'s cancellation architecture combines five separate friction mechanisms: navigation burial, mandatory survey gatekeeping, business-hours telephone restriction, a loyalty offer reset trap with a 45% first-attempt failure rate, and a 15-minute expiring confirmation link. Each individually adds friction; together they produce a 68-minute average cancellation time, a 64% non-completion rate, and a 45x asymmetry with signup. Even if each step could theoretically serve a legitimate purpose, it does not follow that all five are simultaneously necessary — the same purposes could be achieved through far less obstructive means. Preventing accidental cancellations does not require a business-hours telephone line with a 45-minute hold. Offering retention benefits does not require a reset mechanism that fails 45% of users. Art. 25(1) requires that any friction in the termination flow be proportionate to the legitimate purpose it serves — this architecture is not proportionate to any of the purposes claimed.',
             judge_response: 'A well-structured argument. The distinction between individual step justification and the cumulative effect of the combined architecture, assessed against the proportionality of each claimed purpose, is the correct application of Art. 25(1).',
             legal_reasoning: 'The strongest argument. It applies Art. 25(1) to the combined architecture rather than element by element, uses the outcome data (68 minutes, 64% non-completion, 45x asymmetry) to establish material distortion, and introduces the proportionality principle to show that even legitimate purposes do not justify the specific obstructive implementation choices. All elements of the opponent\'s individual-justification argument are addressed.'
           },
@@ -17125,7 +17125,7 @@ verdict: {
         evidenceId: 'ev2-comparative-data',
         oppositionArgument: 'Your Honour, the telephone requirement is standard practice for subscription services offering personalised retention solutions. A human interaction before cancellation allows us to address specific user concerns, resolve service issues, and offer tailored benefits that an automated flow cannot match. Many subscription services across Europe use telephone-based cancellation processes. The DSA does not prohibit telephone-based customer service. The fact that comparable VLOPs offer online cancellation does not make ViewMax\'s telephone approach unlawful — platforms have the right to design their service in the manner they believe best serves their users.',
         writePrompt: 'Opposing counsel argues the telephone requirement is a legitimate, standard service design choice. Counter this by explaining why the specific implementation — business hours only, average 45-minute hold, and the reset mechanism — fails the Art. 25(1) proportionality standard.',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Proportionality of Telephone Requirement',
@@ -17148,7 +17148,7 @@ verdict: {
           {
             id: 'arg2-strong',
             quality: 'strong',
-            text: 'Your Honour, the telephone requirement itself might be arguable as a design choice if implemented proportionately — but ViewMax\'s implementation is not proportionate. A 24-hour digital streaming service that allows subscription signup at any time restricts cancellation to a telephone line open Monday to Friday, 09:00–17:00 CET, with an average documented hold time of 45 minutes. ViewMax\'s own witness confirmed that online cancellation would be technically trivial to implement and that the telephone requirement is a resource and cost decision — not a user experience decision. A restriction that prevents 29% of users from completing cancellation because they cannot call during business hours is not a legitimate service design.',
+            text: 'Your Honour, the telephone requirement itself might be arguable as a design choice if implemented proportionately — but ViewMax\'s implementation is not proportionate. A 24-hour digital streaming service that allows subscription signup at any time restricts cancellation to a telephone line open Monday to Friday, 09:00–17:00 CET, with an average documented hold time of 45 minutes. ViewMax\'s own witness confirmed that online cancellation would be technically trivial to implement and that the telephone requirement is a resource and cost decision — not a user experience decision. A restriction that prevents 29% of users from completing cancellation because they cannot call during business hours is not a legitimate service design. It is a structural access barrier. The reset mechanism compounds this: requiring users to use a precise scripted phrase within 30 seconds of declining a loyalty offer — producing a 45% first-attempt failure rate and restarting a 68-minute process — serves no confirmation purpose that a neutral "please confirm your cancellation" prompt could not achieve without the punitive restart consequence. These specific implementations are not industry-standard service design; they are identified by the expert evidence as textbook dark pattern techniques.',
             judge_response: 'A well-grounded argument. The distinction between a telephone requirement in principle and the specific obstructive implementation chosen by ViewMax is the correct proportionality analysis.',
             legal_reasoning: 'The strongest argument. It separates the telephone requirement in principle from its specific implementation, uses the witness\'s own admission (trivial to implement online, cost decision) to undermine the legitimate purpose claim, quantifies the access barrier (29% prevented by business hours), and targets the reset mechanism specifically as disproportionate to any confirmation purpose. The proportionality analysis is applied to each implementation choice rather than the telephone concept in the abstract.'
           },
@@ -17180,7 +17180,7 @@ verdict: {
         evidenceId: 'ev6-statistics',
         oppositionArgument: 'Your Honour, even if the cancellation process has some friction, the DSA Art. 25 standard requires that any finding be proportionate to the actual harm caused. Users who want to cancel ViewMax can cancel — 36% succeed on the first attempt and the remainder can try again. There is no evidence that users are permanently prevented from cancelling. The DSA does not mandate any specific number of cancellation steps or any specific process duration. The complainant is asking this body to mandate a specific "click-to-cancel" architecture that the DSA never requires. Any remedy should be a guidance recommendation, not a finding of systemic violation with penalties.',
         writePrompt: 'Opposing counsel argues 36% first-attempt success shows users can cancel, that the DSA mandates no specific architecture, and that any remedy should be minimal. Counter this by establishing the scale of the harm and why the Art. 25 standard requires the Coordinator to act.',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Scale of Harm',
@@ -17203,7 +17203,7 @@ verdict: {
           {
             id: 'arg3-strong',
             quality: 'strong',
-            text: 'Your Honour, a 36% first-attempt success rate means 64% of users who try to cancel face structural barriers to completing that cancellation. In Q3 2025 alone, 73,000 users abandoned the cancellation flow entirely — with 61% citing excessive complexity and 29% citing inability to call during business hours. These are not users who reconsidered — they are users who were prevented by the architecture. The DSA Art. 25(1) obligation is not satisfied because cancellation is technically possible for a minority of users prepared to invest 68 minutes and navigate a scripted loyalty offer trap.',
+            text: 'Your Honour, a 36% first-attempt success rate means 64% of users who try to cancel face structural barriers to completing that cancellation. In Q3 2025 alone, 73,000 users abandoned the cancellation flow entirely — with 61% citing excessive complexity and 29% citing inability to call during business hours. These are not users who reconsidered — they are users who were prevented by the architecture. The DSA Art. 25(1) obligation is not satisfied because cancellation is technically possible for a minority of users prepared to invest 68 minutes and navigate a scripted loyalty offer trap. The complainant is not asking this body to mandate a specific design — it is asking the Coordinator to find that the current design materially distorts users\' free decision-making under Art. 25(1) and to order ViewMax to remediate. Industry benchmarks show comparable VLOPs deliver cancellation in 2.1 minutes with 94% first-attempt success — this is not a novel or technically demanding standard. The Art. 51(4) remedial power enables the Coordinator to require ViewMax to redesign without prescribing a specific architecture, leaving proportionate design choices to the platform.',
             judge_response: 'A strong argument on both the scale of harm and the scope of the available remedy. The distinction between prescribing a specific architecture and requiring one that does not materially distort decision-making is the correct framing of the Coordinator\'s Art. 51(4) power.',
             legal_reasoning: 'The strongest argument. It uses the 73,000 abandonment figure to quantify the harm concretely, distinguishes between reconsidering users and structurally-prevented users, uses the industry benchmark to establish that compliance is not technically demanding, and correctly characterises the Art. 51(4) remedy as requiring design compliance without prescribing a specific solution — directly answering the "mandating click-to-cancel" argument.'
           },
@@ -17311,7 +17311,7 @@ verdict: {
       prompt: 'KidZone A/B tested notification timing to exploit 13–15 year olds\' "susceptibility to distraction from streak-loss anxiety" during homework hours. Its parental dashboard resets weekly with no notification. Which legal framework most directly governs these obligations?',
       correct: 'dsa',
       writePrompt: 'Identify the EU digital law framework that specifically governs both dark pattern interface design and minor-specific platform protections for VLOPs. Justify why this framework is more directly applicable than the alternatives.',
-      minWords: 25,
+      minWords: 10,
       requiredConcepts: [
         {
           name: 'DSA Art. 25 and Art. 28 Combined',
@@ -17352,7 +17352,7 @@ verdict: {
       prompt: 'KidZone\'s engagement architecture uses streak mechanics, urgency notifications timed to exploit homework-hour distraction, and a parental dashboard that resets weekly unannounced. Which DSA articles create the primary obligations violated?',
       correct: 'art25-art28',
       writePrompt: 'Identify the two specific DSA articles most directly violated and explain what each requires — and which specific features of KidZone\'s design breach each provision.',
-      minWords: 20,
+      minWords: 10,
       requiredConcepts: [
         {
           name: 'Art. 25(1) and Art. 28(1)',
@@ -17488,7 +17488,7 @@ verdict: {
         evidenceId: 'ev2-ab-test-report',
         oppositionArgument: 'Your Honour, KidZone\'s notification system tells teenagers when their friends are active and when their streaks are at risk. This is functional, relevant social information — not manipulation. Push notifications are a standard feature of every social platform. The Art. 25(1) standard requires that an interface "deceive or manipulate" users — but receiving a notification about one\'s social network activity is not deception. Users see the notification, understand what it means, and choose whether to open the app. That is a free and informed decision. The fact that teenagers find social connection motivating does not make a notification about that connection a dark pattern.',
         writePrompt: 'Opposing counsel argues notifications about social activity are functional information, not manipulation. Counter this by explaining how the A/B test evidence establishes that the notification design crosses from information into Art. 25(1) manipulation.',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Deliberate Vulnerability Targeting',
@@ -17511,7 +17511,7 @@ verdict: {
           {
             id: 'arg1-strong',
             quality: 'strong',
-            text: 'Your Honour, the distinction between functional social information and manipulation is not found in the content of the notification — it is found in when it is sent and why. KidZone\'s A/B test report does not recommend 18:30 because that is when friends are most active. It recommends 18:30 specifically because the 13–15 cohort is, in KidZone\'s own words, "most susceptible to distraction from streak-loss anxiety" during the homework distraction window. The notification is timed to maximise re-engagement by triggering anxiety at the precise moment when adolescents are developmentally most vulnerable to it. Art. 25(1) prohibits interfaces that "manipulate" users or "materially distort" their ability to make free and informed decisions.',
+            text: 'Your Honour, the distinction between functional social information and manipulation is not found in the content of the notification — it is found in when it is sent and why. KidZone\'s A/B test report does not recommend 18:30 because that is when friends are most active. It recommends 18:30 specifically because the 13–15 cohort is, in KidZone\'s own words, "most susceptible to distraction from streak-loss anxiety" during the homework distraction window. The notification is timed to maximise re-engagement by triggering anxiety at the precise moment when adolescents are developmentally most vulnerable to it. Art. 25(1) prohibits interfaces that "manipulate" users or "materially distort" their ability to make free and informed decisions. A notification system calibrated to exploit age-specific psychological vulnerability at its peak moment is not providing social information — it is engineering a compelled response. The 87% re-engagement rate in the 13–15 cohort against 34% in adults, from the same notification type, directly quantifies the exploitation of that age-specific vulnerability.',
             judge_response: 'A well-grounded argument. The distinction between informational notification timing and deliberate vulnerability-window targeting, supported by the A/B test language and the age-differential re-engagement data, applies Art. 25(1) with precision.',
             legal_reasoning: 'The strongest argument. It uses the A/B test report\'s own language to establish deliberate vulnerability targeting, distinguishes the notification content from the timing mechanism as the manipulative element, applies the Art. 25(1) material distortion standard to the documented outcome (87% vs. 34% re-engagement differential), and connects it to the minor-specific vulnerability that Art. 28(1) is designed to address.'
           },
@@ -17543,7 +17543,7 @@ verdict: {
         evidenceId: 'ev4-parent-testimony',
         oppositionArgument: 'Your Honour, KidZone provides parental control tools. The fact that only 4.1% of parents actively use them does not make the tools non-compliant — parents have the choice to use available controls or not. Art. 28(1) DSA requires VLOPs to take "appropriate measures" to ensure minor safety — not to guarantee that all parents engage with every available feature. Providing comprehensive parental controls satisfies the "appropriate measures" standard. If parents choose not to configure available tools, that is a parental choice, not a platform failure. The DSA cannot impose an obligation on platforms to override parental autonomy by making safety controls compulsory.',
         writePrompt: 'Opposing counsel argues that providing parental controls, regardless of their accessibility or functionality, satisfies Art. 28(1). Counter this by explaining what "appropriate measures" requires and why a dashboard buried 8 menus deep with a weekly silent reset fails that standard.',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Appropriate Measures Standard',
@@ -17566,7 +17566,7 @@ verdict: {
           {
             id: 'arg2-strong',
             quality: 'strong',
-            text: 'Your Honour, Art. 28(1) requires "appropriate measures" — not nominal ones. Appropriateness is assessed against the purpose of the measure: ensuring a high level of safety and security for minors. A parental control dashboard buried 8 sub-menus deep, when the expert evidence shows tools requiring more than 3 steps are consistently used by fewer than 12% of parents, is not appropriate for the purpose of parental oversight. The 4.1% active rate against a 23% industry benchmark for accessible tools quantifies the accessibility failure precisely. But the most critical issue is not the access barrier — it is the weekly silent reset.',
+            text: 'Your Honour, Art. 28(1) requires "appropriate measures" — not nominal ones. Appropriateness is assessed against the purpose of the measure: ensuring a high level of safety and security for minors. A parental control dashboard buried 8 sub-menus deep, when the expert evidence shows tools requiring more than 3 steps are consistently used by fewer than 12% of parents, is not appropriate for the purpose of parental oversight. The 4.1% active rate against a 23% industry benchmark for accessible tools quantifies the accessibility failure precisely. But the most critical issue is not the access barrier — it is the weekly silent reset. A tool that systematically returns to default every seven days without notifying parents does not assist parental oversight — it actively undermines it. Every parent who configured the controls last Sunday has those configurations silently reverted this Sunday. A design that specifically and repeatedly defeats the efforts of parents who have successfully engaged with the safety tool is the opposite of an appropriate measure to ensure minor safety. It is an architectural choice to make parental control non-persistent.',
             judge_response: 'A well-constructed argument. The distinction between a nominally available tool and one that is functionally appropriate for its purpose, combined with the silent reset as an actively undermining design choice, applies the Art. 28(1) standard with precision.',
             legal_reasoning: 'The strongest argument. It applies "appropriate measures" as a functional standard rather than a nominal one, uses the 4.1% vs. 23% benchmark to quantify the accessibility failure, and identifies the silent reset as the most legally significant design choice — not merely an inconvenience but a systematic defeat of parental oversight efforts. The Art. 28(1) purpose (ensuring a high level of safety) is applied directly to each design choice.'
           },
@@ -17598,7 +17598,7 @@ verdict: {
         evidenceId: 'ev6-statistics',
         oppositionArgument: 'Your Honour, the complainant relies heavily on parental testimony and a survey conducted by a consumer advocacy organisation with an obvious interest in the outcome. The 6.3-hour daily usage figure has not been independently verified. Different teenagers have different relationships with social media — some spend many hours; others far less. The DSA does not set a maximum screen time and does not require VLOPs to limit engagement by teenagers who freely choose to use a platform. Regulating the amount of time teenagers spend on platforms would be unprecedented interference with both teenage autonomy and platform design freedom. The DSA Art. 25(1) standard requires proof that the design "materially distorts" decision-making — not simply that engagement is high.',
         writePrompt: 'Opposing counsel challenges the evidence quality and argues DSA Art. 25 does not regulate screen time. Counter this by explaining why the specific design mechanisms — not screen time in the abstract — constitute material distortion under Art. 25(1).',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Design Mechanism vs. Screen Time',
@@ -17621,7 +17621,7 @@ verdict: {
           {
             id: 'arg3-strong',
             quality: 'strong',
-            text: 'Your Honour, the complainant does not ask this body to regulate screen time or limit teenager engagement with social platforms. The claim is about specific design mechanisms that Art. 25(1) prohibits: notification timing calibrated to exploit homework-hour anxiety, streak mechanics engineered to create loss-aversion compulsion, infinite scroll and autoplay eliminating natural stopping points, and a parental dashboard designed to be inaccessible. Each of these mechanisms is documented in KidZone\'s own internal evidence — the A/B test report is not a consumer survey, it is a KidZone product document.',
+            text: 'Your Honour, the complainant does not ask this body to regulate screen time or limit teenager engagement with social platforms. The claim is about specific design mechanisms that Art. 25(1) prohibits: notification timing calibrated to exploit homework-hour anxiety, streak mechanics engineered to create loss-aversion compulsion, infinite scroll and autoplay eliminating natural stopping points, and a parental dashboard designed to be inaccessible. Each of these mechanisms is documented in KidZone\'s own internal evidence — the A/B test report is not a consumer survey, it is a KidZone product document. The 87% re-engagement rate in the 13–15 cohort, the identification of "streak-loss anxiety" as the mechanism, the "homework distraction window" as the targeting rationale — all are KidZone\'s own words. The material distortion standard in Art. 25(1) does not require proof of a specific harm outcome — it requires that the design distort users\' ability to make free decisions. A notification system specifically calibrated to trigger anxiety in children during their most vulnerable daily window, combined with mechanics that make stopping feel like loss, materially distorts those children\'s ability to freely choose to stop. KidZone\'s own data proves it.',
             judge_response: 'A strong and well-structured argument. The distinction between regulating screen time and challenging specific design mechanisms, combined with the use of KidZone\'s own internal evidence, addresses both of the opponent\'s arguments precisely.',
             legal_reasoning: 'The strongest argument. It reframes the claim from screen time regulation to specific mechanism challenge, uses KidZone\'s own A/B test document to insulate the evidence from the survey bias argument, applies Art. 25(1) material distortion to each specific mechanism rather than to engagement in the abstract, and closes with the correct Art. 25(1) legal standard: distortion of free decision-making, not proof of harm outcome.'
           },
@@ -17729,7 +17729,7 @@ verdict: {
       prompt: 'FeedFlow\'s algorithm drives 70% of video views but provides zero transparency about how content is selected and no option for users to access a non-profiling-based feed. Which legal framework most directly governs these obligations?',
       correct: 'dsa',
       writePrompt: 'Identify the EU digital law framework that specifically creates transparency and non-profiling alternative obligations for VLOP recommendation systems. Justify why this framework is more directly applicable than the alternatives.',
-      minWords: 25,
+      minWords: 10,
       requiredConcepts: [
         {
           name: 'Recommender System Transparency Obligation',
@@ -17770,7 +17770,7 @@ verdict: {
       prompt: 'FeedFlow provides no disclosure of its recommendation parameters in its terms of service and offers no non-profiling-based feed alternative. Which specific DSA provisions create the two obligations it has violated?',
       correct: 'art27-1-and-3',
       writePrompt: 'Identify the two specific sub-provisions of Art. 27 DSA and explain what each requires — and which specific FeedFlow failures engage each one.',
-      minWords: 20,
+      minWords: 10,
       requiredConcepts: [
         {
           name: 'Art. 27(1) Parameter Disclosure',
@@ -17906,7 +17906,7 @@ verdict: {
         evidenceId: 'ev3-internal-email',
         oppositionArgument: 'Your Honour, Art. 27(1) DSA must be read in light of EU trade secrecy protections under Directive 2016/943. FeedFlow\'s recommendation algorithm is a trade secret — its specific parameters and weights are the product of years of engineering investment and represent FeedFlow\'s core competitive advantage. Art. 27(1) requires disclosure of the "main parameters" but cannot be read to require the disclosure of proprietary commercial intelligence. A platform can satisfy Art. 27(1) with a plain-language description of the nature of its recommendation approach — explaining that engagement, social signals, and geographic data influence recommendations — without disclosing the specific parameters and weights that constitute a trade secret. Generic functional disclosure satisfies the transparency objective without destroying competitive value.',
         writePrompt: 'Opposing counsel argues generic functional disclosure satisfies Art. 27(1) when trade secrecy is invoked. Counter this by explaining what Art. 27(1) specifically requires and why FeedFlow\'s zero-disclosure position fails that standard regardless of trade secrecy.',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Main Parameters and Relative Importance',
@@ -17929,14 +17929,14 @@ verdict: {
           {
             id: 'arg1-strong',
             quality: 'strong',
-            text: 'Your Honour, Art. 27(1) requires disclosure of the "main parameters" used in the recommender system and their "relative importance" — it does not require proprietary weights or source code. FeedFlow\'s own regulatory submission to this Coordinator names six specific parameter categories: watch time completion rate, re-engagement probability, social graph signals, demographic profile match, geographic relevance, and advertiser weighting — together with their approximate relative weights. FeedFlow has therefore already demonstrated it can identify and disclose the main parameters when addressing a regulatory body. The trade secrecy argument concerns specific numerical weights — but Art. 27(1) requires the named parameter categories and their relative importance, not the precise weighting formula.',
+            text: 'Your Honour, Art. 27(1) requires disclosure of the "main parameters" used in the recommender system and their "relative importance" — it does not require proprietary weights or source code. FeedFlow\'s own regulatory submission to this Coordinator names six specific parameter categories: watch time completion rate, re-engagement probability, social graph signals, demographic profile match, geographic relevance, and advertiser weighting — together with their approximate relative weights. FeedFlow has therefore already demonstrated it can identify and disclose the main parameters when addressing a regulatory body. The trade secrecy argument concerns specific numerical weights — but Art. 27(1) requires the named parameter categories and their relative importance, not the precise weighting formula. Five comparable VLOPs in the industry analysis disclose exactly this level of information — named categories with general importance ranking — in their terms of service, without asserting that doing so destroys competitive value. FeedFlow\'s current position is zero disclosure — not trade-secrecy-constrained disclosure, but no disclosure at all. That position fails Art. 27(1) regardless of any legitimate trade secrecy concern.',
             judge_response: 'A precise and well-grounded argument. The distinction between named parameter categories and proprietary weights, and the use of FeedFlow\'s own regulatory submission to demonstrate what can be disclosed, is the correct legal structure.',
             legal_reasoning: 'The strongest argument. It distinguishes parameter categories from proprietary weights to defuse the trade secrecy argument, uses FeedFlow\'s own regulatory submission as evidence that category-level disclosure is possible, grounds the Art. 27(1) obligation in the text (main parameters and relative importance), and uses the industry comparison to show category disclosure is standard without competitive harm.'
           },
           {
             id: 'arg1-weak',
             quality: 'weak',
-            text: 'Your Honour, trade secrecy is no defence to a clear statutory obligation. The DSA requires transparency and FeedFlow refuses to provide it. Every VLOP in Europe has the same competitive concerns about its algorithm and most have found ways to comply — FeedFlow is simply choosing not to. Art. 27(1) means what it says: disclose the main parameters. FeedFlow has failed to do so for two years. The Coordinator should reject the trade secrecy argument as a pretext for non-compliance and find the violation without further analysis. This kind of behaviour should not be tolerated in a modern digital marketplace and the Authority must take decisive action to protect the rights of affected users.',
+            text: 'Your Honour, trade secrecy is no defence to a clear statutory obligation. The DSA requires transparency and FeedFlow refuses to provide it. Every VLOP in Europe has the same competitive concerns about its algorithm and most have found ways to comply — FeedFlow is simply choosing not to. Art. 27(1) means what it says: disclose the main parameters. FeedFlow has failed to do so for two years. The Coordinator should reject the trade secrecy argument as a pretext for non-compliance and find the violation without further analysis.',
             judge_response: 'Counsel, the trade secrecy argument requires a legal response — the Trade Secrets Directive creates genuine legal protections that must be addressed. Explain specifically why Art. 27(1)\'s disclosure obligation is not overridden by trade secrecy protections rather than simply asserting the trade secrecy argument is pretextual.',
             legal_reasoning: 'Does not engage with the specific trade secrecy / Art. 27(1) tension. The Trade Secrets Directive is a genuine EU legal instrument, and the argument that it is pretextual requires more than assertion. The correct response — that Art. 27(1) requires parameter categories, not weights, and that FeedFlow has already disclosed categories in regulatory submissions — is absent. The argument concedes the legal question by dismissing rather than answering it.'
           },
@@ -17961,7 +17961,7 @@ verdict: {
         evidenceId: 'ev5-comparative-analysis',
         oppositionArgument: 'Your Honour, Art. 27(3) requires VLOPs to offer at least one non-profiling-based option that is "practicable." FeedFlow operates at a scale of 71 million users with a real-time neural ranking pipeline generating personalised feeds for each user. A chronological feed, while simple in concept, requires reverse-engineering FeedFlow\'s entire content delivery architecture — a system built for personalised ranking — to support a fundamentally different content ordering paradigm. The "practicable" qualifier in Art. 27(3) exists precisely to accommodate platforms where structural constraints make a simple chronological alternative technically or commercially impracticable. The DSA grants platforms discretion in selecting which non-profiling option is appropriate for their architecture.',
         writePrompt: 'Opposing counsel argues chronological feeds are impracticable for FeedFlow\'s architecture and that Art. 27(3) gives platforms discretion. Counter this by establishing that the impracticability claim is technically unfounded and that Art. 27(3) requires a genuine, accessible alternative.',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Technical Feasibility Evidence',
@@ -17984,7 +17984,7 @@ verdict: {
           {
             id: 'arg2-strong',
             quality: 'strong',
-            text: 'Your Honour, the impracticability claim is contradicted by three independent sources of evidence. First, FeedFlow\'s own internal communications confirm a chronological feed already exists as an internal testing tool — the claim that it would require "reverse-engineering the entire content delivery architecture" is inconsistent with an internal tool that already performs chronological ordering. Second, the expert evidence confirms chronological ordering is computationally simpler than the multi-stage neural ranking pipeline FeedFlow currently operates at scale — if FeedFlow can operate a complex personalised ranker for 71 million users, it can operate a computationally simpler chronological alternative.',
+            text: 'Your Honour, the impracticability claim is contradicted by three independent sources of evidence. First, FeedFlow\'s own internal communications confirm a chronological feed already exists as an internal testing tool — the claim that it would require "reverse-engineering the entire content delivery architecture" is inconsistent with an internal tool that already performs chronological ordering. Second, the expert evidence confirms chronological ordering is computationally simpler than the multi-stage neural ranking pipeline FeedFlow currently operates at scale — if FeedFlow can operate a complex personalised ranker for 71 million users, it can operate a computationally simpler chronological alternative. Third, six comparable VLOPs implemented chronological feed options within an average of 47 days of the DSA becoming applicable — none described it as impracticable. "Practicable" in Art. 27(3) means technically feasible and implementable — it does not mean "commercially convenient" or "without impact on engagement metrics." A feature that exists internally, is computationally simpler than the current system, and was implemented by industry peers in 47 days is practicable. The absence of the option is a commercial choice, not a technical constraint.',
             judge_response: 'A strong argument supported by three independent evidence sources. The distinction between technical impracticability and commercial inconvenience is the correct interpretation of Art. 27(3)\'s practicability qualifier.',
             legal_reasoning: 'The strongest argument. It uses three independent evidence sources to defeat the impracticability claim (internal tool, expert technical assessment, industry benchmark), interprets "practicable" correctly as technical feasibility rather than commercial convenience, and connects the absence of the option directly to the commercial motivation documented in the General Counsel\'s email.'
           },
@@ -18016,7 +18016,7 @@ verdict: {
         evidenceId: 'ev6-statistics',
         oppositionArgument: 'Your Honour, even if FeedFlow\'s disclosures were technically incomplete, the Art. 27 obligations address transparency — not outcome. The fact that 89% of users did not correctly identify their feed as algorithmically curated does not establish that FeedFlow violated Art. 27. Users\' understanding of platform mechanics is influenced by many factors beyond what appears in terms of service — media literacy, attention, prior platform experience. The DSA does not require platforms to guarantee user comprehension of their terms; it requires that the information be available. If FeedFlow includes parameter information in its terms of service, the Art. 27(1) obligation is satisfied regardless of whether any particular user reads or understands it.',
         writePrompt: 'Opposing counsel argues that Art. 27 requires availability of information, not comprehension, and that user survey results are irrelevant to the legal violation. Counter this by explaining why FeedFlow\'s position of zero disclosure fails Art. 27(1) on any interpretation, and why Art. 27(3) requires an accessible, functional option.',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Zero Disclosure Fails All Standards',
@@ -18039,7 +18039,7 @@ verdict: {
           {
             id: 'arg3-strong',
             quality: 'strong',
-            text: 'Your Honour, the availability argument assumes information exists somewhere on the platform that users could theoretically read. FeedFlow\'s position is not inadequate disclosure — it is zero disclosure. The technical audit confirmed that FeedFlow\'s terms of service, privacy policy, help centre, and all account settings screens contain no reference to any recommendation parameter. Information that does not exist anywhere on the platform cannot be "available" to users under any interpretation of Art. 27(1). The survey evidence is therefore not needed to establish the Art. 27(1) violation — it simply demonstrates the predictable consequence of providing no information.',
+            text: 'Your Honour, the availability argument assumes information exists somewhere on the platform that users could theoretically read. FeedFlow\'s position is not inadequate disclosure — it is zero disclosure. The technical audit confirmed that FeedFlow\'s terms of service, privacy policy, help centre, and all account settings screens contain no reference to any recommendation parameter. Information that does not exist anywhere on the platform cannot be "available" to users under any interpretation of Art. 27(1). The survey evidence is therefore not needed to establish the Art. 27(1) violation — it simply demonstrates the predictable consequence of providing no information. For Art. 27(3), the availability argument does not even apply: the obligation requires an affirmative product feature — an option users can select — not a statement in terms of service. A non-profiling alternative that does not exist cannot be "available" regardless of any comprehension standard. FeedFlow offers neither a compliant disclosure nor a compliant alternative. Both violations are complete and require no user survey evidence to establish.',
             judge_response: 'A clean and precise argument. The distinction between inadequate disclosure and zero disclosure, and the separate treatment of Art. 27(1) information obligations and Art. 27(3) product feature obligations, is the correct analytical structure.',
             legal_reasoning: 'The strongest argument. It cuts through the availability vs. comprehension debate by establishing that the question does not arise when there is nothing to be comprehended — zero disclosure fails Art. 27(1) on any interpretation. It separately addresses Art. 27(3) by identifying that an option that does not exist cannot be evaluated on any availability standard. Both violations are established without requiring survey evidence, while noting the survey\'s illustrative value.'
           },
@@ -18147,7 +18147,7 @@ verdict: {
       prompt: 'Vetted academic researchers with DSC approval applied for data access to study hate speech amplification. SocialPulse denied all access and offered aggregated statistics instead. Which legal framework most directly governs SocialPulse\'s obligations here?',
       correct: 'dsa',
       writePrompt: 'Identify the EU digital law framework that specifically creates enforceable data access rights for vetted researchers studying VLOP systemic risks. Justify why this framework is more directly applicable than the alternatives.',
-      minWords: 25,
+      minWords: 10,
       requiredConcepts: [
         {
           name: 'Art. 40 Researcher Data Access Right',
@@ -18188,7 +18188,7 @@ verdict: {
       prompt: 'SocialPulse denied all vetted researcher data access on trade secrecy and privacy grounds and offered aggregated statistics instead. Which specific DSA provision creates the obligation it violated?',
       correct: 'art40-4',
       writePrompt: 'Identify the specific Art. 40 provision and explain why blanket denial on trade secrecy and privacy grounds, combined with the offer of aggregated statistics, fails to satisfy it.',
-      minWords: 20,
+      minWords: 10,
       requiredConcepts: [
         {
           name: 'Art. 40(4) Data Access Obligation',
@@ -18324,7 +18324,7 @@ verdict: {
         evidenceId: 'ev2-denial-letter',
         oppositionArgument: 'Your Honour, Art. 40(4) DSA states that data access obligations are "without prejudice to" applicable confidentiality and trade secrecy protections under EU law. Trade secrecy is protected by Directive 2016/943 and represents a fundamental property right under EU law. SocialPulse\'s recommendation sequence logs and content classification labels are the product of years of engineering investment and constitute protectable trade secrets. Art. 40 cannot be read to abrogate trade secrecy protections entirely — "without prejudice to" means those protections survive. A platform cannot be compelled to hand core proprietary systems to academic researchers who may subsequently publish findings that inform regulatory proceedings or assist competitors.',
         writePrompt: 'Opposing counsel argues "without prejudice to" trade secrecy means trade secrets can block access. Counter this by explaining what Art. 40(4)\'s "without prejudice to" language actually means and why blanket denial on trade secrecy grounds fails its own standard.',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: '"Without Prejudice To" Means Safeguards Within Access',
@@ -18347,14 +18347,14 @@ verdict: {
           {
             id: 'arg1-strong',
             quality: 'strong',
-            text: 'Your Honour, the phrase "without prejudice to" in Art. 40(4) does not mean trade secrecy overrides the access right — it means trade secrecy is protected through the access mechanism. The EU legislature designed Art. 40 knowing that VLOPs hold commercially sensitive data. The response to that knowledge was not to exempt sensitive data from access — it was to create the secure research environment framework, with strict confidentiality agreements, access limited to vetted researchers in controlled environments, no data export, and Art. 40(12) criminal and civil liability for researchers who breach confidentiality.',
+            text: 'Your Honour, the phrase "without prejudice to" in Art. 40(4) does not mean trade secrecy overrides the access right — it means trade secrecy is protected through the access mechanism. The EU legislature designed Art. 40 knowing that VLOPs hold commercially sensitive data. The response to that knowledge was not to exempt sensitive data from access — it was to create the secure research environment framework, with strict confidentiality agreements, access limited to vetted researchers in controlled environments, no data export, and Art. 40(12) criminal and civil liability for researchers who breach confidentiality. These are the prescribed trade secrecy protections, and they are activated by engaging with the framework, not by refusing to engage with it. SocialPulse\'s own Head of Regulatory Affairs correctly identified that "without prejudice to" requires implementing measures to protect secrecy within the access — that is the legally correct reading. Blanket denial using trade secrecy as a veto circumvents the framework the DSA specifically created for this concern. It is not a lawful application of Art. 40(4) — it is a refusal to comply with Art. 40 dressed in Art. 40 language.',
             judge_response: 'A well-grounded argument. The distinction between trade secrecy as a protection mechanism within access and as a veto over access is the correct interpretation of Art. 40(4), and your use of SocialPulse\'s own legal assessment supports it.',
             legal_reasoning: 'The strongest argument. It applies the correct interpretation of "without prejudice to" by identifying the SRE framework as the prescribed trade secrecy solution, uses SocialPulse\'s own internal legal assessment as corroboration, and identifies blanket denial as a misuse of Art. 40(4) language rather than a legitimate application of it.'
           },
           {
             id: 'arg1-weak',
             quality: 'weak',
-            text: 'Your Honour, trade secrecy cannot override a clear statutory obligation. The DSA requires researcher access and SocialPulse refused it. No platform can use trade secrecy as a blanket veto over EU law — if trade secrets could block Art. 40 access, the entire provision would be meaningless since every VLOP holds commercially sensitive data. The Commission should reject the trade secrecy defence entirely and find the violation without further analysis of what "without prejudice to" means. The Authority should send a clear signal that digital platforms cannot treat their users this way and must be held to higher standards of fairness and accountability.',
+            text: 'Your Honour, trade secrecy cannot override a clear statutory obligation. The DSA requires researcher access and SocialPulse refused it. No platform can use trade secrecy as a blanket veto over EU law — if trade secrets could block Art. 40 access, the entire provision would be meaningless since every VLOP holds commercially sensitive data. The Commission should reject the trade secrecy defence entirely and find the violation without further analysis of what "without prejudice to" means.',
             judge_response: 'Counsel, the "without prejudice to" language in Art. 40(4) specifically preserves trade secrecy protections and requires legal analysis of what that means. Your argument dismisses a genuine legal question without answering it. Explain the correct interpretation of the provision rather than asserting the trade secrecy argument has no force.',
             legal_reasoning: 'Correctly identifies the conclusion (trade secrecy does not block Art. 40 access) but does not interpret the "without prejudice to" language or explain the SRE framework as the prescribed solution. The argument concedes the legal question by dismissing it rather than answering it, and invites the judge to resolve the Art. 40(4) interpretive question without guidance from the complainant\'s counsel.'
           },
@@ -18379,7 +18379,7 @@ verdict: {
         evidenceId: 'ev3-internal-email',
         oppositionArgument: 'Your Honour, SocialPulse\'s privacy concerns are genuine and legally founded. The post-level engagement data, recommendation logs, and classification labels requested could, in combination, enable the re-identification of individual users even through an SRE. GDPR imposes absolute obligations on data controllers — SocialPulse cannot simply outsource its GDPR compliance assessment to a DSC vetting decision. Art. 40 must be read consistently with GDPR, and where a specific access request poses re-identification risks that the SRE safeguards cannot adequately address, a data controller is entitled — indeed required — to decline access. The researchers\' proposed safeguards do not transfer GDPR liability from SocialPulse to the researchers.',
         writePrompt: 'Opposing counsel argues GDPR re-identification risk justifies denial regardless of SRE safeguards. Counter this by explaining the relationship between Art. 40 and GDPR and why the Art. 40 framework was specifically designed to address this concern.',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Art. 40 Framework Designed to Address Privacy',
@@ -18402,14 +18402,14 @@ verdict: {
           {
             id: 'arg2-strong',
             quality: 'strong',
-            text: 'Your Honour, the privacy argument fails on two independent grounds. First, as a matter of legal design: the Art. 40 framework and the delegated act were developed in explicit consultation with data protection authorities to ensure GDPR compatibility. The SRE mechanism — controlled access environment, anonymisation, no data export, purpose limitation to approved research, and Art. 40(12) researcher confidentiality obligations creating direct legal liability — represents the EU legislature\'s and data protection authorities\' own assessment of what safeguards are sufficient. A data controller asserting that this framework does not adequately address re-identification risks is asserting that the EU legislature and the data protection authorities who shaped the framework reached the wrong conclusion.',
+            text: 'Your Honour, the privacy argument fails on two independent grounds. First, as a matter of legal design: the Art. 40 framework and the delegated act were developed in explicit consultation with data protection authorities to ensure GDPR compatibility. The SRE mechanism — controlled access environment, anonymisation, no data export, purpose limitation to approved research, and Art. 40(12) researcher confidentiality obligations creating direct legal liability — represents the EU legislature\'s and data protection authorities\' own assessment of what safeguards are sufficient. A data controller asserting that this framework does not adequately address re-identification risks is asserting that the EU legislature and the data protection authorities who shaped the framework reached the wrong conclusion. Second, as a matter of fact: SocialPulse\'s own internal legal assessment confirmed the privacy defence was legally indefensible when the prescribed safeguards have been offered. The decision to deny was not made because the privacy concern was genuine — it was made because, as the CEO\'s email states, research findings could be used in future regulatory proceedings. A privacy defence that was internally identified as pretextual and overruled for self-protective regulatory reasons is not a defence — it is a post-hoc justification.',
             judge_response: 'A strong two-ground argument. The legislative design point addresses the privacy defence on its legal merits, and the internal evidence point addresses its genuineness. Together they are comprehensive.',
             legal_reasoning: 'The strongest argument. It addresses the privacy defence on two independent grounds — legal design (the framework was built for this concern) and factual genuineness (the CEO email establishes the true motivation). Both are necessary because the privacy argument has surface plausibility that requires both legal and factual rebuttal.'
           },
           {
             id: 'arg2-weak',
             quality: 'weak',
-            text: 'Your Honour, SocialPulse\'s privacy argument is obviously pretextual. The CEO\'s email says "deny" because research findings could be used against the company — that is the real reason. Trade secrecy and privacy are covers for a commercial self-protection decision. The DSA cannot permit platforms to invoke user privacy as a shield against independent research that might reveal platform failures. The Commission should see through this and find the violation on the basis of the CEO email alone. Any reasonable person would recognise that the platform acted improperly and that meaningful intervention is needed to prevent this from happening again to other users.',
+            text: 'Your Honour, SocialPulse\'s privacy argument is obviously pretextual. The CEO\'s email says "deny" because research findings could be used against the company — that is the real reason. Trade secrecy and privacy are covers for a commercial self-protection decision. The DSA cannot permit platforms to invoke user privacy as a shield against independent research that might reveal platform failures. The Commission should see through this and find the violation on the basis of the CEO email alone.',
             judge_response: 'Counsel, the CEO email is powerful evidence of motivation but does not legally resolve whether GDPR re-identification risk is a valid denial ground. You must address the legal question — why the Art. 40 framework satisfies the privacy concern — not just assert that the privacy argument is pretextual.',
             legal_reasoning: 'Relies entirely on the CEO email to establish pretext without addressing the legal merit of the privacy argument. The opponent has raised a genuine GDPR re-identification concern that requires legal rebuttal — specifically the framework design argument showing the SRE safeguards were developed in consultation with data protection authorities. Asserting pretext without legal analysis leaves the privacy question unanswered.'
           },
@@ -18434,7 +18434,7 @@ verdict: {
         evidenceId: 'ev6-statistics',
         oppositionArgument: 'Your Honour, Art. 40(5) DSA permits VLOPs to refuse access where they have "reasonable grounds to believe" the access request is not compatible with the purpose of the provision or where it would cause serious harm. SocialPulse had reasonable grounds to believe the research could be used as a basis for regulatory proceedings — an outcome that goes beyond the research purposes Art. 40 was designed to serve. The DSA does not require VLOPs to subsidise the production of evidence for regulatory use against themselves. Furthermore, even if the denial was imperfect, the appropriate remedy is a procedural improvement order — not the kind of systemic violation finding and financial penalty the Commission is seeking.',
         writePrompt: 'Opposing counsel argues Art. 40(5) reasonable grounds justify denial and that any remedy should be procedural. Counter this by explaining why protecting oneself from future regulatory scrutiny is not a permitted Art. 40(5) ground and why the systemic nature of the non-compliance justifies a substantial finding.',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Art. 40(5) Permitted Grounds',
@@ -18457,14 +18457,14 @@ verdict: {
           {
             id: 'arg3-strong',
             quality: 'strong',
-            text: 'Your Honour, Art. 40(5) permits denial where access would be incompatible with the purpose of Art. 40 or cause serious harm. Art. 40\'s purpose is to enable independent research into VLOP systemic risks — including the kind of algorithmic amplification research the Vasquez consortium proposed. A platform invoking Art. 40(5) to deny access specifically because research findings might be used in regulatory proceedings is not asserting incompatibility with Art. 40\'s purpose — it is asserting opposition to it. The purpose of Art. 40 is precisely to generate independent evidence about platform conduct that can inform regulatory oversight.',
+            text: 'Your Honour, Art. 40(5) permits denial where access would be incompatible with the purpose of Art. 40 or cause serious harm. Art. 40\'s purpose is to enable independent research into VLOP systemic risks — including the kind of algorithmic amplification research the Vasquez consortium proposed. A platform invoking Art. 40(5) to deny access specifically because research findings might be used in regulatory proceedings is not asserting incompatibility with Art. 40\'s purpose — it is asserting opposition to it. The purpose of Art. 40 is precisely to generate independent evidence about platform conduct that can inform regulatory oversight. Protecting a platform from that purpose is not a permitted Art. 40(5) ground — it is a statement of intent to undermine the provision. On remedy: SocialPulse has denied 100% of 14 applications over two years, has built no SRE infrastructure, and has never engaged with Art. 40 as a compliance obligation. This is not an imperfect procedural implementation — it is structural non-compliance equivalent in kind to the conduct that attracted a EUR 120M fine against X. The appropriate remedy reflects that systemic reality.',
             judge_response: 'A strong and precise argument. The analysis of Art. 40(5)\'s permitted grounds is legally correct, and the structural non-compliance characterisation is well-supported by the statistical evidence.',
             legal_reasoning: 'The strongest argument. It applies Art. 40(5) correctly by identifying that avoiding regulatory scrutiny directly contradicts Art. 40\'s purpose rather than being incompatible with it, connects the 100% denial rate and SRE absence to establish structural non-compliance, and invokes the X precedent to calibrate the appropriate remedy.'
           },
           {
             id: 'arg3-weak',
             quality: 'weak',
-            text: 'Your Honour, SocialPulse\'s argument that it can protect itself from regulatory proceedings by denying researcher access is outrageous. It amounts to saying: "We can block any research that might reveal our failings." If this interpretation of Art. 40(5) were accepted, every platform could deny every request on the grounds that research might be used against them — making Art. 40 completely useless. The Commission should impose the maximum available fine to send a clear deterrence signal to the industry about the consequences of treating Art. 40 as optional. This kind of behaviour should not be tolerated in a modern digital marketplace and the Authority must take decisive action to protect the rights of affected users.',
+            text: 'Your Honour, SocialPulse\'s argument that it can protect itself from regulatory proceedings by denying researcher access is outrageous. It amounts to saying: "We can block any research that might reveal our failings." If this interpretation of Art. 40(5) were accepted, every platform could deny every request on the grounds that research might be used against them — making Art. 40 completely useless. The Commission should impose the maximum available fine to send a clear deterrence signal to the industry about the consequences of treating Art. 40 as optional.',
             judge_response: 'Counsel, the slippery slope argument has force, but you must apply the Art. 40(5) legal standard rather than characterise the opponent\'s argument as outrageous. Explain specifically why regulatory self-protection falls outside the permitted grounds in Art. 40(5), and why the remedy should be substantial on the specific facts of this case.',
             legal_reasoning: 'Correctly identifies the logical consequence of the opponent\'s Art. 40(5) argument but frames it as a moral indignation response rather than legal analysis. The Art. 40(5) standard requires specific analysis of what "incompatible with the purpose" means — the argument implies this analysis without conducting it. Calling for maximum fines before establishing the appropriate remedy also conflates the liability and penalty stages.'
           },
@@ -18564,7 +18564,7 @@ verdict: {
       prompt: 'GlobalChat\'s Art. 34 risk assessment is three pages, contains no algorithmic analysis, no prior incident review, and is word-for-word identical to the previous year\'s document despite three major misinformation events. Which legal framework most directly governs this failure?',
       correct: 'dsa',
       writePrompt: 'Identify the EU digital law framework that specifically creates obligations for VLOPs to conduct systemic risk assessments examining specific factors including algorithmic systems and prior incidents. Justify why this framework applies rather than the alternatives.',
-      minWords: 25,
+      minWords: 10,
       requiredConcepts: [
         {
           name: 'Art. 34 Systemic Risk Assessment Obligation',
@@ -18605,7 +18605,7 @@ verdict: {
       prompt: 'GlobalChat\'s assessment names risk categories without analysing algorithmic amplification, prior incidents, vulnerable groups, or advertising interactions. Which DSA provision creates the obligation this failure most directly violates?',
       correct: 'art34-2',
       writePrompt: 'Identify the exact provision and explain the specific mandatory factors it requires risk assessments to address — and which of those are entirely absent from GlobalChat\'s document.',
-      minWords: 20,
+      minWords: 10,
       requiredConcepts: [
         {
           name: 'Article 34(2) Mandatory Factors',
@@ -18741,7 +18741,7 @@ verdict: {
         evidenceId: 'ev1-assessment-document',
         oppositionArgument: 'Your Honour, GlobalChat\'s Art. 34 assessment identifies the relevant systemic risk categories — misinformation and hate speech — and states the mitigations in place. Art. 34(1) requires VLOPs to "identify, analyse and assess" systemic risks. GlobalChat has done this: it has identified the risks and assessed them as medium probability, medium impact. Art. 34 does not prescribe a minimum document length, a required methodology, or a minimum number of factors to be analysed. The DSA is not a methodology regulation — it sets a compliance obligation. A platform that identifies applicable risks and states its mitigations has complied with Art. 34 regardless of how another party might prefer the document to be structured.',
         writePrompt: 'Opposing counsel argues identifying risks and stating mitigations satisfies Art. 34(1), and that the DSA does not prescribe methodology. Counter this by explaining what "diligently analyse and assess" requires under Art. 34(1) and what the mandatory factors in Art. 34(2) add.',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Diligently Analyse and Assess Standard',
@@ -18764,7 +18764,7 @@ verdict: {
           {
             id: 'arg1-strong',
             quality: 'strong',
-            text: 'Your Honour, Art. 34(1) does not merely require VLOPs to identify and name risks — it requires them to "diligently identify, analyse and assess" those risks. "Analyse" means examining the specific mechanisms through which risks operate on the platform — not stating that the risk exists in the abstract. Art. 34(2) specifies that risk assessments "shall take into account, in particular" eight enumerated factors including how algorithmic systems and recommender systems are used, content moderation processes, advertising systems, and vulnerable group exposure. "Shall take into account, in particular" is mandatory language — these factors must be addressed. GlobalChat\'s assessment addresses zero of the eight Art. 34(2) factors.',
+            text: 'Your Honour, Art. 34(1) does not merely require VLOPs to identify and name risks — it requires them to "diligently identify, analyse and assess" those risks. "Analyse" means examining the specific mechanisms through which risks operate on the platform — not stating that the risk exists in the abstract. Art. 34(2) specifies that risk assessments "shall take into account, in particular" eight enumerated factors including how algorithmic systems and recommender systems are used, content moderation processes, advertising systems, and vulnerable group exposure. "Shall take into account, in particular" is mandatory language — these factors must be addressed. GlobalChat\'s assessment addresses zero of the eight Art. 34(2) factors. It does not mention the recommendation algorithm that drives 65% of content exposure. It does not analyse how misinformation spreads through GlobalChat\'s specific architecture. It does not assess vulnerable user groups despite documented harm patterns in Hungary and Romania. The DSA does not prescribe a minimum page count — but it does prescribe specific mandatory factors, and GlobalChat\'s complete failure to address any of them is not a methodology choice. It is non-compliance with the substantive legal standard.',
             judge_response: 'A well-grounded argument. The distinction between the general identification obligation and the specific mandatory factors in Art. 34(2), combined with the complete absence of all eight factors, applies the Art. 34 standard with precision.',
             legal_reasoning: 'The strongest argument. It distinguishes "identify" from "diligently analyse and assess" to address the opponent\'s conflation, applies the "shall take into account, in particular" mandatory language to the eight Art. 34(2) factors, and demonstrates total failure (zero of eight factors addressed) rather than partial shortfall — making the non-compliance definitive.'
           },
@@ -18796,7 +18796,7 @@ verdict: {
         evidenceId: 'ev3-internal-email',
         oppositionArgument: 'Your Honour, GlobalChat\'s risk profile for misinformation and hate speech is genuinely stable year-to-year — these are persistent platform risks that do not fundamentally change annually. The "medium probability, medium impact" classifications reflect a considered judgment that these risks are real but manageable through existing mitigations. The fact that three viral events occurred does not mean the risk assessment was wrong — it means the risk materialised, as medium-probability risks sometimes do. Probability assessments in risk management are inherently forward-looking estimates, not guarantees. Requiring platforms to revise risk classifications every time a risk materialises would make Art. 34 assessments reactive incident reports rather than strategic risk frameworks.',
         writePrompt: 'Opposing counsel argues that risk classifications are forward-looking estimates that need not change when risks materialise. Counter this by explaining how the three viral events affect the diligent assessment standard under Art. 34(1) and what their omission from the assessment demonstrates.',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Available Evidence Standard',
@@ -18819,14 +18819,14 @@ verdict: {
           {
             id: 'arg2-strong',
             quality: 'strong',
-            text: 'Your Honour, Art. 34(1) requires VLOPs to diligently "analyse and assess" systemic risks — the standard requires engagement with available evidence. Three viral events that caused real-world violence, vaccination declines, and contributed to documented ethnic violence occurred during the assessment year and were available as evidence before the assessment was published. A diligent assessment would have analysed those events to understand how the risks they represent were amplified through GlobalChat\'s specific algorithmic architecture. Instead, the 2025 assessment is word-for-word identical to the 2024 assessment — including identical probability and impact classifications for risks that visibly and severely materialised.',
+            text: 'Your Honour, Art. 34(1) requires VLOPs to diligently "analyse and assess" systemic risks — the standard requires engagement with available evidence. Three viral events that caused real-world violence, vaccination declines, and contributed to documented ethnic violence occurred during the assessment year and were available as evidence before the assessment was published. A diligent assessment would have analysed those events to understand how the risks they represent were amplified through GlobalChat\'s specific algorithmic architecture. Instead, the 2025 assessment is word-for-word identical to the 2024 assessment — including identical probability and impact classifications for risks that visibly and severely materialised. An unchanged "medium probability" classification through a year of three major incidents is not a forward-looking estimate — it is evidence that no new estimation was made. The forward-looking argument fails because a diligent forward-looking assessment requires incorporating prior experience to calibrate future probability. Omitting three incidents from the assessment was not a methodological choice — it was the only possible outcome of using the prior year\'s template without gathering new evidence.',
             judge_response: 'A well-structured argument. The distinction between a forward-looking estimate that incorporates prior experience and an unchanged template that ignores it is the correct application of the Art. 34(1) diligence standard.',
             legal_reasoning: 'The strongest argument. It applies the diligence standard directly to the available evidence requirement, uses the word-for-word identical assessment as proof that no new assessment occurred, and turns the "forward-looking" argument against the opponent by showing that diligent forward-looking assessment requires calibration from prior evidence. The three-events omission is framed as an inevitable consequence of template reuse rather than a separate methodological choice.'
           },
           {
             id: 'arg2-weak',
             quality: 'weak',
-            text: 'Your Honour, describing a year with three major viral misinformation events causing real-world violence as having a "stable risk profile" is absurd. Medium probability means the risk might happen — three events in one year means it happened three times. The classification is clearly wrong. No risk assessment that gets the facts this wrong can be described as diligent. GlobalChat is essentially arguing that it conducted a risk assessment and the risk happened exactly as it said it would, therefore everything is fine. That circular logic should be rejected. The Authority should send a clear signal that digital platforms cannot treat their users this way and must be held to higher standards of fairness and accountability.',
+            text: 'Your Honour, describing a year with three major viral misinformation events causing real-world violence as having a "stable risk profile" is absurd. Medium probability means the risk might happen — three events in one year means it happened three times. The classification is clearly wrong. No risk assessment that gets the facts this wrong can be described as diligent. GlobalChat is essentially arguing that it conducted a risk assessment and the risk happened exactly as it said it would, therefore everything is fine. That circular logic should be rejected.',
             judge_response: 'Counsel, probability classifications in risk management are not falsified by risk materialisation — events occurring within a probability range confirms, not contradicts, the assessment. You need to address why the unchanged classification fails the Art. 34(1) diligent standard by reference to the available evidence requirement, not by arguing the classification was simply wrong.',
             legal_reasoning: 'Misunderstands probability risk management — a risk with "medium probability" can materialise multiple times in a year without that proving the classification was wrong. The argument is logically incorrect and invites the opponent to explain probability distributions, which strengthens rather than undermines the opposition case. The correct argument — diligent assessment requires incorporating available evidence to calibrate classifications — is absent.'
           },
@@ -18851,7 +18851,7 @@ verdict: {
         evidenceId: 'ev6-statistics',
         oppositionArgument: 'Your Honour, even if Art. 34(2) factors could be more fully addressed, GlobalChat\'s assessment is not uniquely deficient in the market. The DSA has only been fully applicable since February 2024 and platforms are still developing their assessment methodologies. Art. 34 compliance is an evolving practice area. Imposing significant findings and penalties on GlobalChat for a risk assessment that identifies the right risk categories, even if imperfectly detailed, would chill the good-faith compliance efforts of all VLOPs who are still building their assessment processes. The appropriate response is corrective guidance — not a finding of systemic violation.',
         writePrompt: 'Opposing counsel argues DSA compliance is still evolving and the assessment is not uniquely bad. Counter this by establishing the specific nature and scale of GlobalChat\'s failure and why the "still developing" argument cannot excuse total absence of mandatory factors.',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Total Absence vs. Imperfect Compliance',
@@ -18874,7 +18874,7 @@ verdict: {
           {
             id: 'arg3-strong',
             quality: 'strong',
-            text: 'Your Honour, the "still developing" argument would have some force if GlobalChat were making good-faith efforts to build assessment capacity while struggling with a new regulatory framework. But the evidence shows the opposite. The industry comparison demonstrates that every comparable VLOP in the assessment addressed algorithmic system analysis and prior incident analysis — GlobalChat is not lagging behind an emerging industry standard, it is the only assessed platform that addressed zero of the mandatory factors. More critically, GlobalChat\'s own compliance manager identified the specific deficiencies in October 2025 — well within the DSA\'s applicable period — and the General Counsel overruled the recommendation to involve Data Science, citing product cycle resource constraints.',
+            text: 'Your Honour, the "still developing" argument would have some force if GlobalChat were making good-faith efforts to build assessment capacity while struggling with a new regulatory framework. But the evidence shows the opposite. The industry comparison demonstrates that every comparable VLOP in the assessment addressed algorithmic system analysis and prior incident analysis — GlobalChat is not lagging behind an emerging industry standard, it is the only assessed platform that addressed zero of the mandatory factors. More critically, GlobalChat\'s own compliance manager identified the specific deficiencies in October 2025 — well within the DSA\'s applicable period — and the General Counsel overruled the recommendation to involve Data Science, citing product cycle resource constraints. This is not a good-faith methodology challenge. It is a deliberate decision to produce an inadequate assessment for resource reasons, despite specific internal warnings, over two years into the DSA\'s applicability. The corrective guidance argument does not apply to knowing, commercially-motivated non-compliance — it applies to platforms making genuine but imperfect compliance efforts. GlobalChat made no effort to comply with Art. 34(2). A finding of violation with proportionate consequences reflects that reality.',
             judge_response: 'A strong argument that distinguishes good-faith methodology development from deliberate non-compliance with known requirements. The industry comparison and internal evidence together are compelling.',
             legal_reasoning: 'The strongest argument. It distinguishes genuine methodology challenges from deliberate non-compliance by using both the industry benchmark (zero factors vs. all-comparable-platform compliance) and the internal evidence (known deficiencies, commercially motivated override). The "still developing" defence is rebutted by both the industry standard and the internal memo timeline.'
           },
@@ -18983,7 +18983,7 @@ verdict: {
       prompt: 'InfoStream classified election interference as its highest risk, implemented only a content label that covered 0.1% of flagged posts and had zero measurable effect on sharing, and made no algorithmic or advertising changes. Which legal framework most directly governs this failure?',
       correct: 'dsa',
       writePrompt: 'Identify the EU digital law framework that specifically requires VLOPs to implement mitigation measures for identified systemic risks that meet a substantive effectiveness standard. Justify why this framework is more directly applicable than the alternatives.',
-      minWords: 25,
+      minWords: 10,
       requiredConcepts: [
         {
           name: 'Art. 35 Mitigation Effectiveness Obligation',
@@ -19024,7 +19024,7 @@ verdict: {
       prompt: 'InfoStream implemented one mitigation — a label covering 0.1% of flagged posts with zero measurable effect on sharing — for a risk it classified as highest priority. Which specific DSA provision creates the obligation this mitigation fails to satisfy?',
       correct: 'art35-1',
       writePrompt: 'Identify the exact article and explain the three-part standard it imposes — and apply each part to InfoStream\'s label measure.',
-      minWords: 20,
+      minWords: 10,
       requiredConcepts: [
         {
           name: 'Art. 35(1) Three-Part Standard',
@@ -19158,7 +19158,7 @@ verdict: {
         evidenceId: 'ev3-internal-email',
         oppositionArgument: 'Your Honour, Art. 35(1) requires mitigation measures that are "reasonable, proportionate and effective." Content labelling is reasonable — it is the approach adopted by the majority of major social media platforms as their primary election integrity measure, including platforms specifically endorsed by the Commission\'s Code of Practice on Disinformation. Industry consensus on a mitigation measure is powerful evidence of its reasonableness. Art. 35(1) does not require platforms to adopt the most effective possible measure — it requires a reasonable one. The DSA was not designed to compel platforms to implement specific technical architectures like algorithmic downranking. Labelling satisfies the reasonableness requirement regardless of what alternative measures the complainant would prefer.',
         writePrompt: 'Opposing counsel argues industry consensus establishes reasonableness and that Art. 35(1) requires only a reasonable measure. Counter this by explaining the cumulative three-part standard in Art. 35(1) and why reasonableness alone is insufficient when effectiveness is independently required.',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Cumulative Three-Part Standard',
@@ -19181,7 +19181,7 @@ verdict: {
           {
             id: 'arg1-strong',
             quality: 'strong',
-            text: 'Your Honour, Art. 35(1) requires measures that are reasonable, proportionate — and effective. These are three cumulative requirements joined by "and" — a measure must satisfy all three independently. The opponent\'s argument addresses only the first: that labelling is reasonable because industry-standard. Even if reasonableness is conceded, InfoStream must separately satisfy proportionality and effectiveness. Effectiveness is assessed against the specific identified risk mechanism. InfoStream\'s Art. 34 assessment identifies the risk mechanism as algorithmic amplification of false electoral content to users who did not seek it.',
+            text: 'Your Honour, Art. 35(1) requires measures that are reasonable, proportionate — and effective. These are three cumulative requirements joined by "and" — a measure must satisfy all three independently. The opponent\'s argument addresses only the first: that labelling is reasonable because industry-standard. Even if reasonableness is conceded, InfoStream must separately satisfy proportionality and effectiveness. Effectiveness is assessed against the specific identified risk mechanism. InfoStream\'s Art. 34 assessment identifies the risk mechanism as algorithmic amplification of false electoral content to users who did not seek it. The University of Vienna study demonstrates that the label had zero measurable effect on sharing behaviour — the labelled posts spread at exactly the same rate and to the same total audience as unlabelled posts. A measure with zero measurable effect on the identified risk mechanism is not effective against that mechanism by any standard. Industry adoption of an ineffective measure does not make it effective — it simply means the industry is collectively failing the Art. 35(1) effectiveness standard. The cumulative nature of the test means InfoStream cannot satisfy Art. 35(1) on reasonableness alone while its measure produces zero effect.',
             judge_response: 'A well-grounded argument. The cumulative nature of Art. 35(1)\'s three-part standard and the application of effectiveness to the specific identified risk mechanism is the correct legal analysis.',
             legal_reasoning: 'The strongest argument. It applies Art. 35(1) as a cumulative standard, concedes reasonableness arguendo to focus on the effectiveness failure, applies effectiveness to the specific risk mechanism identified in the Art. 34 assessment, uses the study\'s zero-effect finding as the definitive effectiveness evidence, and addresses the industry standard argument directly by showing industry adoption cannot substitute for the effectiveness requirement.'
           },
@@ -19213,7 +19213,7 @@ verdict: {
         evidenceId: 'ev5-coverage-data',
         oppositionArgument: 'Your Honour, Art. 35(1) does not require platforms to mitigate 100% of identified risk instances — it requires measures that are proportionate to the risk. Content classification systems produce confidence scores; higher-confidence flags warrant stronger intervention. InfoStream labelled the highest-confidence cases, which is a proportionate response to classification uncertainty. Furthermore, a content label is a less restrictive means of addressing disinformation than algorithmic downranking, which would interfere with political speech. Art. 35(1)\'s proportionality element requires selecting the least restrictive effective measure — labels satisfy this because they are less restrictive than algorithmic interventions while still addressing the identified risk.',
         writePrompt: 'Opposing counsel argues proportionality supports labelling over downranking, and that 0.1% coverage reflects appropriate confidence thresholds. Counter this by explaining why the 0.1% coverage and the unactioned algorithmic amplification pathway fail Art. 35(1)\'s proportionality standard independently.',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Proportionate to Risk Severity',
@@ -19236,14 +19236,14 @@ verdict: {
           {
             id: 'arg2-strong',
             quality: 'strong',
-            text: 'Your Honour, the proportionality argument fails on two grounds. First, the 0.1% coverage: Art. 35(1) requires measures proportionate to the identified risk — InfoStream classified election interference as high probability, high impact, its highest risk category. A measure addressing 0.1% of flagged content is not proportionate to the platform\'s highest priority risk by any reasonable standard. Proportionality means the response must be commensurate with the risk level; 0.1% coverage of an extreme risk is a structural mismatch regardless of confidence threshold justifications. Second, the algorithmic amplification pathway: InfoStream\'s algorithm actively amplified 284,000 flagged posts to users who never sought them out. No measure was applied to this pathway.',
+            text: 'Your Honour, the proportionality argument fails on two grounds. First, the 0.1% coverage: Art. 35(1) requires measures proportionate to the identified risk — InfoStream classified election interference as high probability, high impact, its highest risk category. A measure addressing 0.1% of flagged content is not proportionate to the platform\'s highest priority risk by any reasonable standard. Proportionality means the response must be commensurate with the risk level; 0.1% coverage of an extreme risk is a structural mismatch regardless of confidence threshold justifications. Second, the algorithmic amplification pathway: InfoStream\'s algorithm actively amplified 284,000 flagged posts to users who never sought them out. No measure was applied to this pathway. The confidence threshold argument does not explain why the algorithm was permitted to continue amplifying 284,000 flagged posts — amplification is a platform action, not a user choice. The least restrictive measure principle applies to choosing among effective alternatives, not to selecting an ineffective measure over an effective one because the effective measure is less comfortable. Downranking flagged political content does not remove it — it reduces the platform\'s own promotional decision. Withdrawing an algorithmic amplification subsidy from content the platform itself flagged as false is not restriction of political expression.',
             judge_response: 'A well-structured argument. The distinction between proportionality to risk severity and the confidence-threshold coverage justification, combined with the algorithmic amplification pathway analysis, applies Art. 35(1)\'s proportionality element precisely.',
             legal_reasoning: 'The strongest argument. It addresses proportionality at two levels — coverage against risk severity, and algorithmic amplification pathway — uses the 284,000 unamplified figure to establish the pathway failure, and directly addresses the least-restrictive argument by showing it applies to choosing among effective options, not to selecting ineffective ones. The amplification subsidy framing neutralises the free expression concern without conceding it.'
           },
           {
             id: 'arg2-weak',
             quality: 'weak',
-            text: 'Your Honour, 0.1% coverage is not proportionate to any risk, let alone the highest one. Even if we accepted that only high-confidence flags warrant action, InfoStream had 743,000 flagged posts and its algorithm amplified 284,000 of them to unsuspecting users. Labelling 743 of those and calling it proportionate to a high/high risk is absurd. The algorithm is the mechanism of harm and InfoStream did nothing about it. No confidence threshold justification can make inaction on the primary risk pathway proportionate. The Commission should reject this argument without further analysis. The Authority should send a clear signal that digital platforms cannot treat their users this way and must be held to higher standards of fairness and accountability.',
+            text: 'Your Honour, 0.1% coverage is not proportionate to any risk, let alone the highest one. Even if we accepted that only high-confidence flags warrant action, InfoStream had 743,000 flagged posts and its algorithm amplified 284,000 of them to unsuspecting users. Labelling 743 of those and calling it proportionate to a high/high risk is absurd. The algorithm is the mechanism of harm and InfoStream did nothing about it. No confidence threshold justification can make inaction on the primary risk pathway proportionate. The Commission should reject this argument without further analysis.',
             judge_response: 'Counsel, you are asserting the conclusion without applying the proportionality standard. Explain why the 0.1% coverage fails the Art. 35(1) proportionality test by reference to the specific risk classification and the scale of the unaddressed amplification pathway — the legal analysis needs more precision than characterising the argument as absurd.',
             legal_reasoning: 'Uses the correct evidence (0.1% coverage, 284,000 amplified posts) but argues by assertion rather than applying the proportionality standard. The legal argument requires connecting the high/high risk classification to the proportionality requirement — a response commensurate with the risk level — and addressing the confidence threshold argument and least restrictive measure claim that the opponent has specifically made. Characterising the opponent\'s argument as absurd substitutes rhetoric for legal analysis.'
           },
@@ -19268,7 +19268,7 @@ verdict: {
         evidenceId: 'ev6-statistics',
         oppositionArgument: 'Your Honour, Art. 35(1) effectiveness must be assessed prospectively at the time of implementation — platforms cannot be held to a retrospective standard where studies published after the election determine compliance. At the time of implementation, labelling was a reasonable choice with an uncertain but non-zero expected effect. Retroactive effectiveness assessment based on post-hoc studies would mean platforms only discover Art. 35(1) non-compliance after election periods have passed, making the obligation practically impossible to meet in advance. Furthermore, the University of Vienna study measures one election cycle — a single study does not establish that labels are categorically ineffective; it establishes they had no measurable effect in one specific context. Art. 35(1) should not be interpreted to require certainty of effectiveness before implementation.',
         writePrompt: 'Opposing counsel argues effectiveness must be assessed prospectively and that a single study is insufficient to establish categorical ineffectiveness. Counter this by explaining the prospective standard correctly and why the available pre-implementation evidence already established the label\'s ineffectiveness.',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Prospective Assessment With Available Evidence',
@@ -19291,7 +19291,7 @@ verdict: {
           {
             id: 'arg3-strong',
             quality: 'strong',
-            text: 'Your Honour, the prospective assessment argument is correct in principle — but it requires that the prospective assessment actually incorporate available evidence about likely effectiveness. InfoStream\'s Head of Election Integrity\'s memo, written before implementation, specifically cited industry research showing labels have negligible effect on sharing behaviour and recommended against label-only mitigation. A prospective assessment conducted at the time of implementation that ignored this specific available evidence was not a genuine prospective assessment — it was a conclusion reached for commercial reasons dressed as prospective compliance evaluation. The University of Vienna study did not generate a surprise finding; it confirmed precisely what InfoStream\'s own pre-implementation evidence predicted.',
+            text: 'Your Honour, the prospective assessment argument is correct in principle — but it requires that the prospective assessment actually incorporate available evidence about likely effectiveness. InfoStream\'s Head of Election Integrity\'s memo, written before implementation, specifically cited industry research showing labels have negligible effect on sharing behaviour and recommended against label-only mitigation. A prospective assessment conducted at the time of implementation that ignored this specific available evidence was not a genuine prospective assessment — it was a conclusion reached for commercial reasons dressed as prospective compliance evaluation. The University of Vienna study did not generate a surprise finding; it confirmed precisely what InfoStream\'s own pre-implementation evidence predicted. The "single study" argument would have force if the study produced an unexpected result contradicting the prior evidence base. It has no force when the study is consistent with the evidence InfoStream already held and deliberately set aside. The Art. 35(1) effectiveness standard requires that measures be expected to work based on available evidence — and the available evidence showed they would not.',
             judge_response: 'A strong argument that correctly applies the prospective standard while demonstrating that a genuine prospective assessment would have incorporated the available evidence InfoStream had and ignored. The distinction between a surprise finding and a confirmation is the correct analytical point.',
             legal_reasoning: 'The strongest argument. It accepts the prospective standard in principle but applies it correctly — prospective assessment requires incorporating available evidence, and InfoStream\'s memo shows available evidence was deliberately ignored. The study confirmation argument defeats the "single study" objection by showing the finding was not novel but predicted, making the single-study concern inapplicable.'
           },
@@ -19400,7 +19400,7 @@ verdict: {
       prompt: 'AdStream displays political ads as organic news posts with no labels, no sponsor identification, and no targeting disclosure. 73% of users cannot identify sponsored content as advertising. Which legal framework most directly governs these obligations?',
       correct: 'dsa',
       writePrompt: 'Identify the EU digital law framework that specifically creates real-time per-ad labelling, sponsor identification, and targeting parameter disclosure obligations for VLOPs. Justify why this framework is more directly applicable than the alternatives.',
-      minWords: 25,
+      minWords: 10,
       requiredConcepts: [
         {
           name: 'Art. 26 Advertising Transparency Obligations',
@@ -19441,7 +19441,7 @@ verdict: {
       prompt: 'AdStream displays no real-time ad labels on political ads and native boost, shows sponsor identity nowhere on individual ads, and provides targeting information only in a general privacy policy. Which specific DSA provision creates the three obligations it violated?',
       correct: 'art26-1',
       writePrompt: 'Identify the exact article and explain the three distinct requirements it imposes — and assess whether AdStream\'s current disclosures satisfy any of them.',
-      minWords: 20,
+      minWords: 10,
       requiredConcepts: [
         {
           name: 'Article 26(1) Three Requirements',
@@ -19577,7 +19577,7 @@ verdict: {
         evidenceId: 'ev3-internal-email',
         oppositionArgument: 'Your Honour, AdStream\'s privacy policy and advertising settings provide users with comprehensive information about how advertising works on the platform, including the categories of data used for targeting and how to manage advertising preferences. The EU legal tradition has long accepted that disclosure through accessible documentation — terms of service, privacy policies, and settings pages — satisfies transparency obligations. Art. 26(1) does not specify that disclosures must appear on the face of each individual advertisement. Requiring pixel-level per-ad labelling would impose a prescriptive technical architecture on platforms that the DSA\'s principles-based approach was designed to avoid. A platform that makes transparency information available and accessible satisfies the spirit of Art. 26.',
         writePrompt: 'Opposing counsel argues policy-level disclosures satisfy Art. 26(1) and that the DSA does not prescribe per-ad labelling. Counter this by explaining what Art. 26(1)\'s specific requirements actually demand and why policy disclosures fail each of the three requirements.',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Real-Time Per-Ad Standard',
@@ -19600,7 +19600,7 @@ verdict: {
           {
             id: 'arg1-strong',
             quality: 'strong',
-            text: 'Your Honour, Art. 26(1) uses the phrase "each individual advertisement" — the obligation is per-ad, not per-platform. It requires that content be clearly identifiable as advertising "when it is presented" — at the moment of display, not in a policy document accessible via six navigation steps. These are not principles-based obligations open to interpretive flexibility; they are specific technical requirements that apply at the point of content rendering. On sponsor identification: Art. 26(1)(b) requires identification of the natural or legal person "on whose behalf" a specific advertisement is presented — a generic privacy policy that describes advertising categories does not identify which of six Czech political parties paid for a specific post.',
+            text: 'Your Honour, Art. 26(1) uses the phrase "each individual advertisement" — the obligation is per-ad, not per-platform. It requires that content be clearly identifiable as advertising "when it is presented" — at the moment of display, not in a policy document accessible via six navigation steps. These are not principles-based obligations open to interpretive flexibility; they are specific technical requirements that apply at the point of content rendering. On sponsor identification: Art. 26(1)(b) requires identification of the natural or legal person "on whose behalf" a specific advertisement is presented — a generic privacy policy that describes advertising categories does not identify which of six Czech political parties paid for a specific post. On targeting parameters: Art. 26(1)(c) requires "meaningful information about the main parameters used to determine the targeting" of the specific ad — not a generic description of AdStream\'s advertising data practices. All three requirements are ad-specific, real-time obligations that require per-ad disclosure at the point of display. Policy-level documentation cannot satisfy per-ad obligations regardless of how accessible that documentation is.',
             judge_response: 'A well-grounded argument. The per-ad, real-time nature of Art. 26(1)\'s three requirements, and the application of each to AdStream\'s policy-level disclosures, is the correct legal analysis.',
             legal_reasoning: 'The strongest argument. It applies the "each individual advertisement" and "when presented" language from Art. 26(1) to establish the per-ad, real-time standard, then applies each of the three requirements individually to AdStream\'s policy disclosures to show none of them can be satisfied by generic documentation. The political party identification example concretises the sponsor requirement effectively.'
           },
@@ -19632,7 +19632,7 @@ verdict: {
         evidenceId: 'ev1-audit-report',
         oppositionArgument: 'Your Honour, AdStream\'s sponsored content format is visually distinguishable from organic posts through its background colour differentiation. Art. 26(1)(a) requires advertising to be "clearly identifiable" — but "clearly" is a relative standard that must account for the increasing media literacy of digital platform users. European consumers in 2026 understand that social media platforms serve a mix of organic and commercial content. The background colour differentiation communicates a different content type even if users cannot immediately articulate the distinction. User testing in artificial conditions does not replicate real-world engagement patterns where users develop interface literacy over repeated use.',
         writePrompt: 'Opposing counsel argues background colour differentiation satisfies "clearly identifiable" and that media literacy contextualises the standard. Counter this by applying the "clearly" standard to the specific evidence and explaining why the user testing data is directly relevant.',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: '"Clearly" Identifiable Standard',
@@ -19655,7 +19655,7 @@ verdict: {
           {
             id: 'arg2-strong',
             quality: 'strong',
-            text: 'Your Honour, Art. 26(1)(a) requires advertising to be "clearly identifiable as such." The word "clearly" sets an objective standard — content that a substantial majority of users cannot identify as advertising is not clearly identifiable as advertising. The TransparencyFirst EU user testing found that 73% of users could not identify sponsored content and 91% could not identify native boost content as advertising. These are not marginal misidentification rates — they are structural failures of clarity. The media literacy argument proves too much: if assumed user sophistication could substitute for actual identification rates, the "clearly" standard would be completely unenforceable, since platforms could always claim users should know better.',
+            text: 'Your Honour, Art. 26(1)(a) requires advertising to be "clearly identifiable as such." The word "clearly" sets an objective standard — content that a substantial majority of users cannot identify as advertising is not clearly identifiable as advertising. The TransparencyFirst EU user testing found that 73% of users could not identify sponsored content and 91% could not identify native boost content as advertising. These are not marginal misidentification rates — they are structural failures of clarity. The media literacy argument proves too much: if assumed user sophistication could substitute for actual identification rates, the "clearly" standard would be completely unenforceable, since platforms could always claim users should know better. AdStream\'s own compliance lead has confirmed that the colour differentiation does not satisfy "clearly identifiable" as she uses the term. The opponent has also not produced any contrary evidence showing that real-world identification rates differ materially from the user testing results — and its own regulatory submission confirms real-time labelling is technically feasible in 3–4 weeks, meaning the absence of explicit labels is a deliberate choice, not a technical constraint.',
             judge_response: 'A strong argument. The application of "clearly" as an objective standard assessed against actual identification rates, combined with the absence of contrary evidence and the acknowledged technical feasibility, is well-grounded.',
             legal_reasoning: 'The strongest argument. It applies "clearly" as an objective standard assessed against measurable identification rates, uses the 73% and 91% figures to establish structural failure of clarity, addresses the media literacy argument by showing it would make "clearly" unenforceable, uses the compliance lead\'s own admission to corroborate the standard, and adds the technical feasibility evidence to show the absence of labels is a choice rather than a constraint.'
           },
@@ -19687,7 +19687,7 @@ verdict: {
         evidenceId: 'ev6-statistics',
         oppositionArgument: 'Your Honour, even if Art. 26(1) technically requires more specific disclosures, any violation is minor and technical in nature. AdStream provides advertising-related information in its privacy policy and settings. Users have access to transparency information even if it is not displayed at the ad level. Political parties are registered advertisers who go through AdStream\'s advertiser onboarding process, which itself provides a degree of accountability. The remedy for a technical Art. 26 compliance gap should be a corrective guidance order — not the systemic violation finding and financial penalties the complainant is seeking.',
         writePrompt: 'Opposing counsel argues the violation is minor and technical. Counter this by establishing the scale and systemic nature of the failure, and the specific democratic harm from undisclosed political advertising during elections.',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Scale and Systemic Nature',
@@ -19710,7 +19710,7 @@ verdict: {
           {
             id: 'arg3-strong',
             quality: 'strong',
-            text: 'Your Honour, Art. 26(1) applies to every advertisement presented to every user \u2014 a platform-wide labelling failure affecting 55 million EU users across three advertising categories is not a minor technical gap. During the six-week pre-election window alone, 847 paid political posts were displayed without any indication they were paid messaging. The user study shows 81% of recipients would have engaged differently had they known the content was paid political advertising. Art. 26(1)(b)\'s sponsor identification requirement exists precisely to enable voters to evaluate political messaging knowing its source. Two years of commercially-motivated non-compliance with a democratic transparency obligation warrants systemic enforcement, not corrective guidance.',
+            text: 'Your Honour, Art. 26(1) applies to every advertisement presented to every user — a platform-wide labelling failure for a platform with 55 million EU users across three advertising categories is not a minor technical gap. It is a structural violation affecting every user who saw an advertisement on AdStream during the two years the obligations have been in force. The political advertising dimension is specifically not minor: during the six-week pre-election window, 847 paid political advertising posts were displayed to users without any indication that they were paid political messaging. 81% of users who saw those posts reported they would have engaged differently — sharing less, reading more critically — if they had known the content was paid political advertising. The democratic purpose of Art. 26(1)(b)\'s sponsor identification requirement is precisely to enable voters to evaluate political messaging knowing its source. A voter who receives paid political messaging from a party without knowing it is paid advertising cannot meaningfully exercise that evaluative function. Two years of knowing, commercially-motivated non-compliance with a democratic transparency obligation is not a corrective guidance case — it is a systemic enforcement case.',
             judge_response: 'A strong argument. The scale of the platform-wide failure and the specific democratic harm from undisclosed political advertising during elections together establish why the violation warrants more than corrective guidance.',
             legal_reasoning: 'The strongest argument. It quantifies the scale at platform level (55 million users, all three categories, two years), uses the 81% engagement difference finding to establish the democratic harm specifically, applies Art. 26(1)(b)\'s purpose to the political advertising context, and connects the knowing commercial motivation to the appropriate remedy level. All dimensions of the "minor and technical" argument are addressed.'
           },
@@ -19817,7 +19817,7 @@ verdict: {
       prompt: 'PlayZone created a "Teens 13–17" advertising segment from registered birthdates, had 89% age-estimation confidence in minor classification, and allowed gambling companies to target these users through sports interest profiling. Which legal framework most directly governs this failure?',
       correct: 'dsa',
       writePrompt: 'Identify the EU digital law framework that specifically prohibits profiling-based advertising to minors by VLOPs. Justify why this framework is more directly applicable than the alternatives.',
-      minWords: 25,
+      minWords: 10,
       requiredConcepts: [
         {
           name: 'Art. 28(2) Specific Prohibition',
@@ -19858,7 +19858,7 @@ verdict: {
       prompt: 'PlayZone offered a "Teens 13–17" segment to advertisers built from birthdate data, allowed gambling advertising to target it through sports interest profiling, and claims the "reasonable certainty" threshold is not met. Which specific DSA provision creates the obligation violated?',
       correct: 'art28-2',
       writePrompt: 'Identify the exact provision and explain both the "aware with reasonable certainty" threshold and the profiling-based advertising prohibition — and apply each to PlayZone\'s conduct.',
-      minWords: 20,
+      minWords: 10,
       requiredConcepts: [
         {
           name: 'Article 28(2)',
@@ -19988,7 +19988,7 @@ verdict: {
         evidenceId: 'ev3-internal-email',
         oppositionArgument: 'Your Honour, Art. 28(2) DSA requires that the platform be "aware with reasonable certainty" that the recipient is a minor. PlayZone collects self-reported birthdates — data that users are entitled to provide inaccurately and that PlayZone has no means to verify through identity documents or government databases. The age-estimation model produces probabilistic outputs, not verified facts. A platform that cannot verify ages through reliable means does not meet the "reasonable certainty" threshold simply by holding uncertain self-reported data. The 3.1% false-classification rate means that hundreds of thousands of users classified as minors may in fact be adults. "Reasonable certainty" requires a higher standard of confidence than probabilistic age-estimation models can provide.',
         writePrompt: 'Opposing counsel argues self-reported and probabilistic age data cannot meet the "reasonable certainty" threshold. Counter this by explaining what "reasonable certainty" requires under Art. 28(2) and why PlayZone\'s data exceeds it, using the content moderation consistency argument.',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Reasonable Certainty Standard',
@@ -20011,7 +20011,7 @@ verdict: {
           {
             id: 'arg1-strong',
             quality: 'strong',
-            text: 'Your Honour, Art. 28(2) requires "reasonable certainty" — not absolute certainty, not identity-verified certainty, not zero-error certainty. The word "reasonable" sets a contextually assessed threshold. PlayZone holds two independent data sources supporting minor classification: self-reported birthdate at registration — a required field that the majority of users complete accurately — and an internal age-estimation model that confirms minor classification with 89% confidence for this segment. Ninety-six point nine percent accuracy across multiple data sources is not probabilistic uncertainty; it is the functional equivalent of near-certainty for platform operations.',
+            text: 'Your Honour, Art. 28(2) requires "reasonable certainty" — not absolute certainty, not identity-verified certainty, not zero-error certainty. The word "reasonable" sets a contextually assessed threshold. PlayZone holds two independent data sources supporting minor classification: self-reported birthdate at registration — a required field that the majority of users complete accurately — and an internal age-estimation model that confirms minor classification with 89% confidence for this segment. Ninety-six point nine percent accuracy across multiple data sources is not probabilistic uncertainty; it is the functional equivalent of near-certainty for platform operations. More critically, PlayZone already applies this very data to treat these users as minors for content moderation purposes — the same registered birthdates and the same model outputs trigger stricter content standards. A platform cannot credibly claim to lack reasonable certainty about the age of users it simultaneously classifies as minors for child-protective content purposes. The selective deployment of age certainty — certain enough to apply child protection in one context, uncertain in another where certainty would reduce revenue — is not a genuine technical limitation. It is a commercial choice dressed as a legal threshold argument.',
             judge_response: 'A well-grounded argument. The two-source age data analysis and the content moderation inconsistency together establish that PlayZone meets the reasonable certainty threshold — and that the inconsistency reveals the claimed uncertainty is commercially motivated.',
             legal_reasoning: 'The strongest argument. It correctly defines "reasonable certainty" as contextually assessed rather than absolute, applies two independent data sources to establish the threshold is met, uses the content moderation inconsistency as the most powerful evidence of selective certainty deployment, and connects the commercial motivation to the reasonable certainty claim to eliminate good faith.'
           },
@@ -20043,7 +20043,7 @@ verdict: {
         evidenceId: 'ev2-internal-system',
         oppositionArgument: 'Your Honour, Art. 28(2) DSA prohibits advertising based on "profiling." PlayZone\'s "Teens 13–17" segment uses registered birthdates to identify a demographic group. Age-based targeting is demographic targeting, not profiling. The definition of profiling under GDPR Art. 4(4), which Art. 28(2) references, requires automated processing of personal data to evaluate aspects of a natural person — including behaviour and interests. Simple demographic targeting based on age does not involve evaluation of individual behaviour. PlayZone\'s gambling campaign targeting "interest in sports" and "engagement with gaming content" uses audience segments defined by shared characteristics — not individual profiling. Art. 28(2) was designed to prohibit individual behavioural profiling targeted at minors, not standard demographic advertising.',
         writePrompt: 'Opposing counsel argues age-based targeting is demographic, not profiling, and that interest categories are audience segments rather than individual profiling. Counter this by applying the correct definition of profiling-based advertising under Art. 28(2).',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Profiling-Based Advertising Definition',
@@ -20066,14 +20066,14 @@ verdict: {
           {
             id: 'arg2-strong',
             quality: 'strong',
-            text: 'Your Honour, the opponent\'s distinction between demographic targeting and profiling does not withstand scrutiny. "Interest in sports" and "engagement with gaming content" are not static demographic characteristics — they are derived from individual users\' behavioural data on the platform: the content they engage with, the time they spend on specific categories, the videos they complete. Each user\'s placement in an interest segment is determined by automated processing of their individual behavioural signals — precisely the definition of profiling under Art. 4(4) GDPR, which Art. 28(2) incorporates. Labelling the output of individual behavioural processing as an "audience segment" does not transform individual profiling into demographic targeting.',
+            text: 'Your Honour, the opponent\'s distinction between demographic targeting and profiling does not withstand scrutiny. "Interest in sports" and "engagement with gaming content" are not static demographic characteristics — they are derived from individual users\' behavioural data on the platform: the content they engage with, the time they spend on specific categories, the videos they complete. Each user\'s placement in an interest segment is determined by automated processing of their individual behavioural signals — precisely the definition of profiling under Art. 4(4) GDPR, which Art. 28(2) incorporates. Labelling the output of individual behavioural processing as an "audience segment" does not transform individual profiling into demographic targeting. If it did, any platform could evade Art. 28(2) by aggregating individual profiles into named segments and calling them demographics. The gambling campaign specifically used interest and engagement parameters derived from individual behavioural data to select which minor users to target. That is profiling-based advertising under any reasonable interpretation of the provision — and PlayZone\'s own compliance manager confirmed this in cross-examination.',
             judge_response: 'A well-constructed argument. The distinction between the output of individual behavioural processing (an interest segment) and a static demographic category, and the risk of evasion through segment-labelling, is the correct analytical structure.',
             legal_reasoning: 'The strongest argument. It applies the Art. 4(4) GDPR definition of profiling correctly (automated processing of individual behavioural data), distinguishes interest segments (derived from individual behaviour) from static demographics, and addresses the segment-vs-individual framing by showing it would hollow out Art. 28(2) if accepted. The cross-examination admission corroboration is used effectively.'
           },
           {
             id: 'arg2-weak',
             quality: 'weak',
-            text: 'Your Honour, "interest in sports" is obviously profiling — it means PlayZone has tracked and categorised what every individual user does on the platform and sold that information to a gambling company to target teenagers. Demographics like age are static facts; interest categories are derived from surveillance of individual behaviour. The argument that behavioural interest targeting is the same as demographic targeting should be rejected without further analysis — it would make Art. 28(2) meaningless by allowing platforms to reclassify any individual targeting as demographic segmentation. This kind of behaviour should not be tolerated in a modern digital marketplace and the Authority must take decisive action to protect the rights of affected users.',
+            text: 'Your Honour, "interest in sports" is obviously profiling — it means PlayZone has tracked and categorised what every individual user does on the platform and sold that information to a gambling company to target teenagers. Demographics like age are static facts; interest categories are derived from surveillance of individual behaviour. The argument that behavioural interest targeting is the same as demographic targeting should be rejected without further analysis — it would make Art. 28(2) meaningless by allowing platforms to reclassify any individual targeting as demographic segmentation.',
             judge_response: 'Counsel, the argument correctly distinguishes interest targeting from demographic targeting, but "obviously profiling" is not legal analysis. You need to apply the definition of profiling under Art. 4(4) GDPR to the specific parameters used — the opponent has made a technical legal argument about the definition that requires a technical legal response.',
             legal_reasoning: 'Correctly identifies the distinction between static demographics and behavioural interest data but argues it by assertion rather than applying Art. 4(4) GDPR\'s definition. The opponent has raised a specific legal argument about the boundary between demographic and profiling-based targeting that requires engagement with the definition — "obviously" does not constitute legal analysis of what profiling means under the DSA and GDPR.'
           },
@@ -20098,7 +20098,7 @@ verdict: {
         evidenceId: 'ev6-statistics',
         oppositionArgument: 'Your Honour, even if Art. 28(2) applies in principle, the scope of any violation is limited. PlayZone\'s gambling advertising exposure involved one campaign by one advertiser over four weeks. The responsibility for the content of the campaign lies primarily with the gambling operator who chose to target teenagers, not with PlayZone which provides a neutral advertising platform. Any remedy should be directed at the gambling operator\'s practices and should be proportionate to what is a commercially reasonable advertising transaction for which PlayZone bears only derivative responsibility.',
         writePrompt: 'Opposing counsel minimises scope, attributes responsibility to the gambling operator, and argues for proportionate remedy. Counter this by establishing PlayZone\'s primary platform obligation under Art. 28(2) and the structural, ongoing nature of the violation.',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Primary Platform Obligation',
@@ -20121,7 +20121,7 @@ verdict: {
           {
             id: 'arg3-strong',
             quality: 'strong',
-            text: 'Your Honour, Art. 28(2) places the obligation directly on the VLOP — it "shall not present" profiling-based advertising to known minors. The obligation is not on the advertiser who purchases the targeting; it is on the platform that makes the targeting available and presents the resulting advertising. PlayZone did not passively transmit an advertiser\'s content — it designed and marketed a "Teens 13–17" profiling segment as a commercial product, approved the gambling campaign without category exclusions, and actively delivered the advertising to minor users through its targeting system. Furthermore, the gambling campaign is not the scope of the violation.',
+            text: 'Your Honour, Art. 28(2) places the obligation directly on the VLOP — it "shall not present" profiling-based advertising to known minors. The obligation is not on the advertiser who purchases the targeting; it is on the platform that makes the targeting available and presents the resulting advertising. PlayZone did not passively transmit an advertiser\'s content — it designed and marketed a "Teens 13–17" profiling segment as a commercial product, approved the gambling campaign without category exclusions, and actively delivered the advertising to minor users through its targeting system. Furthermore, the gambling campaign is not the scope of the violation. The "Teens 13–17" profiling segment has been available to all advertisers since before the DSA became fully applicable — any profiling-based advertising delivered through it to any of the 16 million users in the segment is covered by Art. 28(2). The structural violation is the segment\'s existence as a profiling-based advertising product available without minor-protective category exclusions, not one campaign over four weeks. Two years of making a profiling-based minor segment available in a commercial advertising portal is the violation; the gambling campaign is one documented instance of that ongoing structural failure.',
             judge_response: 'A strong argument. The distinction between platform design responsibility and advertiser campaign responsibility, and the structural-vs-campaign scope analysis, is the correct legal framing.',
             legal_reasoning: 'The strongest argument. It correctly assigns the Art. 28(2) obligation to the VLOP as the entity that shall not present such advertising, establishes PlayZone\'s active design role (creating and marketing the segment), and reframes the violation from one campaign to the structural availability of a profiling segment for minor targeting — the structural framing is both legally correct and significantly expands the scope of the violation.'
           },
@@ -20230,7 +20230,7 @@ verdict: {
       prompt: 'ChatWorld has 50 million EU users and no EU legal representative. National DSCs cannot serve enforcement notices, users cannot exercise DSA rights within required timelines, and the platform directs all EU contacts to California. Which legal framework most directly governs this failure?',
       correct: 'dsa',
       writePrompt: 'Identify the EU digital law framework that specifically requires non-EU providers offering services to EU users to appoint a legal representative in a member state. Justify why this framework is more directly applicable than the alternatives.',
-      minWords: 25,
+      minWords: 10,
       requiredConcepts: [
         {
           name: 'Art. 13 Legal Representative Obligation',
@@ -20271,7 +20271,7 @@ verdict: {
       prompt: 'ChatWorld is a US-based VLOP with 50 million EU users, no EU legal representative, and directs all EU contacts to California. Which specific DSA provision creates the obligation it has violated?',
       correct: 'art13-1',
       writePrompt: 'Identify the exact provision and explain the obligation it imposes on non-EU providers — including what the legal representative must be authorised to do under Art. 13(3).',
-      minWords: 20,
+      minWords: 10,
       requiredConcepts: [
         {
           name: 'Article 13(1)',
@@ -20401,7 +20401,7 @@ verdict: {
         evidenceId: 'ev3-internal-email',
         oppositionArgument: 'Your Honour, Art. 13(1) requires non-EU providers to designate a legal representative. The provision does not specify the functional requirements of that representative in detail, and a reasonable reading of "designate" merely requires identifying a contact. ChatWorld\'s California legal team is its designated contact for EU regulatory matters — it responds to EU inquiries and coordinates with EU authorities. Furthermore, the DSA\'s application to non-EU providers raises genuine jurisdictional questions that ChatWorld is litigating in good faith. Imposing significant penalties for failing to appoint a formal representative while a good-faith jurisdictional challenge is pending would chill the ability of non-EU providers to challenge EU extraterritorial regulation.',
         writePrompt: 'Opposing counsel argues California-based contact satisfies Art. 13 and that a pending jurisdictional challenge justifies non-compliance. Counter this by explaining what Art. 13(1) and Art. 13(3) specifically require and why a California contact does not satisfy either.',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Art. 13(1) and Art. 13(3) Specific Requirements',
@@ -20424,7 +20424,7 @@ verdict: {
           {
             id: 'arg1-strong',
             quality: 'strong',
-            text: 'Your Honour, Art. 13(1) does not merely require ChatWorld to "identify a contact" — it requires designation of a legal representative "in a Member State" where services are offered. The words "in a Member State" are explicit and geographic — a California office is not in any EU member state. Art. 13(3) specifies that the representative must be authorised to be addressed "in addition to or instead of" the provider on compliance, enforcement, and legal proceedings matters — functions that require the representative to be reachable under EU procedural law for in-territory service.',
+            text: 'Your Honour, Art. 13(1) does not merely require ChatWorld to "identify a contact" — it requires designation of a legal representative "in a Member State" where services are offered. The words "in a Member State" are explicit and geographic — a California office is not in any EU member state. Art. 13(3) specifies that the representative must be authorised to be addressed "in addition to or instead of" the provider on compliance, enforcement, and legal proceedings matters — functions that require the representative to be reachable under EU procedural law for in-territory service. The failed French DSC service demonstrates why geography matters: international service to California was refused and the enforcement notice was returned undeliverable. On the jurisdictional argument: EU law does not permit self-help exemptions from regulatory obligations while challenges are pending. ChatWorld acknowledged receipt of its VLOP designation notice in October 2024, which specifically identified the Art. 13(1) obligation. A company that acknowledges a regulatory designation and then declines to comply with designation-triggered obligations while pursuing a challenge has not suspended those obligations — it has simply failed to comply with them. The challenge is for courts, not for the platform to self-administer by non-compliance.',
             judge_response: 'A well-grounded argument. The geographic specificity of "in a Member State" and the functional requirements of Art. 13(3) together establish why California contact does not satisfy the provision, and the jurisdictional point is correctly addressed.',
             legal_reasoning: 'The strongest argument. It applies Art. 13(1)\'s geographic requirement ("in a Member State") and Art. 13(3)\'s functional requirements to demonstrate why California contact is structurally insufficient, uses the failed service as direct evidence of the functional gap, and correctly addresses the jurisdictional argument by establishing that challenges do not self-administer compliance exemptions.'
           },
@@ -20456,7 +20456,7 @@ verdict: {
         evidenceId: 'ev2-failed-service',
         oppositionArgument: 'Your Honour, the DSA\'s enforcement provisions operate through a multi-layered system including direct Commission oversight under Art. 33. Even without an EU legal representative, the Commission can contact ChatWorld directly and initiate Art. 33 proceedings, as it has done here. The Art. 13 representative requirement facilitates enforcement but does not gate it — the DSA\'s enforcement architecture is functional without a member-state representative because the Commission serves as the primary enforcement body for VLOPs. Any enforcement gap caused by the representative absence is technical and remediable, not structural.',
         writePrompt: 'Opposing counsel argues the enforcement architecture remains functional through Commission direct oversight and that any gap is technical. Counter this by explaining the specific functions of the Art. 13 representative at the member state level and why Commission oversight does not substitute for them.',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Member State Level Functions',
@@ -20479,7 +20479,7 @@ verdict: {
           {
             id: 'arg2-strong',
             quality: 'strong',
-            text: 'Your Honour, the Commission\'s Art. 33 oversight does not substitute for the Art. 13 representative\'s functions at the member state level. Art. 13(3)\'s representative must be reachable for national DSC enforcement notices, individual users exercising Art. 17 statement of reasons rights, Art. 20 internal complaint procedures, and Art. 40 researcher data access applications — none of which flow through the Commission. The evidence demonstrates this is not a technical gap: zero enforcement notices have been successfully served by national DSCs, zero Art. 52 information requests have received timely responses from three national authorities, and no DSA-timeline-compliant response has been provided to a single user rights exercise.',
+            text: 'Your Honour, the Commission\'s Art. 33 oversight does not substitute for the Art. 13 representative\'s functions at the member state level. Art. 13(3)\'s representative must be reachable for national DSC enforcement notices, individual users exercising Art. 17 statement of reasons rights, Art. 20 internal complaint procedures, and Art. 40 researcher data access applications — none of which flow through the Commission. The evidence demonstrates this is not a technical gap: zero enforcement notices have been successfully served by national DSCs, zero Art. 52 information requests have received timely responses from three national authorities, and no DSA-timeline-compliant response has been provided to a single user rights exercise. The Commission initiated Art. 33 proceedings only because the national enforcement pathway was blocked by the Art. 13 failure — the Commission is acting precisely because the member-state level architecture designed by the DSA is non-functional. A gap that blocks all national enforcement, all user rights exercises, and all researcher access across all 27 member states is not technical and remediable — it is a structural design consequence of the Art. 13 violation that has operated for over two years.',
             judge_response: 'A well-structured argument. The distinction between Commission-level oversight and the member-state-level functions the Art. 13 representative must perform, supported by the documented complete blockage data, establishes that the gap is structural rather than technical.',
             legal_reasoning: 'The strongest argument. It correctly identifies the member state-level functions of the Art. 13 representative that Commission oversight cannot substitute for, uses the zero-service data across three national authorities to establish structural blockage, and connects the Commission\'s own Art. 33 proceeding to the Art. 13 failure by showing the Commission is acting because the national pathway is blocked — which itself demonstrates the structural nature of the gap.'
           },
@@ -20511,7 +20511,7 @@ verdict: {
         evidenceId: 'ev6-statistics',
         oppositionArgument: 'Your Honour, Art. 13 is a framework provision — a structural requirement that facilitates compliance with substantive DSA obligations. A finding of systemic violation and significant financial penalties for failing to appoint a legal representative, without any finding of substantive DSA non-compliance, would be disproportionate. The appropriate remedy for Art. 13 non-compliance is a compliance order — not financial penalties that exceed what would be imposed for substantive violations. The Commission should calibrate any finding to the procedural nature of the Art. 13 obligation rather than treating a representative appointment failure as equivalent to systemic content regulation failures.',
         writePrompt: 'Opposing counsel argues Art. 13 is procedural and penalties should be modest. Counter this by establishing why the Art. 13 failure is both independently significant and practically equivalent to blocking all substantive compliance — and why the disproportionality argument fails.',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Gateway Obligation Significance',
@@ -20534,7 +20534,7 @@ verdict: {
           {
             id: 'arg3-strong',
             quality: 'strong',
-            text: 'Your Honour, the procedural characterisation misunderstands Art. 13\'s function in the DSA architecture. Art. 13 is not a formality alongside substantive obligations — it is the gateway that makes all substantive obligations enforceable. Without an EU representative, national DSCs cannot serve enforcement notices, Art. 52 information requests cannot produce timely responses, user Art. 17 and Art. 20 rights cannot be exercised within DSA timelines, and Art. 40 researcher access applications cannot be processed. The evidence demonstrates that every EU regulatory mechanism applicable to ChatWorld has been completely blocked for over two years.',
+            text: 'Your Honour, the procedural characterisation misunderstands Art. 13\'s function in the DSA architecture. Art. 13 is not a formality alongside substantive obligations — it is the gateway that makes all substantive obligations enforceable. Without an EU representative, national DSCs cannot serve enforcement notices, Art. 52 information requests cannot produce timely responses, user Art. 17 and Art. 20 rights cannot be exercised within DSA timelines, and Art. 40 researcher access applications cannot be processed. The evidence demonstrates that every EU regulatory mechanism applicable to ChatWorld has been completely blocked for over two years. Art. 13 non-compliance is therefore not independent of substantive violations — it is the mechanism by which ChatWorld has shielded itself from enforcement of all substantive obligations it may have violated. Furthermore, this was not an inadvertent gap: ChatWorld acknowledged the obligation in October 2024, was specifically advised to comply in November 2024, and chose non-compliance as a deliberate litigation strategy. A penalty calibrated to a "mere" representative appointment failure would not reflect the two years of total regulatory blockage that resulted from a deliberately chosen compliance gap.',
             judge_response: 'A strong and analytically precise argument. The gateway characterisation and the connection between the Art. 13 failure and the total regulatory blockage documented in the evidence establishes why proportionality requires more than a compliance order alone.',
             legal_reasoning: 'The strongest argument. It reframes Art. 13 as a gateway rather than a formality, connects the Art. 13 failure to the total blockage of all substantive enforcement mechanisms, uses the evidence to quantify the blockage (zero service across all categories), establishes deliberate non-compliance from the October acknowledgement, and grounds the proportionality argument in the actual two-year enforcement consequence rather than the formal category of the obligation.'
           },
@@ -20642,7 +20642,7 @@ verdict: {
       prompt: 'ReportIt\'s notice mechanism requires government ID, a 500-word legal analysis, times out in 10 minutes with data loss, sends no receipt confirmation, and provides no redress information. Which legal framework most directly governs these failures?',
       correct: 'dsa',
       writePrompt: 'Identify the EU digital law framework that specifically creates user-friendly notice-and-action mechanism obligations including receipt confirmation and redress information requirements. Justify why this framework is more directly applicable than the alternatives.',
-      minWords: 25,
+      minWords: 10,
       requiredConcepts: [
         {
           name: 'Art. 16 Notice-and-Action Mechanism',
@@ -20683,7 +20683,7 @@ verdict: {
       prompt: 'ReportIt\'s mechanism sends no receipt confirmation and provides no redress information. A hate speech victim abandoned the process due to barriers including government ID requirements and a 10-minute timeout. Which DSA provisions create the obligations violated?',
       correct: 'art16-1-and-5',
       writePrompt: 'Identify the specific Art. 16 provisions violated and explain what each requires — distinguishing the mechanism design obligations from the upon-receipt obligations.',
-      minWords: 20,
+      minWords: 10,
       requiredConcepts: [
         {
           name: 'Art. 16(1) User-Friendly Mechanism',
@@ -20813,7 +20813,7 @@ verdict: {
         evidenceId: 'ev3-internal-email',
         oppositionArgument: 'Your Honour, Art. 16(1) DSA requires that notice mechanisms enable users to submit notices that are "sufficiently precise and adequately substantiated." ReportIt\'s legal analysis requirement and category selection process exist precisely to ensure that notices are substantiated — that reporters have identified the specific legal basis for their claim and provided the information necessary to act on it. A notice mechanism that produces high-quality, legally grounded submissions serves the DSA\'s underlying purpose better than one that accepts vague complaints in volume. "User-friendly" and "substantiated" must be read together — a mechanism that ensures substantiation by requiring legal analysis is more consistent with Art. 16\'s overall purpose than one that prioritises ease at the expense of quality.',
         writePrompt: 'Opposing counsel argues legal analysis requirements ensure substantiation consistent with Art. 16. Counter this by explaining what Art. 16(1)\'s "user-friendly" standard actually requires and how it relates to the substantiation requirement.',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'User-Friendly Standard',
@@ -20836,7 +20836,7 @@ verdict: {
           {
             id: 'arg1-strong',
             quality: 'strong',
-            text: 'Your Honour, Art. 16(1) requires the mechanism to be "easy to access and user-friendly" — enabling "any individual or entity" to submit notices. Art. 16(2) then specifies what a sufficiently substantiated notice must contain: a description of the illegal content with its location, the type of illegality alleged, and a statement of accuracy. Crucially, Art. 16(2) does not require a minimum-word legal analysis or government ID — it requires a factual description of the content and the basis for believing it is illegal. The two provisions work together: Art. 16(1) makes the mechanism universally accessible, and Art. 16(2) ensures submitted notices contain meaningful information.',
+            text: 'Your Honour, Art. 16(1) requires the mechanism to be "easy to access and user-friendly" — enabling "any individual or entity" to submit notices. Art. 16(2) then specifies what a sufficiently substantiated notice must contain: a description of the illegal content with its location, the type of illegality alleged, and a statement of accuracy. Crucially, Art. 16(2) does not require a minimum-word legal analysis or government ID — it requires a factual description of the content and the basis for believing it is illegal. The two provisions work together: Art. 16(1) makes the mechanism universally accessible, and Art. 16(2) ensures submitted notices contain meaningful information. ReportIt has imposed requirements that exceed what Art. 16(2) specifies and are inaccessible to the non-lawyers Art. 16(1) must reach. A hate speech victim who cannot write a 500-word legal analysis is not failing to substantiate their notice — they are being excluded from a right the DSA specifically created for them. Substantiation through accessibility barriers is not substantiation; it is exclusion.',
             judge_response: 'A well-grounded argument. The distinction between Art. 16(1)\'s accessibility requirement and Art. 16(2)\'s notice content requirements, and the analysis of what Art. 16(2) actually specifies as required elements, is the correct legal structure.',
             legal_reasoning: 'The strongest argument. It correctly applies both Art. 16(1) and Art. 16(2) together to show the two provisions work in harmony rather than in tension, identifies what Art. 16(2) actually requires (factual description, not legal analysis), and uses User K\'s situation to illustrate why the substantiation-through-exclusion approach contradicts Art. 16\'s purpose.'
           },
@@ -20868,7 +20868,7 @@ verdict: {
         evidenceId: 'ev1-mechanism-audit',
         oppositionArgument: 'Your Honour, ReportIt\'s 10-minute session timeout and identity verification requirements serve legitimate anti-abuse purposes. The government ID requirement ensures accountability and deters bad-faith actors who would submit mass coordinated false reports to suppress legitimate content. The timeout prevents automated bot submissions. Art. 16(1)\'s user-friendly standard cannot be read to prohibit all anti-abuse measures — if platforms cannot protect their notice mechanisms from coordinated manipulation, the mechanism itself becomes a tool for censorship rather than a legal rights exercise. The DSA requires user-friendly mechanisms, not mechanisms that are open to systematic abuse.',
         writePrompt: 'Opposing counsel argues anti-abuse measures justify the ID requirement and timeout. Counter this by explaining why these specific implementations fail Art. 16(1)\'s user-friendly standard regardless of the legitimate anti-abuse purpose.',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Proportionality of Anti-Abuse Measures',
@@ -20891,14 +20891,14 @@ verdict: {
           {
             id: 'arg2-strong',
             quality: 'strong',
-            text: 'Your Honour, even if anti-abuse purposes are legitimate, the specific implementations chosen must be proportionate — achieving the stated purpose with the least restriction on legitimate users. On identity verification: zero of eight comparable VLOPs require government ID at the notice stage. All manage their anti-abuse objectives through less restrictive means — email verification, CAPTCHA, rate limiting, or reporting account registration. If industry peers achieve anti-abuse objectives without government ID requirements, government ID is not the least restrictive means and cannot be justified as proportionate under Art. 16(1)\'s user-friendly standard. On the timeout: preventing automated bot submissions does not require data loss on timeout.',
+            text: 'Your Honour, even if anti-abuse purposes are legitimate, the specific implementations chosen must be proportionate — achieving the stated purpose with the least restriction on legitimate users. On identity verification: zero of eight comparable VLOPs require government ID at the notice stage. All manage their anti-abuse objectives through less restrictive means — email verification, CAPTCHA, rate limiting, or reporting account registration. If industry peers achieve anti-abuse objectives without government ID requirements, government ID is not the least restrictive means and cannot be justified as proportionate under Art. 16(1)\'s user-friendly standard. On the timeout: preventing automated bot submissions does not require data loss on timeout. A session extension, autosave, or CAPTCHA would achieve bot prevention without destroying legitimate users\' partially completed notices. The data loss on timeout punishes legitimate human users — who are slower than bots, not faster — without any corresponding anti-abuse benefit. The 10-minute timeout with automatic data loss has no plausible anti-abuse justification distinct from its effect of discouraging legitimate notice submissions by making the process precarious and unpredictable.',
             judge_response: 'A well-constructed argument. The proportionality analysis applied to both the ID requirement and the timeout, using industry practice to establish that less restrictive alternatives exist, is the correct legal structure.',
             legal_reasoning: 'The strongest argument. It applies proportionality to each specific measure independently, uses the industry comparison (zero VLOPs require ID) to establish that less restrictive alternatives achieve the same purpose, and isolates the data-loss timeout as having no anti-abuse justification distinct from its chilling effect on legitimate users — which is the most legally significant point.'
           },
           {
             id: 'arg2-weak',
             quality: 'weak',
-            text: 'Your Honour, the anti-abuse argument is pretextual. No platform needs government ID to prevent abuse — they use CAPTCHA and email verification like everyone else. The timeout causes data loss, which hurts the legitimate user, not the bot. The only person harmed by data loss is the person who spent 15 minutes writing a careful complaint. Bots can restart in seconds. The abuse prevention rationale is a convenient post-hoc justification for a system designed to reduce workload. The Commission should reject it and find the violation. This kind of behaviour should not be tolerated in a modern digital marketplace and the Authority must take decisive action to protect the rights of affected users.',
+            text: 'Your Honour, the anti-abuse argument is pretextual. No platform needs government ID to prevent abuse — they use CAPTCHA and email verification like everyone else. The timeout causes data loss, which hurts the legitimate user, not the bot. The only person harmed by data loss is the person who spent 15 minutes writing a careful complaint. Bots can restart in seconds. The abuse prevention rationale is a convenient post-hoc justification for a system designed to reduce workload. The Commission should reject it and find the violation.',
             judge_response: 'Counsel, the pretext argument has some force but the legal analysis needs to explain why the specific measures fail the Art. 16(1) proportionality standard — not just assert the justification is pretextual. Engage with the proportionality question: even if the purpose is legitimate, why are these specific measures not proportionate?',
             legal_reasoning: 'Correctly identifies the timeout\'s perverse effect (hurts legitimate users, not bots) but argues it as a pretext characterisation rather than a proportionality analysis. The legal argument requires explaining why government ID fails proportionality (less restrictive alternatives exist), and why data-loss timeout has no anti-abuse justification distinct from discouraging legitimate users. The argument does not engage with what proportionality under Art. 16(1) requires.'
           },
@@ -20923,7 +20923,7 @@ verdict: {
         evidenceId: 'ev6-statistics',
         oppositionArgument: 'Your Honour, Art. 16(5)\'s confirmation and redress obligations are, at most, minor technical failures. The absence of a confirmation email is a procedural gap that can be remedied by a simple system update. It causes no substantive harm — a reporter who submits a notice either has their content actioned or they do not, and a confirmation email does not change that outcome. Similarly, redress information is available in ReportIt\'s help centre, which is publicly accessible. Both obligations can be addressed by a corrective guidance order — they do not require a systemic violation finding.',
         writePrompt: 'Opposing counsel argues Art. 16(5) failures are minor and the remedy should be corrective guidance. Counter this by establishing that Art. 16(5) failures are substantive and independently required, and that the combined Art. 16(1) and Art. 16(5) failures warrant more than corrective guidance.',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Art. 16(5) Is Substantive',
@@ -20946,14 +20946,14 @@ verdict: {
           {
             id: 'arg3-strong',
             quality: 'strong',
-            text: 'Your Honour, Art. 16(5) uses "shall" — it is a mandatory obligation, not a best-practice guidance. The complete absence of receipt confirmation for all notices submitted is not a technical gap; it is an architectural omission that has applied to every notice since before DSA applicability. A reporter who submits a notice has no way of knowing whether the submission was received, whether it is being processed, or what to do if it was lost in transit — the confirmation obligation exists precisely to provide this certainty.',
+            text: 'Your Honour, Art. 16(5) uses "shall" — it is a mandatory obligation, not a best-practice guidance. The complete absence of receipt confirmation for all notices submitted is not a technical gap; it is an architectural omission that has applied to every notice since before DSA applicability. A reporter who submits a notice has no way of knowing whether the submission was received, whether it is being processed, or what to do if it was lost in transit — the confirmation obligation exists precisely to provide this certainty. On redress information: Art. 16(5) requires information about redress possibilities including out-of-court dispute settlement to be provided upon receipt of a notice — not in a general help centre page the reporter may never consult. The specificity of Art. 16(5)\'s requirement ("upon receipt of a notice") is incompatible with pointing to a general FAQ. Together, Art. 16(1)\'s 80% access failure and Art. 16(5)\'s complete absence of post-submission support create a notice mechanism that systematically excludes non-expert users from exercising their DSA rights. For a platform with 62 million EU users, these structural failures affecting every notice submission warrant findings and remediation proportionate to that scale.',
             judge_response: 'A strong argument. The distinction between a mandatory "shall" obligation and a procedural guidance, the specificity of the per-notice receipt requirement, and the scale analysis together establish why corrective guidance alone is insufficient.',
             legal_reasoning: 'The strongest argument. It applies the "shall" mandatory language to establish Art. 16(5)\'s non-optional character, distinguishes the per-notice receipt requirement from general help centre accessibility, connects Art. 16(1) and Art. 16(5) to show the combined structural effect, and grounds the remedy argument in the scale of the violation (62 million users, every notice) rather than individual harm.'
           },
           {
             id: 'arg3-weak',
             quality: 'weak',
-            text: 'Your Honour, User K submitted three attempts and received no confirmation that any of them were received. She has no idea whether her complaint is being processed. The content targeting her remains live. She is a hate speech victim who has been completely failed by a platform that collected her government ID, timed out her submissions, and then gave her no indication anything happened. A corrective guidance order for this is insulting. The Commission should impose significant penalties to ensure platforms cannot treat Art. 16(5)\'s confirmation requirement as optional. This kind of behaviour should not be tolerated in a modern digital marketplace and the Authority must take decisive action to protect the rights of affected users.',
+            text: 'Your Honour, User K submitted three attempts and received no confirmation that any of them were received. She has no idea whether her complaint is being processed. The content targeting her remains live. She is a hate speech victim who has been completely failed by a platform that collected her government ID, timed out her submissions, and then gave her no indication anything happened. A corrective guidance order for this is insulting. The Commission should impose significant penalties to ensure platforms cannot treat Art. 16(5)\'s confirmation requirement as optional.',
             judge_response: 'Counsel, User K\'s experience compellingly illustrates the human cost of the Art. 16 failures. But you need to establish the legal basis for why the failures warrant more than corrective guidance — engage with the mandatory nature of Art. 16(5), the structural scale of the violation, and what proportionate remediation requires in legal terms.',
             legal_reasoning: 'Uses User K\'s experience effectively to illustrate the harm but does not engage with the legal basis for the remedy — the "shall" mandatory language, the specificity of the per-notice receipt obligation, and the structural scale analysis. Without this legal grounding, the argument for significant penalties rests on emotional force rather than legal analysis of proportionality.'
           },
@@ -21054,7 +21054,7 @@ verdict: {
       prompt: 'Which legal framework provides the most direct and powerful basis for challenging SearchCo\'s Shopping Box placement practice?',
       correct: 'dma',
       writePrompt: 'Identify the applicable legal framework. Explain why the DMA offers advantages over traditional competition law for this specific gatekeeper conduct.',
-      minWords: 25,
+      minWords: 10,
       requiredConcepts: [
         {
           name: 'Gatekeeper Designation',
@@ -21089,7 +21089,7 @@ verdict: {
       prompt: 'Which specific DMA article prohibits SearchCo\'s practice of featuring its own shopping service above organic results?',
       correct: 'art6-5',
       writePrompt: 'Identify the exact article and explain the specific prohibition. Does this provision require proof of harm or can the gatekeeper defend itself by claiming quality benefits?',
-      minWords: 20,
+      minWords: 10,
       requiredConcepts: [
         {
           name: 'Article 6(5)',
@@ -21219,7 +21219,7 @@ verdict: {
         evidenceId: 'ev3-internal-email',
         oppositionArgument: 'Your Honour, Article 6(5) does not apply to the Shopping Box because this is not "ranking" of search results — it is a universal search feature analogous to images, maps, or news. These vertical integrations have existed for decades and were never intended to be captured by the DMA\'s self-preferencing prohibition. The DMA targets discriminatory treatment within organic search results, not the creation of specialized answer modules. To interpret Art. 6(5) as prohibiting integrated features would require SearchCo to dismantle its search product entirely, a result the legislature could not have intended.',
         writePrompt: 'Opposing counsel claims Shopping Box is a "universal search feature" exempt from Art. 6(5). Is there any exemption for "features" in the text of Art. 6(5)? What does "ranking and related indexing and crawling" actually cover?',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Scope of Ranking',
@@ -21243,21 +21243,21 @@ verdict: {
           {
             id: 'arg1-weak',
             quality: 'weak',
-            text: 'Your Honour, Shopping Box is clearly preferential treatment. It appears at the top while competitors are buried on page 2. This is unfair and the DMA was meant to stop exactly this behavior by big tech platforms exploiting their gatekeeper power. The Authority should send a clear signal that regulated entities cannot treat their obligations this way and must be held to the standards the law requires. This kind of behaviour should not be tolerated in a modern regulatory framework and the Authority must take decisive action to protect the affected parties.',
+            text: 'Your Honour, Shopping Box is clearly preferential treatment. It appears at the top while competitors are buried on page 2. This is unfair and the DMA was meant to stop exactly this behavior by big tech platforms exploiting their gatekeeper power.',
             judge_response: 'I agree with your conclusion, Counsel, but I need precise legal reasoning. Can you explain why the "universal search" label does not create an exemption under the statutory text of Art. 6(5)?',
             legal_reasoning: 'While the conclusion is correct, this fails to address the specific legal issue raised. It relies on general fairness and legislative intent rather than demonstrating that the text of Art. 6(5) applies universally to all ranking positions without exemptions.'
           },
           {
             id: 'arg1-plausible',
             quality: 'plausible',
-            text: 'Your Honour, while Shopping Box constitutes self-preferencing, the stronger claim lies under Article 102 TFEU. The ECJ in Google Shopping established that self-preferencing by a dominant search engine constitutes an abuse. We should request market definition analysis to establish SearchCo\'s dominance and demonstrate the exclusionary effects on competition. The regulatory framework specifically anticipates this kind of conduct and provides targeted obligations that supersede the more general provisions relied upon. The Authority should therefore ground its finding in this specific framework rather than the general provisions the complainant has relied upon.',
+            text: 'Your Honour, while Shopping Box constitutes self-preferencing, the stronger claim lies under Article 102 TFEU. The ECJ in Google Shopping established that self-preferencing by a dominant search engine constitutes an abuse. We should request market definition analysis to establish SearchCo\'s dominance and demonstrate the exclusionary effects on competition.',
             judge_response: 'Counsel, why pursue an Article 102 claim requiring dominance and effects analysis when you have a per se DMA prohibition available? The Commission designated SearchCo precisely to avoid these evidentiary hurdles.',
             legal_reasoning: 'This is the "competition law swap" trap. While Art. 102 is legally relevant background, pursuing it instead of the DMA per se rule is strategically disastrous. It opens the door to market definition disputes, efficiency defenses, and effects analysis that the DMA eliminated for gatekeepers.'
           },
           {
             id: 'arg1-wrong',
             quality: 'wrong',
-            text: 'Your Honour, I accept that Shopping Box is a universal search feature distinct from organic ranking. However, SearchCo violates Article 5(3) DMA by preventing business users from offering different conditions through other channels. PriceWatch should be allowed to bid for Shopping Box placement. The regulatory framework specifically anticipates situations of this nature and imposes obligations that the respondent has manifestly failed to satisfy. The Authority should exercise its full enforcement competence under this framework to ensure the respondent brings its practices into compliance.',
+            text: 'Your Honour, I accept that Shopping Box is a universal search feature distinct from organic ranking. However, SearchCo violates Article 5(3) DMA by preventing business users from offering different conditions through other channels. PriceWatch should be allowed to bid for Shopping Box placement.',
             judge_response: 'Counsel, you appear to concede the Art. 6(5) argument. Are you withdrawing your claim that Shopping Box constitutes self-preferencing in ranking? Furthermore, Art. 5(3) concerns price parity clauses, not search result placement.',
             legal_reasoning: 'This concedes the central argument by accepting the "feature" framing, and cites the wrong article. Art. 5(3) prohibits MFN clauses, not search ranking. By accepting the distinction between feature and organic, counsel undermines the entire case.'
           }
@@ -21268,7 +21268,7 @@ verdict: {
         evidenceId: 'ev2-technical-analysis',
         oppositionArgument: 'Your Honour, even if Art. 6(5) applies, SearchCo does not violate it because the Shopping Box and organic results are not "similar services." Shopping Box is an integrated transactional platform allowing one-click purchases, while PriceWatch is a referral service sending users to merchant sites. They serve different user needs and have different technical architectures. Article 6(5) only requires equal treatment for "similar" services. Just as SearchCo can favor its own Maps service over Yelp for mapping queries, it may favor Shopping Box over PriceWatch for shopping queries because the services are vertically integrated and distinct.',
         writePrompt: 'Opposing counsel argues the services are not "similar" because Shopping Box has different features (one-click). Does Art. 6(5) require identity of services, or does it cover services that compete in the same market? What is the competitive relationship here?',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Similar Services',
@@ -21292,21 +21292,21 @@ verdict: {
           {
             id: 'arg2-weak',
             quality: 'weak',
-            text: 'Your Honour, Shopping Box and PriceWatch are clearly the same type of service. They both show prices for products and help users shop. SearchCo is just making excuses to keep its monopoly position and crush competitors. The Authority should send a clear signal that regulated entities cannot treat their obligations this way and must be held to the standards the law requires. This kind of behaviour should not be tolerated in a modern regulatory framework and the Authority must take decisive action to protect the affected parties.',
+            text: 'Your Honour, Shopping Box and PriceWatch are clearly the same type of service. They both show prices for products and help users shop. SearchCo is just making excuses to keep its monopoly position and crush competitors.',
             judge_response: 'Your conclusion is correct, Counsel, but I require legal analysis of why technical differences do not defeat the "similar services" requirement under Art. 6(5). What is the legal test for similarity?',
             legal_reasoning: 'While the conclusion is correct, this fails to articulate the legal standard for "similar" under the DMA. It doesn\'t explain that functional equivalence, not technical identity, governs the analysis.'
           },
           {
             id: 'arg2-plausible',
             quality: 'plausible',
-            text: 'Your Honour, the services are similar, but SearchCo can justify the differentiation under Article 8 DMA regarding further specification of compliance measures. We should request that the Commission specify measures allowing Shopping Box to remain if SearchCo implements "fair" ranking criteria within the box itself, such as including PriceWatch in the module. The regulatory framework specifically anticipates this kind of conduct and provides targeted obligations that supersede the more general provisions relied upon. The Authority should therefore ground its finding in this specific framework rather than the general provisions the complainant has relied upon.',
+            text: 'Your Honour, the services are similar, but SearchCo can justify the differentiation under Article 8 DMA regarding further specification of compliance measures. We should request that the Commission specify measures allowing Shopping Box to remain if SearchCo implements "fair" ranking criteria within the box itself, such as including PriceWatch in the module.',
             judge_response: 'Counsel, Article 8 allows the Commission to specify measures for compliance with Art. 6 obligations. It does not create an exemption for preferential treatment. Are you suggesting a prohibited practice can be remedied by "fairer" preferential treatment rather than equal treatment?',
             legal_reasoning: 'This confuses the further specification procedure with an exemption. Art. 8 allows detailing how to comply with Art. 6(5), but since Art. 6(5) is a per se prohibition on self-preferencing, the only compliant measure is equal treatment, not "better" preferential treatment.'
           },
           {
             id: 'arg2-wrong',
             quality: 'wrong',
-            text: 'Your Honour, I agree with opposing counsel that the services are technically distinct. However, SearchCo violates GDPR Article 22 by not allowing PriceWatch to contest the automated ranking decision affecting their business. We should focus on data protection remedies for automated decision-making. The regulatory framework specifically anticipates situations of this nature and imposes obligations that the respondent has manifestly failed to satisfy. The Authority should exercise its full enforcement competence under this framework to ensure the respondent brings its practices into compliance.',
+            text: 'Your Honour, I agree with opposing counsel that the services are technically distinct. However, SearchCo violates GDPR Article 22 by not allowing PriceWatch to contest the automated ranking decision affecting their business. We should focus on data protection remedies for automated decision-making.',
             judge_response: 'Counsel, you appear to be abandoning your Art. 6(5) claim. Furthermore, GDPR Article 22 applies to decisions about natural persons, not corporate search rankings or B2B services.',
             legal_reasoning: 'This concedes the "similar services" argument (fatal to the Art. 6(5) claim) and cites the wrong legal framework. GDPR applies to personal data of individuals, not B2B search rankings. This is a complete legal error.'
           }
@@ -21317,7 +21317,7 @@ verdict: {
         evidenceId: 'ev5-industry-witness',
         oppositionArgument: 'Your Honour, even if there is technical preferential treatment, SearchCo should be permitted to maintain the Shopping Box because it provides consumer benefits. The integration offers faster checkout, fraud protection, and a unified user experience. Removing Shopping Box would force users to navigate to third-party sites, increasing friction and reducing consumer welfare. Article 6(5) must be interpreted in light of the DMA\'s general objective of fairness, not as a rigid prohibition that harms consumers. We propose a remedy where Shopping Box remains but displays a "price comparison" label, preserving consumer choice while maintaining integration.',
         writePrompt: 'Opposing counsel invokes "consumer benefits" and proposes a remedy to keep Shopping Box with modifications. Does the DMA allow efficiency or consumer benefit defenses to Article 6(5)? What is the appropriate remedy for a violation?',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Per Se Prohibition',
@@ -21341,21 +21341,21 @@ verdict: {
           {
             id: 'arg3-weak',
             quality: 'weak',
-            text: 'Your Honour, SearchCo\'s arguments about consumer benefits are just excuses for monopoly behavior. They should not be allowed to preference their own service no matter what benefits they claim. The DMA is clear that this is illegal and they must stop immediately. Any reasonable person would recognise that the respondent acted improperly and that meaningful intervention is needed to prevent recurrence. The Authority should send a clear signal that regulated entities cannot treat their obligations this way and must be held to the standards the law requires.',
+            text: 'Your Honour, SearchCo\'s arguments about consumer benefits are just excuses for monopoly behavior. They should not be allowed to preference their own service no matter what benefits they claim. The DMA is clear that this is illegal and they must stop immediately.',
             judge_response: 'I agree with your position, Counsel, but I require you to articulate why consumer benefits cannot be weighed against the prohibition. What in the DMA structure makes this a per se rule rather than a balancing test?',
             legal_reasoning: 'Correct conclusion but fails to explain the legal principle. It doesn\'t explain that per se rules prohibit the conduct absolutely, unlike rule of reason standards that allow efficiency defenses.'
           },
           {
             id: 'arg3-plausible',
             quality: 'plausible',
-            text: 'Your Honour, while I agree that consumer benefits do not excuse the violation, the appropriate remedy is structural separation rather than mere cessation. Under Article 18, the Commission should impose remedies ensuring SearchCo spins off its shopping comparison service to prevent future conflicts of interest and systemic non-compliance. The regulatory framework specifically anticipates this kind of conduct and provides targeted obligations that supersede the more general provisions relied upon. The Authority should therefore ground its finding in this specific framework rather than the general provisions the complainant has relied upon.',
+            text: 'Your Honour, while I agree that consumer benefits do not excuse the violation, the appropriate remedy is structural separation rather than mere cessation. Under Article 18, the Commission should impose remedies ensuring SearchCo spins off its shopping comparison service to prevent future conflicts of interest and systemic non-compliance.',
             judge_response: 'Counsel, Article 18 remedies apply to systematic non-compliance after multiple infringement decisions. We are at the initial finding of violation stage. Are you jumping ahead to structural remedies when behavioral cessation is the appropriate immediate remedy?',
             legal_reasoning: 'This overreaches. Art. 18 requires three prior non-compliance decisions within 8 years. This is the first proceeding. Immediate cessation under Art. 29 is the correct remedy, not structural separation. This confuses the procedural stages.'
           },
           {
             id: 'arg3-wrong',
             quality: 'wrong',
-            text: 'Your Honour, I accept SearchCo\'s proposal. A labeling remedy allowing Shopping Box to remain with a "comparison" badge would satisfy transparency requirements while preserving consumer benefits. This represents a proportionate balance under the DMA\'s fairness objectives. The regulatory framework specifically anticipates situations of this nature and imposes obligations that the respondent has manifestly failed to satisfy. The Authority should exercise its full enforcement competence under this framework to ensure the respondent brings its practices into compliance.',
+            text: 'Your Honour, I accept SearchCo\'s proposal. A labeling remedy allowing Shopping Box to remain with a "comparison" badge would satisfy transparency requirements while preserving consumer benefits. This represents a proportionate balance under the DMA\'s fairness objectives.',
             judge_response: 'Counsel, you are conceding the case. If Art. 6(5) is a per se prohibition on self-preferencing, how can the practice continue with merely a label? You appear to be negotiating a settlement that violates the per se nature of the obligation.',
             legal_reasoning: 'This is a catastrophic concession. It accepts a continuation of the prohibited practice with cosmetic changes, directly contradicting the per se prohibition. This would lose the case immediately.'
           }
@@ -21441,7 +21441,7 @@ verdict: {
       prompt: 'Which legal framework provides the most direct basis for challenging MegaMart\'s algorithmic prioritization of its private-label products?',
       correct: 'dma',
       writePrompt: 'Identify the applicable legal framework. Explain why the DMA is preferable to competition law for challenging gatekeeper self-preferencing in ranking.',
-      minWords: 25,
+      minWords: 10,
       requiredConcepts: [
         {
           name: 'Gatekeeper Status',
@@ -21476,7 +21476,7 @@ verdict: {
       prompt: 'Which specific DMA article prohibits MegaMart\'s practice of algorithmically boosting its private-label products above third-party offerings?',
       correct: 'art6-5',
       writePrompt: 'Identify the exact article and explain the scope of the prohibition. Does the gatekeeper have any defense for favoring its own "quality-verified" products?',
-      minWords: 20,
+      minWords: 10,
       requiredConcepts: [
         {
           name: 'Article 6(5)',
@@ -21606,7 +21606,7 @@ verdict: {
         evidenceId: 'ev3-internal-email',
         oppositionArgument: 'Your Honour, Article 6(5) does not apply here because MegaMart Basics products are not "similar" to third-party products within the meaning of the DMA. MegaMart Basics are vertically integrated products subject to direct quality control, supply chain verification, and consistent manufacturing standards. Third-party marketplace sellers operate independently with variable quality. The DMA\'s prohibition on self-preferencing applies only to fungible intermediation services, not to a gatekeeper\'s own branded goods which are structurally distinct from third-party offerings.',
         writePrompt: 'Opposing counsel claims private-label products are not "similar" to third-party products. Does Art. 6(5) distinguish between the gatekeeper\'s own products and third-party products based on supply chain structure, or does it look at competitive substitutability?',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Similar Products',
@@ -21630,21 +21630,21 @@ verdict: {
           {
             id: 'arg1-weak',
             quality: 'weak',
-            text: 'Your Honour, MegaMart Basics and CraftGoods vases are clearly the same type of product. They are both ceramic vases being sold to the same customers looking for home goods. MegaMart is just making excuses to favor its own products over competitors because they want to capture all the profits. The DMA was meant to stop exactly this kind of unfair behavior where big platforms exploit their power to crush smaller businesses that make better products. Any reasonable person would recognise that the respondent acted improperly and that meaningful intervention is needed to prevent recurrence.',
+            text: 'Your Honour, MegaMart Basics and CraftGoods vases are clearly the same type of product. They are both ceramic vases being sold to the same customers looking for home goods. MegaMart is just making excuses to favor its own products over competitors because they want to capture all the profits. The DMA was meant to stop exactly this kind of unfair behavior where big platforms exploit their power to crush smaller businesses that make better products.',
             judge_response: 'I agree with your conclusion, Counsel, but I require precise legal analysis of why supply chain distinctions do not defeat the "similar products" requirement under Art. 6(5). Can you cite the specific legal test?',
             legal_reasoning: 'While the conclusion is correct, this fails to articulate the legal standard for "similar" under the DMA or address the specific vertical integration argument raised by opposing counsel. It relies on general fairness.'
           },
           {
             id: 'arg1-plausible',
             quality: 'plausible',
-            text: 'Your Honour, while the products are indeed similar, the stronger legal claim lies under Article 102 TFEU rather than the DMA. The European Court of Justice has recognized that leveraging dominance in the marketplace to favor affiliated undertakings constitutes an exclusionary abuse. We should request a full market definition analysis to establish MegaMart\'s dominance in the ceramic vase market and demonstrate the foreclosure effects on CraftGoods and other competitors through economic evidence. This interpretation aligns with the regulatory architecture which carefully distinguishes obligations by service category and provider type. The regulatory framework specifically anticipates this kind of conduct and provides targeted obligations that supersede the more general provisions relied upon.',
+            text: 'Your Honour, while the products are indeed similar, the stronger legal claim lies under Article 102 TFEU rather than the DMA. The European Court of Justice has recognized that leveraging dominance in the marketplace to favor affiliated undertakings constitutes an exclusionary abuse. We should request a full market definition analysis to establish MegaMart\'s dominance in the ceramic vase market and demonstrate the foreclosure effects on CraftGoods and other competitors through economic evidence.',
             judge_response: 'Counsel, why pursue an Article 102 claim requiring dominance and effects analysis when you have a per se DMA prohibition available? The Commission designated MegaMart precisely to avoid these evidentiary hurdles.',
             legal_reasoning: 'This is the "competition law swap" trap. While Art. 102 is legally relevant, pursuing it instead of the DMA per se rule is strategically disastrous. It opens the door to market definition disputes and efficiency defenses that the DMA eliminated.'
           },
           {
             id: 'arg1-wrong',
             quality: 'wrong',
-            text: 'Your Honour, I accept that MegaMart Basics are distinct products due to their direct sourcing model and integrated supply chain. However, MegaMart violates Article 5(4) DMA by preventing CraftGoods from communicating with customers outside the platform about their superior quality products and offering direct discounts through other channels. This provision establishes a comprehensive framework for addressing precisely this kind of conduct and provides the enforcement tools necessary for meaningful corrective action. The regulatory framework specifically anticipates situations of this nature and imposes obligations that the respondent has manifestly failed to satisfy.',
+            text: 'Your Honour, I accept that MegaMart Basics are distinct products due to their direct sourcing model and integrated supply chain. However, MegaMart violates Article 5(4) DMA by preventing CraftGoods from communicating with customers outside the platform about their superior quality products and offering direct discounts through other channels.',
             judge_response: 'Counsel, you appear to concede the Art. 6(5) argument by accepting the "distinct products" framing. Furthermore, Article 5(4) concerns anti-steering provisions regarding communication with end users, not product ranking algorithms within the marketplace.',
             legal_reasoning: 'This concedes the central argument by accepting the product distinction, and cites the wrong article. Art. 5(4) prohibits restricting business users from communicating with end users, not ranking algorithms.'
           }
@@ -21655,7 +21655,7 @@ verdict: {
         evidenceId: 'ev4-compliance-report',
         oppositionArgument: 'Your Honour, even if the products are technically similar, MegaMart does not violate Art. 6(5) because the preferential treatment serves legitimate quality assurance purposes. The DMA permits gatekeepers to ensure consumer protection by surfacing reliable products. Our +35% boost reflects our ability to verify manufacturing standards, ensure consistent supply, and guarantee returns. This is "quality curation" analogous to a department store featuring its own brand prominently because consumers trust the retailer\'s quality control. Article 6(5) cannot prohibit legitimate consumer protection measures that happen to favor the gatekeeper\'s own products.',
         writePrompt: 'Opposing counsel invokes "quality assurance" and "consumer protection" to justify the preferential treatment. Does Art. 6(5) contain an exception for quality-verified products or consumer benefits?',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Per Se Prohibition',
@@ -21679,21 +21679,21 @@ verdict: {
           {
             id: 'arg2-weak',
             quality: 'weak',
-            text: 'Your Honour, MegaMart\'s quality arguments are just excuses for monopoly behavior and trying to keep all the profits for themselves. They should not be allowed to preference their own products no matter what quality claims they make because it is unfair to smaller businesses. The DMA is clear that this is illegal and they must stop immediately regardless of their claims about quality verification. The Authority should send a clear signal that regulated entities cannot treat their obligations this way and must be held to the standards the law requires.',
+            text: 'Your Honour, MegaMart\'s quality arguments are just excuses for monopoly behavior and trying to keep all the profits for themselves. They should not be allowed to preference their own products no matter what quality claims they make because it is unfair to smaller businesses. The DMA is clear that this is illegal and they must stop immediately regardless of their claims about quality verification.',
             judge_response: 'I agree with your position, Counsel, but I require you to articulate why quality defenses are unavailable. What in the DMA text or structure makes Art. 6(5) a per se rule rather than a balancing standard?',
             legal_reasoning: 'Correct conclusion but fails to explain the legal principle. It doesn\'t explain that per se rules prohibit the conduct absolutely without regard to justifications.'
           },
           {
             id: 'arg2-plausible',
             quality: 'plausible',
-            text: 'Your Honour, while quality defenses are indeed inadmissible under Art. 6(5), the Commission should exercise its powers under Article 8 to further specify the measures MegaMart must implement to comply. We should request that the Commission specify "fair" ranking criteria that allow MegaMart to maintain some form of boost if they implement transparent quality metrics and auditing procedures that apply equally to all sellers in the category. The regulatory framework specifically anticipates this kind of conduct and provides targeted obligations that supersede the more general provisions relied upon. The Authority should therefore ground its finding in this specific framework rather than the general provisions the complainant has relied upon.',
+            text: 'Your Honour, while quality defenses are indeed inadmissible under Art. 6(5), the Commission should exercise its powers under Article 8 to further specify the measures MegaMart must implement to comply. We should request that the Commission specify "fair" ranking criteria that allow MegaMart to maintain some form of boost if they implement transparent quality metrics and auditing procedures that apply equally to all sellers in the category.',
             judge_response: 'Counsel, Article 8 allows the Commission to specify compliance measures for Art. 6 obligations. However, since Art. 6(5) is a per se prohibition on self-preferencing, the only compliant measure is equal treatment, not "fairer" preferential treatment. Are you suggesting a prohibited practice can be remedied by better quality controls?',
             legal_reasoning: 'This confuses the further specification procedure with an exemption. Art. 8 allows detailing how to comply, but since Art. 6(5) prohibits self-preferencing absolutely, the only compliant outcome is equal treatment, not modified preferential treatment.'
           },
           {
             id: 'arg2-wrong',
             quality: 'wrong',
-            text: 'Your Honour, I agree with opposing counsel that quality verification justifies preferential treatment in ranking algorithms. MegaMart\'s direct sourcing does ensure better quality control than third-party sellers, so the ranking preference is reasonable and benefits consumers. However, they should disclose the +35% boost to consumers through clear labeling and transparency notices to ensure shoppers understand the commercial relationship. The regulatory framework specifically anticipates situations of this nature and imposes obligations that the respondent has manifestly failed to satisfy. The Authority should exercise its full enforcement competence under this framework to ensure the respondent brings its practices into compliance.',
+            text: 'Your Honour, I agree with opposing counsel that quality verification justifies preferential treatment in ranking algorithms. MegaMart\'s direct sourcing does ensure better quality control than third-party sellers, so the ranking preference is reasonable and benefits consumers. However, they should disclose the +35% boost to consumers through clear labeling and transparency notices to ensure shoppers understand the commercial relationship.',
             judge_response: 'Counsel, you are conceding the case. If Art. 6(5) is a per se prohibition on self-preferencing, how can quality verification justify the practice? Transparency about a prohibited practice does not cure the violation.',
             legal_reasoning: 'This is a catastrophic concession. It accepts the efficiency defense and suggests transparency cures the violation, directly contradicting the per se nature of Art. 6(5). This would lose the case immediately.'
           }
@@ -21704,7 +21704,7 @@ verdict: {
         evidenceId: 'ev5-industry-witness',
         oppositionArgument: 'Your Honour, even if there is a technical violation, ordering cessation of the house brand boost would harm consumers by removing quality-verified options from top positions. We propose a remedy where MegaMart maintains the ranking preference but adds a "Quality Verified" label to all boosted products, along with a disclosure statement explaining the sourcing advantages. This balances the DMA\'s fairness objectives with consumer welfare. Article 6(5) should be interpreted to allow proportionate remedies that preserve consumer benefits while addressing competition concerns.',
         writePrompt: 'Opposing counsel proposes a labeling remedy to preserve the preferential treatment with transparency. Does the DMA allow "balanced" remedies for per se prohibitions, or must the practice cease entirely?',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Per Se Remedy',
@@ -21728,21 +21728,21 @@ verdict: {
           {
             id: 'arg3-weak',
             quality: 'weak',
-            text: 'Your Honour, MegaMart cannot keep the boost with just a label because that does not solve the fundamental problem of unfair competition. They need to stop favoring their own products completely and treat every seller equally in the ranking algorithm. The DMA was designed to ensure fairness, not to allow big platforms to continue exploiting their power with cosmetic changes like disclosure labels. This kind of behaviour should not be tolerated in a modern regulatory framework and the Authority must take decisive action to protect the affected parties.',
+            text: 'Your Honour, MegaMart cannot keep the boost with just a label because that does not solve the fundamental problem of unfair competition. They need to stop favoring their own products completely and treat every seller equally in the ranking algorithm. The DMA was designed to ensure fairness, not to allow big platforms to continue exploiting their power with cosmetic changes like disclosure labels.',
             judge_response: 'That is the correct outcome, Counsel. But I would appreciate a more thorough explanation of why the DMA does not permit "modified" compliance for per se prohibitions, given the structural difference between prohibited and high-risk systems.',
             legal_reasoning: 'Correct conclusion but lacks legal depth. It doesn\'t explain the structural difference between prohibited practices (must cease) and high-risk systems (can be made compliant).'
           },
           {
             id: 'arg3-plausible',
             quality: 'plausible',
-            text: 'Your Honour, while I agree that labeling is insufficient as a remedy, the appropriate enforcement action is structural separation under Article 18 rather than mere behavioral cessation. The Commission should require MegaMart to divest its private-label division entirely to prevent systemic conflicts of interest and future non-compliance with Art. 6(5), ensuring permanent market contestability. This interpretation aligns with the regulatory architecture which carefully distinguishes obligations by service category and provider type. The regulatory framework specifically anticipates this kind of conduct and provides targeted obligations that supersede the more general provisions relied upon.',
+            text: 'Your Honour, while I agree that labeling is insufficient as a remedy, the appropriate enforcement action is structural separation under Article 18 rather than mere behavioral cessation. The Commission should require MegaMart to divest its private-label division entirely to prevent systemic conflicts of interest and future non-compliance with Art. 6(5), ensuring permanent market contestability.',
             judge_response: 'Counsel, Article 18 applies to systematic non-compliance after multiple infringement decisions under Art. 29. We are at the initial finding of violation stage. Are you jumping ahead to structural remedies when behavioral cessation is the appropriate immediate remedy under Art. 29?',
             legal_reasoning: 'This overreaches. Art. 18 requires three prior non-compliance decisions within 8 years. This is the first proceeding. Immediate cessation under Art. 29 is the correct remedy, not divestiture.'
           },
           {
             id: 'arg3-wrong',
             quality: 'wrong',
-            text: 'Your Honour, I accept opposing counsel\'s proposal as a reasonable compromise. A "Quality Verified" label with full disclosure would satisfy transparency requirements under the DMA while allowing MegaMart to maintain consumer benefits through preferential ranking. This represents a proportionate balance that serves both competition and consumer welfare objectives under the regulation. This provision establishes a comprehensive framework for addressing precisely this kind of conduct and provides the enforcement tools necessary for meaningful corrective action. The regulatory framework specifically anticipates situations of this nature and imposes obligations that the respondent has manifestly failed to satisfy.',
+            text: 'Your Honour, I accept opposing counsel\'s proposal as a reasonable compromise. A "Quality Verified" label with full disclosure would satisfy transparency requirements under the DMA while allowing MegaMart to maintain consumer benefits through preferential ranking. This represents a proportionate balance that serves both competition and consumer welfare objectives under the regulation.',
             judge_response: 'Counsel, you are conceding the case. If Art. 6(5) is a per se prohibition on self-preferencing, how can the practice continue with merely a label? You appear to accept that preferential treatment can continue with cosmetic modifications, directly undermining the per se nature of the prohibition.',
             legal_reasoning: 'This is a catastrophic concession. It accepts a continuation of the prohibited practice, directly contradicting the per se prohibition. This would lose the case immediately.'
           }
@@ -21828,7 +21828,7 @@ verdict: {
       prompt: 'Which legal framework provides the most direct basis for challenging PhoneOS\'s pre-installation and search ranking practices?',
       correct: 'dma',
       writePrompt: 'Identify the applicable legal framework. Explain why the DMA is preferable to competition law for challenging gatekeeper self-preferencing in app stores.',
-      minWords: 25,
+      minWords: 10,
       requiredConcepts: [
         {
           name: 'Gatekeeper Status',
@@ -21863,7 +21863,7 @@ verdict: {
       prompt: 'Which specific DMA articles prohibit PhoneOS\'s practices of search ranking preference and non-removable pre-installation?',
       correct: 'art6-5-6-3',
       writePrompt: 'Identify the exact articles and explain the specific prohibitions. Can PhoneOS justify its practices by claiming "seamless integration" or "security" benefits?',
-      minWords: 20,
+      minWords: 10,
       requiredConcepts: [
         {
           name: 'Article 6(5)',
@@ -21993,7 +21993,7 @@ verdict: {
         evidenceId: 'ev3-internal-email',
         oppositionArgument: 'Your Honour, Article 6(5) does not apply to pre-installed native applications because these are not "ranked" in the App Store search — they are system components that exist outside the search index. The App Store search algorithm applies to downloadable third-party applications; native applications are surfaced through a separate system integration layer that is not subject to ranking fairness obligations. The DMA regulates competitive intermediation, not the integration of core system functions that are inherent to the device architecture.',
         writePrompt: 'Opposing counsel claims native apps are system components outside "ranking" scope. Does Art. 6(5) distinguish between search results and pre-installed prominence? What constitutes "ranking" under the DMA?',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Ranking Scope',
@@ -22017,21 +22017,21 @@ verdict: {
           {
             id: 'arg1-weak',
             quality: 'weak',
-            text: 'Your Honour, PhoneOS is clearly favoring its own apps over better competitors. This is unfair to third-party developers who have worked hard to build superior products. The DMA was designed to stop big tech companies from exploiting their gatekeeper power to crush smaller competitors. They should not be allowed to put their own music app first when it has a 3.2-star rating compared to 4.7 for alternatives. Any reasonable person would recognise that the respondent acted improperly and that meaningful intervention is needed to prevent recurrence. The Authority should send a clear signal that regulated entities cannot treat their obligations this way and must be held to the standards the law requires.',
+            text: 'Your Honour, PhoneOS is clearly favoring its own apps over better competitors. This is unfair to third-party developers who have worked hard to build superior products. The DMA was designed to stop big tech companies from exploiting their gatekeeper power to crush smaller competitors. They should not be allowed to put their own music app first when it has a 3.2-star rating compared to 4.7 for alternatives.',
             judge_response: 'I agree with your conclusion, Counsel, but I require precise legal reasoning. Can you explain why the "system component" label does not create an exemption under the statutory text of Art. 6(5)?',
             legal_reasoning: 'While the conclusion is correct, this fails to address the specific legal issue raised. It relies on general fairness and legislative intent rather than demonstrating that the text of Art. 6(5) applies universally to all forms of relative prominence.'
           },
           {
             id: 'arg1-plausible',
             quality: 'plausible',
-            text: 'Your Honour, while PhoneOS violates Article 6(5), the stronger claim lies under Article 6(4) DMA regarding third-party app stores. PhoneOS prevents users from downloading alternative music applications from independent sources, forcing them to use the App Store where PhoneOS controls rankings. We should request that the Commission mandate sideloading rights under Article 6(4) to allow developers to distribute applications outside PhoneOS’s controlled ecosystem. The regulatory framework specifically anticipates this kind of conduct and provides targeted obligations that supersede the more general provisions relied upon. The Authority should therefore ground its finding in this specific framework rather than the general provisions the complainant has relied upon.',
+            text: 'Your Honour, while PhoneOS violates Article 6(5), the stronger claim lies under Article 6(4) DMA regarding third-party app stores. PhoneOS prevents users from downloading alternative music applications from independent sources, forcing them to use the App Store where PhoneOS controls rankings. We should request that the Commission mandate sideloading rights under Article 6(4) to allow developers to distribute applications outside PhoneOS’s controlled ecosystem.',
             judge_response: 'Counsel, Article 6(4) concerns sideloading and alternative app stores. While relevant to app distribution generally, does it address the specific ranking discrimination in the App Store search that is the subject of this proceeding?',
             legal_reasoning: 'This is the trap answer. It sounds legally sophisticated but misdirects toward Art. 6(4) when the core issue is Art. 6(5) ranking and Art. 6(3) uninstallability. Sideloading is a separate obligation that does not cure the ranking discrimination in the gatekeeper\'s own store.'
           },
           {
             id: 'arg1-wrong',
             quality: 'wrong',
-            text: 'Your Honour, I accept that pre-installed applications are distinct from app store search results. However, PhoneOS violates Article 5(8) DMA by tying its music subscription service to the device purchase, requiring users to accept the app as a condition of using the smartphone. This constitutes prohibited bundling of core platform services. This provision establishes a comprehensive framework for addressing precisely this kind of conduct and provides the enforcement tools necessary for meaningful corrective action. The regulatory framework specifically anticipates situations of this nature and imposes obligations that the respondent has manifestly failed to satisfy.',
+            text: 'Your Honour, I accept that pre-installed applications are distinct from app store search results. However, PhoneOS violates Article 5(8) DMA by tying its music subscription service to the device purchase, requiring users to accept the app as a condition of using the smartphone. This constitutes prohibited bundling of core platform services.',
             judge_response: 'Counsel, you appear to concede the Art. 6(5) argument by accepting the "distinct" framing. Furthermore, Article 5(8) concerns requiring subscription to further core platform services as a condition for registration, not pre-installation of applications on devices.',
             legal_reasoning: 'This concedes the central argument by accepting the distinction between system components and ranked apps, and cites the wrong article. Art. 5(8) addresses tying of services, not pre-installation ranking.'
           }
@@ -22042,7 +22042,7 @@ verdict: {
         evidenceId: 'ev4-compliance-report',
         oppositionArgument: 'Your Honour, even if the court finds technical preferential treatment, PhoneOS does not violate the DMA because the practices serve legitimate integration and security purposes. Article 6(3) permits restrictions on uninstallation where necessary for system integrity. Our native applications are deeply integrated with hardware security modules and DRM subsystems; removal would compromise device security and user content protection. Similarly, the ranking preference reflects these security integrations — third-party apps lack the verified security architecture of native applications. The DMA must be interpreted to allow gatekeepers to protect user security through controlled integration.',
         writePrompt: 'Opposing counsel invokes "security" and "integration" to justify ranking preference and non-uninstallability. Does Art. 6(5) or Art. 6(3) contain exceptions for security or seamless integration benefits?',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Per Se Prohibition',
@@ -22059,28 +22059,28 @@ verdict: {
           {
             id: 'arg2-strong',
             quality: 'strong',
-            text: 'Your Honour, opposing counsel\u2019s efficiency defense is legally inadmissible under the DMA framework. Article 6(5) establishes an absolute prohibition on self-preferencing in ranking that admits no exceptions for security, integration quality, or claimed user experience benefits. The provision is deliberately structured as a per se rule to prevent gatekeepers from justifying preferential treatment through subjective quality claims. Article 6(3) additionally mandates that gatekeepers allow users to easily uninstall pre-installed applications and change default settings regardless of claimed integration advantages. PhoneOS cannot invoke seamless experience to justify either the ranking preference or the prevention of uninstallation. Contestability takes priority over the gatekeeper\u2019s own quality assessments.',
+            text: 'Your Honour, opposing counsel’s efficiency defense is legally inadmissible. Article 6(5) establishes an absolute prohibition on self-preferencing in ranking that admits no exceptions for security or integration quality. Simultaneously, Article 6(3) mandates that gatekeepers allow users to easily uninstall pre-installed applications and change default settings regardless of claimed integration advantages. PhoneOS cannot invoke "seamless experience" to justify either the ranking preference or the prevention of uninstallation. The regulation prioritizes contestability over subjective quality judgments by the gatekeeper.',
             judge_response: 'The court accepts this analysis. Article 6(5) does not contain a security exception. The per se nature of the prohibition precludes the type of balancing test opposing counsel suggests.',
             legal_reasoning: 'This correctly identifies the per se nature of Arts. 6(5) and 6(3) and explains why security defenses are categorically unavailable. It addresses both articles simultaneously as required by the case.'
           },
           {
             id: 'arg2-weak',
             quality: 'weak',
-            text: 'Your Honour, PhoneOS cannot use security and integration as excuses for monopolistic behavior. They are just trying to keep their inferior apps dominant by preventing users from choosing better alternatives. This is typical big tech exploitation that harms consumers and developers alike. The DMA is clear that they must treat competitors fairly. Any reasonable person would recognise that the respondent acted improperly and that meaningful intervention is needed to prevent recurrence. The Authority should send a clear signal that regulated entities cannot treat their obligations this way and must be held to the standards the law requires.',
+            text: 'Your Honour, PhoneOS cannot use security and integration as excuses for monopolistic behavior. They are just trying to keep their inferior apps dominant by preventing users from choosing better alternatives. This is typical big tech exploitation that harms consumers and developers alike. The DMA is clear that they must treat competitors fairly.',
             judge_response: 'I agree with your position, Counsel, but I require you to articulate why security defenses are unavailable. What in the DMA text or structure makes Arts. 6(5) and 6(3) per se rules?',
             legal_reasoning: 'Correct conclusion but fails to explain the legal principle. It doesn\'t explain that per se rules prohibit the conduct absolutely without regard to justifications.'
           },
           {
             id: 'arg2-plausible',
             quality: 'plausible',
-            text: 'Your Honour, while security defenses are inadmissible under the DMA, PhoneOS’s practices additionally violate GDPR Article 32 regarding security of processing. By pre-installing applications with privileged system access and preventing their removal, PhoneOS creates data security risks that users cannot mitigate. We should request the court order PhoneOS to conduct a data protection impact assessment and implement privacy-by-design measures. The Authority should therefore ground its finding in this specific framework rather than the general provisions the complainant has relied upon. This interpretation aligns with the regulatory architecture which carefully distinguishes obligations by service category and provider type.',
+            text: 'Your Honour, while security defenses are inadmissible under the DMA, PhoneOS’s practices additionally violate GDPR Article 32 regarding security of processing. By pre-installing applications with privileged system access and preventing their removal, PhoneOS creates data security risks that users cannot mitigate. We should request the court order PhoneOS to conduct a data protection impact assessment and implement privacy-by-design measures.',
             judge_response: 'Counsel, your GDPR analysis is technically competent, but we are examining per se prohibitions under the DMA. If this system violates Arts. 6(5) and 6(3), does a GDPR compliance remedy adequately address the violation?',
             legal_reasoning: 'This misapplies the framework. The GDPR argument is valid in isolation but distracts from the DMA per se prohibition. If the conduct is prohibited under the DMA, GDPR compliance is irrelevant to the legality of the practice.'
           },
           {
             id: 'arg2-wrong',
             quality: 'wrong',
-            text: 'Your Honour, I agree with opposing counsel that seamless integration and security benefits justify pre-installation of PhoneOS’s native applications. However, they should provide greater transparency by labeling these as "system applications" in the app store search results and disclosing the technical integration advantages. This labeling remedy would satisfy consumer protection requirements. The regulatory framework specifically anticipates situations of this nature and imposes obligations that the respondent has manifestly failed to satisfy. The Authority should exercise its full enforcement competence under this framework to ensure the respondent brings its practices into compliance.',
+            text: 'Your Honour, I agree with opposing counsel that seamless integration and security benefits justify pre-installation of PhoneOS’s native applications. However, they should provide greater transparency by labeling these as "system applications" in the app store search results and disclosing the technical integration advantages. This labeling remedy would satisfy consumer protection requirements.',
             judge_response: 'Counsel, you are conceding the case. If Arts. 6(5) and 6(3) are per se prohibitions, how can security justification validate the practice? Transparency about a prohibited practice does not cure the violation.',
             legal_reasoning: 'This is a catastrophic concession. It accepts the efficiency defense and suggests transparency cures the violation, directly contradicting the per se nature of the obligations.'
           }
@@ -22091,7 +22091,7 @@ verdict: {
         evidenceId: 'ev5-industry-witness',
         oppositionArgument: 'Your Honour, even if there is technical non-compliance, ordering immediate cessation of pre-installation would harm consumers by removing integrated security features and disrupting the user experience. We propose a proportionate remedy: PhoneOS will maintain pre-installation but add a "System App" label in search results and provide a "Disable" option alongside full uninstallation for non-critical applications. This balances the DMA\'s objectives with practical security requirements and consumer welfare. Article 6(5) and 6(3) should be interpreted to allow such proportionate implementation measures.',
         writePrompt: 'Opposing counsel proposes labeling and partial uninstallability as a remedy. Does the DMA allow "balanced" remedies for per se prohibitions, or must the practice cease entirely? What remedy should you seek?',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Per Se Remedy',
@@ -22108,28 +22108,28 @@ verdict: {
           {
             id: 'arg3-strong',
             quality: 'strong',
-            text: 'Your Honour, opposing counsel\u2019s labeling proposal is legally invalid under the DMA. Article 6(5) requires cessation of preferential ranking treatment, not modified disclosures or transparency labels. The obligation is to stop self-preferencing, not to acknowledge it while continuing the practice. PhoneOS must either remove its applications from preferential search positions or apply identical ranking criteria to all music applications including its own. Article 6(3) additionally mandates allowing users to easily uninstall pre-installed applications and implement meaningful choice screens at setup. The only lawful remedy is immediate compliance with both obligations: genuinely equal ranking treatment and effective user choice through uninstallability and default selection.',
+            text: 'Your Honour, opposing counsel’s labeling proposal is legally invalid. Article 6(5) requires cessation of preferential ranking, not modified disclosures. PhoneOS must either remove its applications from preferential search positions or treat all music applications equally in ranking. Additionally, Article 6(3) mandates allowing users to easily uninstall pre-installed applications and implement choice screens. The only lawful remedy is immediate compliance with both obligations: equal ranking treatment and full user choice through uninstallability.',
             judge_response: 'The court accepts this analysis. The DMA’s per se architecture precludes the type of balancing remedy opposing counsel suggests. Dr. Schmidt, the regulation requires equal treatment and uninstallability, not labeled preferential treatment.',
             legal_reasoning: 'This correctly identifies that per se prohibitions require cessation, not modification. It explains why labeling remedies are insufficient and identifies the correct outcome: equal ranking and uninstallability.'
           },
           {
             id: 'arg3-weak',
             quality: 'weak',
-            text: 'Your Honour, PhoneOS cannot keep their preferential treatment with just labels. They need to completely stop favoring their own apps and let users uninstall them easily. The DMA requires fair competition and user choice, not just transparency about unfair practices. They must treat all apps equally in search results. The Authority should send a clear signal that regulated entities cannot treat their obligations this way and must be held to the standards the law requires. This kind of behaviour should not be tolerated in a modern regulatory framework and the Authority must take decisive action to protect the affected parties.',
+            text: 'Your Honour, PhoneOS cannot keep their preferential treatment with just labels. They need to completely stop favoring their own apps and let users uninstall them easily. The DMA requires fair competition and user choice, not just transparency about unfair practices. They must treat all apps equally in search results.',
             judge_response: 'That is the correct outcome, Counsel. But I would appreciate a more thorough explanation of why the DMA does not permit "modified" compliance for per se prohibitions.',
             legal_reasoning: 'Correct conclusion but lacks legal depth. It doesn\'t explain the structural difference between prohibited practices (must cease) and high-risk systems (can be made compliant).'
           },
           {
             id: 'arg3-plausible',
             quality: 'plausible',
-            text: 'Your Honour, while labeling is insufficient, the appropriate remedy is structural separation under Article 18. The Commission should require PhoneOS to divest its music application division to prevent systemic conflicts of interest and future non-compliance with Articles 6(5) and 6(3). Divestiture would ensure permanent market contestability. This interpretation aligns with the regulatory architecture which carefully distinguishes obligations by service category and provider type. The regulatory framework specifically anticipates this kind of conduct and provides targeted obligations that supersede the more general provisions relied upon.',
+            text: 'Your Honour, while labeling is insufficient, the appropriate remedy is structural separation under Article 18. The Commission should require PhoneOS to divest its music application division to prevent systemic conflicts of interest and future non-compliance with Articles 6(5) and 6(3). Divestiture would ensure permanent market contestability.',
             judge_response: 'Counsel, Article 18 applies to systematic non-compliance after multiple infringement decisions. We are at the initial finding of violation stage. Are you jumping ahead to structural remedies when behavioral cessation is the appropriate immediate remedy?',
             legal_reasoning: 'This overreaches. Art. 18 requires three prior non-compliance decisions within 8 years. This is the first proceeding. Immediate cessation under Art. 29 is the correct remedy, not divestiture.'
           },
           {
             id: 'arg3-wrong',
             quality: 'wrong',
-            text: 'Your Honour, I accept opposing counsel’s proposal as reasonable. Labeling pre-installed applications as "system apps" with full disclosure of integration benefits would satisfy transparency requirements under the DMA while preserving consumer choice and security benefits. This represents a proportionate balance between competition enforcement and practical implementation. The Authority should exercise its full enforcement competence under this framework to ensure the respondent brings its practices into compliance. This provision establishes a comprehensive framework for addressing precisely this kind of conduct and provides the enforcement tools necessary for meaningful corrective action.',
+            text: 'Your Honour, I accept opposing counsel’s proposal as reasonable. Labeling pre-installed applications as "system apps" with full disclosure of integration benefits would satisfy transparency requirements under the DMA while preserving consumer choice and security benefits. This represents a proportionate balance between competition enforcement and practical implementation.',
             judge_response: 'Counsel, you are conceding the case. If Arts. 6(5) and 6(3) are per se prohibitions, how can the practice continue with merely a label? You appear to accept that preferential treatment can continue with cosmetic modifications.',
             legal_reasoning: 'This is a catastrophic concession. It accepts a continuation of the prohibited practice, directly contradicting the per se prohibition. This would lose the case immediately.'
           }
@@ -22216,7 +22216,7 @@ verdict: {
       prompt: 'Which legal framework provides the most direct basis for requiring ChatApp to interoperate with SecureMsg?',
       correct: 'dma',
       writePrompt: 'Identify the applicable legal framework. Explain why the DMA is preferable to competition law for mandating gatekeeper interoperability in messaging services.',
-      minWords: 25,
+      minWords: 10,
       requiredConcepts: [
         {
           name: 'Gatekeeper Designation',
@@ -22251,7 +22251,7 @@ verdict: {
       prompt: 'Which specific DMA article mandates interoperability for number-independent interpersonal communication services like ChatApp?',
       correct: 'art6-7',
       writePrompt: 'Identify the exact article and explain its requirements. Can ChatApp refuse interoperability by claiming security concerns?',
-      minWords: 20,
+      minWords: 10,
       requiredConcepts: [
         {
           name: 'Article 6(7)',
@@ -22381,7 +22381,7 @@ verdict: {
         evidenceId: 'ev4-business-veto',
         oppositionArgument: 'Your Honour, Article 6(7) does not mandate interoperability at all costs. The provision explicitly permits gatekeepers to take "strictly necessary and proportionate measures" to ensure that interoperability does not compromise the integrity of their services. ChatApp operates a secure communications infrastructure relied upon by governments, financial institutions, and vulnerable users. Interoperability with third-party clients that we cannot audit or control creates unacceptable security risks. The "strictly necessary" exception in Article 6(7) paragraph 9 allows us to refuse interoperability where it would compromise our zero-trust security architecture. The DMA does not require us to sacrifice user security for competitor convenience.',
         writePrompt: 'Opposing counsel claims the "strictly necessary and proportionate measures" exception allows refusal for security. What does this exception actually permit? Does it allow blanket refusal or only specific safeguards?',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Exception Scope',
@@ -22405,21 +22405,21 @@ verdict: {
           {
             id: 'arg1-weak',
             quality: 'weak',
-            text: 'Your Honour, ChatApp is clearly lying about security concerns. Their own engineers built a working prototype in 6 weeks. This is just an excuse to keep their monopoly and prevent competitors from offering better privacy. The DMA was meant to stop big tech from walling off their platforms. They should be forced to interoperate immediately. Any reasonable person would recognise that the respondent acted improperly and that meaningful intervention is needed to prevent recurrence. The Authority should send a clear signal that regulated entities cannot treat their obligations this way and must be held to the standards the law requires.',
+            text: 'Your Honour, ChatApp is clearly lying about security concerns. Their own engineers built a working prototype in 6 weeks. This is just an excuse to keep their monopoly and prevent competitors from offering better privacy. The DMA was meant to stop big tech from walling off their platforms. They should be forced to interoperate immediately.',
             judge_response: 'I agree with your conclusion, Counsel, but I require precise legal reasoning. Can you explain why the "strictly necessary" exception in Article 6(7) paragraph 9 does not permit refusal when interoperability is technically feasible?',
             legal_reasoning: 'While the conclusion is correct, this fails to articulate the legal standard for the exception. It relies on general accusations of bad faith rather than demonstrating the statutory interpretation that limits the exception to safeguards rather than refusal.'
           },
           {
             id: 'arg1-plausible',
             quality: 'plausible',
-            text: 'Your Honour, while ChatApp violates Article 6(7), the stronger claim lies under Article 102 TFEU essential facilities doctrine. ChatApp\'s messaging network constitutes an essential facility — impossible to duplicate, indispensable for competing in mobile communications, and subject to refusal that eliminates competition. We should request market definition analysis establishing dominance in the "secure messaging" market and demonstrating that refusal to supply access constitutes abusive exclusion. This interpretation aligns with the regulatory architecture which carefully distinguishes obligations by service category and provider type. The regulatory framework specifically anticipates this kind of conduct and provides targeted obligations that supersede the more general provisions relied upon.',
+            text: 'Your Honour, while ChatApp violates Article 6(7), the stronger claim lies under Article 102 TFEU essential facilities doctrine. ChatApp\'s messaging network constitutes an essential facility — impossible to duplicate, indispensable for competing in mobile communications, and subject to refusal that eliminates competition. We should request market definition analysis establishing dominance in the "secure messaging" market and demonstrating that refusal to supply access constitutes abusive exclusion.',
             judge_response: 'Counsel, why pursue an Article 102 essential facilities claim requiring dominance, market definition, and indispensability analysis when you have a specific DMA interoperability obligation available? The Commission designated ChatApp precisely to avoid these competition law hurdles.',
             legal_reasoning: 'This is the "competition law swap" trap. While essential facilities doctrine is legally relevant background, pursuing it instead of the DMA specific obligation is strategically disastrous. It opens the door to market definition disputes and indispensability tests that the DMA eliminated.'
           },
           {
             id: 'arg1-wrong',
             quality: 'wrong',
-            text: 'Your Honour, I accept that ChatApp has legitimate security concerns that justify refusing interoperability. However, they should provide transparency about these concerns by publishing a security white paper explaining the technical barriers. This transparency would satisfy the DMA\'s objectives while preserving ChatApp\'s ability to protect users. This provision establishes a comprehensive framework for addressing precisely this kind of conduct and provides the enforcement tools necessary for meaningful corrective action. The regulatory framework specifically anticipates situations of this nature and imposes obligations that the respondent has manifestly failed to satisfy.',
+            text: 'Your Honour, I accept that ChatApp has legitimate security concerns that justify refusing interoperability. However, they should provide transparency about these concerns by publishing a security white paper explaining the technical barriers. This transparency would satisfy the DMA\'s objectives while preserving ChatApp\'s ability to protect users.',
             judge_response: 'Counsel, you are conceding the case. If Article 6(7) mandates interoperability when technically feasible, how can "transparency about security concerns" cure a refusal to comply? You appear to accept that refusal is justified if properly documented.',
             legal_reasoning: 'This is a catastrophic concession. It accepts the security justification and suggests transparency cures the violation, directly contradicting the per se nature of the interoperability obligation when technically feasible.'
           }
@@ -22430,7 +22430,7 @@ verdict: {
         evidenceId: 'ev3-internal-docs',
         oppositionArgument: 'Your Honour, even if Project Bridge demonstrated technical feasibility in a prototype environment, scaling interoperability to 400 million users with appropriate security monitoring is a different challenge entirely. Article 6(7) requires "effective" interoperability — meaning production-ready, secure, and scalable solutions. ChatApp has a duty of care to ensure that interoperability does not degrade service quality or introduce systemic risks. The obligation is to provide effective interoperability when it can be done safely; it does not require immediate deployment of unproven prototypes. We are committed to interoperability in principle but must ensure it meets our security standards at scale.',
         writePrompt: 'Opposing counsel claims "effective" interoperability means production-ready at scale, not just technically feasible. What does "effective" mean in Article 6(7)? Can the gatekeeper delay indefinitely for "scale" concerns?',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Effective Interoperability',
@@ -22454,21 +22454,21 @@ verdict: {
           {
             id: 'arg2-weak',
             quality: 'weak',
-            text: 'Your Honour, ChatApp built a working prototype in 6 weeks. This proves they can do it. They are just making excuses about scale to avoid complying with the DMA. They should be ordered to deploy interoperability immediately without further delays. The 3-month deadline has already passed. The Authority should send a clear signal that regulated entities cannot treat their obligations this way and must be held to the standards the law requires. This kind of behaviour should not be tolerated in a modern regulatory framework and the Authority must take decisive action to protect the affected parties.',
+            text: 'Your Honour, ChatApp built a working prototype in 6 weeks. This proves they can do it. They are just making excuses about scale to avoid complying with the DMA. They should be ordered to deploy interoperability immediately without further delays. The 3-month deadline has already passed.',
             judge_response: 'I agree with your conclusion, Counsel, but I require legal analysis of why "effective" does not require perfection at scale, and how the statutory timeframe constrains ChatApp\'s delay claims.',
             legal_reasoning: 'While the conclusion is correct, this fails to articulate the legal reasoning connecting "effective" to the 3-month deadline. It relies on general impatience rather than statutory interpretation.'
           },
           {
             id: 'arg2-plausible',
             quality: 'plausible',
-            text: 'Your Honour, while ChatApp must provide interoperability, the Commission should exercise its powers under Article 8 to further specify the technical standards required. We should request that the Commission mandate specific encryption protocols and security auditing procedures that ChatApp must follow before interoperability is deemed "effective," ensuring quality control while mandating compliance. This interpretation aligns with the regulatory architecture which carefully distinguishes obligations by service category and provider type. The regulatory framework specifically anticipates this kind of conduct and provides targeted obligations that supersede the more general provisions relied upon.',
+            text: 'Your Honour, while ChatApp must provide interoperability, the Commission should exercise its powers under Article 8 to further specify the technical standards required. We should request that the Commission mandate specific encryption protocols and security auditing procedures that ChatApp must follow before interoperability is deemed "effective," ensuring quality control while mandating compliance.',
             judge_response: 'Counsel, Article 8 allows the Commission to specify compliance measures. However, since Article 6(7) mandates interoperability within 3 months, can the Commission impose procedural requirements that delay the statutory deadline?',
             legal_reasoning: 'This confuses the further specification procedure with delaying the obligation. Art. 8 cannot extend the 3-month statutory deadline for compliance. Requesting additional procedural layers suggests the deadline is flexible, which undermines the per se nature of the obligation.'
           },
           {
             id: 'arg2-wrong',
             quality: 'wrong',
-            text: 'Your Honour, I accept ChatApp\'s argument that interoperability must be "effective" at scale before deployment. They should be granted an extension to complete scalability testing to ensure user experience is not compromised. Rushing interoperability could harm the 400 million users who depend on ChatApp for secure communications. The regulatory framework specifically anticipates situations of this nature and imposes obligations that the respondent has manifestly failed to satisfy. The Authority should exercise its full enforcement competence under this framework to ensure the respondent brings its practices into compliance.',
+            text: 'Your Honour, I accept ChatApp\'s argument that interoperability must be "effective" at scale before deployment. They should be granted an extension to complete scalability testing to ensure user experience is not compromised. Rushing interoperability could harm the 400 million users who depend on ChatApp for secure communications.',
             judge_response: 'Counsel, you are conceding the case. If Article 6(7) establishes a 3-month compliance deadline, how can "scalability testing" justify indefinite extension? You appear to accept that scale concerns override the statutory obligation.',
             legal_reasoning: 'This is a catastrophic concession. It accepts the "scale" justification and suggests indefinite extension, directly contradicting the 3-month statutory deadline in Article 6(7) paragraph 5.'
           }
@@ -22479,7 +22479,7 @@ verdict: {
         evidenceId: 'ev6-market-impact',
         oppositionArgument: 'Your Honour, even if ChatApp must eventually interoperate, the appropriate remedy is phased implementation with independent security auditing, not immediate deployment of an unproven prototype. Immediate forced interoperability risks destabilizing a critical communications infrastructure relied upon by European emergency services and government agencies. We propose a 12-month implementation roadmap with quarterly security milestones and Commission oversight. This proportionate approach preserves both competition objectives and public security. The DMA\'s enforcement framework under Article 99 allows for proportionate remedies considering the impact on gatekeeper operations.',
         writePrompt: 'Opposing counsel proposes phased implementation over 12 months. Does Article 6(7) permit phased implementation, or is the 3-month deadline absolute? What remedy should you seek?',
-        minWords: 20,
+        minWords: 10,
         requiredConcepts: [
           {
             name: 'Statutory Deadline',
@@ -22503,21 +22503,21 @@ verdict: {
           {
             id: 'arg3-weak',
             quality: 'weak',
-            text: 'Your Honour, ChatApp cannot delay interoperability for 12 months. The DMA says 3 months and they have already exceeded that. They need to provide access immediately so SecureMsg can connect to their users. Delaying further just protects their monopoly. The Authority should send a clear signal that regulated entities cannot treat their obligations this way and must be held to the standards the law requires. This kind of behaviour should not be tolerated in a modern regulatory framework and the Authority must take decisive action to protect the affected parties.',
+            text: 'Your Honour, ChatApp cannot delay interoperability for 12 months. The DMA says 3 months and they have already exceeded that. They need to provide access immediately so SecureMsg can connect to their users. Delaying further just protects their monopoly.',
             judge_response: 'That is the correct outcome, Counsel. But I would appreciate a more thorough explanation of why the 3-month deadline is mandatory and cannot be extended through "phased implementation" proposals.',
             legal_reasoning: 'Correct conclusion but lacks legal depth. It doesn\'t explain the statutory basis for the 3-month deadline or why it is absolute rather than flexible.'
           },
           {
             id: 'arg3-plausible',
             quality: 'plausible',
-            text: 'Your Honour, while the 3-month deadline is mandatory, the appropriate long-term remedy is structural separation under Article 18. The Commission should require ChatApp to spin off its messaging infrastructure into a separately regulated entity to ensure permanent interoperability and prevent future systemic non-compliance with Article 6(7). This interpretation aligns with the regulatory architecture which carefully distinguishes obligations by service category and provider type. The regulatory framework specifically anticipates this kind of conduct and provides targeted obligations that supersede the more general provisions relied upon.',
+            text: 'Your Honour, while the 3-month deadline is mandatory, the appropriate long-term remedy is structural separation under Article 18. The Commission should require ChatApp to spin off its messaging infrastructure into a separately regulated entity to ensure permanent interoperability and prevent future systemic non-compliance with Article 6(7).',
             judge_response: 'Counsel, Article 18 applies to systematic non-compliance after multiple infringement decisions under Article 29. We are at the initial violation stage regarding the 3-month deadline. Are you jumping ahead to structural remedies when behavioral compliance is the appropriate immediate remedy?',
             legal_reasoning: 'This overreaches. Art. 18 requires three prior non-compliance decisions within 8 years. This is the first proceeding. Immediate compliance with the 3-month deadline is the correct remedy, not structural separation.'
           },
           {
             id: 'arg3-wrong',
             quality: 'wrong',
-            text: 'Your Honour, I accept ChatApp\'s proposal for a 12-month phased implementation with security milestones. This represents a proportionate balance between competition enforcement and the practical realities of deploying interoperability at scale. The extended timeline ensures quality while working toward compliance. The regulatory framework specifically anticipates situations of this nature and imposes obligations that the respondent has manifestly failed to satisfy. The Authority should exercise its full enforcement competence under this framework to ensure the respondent brings its practices into compliance.',
+            text: 'Your Honour, I accept ChatApp\'s proposal for a 12-month phased implementation with security milestones. This represents a proportionate balance between competition enforcement and the practical realities of deploying interoperability at scale. The extended timeline ensures quality while working toward compliance.',
             judge_response: 'Counsel, you are conceding the case. If Article 6(7) establishes a mandatory 3-month deadline, how can a 12-month roadmap be legally acceptable? You appear to accept that the statutory deadline is negotiable.',
             legal_reasoning: 'This is a catastrophic concession. It accepts the 12-month delay, directly contradicting the 3-month statutory deadline. This would lose the case immediately.'
           }
@@ -22619,7 +22619,6 @@ verdict: {
           witnessResponse: 'The security team developed the screen content independently. I — the sequencing reflected their recommendations.',
           followUpImpact: 'positive'
         },
-        impact: 'positive',
         impactExplanation: 'This establishes that the 14-screen design preceded any security justification, undermining PhoneOS\'s proportionality defence and demonstrating Art. 13(4) anti-circumvention conduct.'
       },
       {
@@ -22633,7 +22632,6 @@ verdict: {
           witnessResponse: 'App Store apps go through our review process which screens for such conduct. Sideloaded apps have not been reviewed.',
           followUpImpact: 'positive'
         },
-        impact: 'positive',
         impactExplanation: 'Exposes that capability-stripping is not tailored to the actual security threat — App Store review does not prevent phishing, so notification restrictions cannot be justified on that basis. This is critical for the \'strictly necessary and proportionate\' test under Art. 6(4).'
       },
       {
@@ -22647,7 +22645,6 @@ verdict: {
           witnessResponse: 'Those are detailed engineering specifications that I would need to refer to the technical team for.',
           followUpImpact: 'positive'
         },
-        impact: 'positive',
         impactExplanation: 'Demonstrates absence of any engineering basis for the specific number of screens, reinforcing that 14 was a commercial rather than security determination.'
       },
       {
@@ -22656,7 +22653,6 @@ verdict: {
         category: 'risky',
         witnessResponse: 'That is factually incorrect. There are documented cases of malware distributed through sideloading on multiple platforms. I\'d be happy to provide the Commission with a comprehensive list of incidents. The absence of incidents on PhoneOS is precisely because our security architecture works.',
         followUp: { available: false },
-        impact: 'neutral',
         impactExplanation: 'This overreaching question allows the witness to reframe PhoneOS as a security success story and pivot away from the proportionality issue. It invites a response that rehabilitates the security narrative rather than destroying it. Stick to specifics about the TOF design choices.'
       },
       {
@@ -22665,7 +22661,6 @@ verdict: {
         category: 'ineffective',
         witnessResponse: 'PhoneOS has always taken its regulatory obligations seriously and we have invested significant resources in DMA compliance. We support the regulation\'s objectives.',
         followUp: { available: false },
-        impact: 'negative',
         impactExplanation: 'This question elicits a non-committal platitude and concedes the floor without extracting any damaging admission. It wastes a cross-examination question entirely and allows the witness to appear cooperative and reasonable.'
       }
     ]
@@ -22691,12 +22686,12 @@ verdict: {
         ],
         oppositionArgument: 'PhoneOS has fully complied with Art. 6(4). Users are not prevented from installing third-party software — the option is available to every PhoneOS device holder. The Trusted Origin Framework is a proportionate security measure. Art. 6(4) expressly permits gatekeepers to implement \'proportionate technical or contractual measures to achieve\' hardware and operating system integrity. Warning users about unverified software is textbook informed consent, not obstruction. A 2.3% completion rate reflects informed consumer choice, not PhoneOS misconduct. The DMA does not guarantee business success to third-party developers.',
         writePrompt: 'Using the Project Friction memorandum (ev3) and the technical analysis (ev2), argue that PhoneOS\'s framework violates Art. 6(4)\'s requirement to allow and technically enable the effective use of third-party software. Address the security justification directly.',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg1-strong',
             quality: 'strong',
-            text: 'Art. 6(4) requires PhoneOS to allow and technically enable \'effective use\' of third-party applications — not merely theoretical access. A 97.7% friction-induced failure rate, documented in the Commission\'s own market data, is not a consumer choice outcome: it is a designed outcome. The Project Friction memorandum confirms that 14 screens was selected precisely because \'friction above 4 screens reduces completion by over 80%\' — a commercial target set before any security analysis was conducted. Art. 6(4) permits strictly necessary and proportionate security measures; it does not permit a security architecture reverse-engineered from a revenue protection strategy.',
+            text: 'Art. 6(4) requires PhoneOS to allow and technically enable \'effective use\' of third-party applications — not merely theoretical access. A 97.7% friction-induced failure rate, documented in the Commission\'s own market data, is not a consumer choice outcome: it is a designed outcome. The Project Friction memorandum confirms that 14 screens was selected precisely because \'friction above 4 screens reduces completion by over 80%\' — a commercial target set before any security analysis was conducted. Art. 6(4) permits strictly necessary and proportionate security measures; it does not permit a security architecture reverse-engineered from a revenue protection strategy. Capability-stripping — disabling push notifications for which no security rationale exists, as confirmed in technical evidence — goes beyond any proportionate measure and eliminates the commercial viability of sideloaded apps entirely. This is anti-circumvention conduct under Art. 13(4) DMA.',
             judge_response: 'Counsel makes a compelling distinction between nominal access and effective use. The internal memorandum substantially undermines PhoneOS\'s security narrative. The proportionality analysis is precisely calibrated. Proceed.',
             legal_reasoning: 'Correctly identifies Art. 6(4)\'s \'effective use\' standard, applies the proportionality test, uses the internal memo to rebut the security justification, and invokes Art. 13(4) anti-circumvention. Per se nature of Art. 6(4) correctly assumed.'
           },
@@ -22738,12 +22733,12 @@ verdict: {
         ],
         oppositionArgument: 'Even if the warning screen count were reduced, capability-stripping is entirely justified. Sideloaded apps have not passed PhoneOS\'s security review. Granting them full system API access creates genuine attack surfaces for malware. Art. 6(4) expressly preserves the gatekeeper\'s right to \'implement proportionate technical measures\' to safeguard operating system integrity. PhoneOS cannot be required to treat unverified apps identically to verified ones — that would eliminate the security distinction entirely and expose millions of users to harm. The Commission cannot rewrite PhoneOS\'s security architecture through enforcement proceedings.',
         writePrompt: 'Using the technical expert report (ev2), challenge the proportionality of capability-stripping under Art. 6(4)\'s \'strictly necessary and proportionate\' standard. Focus on whether disabling push notifications specifically satisfies this test.',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg2-strong',
             quality: 'strong',
-            text: 'Art. 6(4) permits security measures only where they are \'strictly necessary and proportionate\' and \'duly justified\' by the gatekeeper. PhoneOS has not justified disabling push notifications as strictly necessary. The technical expert report confirms there is no security rationale for this specific restriction: App Store apps — including those with documented prior privacy violations — retain full notification access. If push notifications posed the malware risk PhoneOS claims, the risk would exist regardless of installation origin. A notification cannot distinguish whether it originates from a sideloaded or App Store app at the OS level. The restriction is not tailored to the threat; it eliminates commercial competitiveness.',
+            text: 'Art. 6(4) permits security measures only where they are \'strictly necessary and proportionate\' and \'duly justified\' by the gatekeeper. PhoneOS has not justified disabling push notifications as strictly necessary. The technical expert report confirms there is no security rationale for this specific restriction: App Store apps — including those with documented prior privacy violations — retain full notification access. If push notifications posed the malware risk PhoneOS claims, the risk would exist regardless of installation origin. A notification cannot distinguish whether it originates from a sideloaded or App Store app at the OS level. The restriction is not tailored to the threat; it eliminates commercial competitiveness. \'Strictly necessary\' means there are no less restrictive means — notarisation and code-signing, used by other platforms, achieves equivalent security without capability-stripping. PhoneOS bears the burden under Art. 6(4) of justifying restrictions; it has not discharged that burden here.',
             judge_response: 'The proportionality analysis is rigorous. The observation that App Store apps retain notification access despite equivalent threat vectors is particularly damaging to the security justification. The burden point is well-taken. Continue.',
             legal_reasoning: 'Correctly applies the Art. 6(4) \'strictly necessary and proportionate\' test, identifies the asymmetric treatment as evidence of disproportionality, notes the existence of less restrictive means (notarisation), and properly assigns the burden of justification to PhoneOS.'
           },
@@ -22785,12 +22780,12 @@ verdict: {
         ],
         oppositionArgument: 'The Coalition\'s evidence is anecdotal and self-interested. A 2.3% completion rate may reflect genuine consumer risk awareness, not designed friction. Consumers presented with accurate security information may rationally decline to install unverified software. PhoneOS cannot be penalised for users making informed choices. The DMA guarantees access, not adoption. If GameStudio\'s product is genuinely valuable, consumers will install it. Market success is not a legal entitlement and the Commission should not become a commercial arbitrator guaranteeing developer revenue.',
         writePrompt: 'Using the industry Coalition statement (ev5) and the Project Friction memorandum (ev3), argue that PhoneOS\'s entire sideloading framework constitutes anti-circumvention conduct under Art. 13(4) DMA, and address the \'consumer choice\' defence.',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg3-strong',
             quality: 'strong',
-            text: 'Art. 13(4) DMA prohibits gatekeepers from engaging in \'any behaviour that undermines effective compliance\' with their obligations, \'including... interface design.\' PhoneOS designed 14 warning screens knowing — per its own internal memorandum — that this would reduce completion to below 5%. A framework architecturally designed to fail is not a compliance measure; it is circumvention implemented through user interface design. The Coalition\'s evidence confirms that 309 of 312 developers who attempted direct distribution abandoned it within 60 days. The \'consumer choice\' defence fails because the Project Friction memorandum establishes that PhoneOS\'s objective was not to inform consumers but to deter them.',
+            text: 'Art. 13(4) DMA prohibits gatekeepers from engaging in \'any behaviour that undermines effective compliance\' with their obligations, \'including... interface design.\' PhoneOS designed 14 warning screens knowing — per its own internal memorandum — that this would reduce completion to below 5%. A framework architecturally designed to fail is not a compliance measure; it is circumvention implemented through user interface design. The Coalition\'s evidence confirms that 309 of 312 developers who attempted direct distribution abandoned it within 60 days. The \'consumer choice\' defence fails because the Project Friction memorandum establishes that PhoneOS\'s objective was not to inform consumers but to deter them. Art. 13(4) reaches precisely this conduct: using interface design as a substitute for outright prohibition. The Commission cannot accept nominal compliance that achieves the same exclusionary result as the prohibited conduct it purports to replace.',
             judge_response: 'The Art. 13(4) analysis is well-constructed and directly responsive to the circumvention issue. The connection between the internal memorandum\'s commercial objective and the interface design outcome is persuasively drawn. The Commission will consider this argument carefully.',
             legal_reasoning: 'Correctly invokes Art. 13(4) anti-circumvention, specifically the interface design limb. Connects the internal memo to the circumvention finding. Rebuts the consumer choice defence by reference to the memo\'s stated commercial intent rather than informational purpose. Per se violation correctly assumed without efficiency defence.'
           },
@@ -22912,7 +22907,6 @@ verdict: {
           witnessResponse: 'Technical specifications are internal engineering documents. We — they would be provided in the appropriate context.',
           followUpImpact: 'positive'
         },
-        impact: 'positive',
         impactExplanation: 'Establishes that the revenue protection rationale predates and dominates any security justification, and that no contemporaneous technical documentation supports the security claim. This undermines the entire integration defence under Art. 5(8).'
       },
       {
@@ -22926,7 +22920,6 @@ verdict: {
           witnessResponse: 'I don\'t have comparative incident rate data available today.',
           followUpImpact: 'positive'
         },
-        impact: 'positive',
         impactExplanation: 'Forces the witness to either produce evidence of a genuine security gap — which she cannot, given competing providers allow third-party identity without increased incidents — or concede the security claim is unsubstantiated. The inability to produce comparative incident data is damaging.'
       },
       {
@@ -22940,7 +22933,6 @@ verdict: {
           witnessResponse: 'There are — there are additional considerations that our legal team would address.',
           followUpImpact: 'positive'
         },
-        impact: 'positive',
         impactExplanation: 'The witness has now conceded that the CloudPay justification is enterprise management convenience, not security. This directly dismantles the only public justification for the payment service bundling and confirms it is a pure tying arrangement under Art. 5(8).'
       },
       {
@@ -22949,7 +22941,6 @@ verdict: {
         category: 'risky',
         witnessResponse: 'That characterisation is entirely unfair. CloudCo competes vigorously in every market where it operates. Our integrated platform offers genuine customer benefits — reduced complexity, unified support, and security consistency. Many customers actively prefer a single-vendor approach. We are not preventing customers from using competing cloud providers; we are offering an integrated product that customers can choose to use or not.',
         followUp: { available: false },
-        impact: 'neutral',
         impactExplanation: 'This loaded question invites the witness to pivot from the legal issue — tying under Art. 5(8) — to a broader narrative about competition and customer choice where she can generate sympathetic testimony. The phrasing \'monopolise every layer\' is overreaching, gives the witness grounds to appear reasonable, and is not needed when concrete admissions have already been obtained. The specific legal violation does not require proving monopolisation intent.'
       },
       {
@@ -22958,7 +22949,6 @@ verdict: {
         category: 'ineffective',
         witnessResponse: 'Absolutely. CloudCo invested over €3.4 billion in R&D last year. Our integrated platform is the result of years of engineering investment. Innovation is central to our identity and we are proud of the products we have built for our customers.',
         followUp: { available: false },
-        impact: 'negative',
         impactExplanation: 'This question produces an unprompted testimonial to CloudCo\'s investment and innovation, which is entirely irrelevant to Art. 5(8) and gives the witness a platform to rehabilitate CloudCo\'s image before the Commission. It elicits nothing useful and creates a positive impression of the respondent at a critical moment in proceedings.'
       }
     ]
@@ -22984,12 +22974,12 @@ verdict: {
         ],
         oppositionArgument: 'CloudCo does not violate the DMA. CloudID and CloudPay are not separate services arbitrarily bundled with infrastructure — they are integrated components of a unified platform offering. Enterprise customers purchase the CloudCo Integrated Platform, which includes infrastructure, identity management, and payment processing as a coherent product. The DMA does not prohibit integrated product design. Art. 5(8) addresses situations where a gatekeeper uses one dominant service to force adoption of a wholly separate service. Here, CloudID and CloudPay are architecturally connected to infrastructure through a unified security and billing layer. The Commission cannot dismantle product integration that provides genuine customer value.',
         writePrompt: 'Using the Enterprise Service Agreement (ev4) and Art. 5(8) DMA, argue that CloudCo\'s mandatory bundling constitutes prohibited tying. Address the \'integrated product\' defence raised by Dr. Kern.',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg1-strong',
             quality: 'strong',
-            text: 'Art. 5(8) DMA is a self-executing per se prohibition. It provides that a gatekeeper \'shall not require business users or end users to use, or to offer, or to interoperate with, an identification service... or a payment service... of that gatekeeper in the context of services provided by the business users.\' CloudCo\'s Section 7.1 does precisely this in explicit contractual language: it requires use of CloudID as \'the sole identity service\' and CloudPay as \'the exclusive payment processor,\' and makes breach grounds for immediate suspension. The \'integrated product\' defence is unavailable under Art. 5(8) because the provision contains no integration exception.',
+            text: 'Art. 5(8) DMA is a self-executing per se prohibition. It provides that a gatekeeper \'shall not require business users or end users to use, or to offer, or to interoperate with, an identification service... or a payment service... of that gatekeeper in the context of services provided by the business users.\' CloudCo\'s Section 7.1 does precisely this in explicit contractual language: it requires use of CloudID as \'the sole identity service\' and CloudPay as \'the exclusive payment processor,\' and makes breach grounds for immediate suspension. The \'integrated product\' defence is unavailable under Art. 5(8) because the provision contains no integration exception. Art. 5(8) is not a balancing test — it does not ask whether bundling produces customer benefits or reflects coherent product design. It prohibits the requirement. The technical expert report further confirms that CloudID and CloudPay are contractually, not architecturally, mandatory: the infrastructure supports standard federation protocols and third-party payment APIs without modification. There is no product integration — there is a contractual prohibition masquerading as one.',
             judge_response: 'Counsel has correctly identified Art. 5(8) as a per se rule, correctly located the contractual mechanism of violation, and correctly disposed of the integration defence by reference to the article\'s text and the technical evidence. The Commission finds this argument compelling.',
             legal_reasoning: 'Correctly identifies Art. 5(8) as self-executing with no integration or efficiency exception. Precisely maps the contractual terms to the statutory prohibition. Uses technical report to rebut the architectural necessity claim. Properly treats Art. 5(8) as a per se rule requiring no effects analysis.'
           },
@@ -23031,12 +23021,12 @@ verdict: {
         ],
         oppositionArgument: 'Even if Art. 5(8) applies, CloudCo has a legitimate and proportionate justification for the bundling requirement. Cloud infrastructure security is a complex shared environment — a single misconfigured third-party identity provider can expose co-tenant data across the entire infrastructure layer. The requirement for CloudID is a reasonable security measure to protect all customers, not just the one seeking an exemption. Similarly, CloudPay ensures accurate billing integrity across a complex multi-service account structure. The Commission must consider whether the obligation as applied to CloudCo\'s specific technical architecture would achieve a legitimate security objective.',
         writePrompt: 'Using the technical expert report (ev2) and the structure of Art. 5 DMA, argue that CloudCo\'s security and integration justification is legally unavailable under Art. 5(8), and factually unsupported in any event.',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg2-strong',
             quality: 'strong',
-            text: 'Art. 5(8) is located in Art. 5 of the DMA — the self-executing obligations that apply without further specification and contain no efficiency, security, or proportionality exception. This is in direct contrast to Art. 6, where specific obligations such as Art. 6(4) on sideloading explicitly permit \'strictly necessary and proportionate\' security measures. The absence of any equivalent carve-out in Art. 5(8) is deliberate legislative design: the Union legislature determined that tying identification and payment services to core platform access is per se prohibited, not subject to case-by-case balancing. CloudCo cannot import a proportionality test that the legislature declined to include.',
+            text: 'Art. 5(8) is located in Art. 5 of the DMA — the self-executing obligations that apply without further specification and contain no efficiency, security, or proportionality exception. This is in direct contrast to Art. 6, where specific obligations such as Art. 6(4) on sideloading explicitly permit \'strictly necessary and proportionate\' security measures. The absence of any equivalent carve-out in Art. 5(8) is deliberate legislative design: the Union legislature determined that tying identification and payment services to core platform access is per se prohibited, not subject to case-by-case balancing. CloudCo cannot import a proportionality test that the legislature declined to include. In any event, the technical expert report establishes that the justification is factually false: CloudCo\'s infrastructure supports SAML 2.0 and OpenID Connect, meaning third-party identity providers present no additional security exposure. CloudPay is a billing abstraction layer with no infrastructure security function. The bundling is contractual, not architectural. A justification that does not exist in law and is unsupported by fact cannot save CloudCo\'s violation of Art. 5(8).',
             judge_response: 'The structural argument — that Art. 5\'s absence of a proportionality carve-out is dispositive — is correct and well-reasoned. The contrast with Art. 6(4) is instructive. The technical report disposes of the factual foundation. The Commission accepts this argument.',
             legal_reasoning: 'Correctly identifies Art. 5(8) as a per se rule with no proportionality defence, draws the correct structural contrast with Art. 6\'s qualified obligations, and then eliminates the factual basis for the justification using the technical report. Two-track argument: no legal basis for justification, and no factual basis either.'
           },
@@ -23050,7 +23040,7 @@ verdict: {
           {
             id: 'arg2-weak',
             quality: 'weak',
-            text: 'CloudCo\'s argument that CloudID is necessary for security does not hold up. The technical expert looked at this carefully and found that standard industry protocols like SAML and OpenID Connect are fully compatible with CloudCo\'s infrastructure. This means there is no actual security reason to require CloudID. CloudCo is just using security as an excuse. The same is true for CloudPay — it has nothing to do with infrastructure security and is just a billing convenience. The Commission should reject CloudCo\'s security justification and find a violation. The Authority should send a clear signal that regulated entities cannot treat their obligations this way and must be held to the standards the law requires.',
+            text: 'CloudCo\'s argument that CloudID is necessary for security does not hold up. The technical expert looked at this carefully and found that standard industry protocols like SAML and OpenID Connect are fully compatible with CloudCo\'s infrastructure. This means there is no actual security reason to require CloudID. CloudCo is just using security as an excuse. The same is true for CloudPay — it has nothing to do with infrastructure security and is just a billing convenience. The Commission should reject CloudCo\'s security justification and find a violation.',
             judge_response: 'The technical evidence is correctly cited, but counsel has not addressed the more fundamental legal question: whether a security justification is available at all under Art. 5(8), regardless of its factual merits. If Art. 5(8) admits no justification, the factual rebuttal is supplementary. Please address the legal structure of Art. 5.',
             legal_reasoning: 'Correctly uses the technical report but fails to make the key legal argument: that Art. 5(8)\'s per se nature means no justification is legally available. Factual rebuttal is correct but incomplete without the structural legislative analysis. Weak because it fights the justification on its merits without first establishing it has no legal standing.'
           },
@@ -23078,12 +23068,12 @@ verdict: {
         ],
         oppositionArgument: 'The Commission should assess the full market context before finding a violation. CloudCo\'s platform generates significant innovation and customer value. Requiring unbundling will reduce investment incentives for integrated platform development across the EU. The DMA was not intended to prevent gatekeepers from offering coherent, integrated products — it was designed to prevent exclusionary practices that harm contestability. If customers can choose to use alternative cloud providers that permit third-party identity and payment services, the market is already contestable. The Commission should focus enforcement resources on markets where contestability is genuinely absent, not on complex enterprise software where sophisticated customers can negotiate.',
         writePrompt: 'Using the board deck (ev3) and the Art. 2 definitions, confirm that CloudID and CloudPay fall within Art. 5(8)\'s scope, and address Dr. Kern\'s \'market contestability\' defence and the investment incentives argument.',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg3-strong',
             quality: 'strong',
-            text: 'CloudID falls squarely within Art. 2(19) DMA, which defines \'identification service\' as \'a type of service provided together with or in support of core platform services that enables any type of verification of the identity of end users or business users.\' CloudPay is a payment service within Art. 2(16) by reference to Directive 2015/2366. Art. 5(8) explicitly names both categories. The definitional fit is unambiguous. Dr. Kern\'s market contestability argument must fail because Art. 5(8) is a per se prohibition — it does not require the Commission to demonstrate that the market lacks contestability, or that customers lack negotiating power, or that innovation is harmed.',
+            text: 'CloudID falls squarely within Art. 2(19) DMA, which defines \'identification service\' as \'a type of service provided together with or in support of core platform services that enables any type of verification of the identity of end users or business users.\' CloudPay is a payment service within Art. 2(16) by reference to Directive 2015/2366. Art. 5(8) explicitly names both categories. The definitional fit is unambiguous. Dr. Kern\'s market contestability argument must fail because Art. 5(8) is a per se prohibition — it does not require the Commission to demonstrate that the market lacks contestability, or that customers lack negotiating power, or that innovation is harmed. The DMA designates gatekeepers precisely because case-by-case effects analysis is too slow and resource-intensive. The board deck confirms what effects analysis would eventually find anyway: CloudCo itself calculates €1.1 billion in annual revenue protection from the tying arrangement, which is the commercial value of the lock-in Art. 5(8) is designed to eliminate. The DMA does not balance that revenue against investment incentives. The obligation is absolute.',
             judge_response: 'The definitional analysis is precise and the structural argument about the per se nature of Art. 5 is correct. Using CloudCo\'s own revenue protection calculation to illustrate the commercial lock-in Art. 5(8) targets is compelling. The Commission is satisfied with this argument.',
             legal_reasoning: 'Correctly applies Art. 2(19) and Art. 2(16) definitions to confirm scope. Properly disposes of the effects-based contestability defence by reference to Art. 5\'s per se structure. Uses the internal document to confirm commercial lock-in without needing external effects evidence. Comprehensive and legally precise.'
           },
@@ -23205,7 +23195,6 @@ verdict: {
           witnessResponse: 'The — the memo reflects early-stage internal thinking. Our finalised policy rationale encompasses user experience considerations that were developed subsequently.',
           followUpImpact: 'positive'
         },
-        impact: 'positive',
         impactExplanation: 'Forces Ashby to either adopt the memo\'s stated single purpose — revenue protection — or admit that the public user experience justification was retrofitted after the legal review flagged DMA risk. Either answer confirms that the anti-steering clause is commercially motivated, not user-protective.'
       },
       {
@@ -23219,7 +23208,6 @@ verdict: {
           witnessResponse: 'That is — that characterisation is not how we approach enforcement.',
           followUpImpact: 'positive'
         },
-        impact: 'positive',
         impactExplanation: 'The selective enforcement pattern reveals that the user experience rationale is pretextual — the enforcement mechanism is triggered by competitive pricing, not communication format. This dismantles the only public justification AppMarket has offered for Section 9.2.'
       },
       {
@@ -23233,7 +23221,6 @@ verdict: {
           witnessResponse: 'I would need to defer to our legal team on the interaction between contractual terms and regulatory rights.',
           followUpImpact: 'positive'
         },
-        impact: 'positive',
         impactExplanation: 'Opens an additional Art. 5(6) dimension — contractual terms that suppress the exercise of DMA rights are themselves prohibited. Forces Ashby to implicitly concede that AppMarket cannot contract around regulatory obligations, which undermines the \'developer terms\' defence for Section 9.2 as a whole.'
       },
       {
@@ -23242,7 +23229,6 @@ verdict: {
         category: 'risky',
         witnessResponse: 'AppMarket\'s commission reflects the enormous value we provide: global distribution, payment processing, fraud protection, app review, and marketing to hundreds of millions of users. Our commission structure is transparent and developers choose to list on AppMarket knowing the terms. Characterising this as exploitation misrepresents a voluntary commercial relationship. Many developers generate profitable businesses specifically because of the AppMarket distribution platform.',
         followUp: { available: false },
-        impact: 'neutral',
         impactExplanation: 'This question invites Ashby to deliver a lengthy, sympathetic account of AppMarket\'s value to developers, rehabilitating its image before the Commission. The commission rate is not directly at issue in Art. 5(4) proceedings — the issue is the prohibition on communicating it. Asking the Commission to cap the rate introduces a remedy with no DMA basis and allows the witness to pivot from the legal violation to a commercial justification narrative. Stay focused on the anti-steering clause.'
       },
       {
@@ -23251,7 +23237,6 @@ verdict: {
         category: 'ineffective',
         witnessResponse: 'AppMarket hosts over 4.2 million applications from developers in more than 175 countries. We are proud to be the primary distribution platform for the global developer community and we invest significantly in tools and support to help developers build successful businesses.',
         followUp: { available: false },
-        impact: 'negative',
         impactExplanation: 'This statistical question produces a platform size testimonial that is entirely irrelevant to Art. 5(4) and gives Ashby an unprompted opportunity to frame AppMarket as a developer-supportive ecosystem. Scale of the platform has no bearing on whether Section 9.2 violates the anti-steering prohibition. The question wastes a cross-examination slot and generates favourable rather than damaging testimony.'
       }
     ]
@@ -23277,12 +23262,12 @@ verdict: {
         ],
         oppositionArgument: 'AppMarket\'s Section 9.2 is a legitimate platform governance measure. Gatekeepers are entitled to set reasonable terms for their platforms to ensure a consistent and trustworthy user experience. Developers who benefit from AppMarket\'s 4.2 million-app ecosystem, global distribution infrastructure, and fraud protection systems accept the platform\'s terms as part of a commercial bargain. The DMA does not prevent gatekeepers from setting any terms — it prevents unfair ones. A requirement to maintain in-app purchase consistency protects users from disruptive commercial solicitation and ensures the integrity of the AppMarket environment. Art. 5(4) must be read in light of this legitimate platform governance context.',
         writePrompt: 'Using the Commission\'s legal analysis (ev2) and Art. 5(4) DMA, argue that Section 9.2 directly violates AppMarket\'s obligations. Address Dr. Baum\'s \'platform governance\' and user experience defence.',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg1-strong',
             quality: 'strong',
-            text: 'Art. 5(4) DMA requires AppMarket to allow business users \'free of charge, to communicate and promote offers, including under different conditions, to end users acquired via its core platform service.\' The phrase \'including under different conditions\' unambiguously covers price differentiation between channels — it was included precisely to address situations like BookReader\'s 30% cheaper direct subscription. Section 9.2 prohibits developers from communicating, displaying, linking to, or promoting any alternative purchasing option or pricing — a complete and explicit prohibition of what Art. 5(4) expressly requires AppMarket to permit. The conflict is facial and requires no market analysis.',
+            text: 'Art. 5(4) DMA requires AppMarket to allow business users \'free of charge, to communicate and promote offers, including under different conditions, to end users acquired via its core platform service.\' The phrase \'including under different conditions\' unambiguously covers price differentiation between channels — it was included precisely to address situations like BookReader\'s 30% cheaper direct subscription. Section 9.2 prohibits developers from communicating, displaying, linking to, or promoting any alternative purchasing option or pricing — a complete and explicit prohibition of what Art. 5(4) expressly requires AppMarket to permit. The conflict is facial and requires no market analysis. Art. 5(4) is a self-executing per se obligation in Art. 5 of the DMA: it contains no platform governance exception, no user experience carve-out, and no balancing test. AppMarket cannot contractually condition platform access on waiver of rights that the DMA vests in developers. The Commission\'s legal analysis confirms the direct conflict between Section 9.2 and Art. 5(4). No further effects analysis is required.',
             judge_response: 'Counsel has correctly identified Art. 5(4) as a per se obligation, correctly applied the \'including under different conditions\' language to price differentials, and correctly disposed of the platform governance defence by reference to Art. 5\'s structure. The legal analysis is precise. The Commission is persuaded.',
             legal_reasoning: 'Correctly identifies Art. 5(4) as self-executing, applies the statutory language directly to the facts, notes the absence of any platform governance exception in Art. 5, and confirms that contractual terms cannot override DMA rights. Clean, direct, legally precise.'
           },
@@ -23324,12 +23309,12 @@ verdict: {
         ],
         oppositionArgument: 'Even if Art. 5(4) applies, AppMarket has a legitimate and proportionate justification. Users who download apps through AppMarket expect a curated, consistent experience. In-app advertising for external purchase channels disrupts that experience and erodes user trust in the platform. AppMarket has a duty to its hundreds of millions of users to maintain platform quality. The Commission must apply proportionality in interpreting DMA obligations: a blanket prohibition on all in-app commercial steering is proportionate given the scale of AppMarket\'s user base and the potential for consumer confusion if every developer begins competing for attention with checkout redirect prompts.',
         writePrompt: 'Using the internal memorandum (ev3), argue that AppMarket\'s user experience justification is both legally unavailable under Art. 5(4) and factually pretextual. Address the proportionality argument directly.',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg2-strong',
             quality: 'strong',
-            text: 'Art. 5(4) is located in Art. 5 of the DMA — the self-executing obligations that contain no proportionality exception, no user experience carve-out, and no balancing test. This is a deliberate structural choice: the legislature placed anti-steering in Art. 5 rather than Art. 6 precisely because it did not intend proportionality analysis to be available. Dr. Baum\'s invitation to balance AppMarket\'s user experience interests against Art. 5(4) rights has no legislative basis. The proportionality principle under EU law applies to institutional enforcement decisions — it does not import substantive exceptions into clear per se prohibitions. The user experience justification is also factually false.',
+            text: 'Art. 5(4) is located in Art. 5 of the DMA — the self-executing obligations that contain no proportionality exception, no user experience carve-out, and no balancing test. This is a deliberate structural choice: the legislature placed anti-steering in Art. 5 rather than Art. 6 precisely because it did not intend proportionality analysis to be available. Dr. Baum\'s invitation to balance AppMarket\'s user experience interests against Art. 5(4) rights has no legislative basis. The proportionality principle under EU law applies to institutional enforcement decisions — it does not import substantive exceptions into clear per se prohibitions. The user experience justification is also factually false. AppMarket\'s own internal memorandum confirms that Section 9.2 exists for \'one reason\': preventing the 41% direct-channel conversion rate that would occur if users were informed of the 30% price differential. The phrase \'user experience consistency\' was identified in the same memo as recommended \'public framing\' — not as the actual rationale. A pretextual justification that is also legally unavailable cannot save AppMarket\'s violation.',
             judge_response: 'The structural argument distinguishing Art. 5 from Art. 6 on proportionality is legally correct and concise. Using the internal memo to expose the user experience framing as deliberately constructed cover — rather than genuine policy rationale — is precisely targeted. The Commission accepts this argument.',
             legal_reasoning: 'Correctly distinguishes Art. 5 and Art. 6 on the proportionality question, correctly notes that EU proportionality principle applies to institutional action not legislative prohibitions, and uses the internal document to establish that the public justification was retrofitted for public consumption. Two-track argument covering both legal unavailability and factual pretextuality.'
           },
@@ -23371,12 +23356,12 @@ verdict: {
         ],
         oppositionArgument: 'Even if Section 9.2 were found to be inconsistent with Art. 5(4), AppMarket\'s enforcement actions were proportionate responses to clear contractual breaches. Platforms must be able to enforce their terms of service — otherwise developer contracts are meaningless and platform governance is impossible. BookReader accepted AppMarket\'s terms when it listed its application. Enforcement of those terms, including temporary delisting for material breach, is a standard commercial remedy. The DMA does not prohibit gatekeepers from enforcing contracts; it requires certain obligations to be included. AppMarket is entitled to remove unlawful content from its platform pending remedy.',
         writePrompt: 'Using the enforcement record (ev4) and Art. 13(6) DMA, argue that AppMarket\'s enforcement actions — immediate delisting, 100% written undertaking requirement, and the resulting chilling effect — constitute an independent violation that goes beyond the Section 9.2 clause itself.',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg3-strong',
             quality: 'strong',
-            text: 'AppMarket\'s enforcement conduct is an independent violation of Art. 13(6) DMA, which prohibits gatekeepers from making \'the exercise of those rights or choices unduly difficult, including by offering choices to the end user in a non-neutral manner, or by subverting end users\' or business users\' autonomy, decision-making, or free choice via the structure, design, function or manner of operation of a user interface or a part thereof.\' Immediate delisting without warning — imposed in 81% of cases — makes the exercise of Art. 5(4) rights commercially catastrophic. The mandatory written undertaking, required as a condition of reinstatement in 100% of cases, creates a contractual chilling effect that suppresses future rights exercise even after the clause is reformed.',
+            text: 'AppMarket\'s enforcement conduct is an independent violation of Art. 13(6) DMA, which prohibits gatekeepers from making \'the exercise of those rights or choices unduly difficult, including by offering choices to the end user in a non-neutral manner, or by subverting end users\' or business users\' autonomy, decision-making, or free choice via the structure, design, function or manner of operation of a user interface or a part thereof.\' Immediate delisting without warning — imposed in 81% of cases — makes the exercise of Art. 5(4) rights commercially catastrophic. The mandatory written undertaking, required as a condition of reinstatement in 100% of cases, creates a contractual chilling effect that suppresses future rights exercise even after the clause is reformed. The Industry Association survey confirms the result: 94% of developers self-censored communications due to Section 9.2 enforcement risk. This is not proportionate contract enforcement — it is an enforcement architecture designed to make Art. 5(4) rights practically inaccessible. AppMarket cannot rely on developer acceptance of contractual terms to justify enforcement of terms that are themselves illegal: a contract requiring waiver of DMA rights cannot be enforced.',
             judge_response: 'The Art. 13(6) analysis is well-constructed and directly responsive. The written undertaking point is particularly sharp — contractual suppression of future DMA rights exercise cannot survive Commission scrutiny. The chilling effect evidence confirms the unduly difficult standard is met. The Commission accepts this as an independent violation finding.',
             legal_reasoning: 'Correctly identifies Art. 13(6) as an independent enforcement basis, applies the \'unduly difficult\' standard to the enforcement architecture rather than just the clause, uses survey evidence to confirm the chilling effect, and addresses the contract acceptance argument by noting that illegal terms cannot be contractually enforced. Comprehensive and precise.'
           },
@@ -23499,7 +23484,6 @@ verdict: {
           witnessResponse: 'We have been engaged in ongoing compliance work. The implementation of consent changes is a complex engineering and product challenge that requires careful design.',
           followUpImpact: 'positive'
         },
-        impact: 'positive',
         impactExplanation: 'Establishes that OmniTech\'s own legal team reached the same conclusions as the Commission, and that OmniTech made no changes despite this internal finding. The follow-up eliminates the \'good faith compliance attempt\' defence and confirms deliberate continuation of non-compliant practices after internal confirmation of the violation.'
       },
       {
@@ -23513,7 +23497,6 @@ verdict: {
           witnessResponse: 'I would need to refer to our engineering roadmap documentation for the specific timeline of work conducted.',
           followUpImpact: 'positive'
         },
-        impact: 'positive',
         impactExplanation: 'The 18-month gap between designation and the board presentation — in which no implementation occurred and the presentation recommends not implementing — confirms that the engineering complexity argument is pretextual. The failure to produce roadmap documentation further undermines the diligent compliance narrative.'
       },
       {
@@ -23527,7 +23510,6 @@ verdict: {
           witnessResponse: 'The policy should be read as a whole. Section 4.2 in conjunction with Section 3.1 and Section 8 provides the relevant framework.',
           followUpImpact: 'positive'
         },
-        impact: 'positive',
         impactExplanation: 'Forces Dr. Nair to either identify specific disclosure language — which does not exist in Version 18 — or confirm by omission that no specific disclosure was made. The follow-up anchors the argument in Art. 5(2)\'s \'specific choice\' requirement rather than general GDPR transparency, which is the legally precise standard for this case.'
       },
       {
@@ -23536,7 +23518,6 @@ verdict: {
         category: 'risky',
         witnessResponse: 'That characterisation is deeply unfair and inaccurate. OmniTech provides free services to hundreds of millions of users who benefit enormously from personalised, relevant experiences. We process data transparently in accordance with our Privacy Policy, which users accept freely. We comply fully with GDPR as confirmed by our Data Protection Officer and have engaged constructively with regulators across the EU. Characterising legitimate data-driven services as \'surveillance infrastructure\' misrepresents what our products do for real people every day.',
         followUp: { available: false },
-        impact: 'neutral',
         impactExplanation: 'The loaded language — \'surveillance infrastructure,\' \'deliberate defiance\' — allows Dr. Nair to deliver a lengthy, sympathetic counter-narrative that reframes OmniTech as a legitimate, user-beneficial business. It introduces GDPR compliance (a separate question) into the DMA proceedings and allows the witness to appear reasonable relative to the overreaching question. The specific admissions already obtained through ce1-ce3 are far more damaging than any response to this kind of rhetorical question.'
       },
       {
@@ -23545,7 +23526,6 @@ verdict: {
         category: 'ineffective',
         witnessResponse: 'Absolutely. OmniTech has invested over €2.4 billion in data privacy infrastructure, employs more than 800 privacy engineers, and has implemented hundreds of product changes in response to regulatory feedback over the past decade. We take our responsibilities to European users extremely seriously and our products have improved the lives of hundreds of millions of people across the continent.',
         followUp: { available: false },
-        impact: 'negative',
         impactExplanation: 'This generates an extensive, unprompted testimonial to OmniTech\'s compliance investment and user benefit, creating a favourable impression before the Commission at a critical moment. The question is entirely irrelevant to whether Art. 5(2) has been satisfied and produces only material that rehabilitates OmniTech\'s image. Never ask a hostile witness to characterise their own good faith.'
       }
     ]
@@ -23571,12 +23551,12 @@ verdict: {
         ],
         oppositionArgument: 'OmniTech has obtained valid consent through its Privacy Policy. Section 8 provides that users who use OmniTech services \'agree to this Privacy Policy and consent to the data practices described herein.\' This is a standard, industry-accepted mechanism for obtaining user consent that has been in common use across digital services for decades. Users have genuine choice — they choose whether to use OmniTech\'s services. The DMA does not require gatekeepers to implement burdensome, friction-laden consent mechanisms for every individual data practice. Art. 5(2)\'s reference to GDPR consent standards does not import the most restrictive possible interpretation of consent into every data processing activity by a designated gatekeeper.',
         writePrompt: 'Using the Privacy Policy extracts (ev4) and Art. 5(2) DMA, argue that OmniTech\'s Privacy Policy click-through does not constitute the \'specific choice\' required by Art. 5(2). Address Dr. Cross\'s \'industry standard consent\' defence directly.',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg1-strong',
             quality: 'strong',
-            text: 'Art. 5(2) DMA prohibits cross-service data combination unless the user \'has been presented with the specific choice and has given consent within the meaning of Article 4(11) and Article 7 of Regulation (EU) 2016/679.\' The word \'specific\' is operative: it requires that the user be presented with a choice about the particular processing activity — cross-service combination for advertising profiling — not a general click-through to a Privacy Policy that fails to describe that activity at all. OmniTech\'s Section 4.2 states only that OmniTech \'may use information from our services to improve your experience.\' No provision of Version 18 discloses that OmniMail content is processed for advertising profiling, that cross-service combination occurs, or that profiles are shared with 340 third-party publisher integrations.',
+            text: 'Art. 5(2) DMA prohibits cross-service data combination unless the user \'has been presented with the specific choice and has given consent within the meaning of Article 4(11) and Article 7 of Regulation (EU) 2016/679.\' The word \'specific\' is operative: it requires that the user be presented with a choice about the particular processing activity — cross-service combination for advertising profiling — not a general click-through to a Privacy Policy that fails to describe that activity at all. OmniTech\'s Section 4.2 states only that OmniTech \'may use information from our services to improve your experience.\' No provision of Version 18 discloses that OmniMail content is processed for advertising profiling, that cross-service combination occurs, or that profiles are shared with 340 third-party publisher integrations. A user accepting Version 18 could not have given specific consent to activities they were never told about. OmniTech\'s own Legal team reached this conclusion in the board presentation. The \'industry standard\' characterisation is irrelevant: Art. 5(2) sets a specific legal standard, not an industry practice benchmark.',
             judge_response: 'Counsel correctly identifies the \'specific\' requirement as operative and correctly applies it to OmniTech\'s Privacy Policy, which contains no disclosure of the specific activities requiring consent. The internal legal assessment corroborating this analysis is decisive. The Commission finds this argument compelling.',
             legal_reasoning: 'Correctly identifies \'specific choice\' as the key phrase in Art. 5(2), applies it to the Privacy Policy\'s actual text, notes the absence of any specific disclosure of cross-service combination, uses the internal document to confirm OmniTech\'s own lawyers agreed, and disposes of the industry standard defence. Legally precise and factually grounded.'
           },
@@ -23618,12 +23598,12 @@ verdict: {
         ],
         oppositionArgument: 'OmniTech provides a genuine alternative: users who do not wish to have their data combined can delete their accounts. This is a real, available choice. The DMA does not require gatekeepers to offer every possible configuration of service — it requires a genuine alternative to personalised service. Account deletion removes the user from OmniTech\'s data processing entirely, which is the most complete form of data protection possible. Requiring OmniTech to maintain complex per-service consent architectures imposes a disproportionate engineering burden for a regulatory outcome achievable through the existing deletion mechanism.',
         writePrompt: 'Using the technical expert report (ev2) and Art. 5(2) DMA, argue that account deletion is not a \'genuine less personalised alternative\' within the meaning of Art. 5(2). Address the engineering burden argument directly.',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg2-strong',
             quality: 'strong',
-            text: 'Art. 5(2) DMA requires that users who do not consent to cross-service data combination are \'offered a less personalised but equivalent alternative.\' The operative word is \'equivalent\' — the alternative must preserve access to the service; it cannot eliminate it. Account deletion is not an alternative to cross-service combination; it is the termination of all services entirely. A user who deletes their OmniMail account after nine years to exercise their Art. 5(2) rights loses their email history, stored documents, and all other OmniTech services simultaneously. This is not an equivalent alternative — it is the destruction of the user\'s relationship with every OmniTech service as the price of declining one data processing practice.',
+            text: 'Art. 5(2) DMA requires that users who do not consent to cross-service data combination are \'offered a less personalised but equivalent alternative.\' The operative word is \'equivalent\' — the alternative must preserve access to the service; it cannot eliminate it. Account deletion is not an alternative to cross-service combination; it is the termination of all services entirely. A user who deletes their OmniMail account after nine years to exercise their Art. 5(2) rights loses their email history, stored documents, and all other OmniTech services simultaneously. This is not an equivalent alternative — it is the destruction of the user\'s relationship with every OmniTech service as the price of declining one data processing practice. Recital 37 DMA confirms that the less-personalised alternative \'should not be different or of degraded quality\' and that \'not giving consent should not be more difficult than giving consent.\' Losing nine years of email history is not merely degraded quality — it is loss of service. The technical report confirms that per-service consent toggles are feasible in six to eight weeks. Engineering burden cannot justify an opt-out mechanism that satisfies Art. 5(2)\'s text only formally while defeating its purpose entirely.',
             judge_response: 'The \'equivalent\' standard analysis is legally precise and the application to the account deletion mechanism is correct. The Recital 37 confirmation strengthens the argument. The Commission accepts that account deletion is not an equivalent alternative within the meaning of Art. 5(2) and that the engineering feasibility evidence disposes of the burden argument.',
             legal_reasoning: 'Correctly identifies \'equivalent\' as the operative standard for the alternative, applies it to show that deletion eliminates rather than preserves the service, uses Recital 37 to confirm the interpretation, and disposes of the engineering burden argument with the technical feasibility evidence. Comprehensive analysis of both elements of Art. 5(2).'
           },
@@ -23665,12 +23645,12 @@ verdict: {
         ],
         oppositionArgument: 'Even if a violation is found, any fine must be proportionate to OmniTech\'s actual conduct. OmniTech has engaged in good-faith efforts to comply with DMA obligations, has invested substantially in privacy infrastructure, and has not sought to harm users. The Commission\'s fine guidance must account for the genuine complexity of implementing cross-service consent at scale across hundreds of millions of users. A fine at the maximum 10% threshold would be punitive and disproportionate for what is essentially a technical compliance gap in an evolving regulatory environment.',
         writePrompt: 'Using the Unified Profile Strategy board presentation (ev3) and Art. 30 DMA, argue that OmniTech\'s deliberate non-compliance — documented in its own internal analysis — warrants a fine at or near the maximum threshold, and address the \'good faith\' and proportionality arguments.',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg3-strong',
             quality: 'strong',
-            text: 'Art. 30(1) DMA permits fines up to 10% of worldwide turnover where the gatekeeper \'intentionally or negligently\' fails to comply with Art. 5 obligations. The Unified Profile Strategy board presentation removes any doubt about intent: OmniTech\'s own Legal team confirmed the violation, and the board explicitly recommended non-compliance because the maximum fine of €2.1 billion was cheaper than the €4.2 billion revenue cost of genuine compliance. This is not a technical compliance gap — it is a documented commercial decision to violate the DMA and absorb the maximum fine. OmniTech has treated Art. 30(1)\'s ceiling as a licence fee for non-compliance.',
+            text: 'Art. 30(1) DMA permits fines up to 10% of worldwide turnover where the gatekeeper \'intentionally or negligently\' fails to comply with Art. 5 obligations. The Unified Profile Strategy board presentation removes any doubt about intent: OmniTech\'s own Legal team confirmed the violation, and the board explicitly recommended non-compliance because the maximum fine of €2.1 billion was cheaper than the €4.2 billion revenue cost of genuine compliance. This is not a technical compliance gap — it is a documented commercial decision to violate the DMA and absorb the maximum fine. OmniTech has treated Art. 30(1)\'s ceiling as a licence fee for non-compliance. The Commission must calibrate the fine at the maximum threshold — and the deliberate revenue-versus-fine calculation documented in internal communications is precisely the kind of conduct that justifies doing so. The good-faith argument is foreclosed by the board presentation: OmniTech had Legal\'s confirmation of the violation eighteen months before these proceedings and took no remedial action. There is no good faith where non-compliance is a deliberate strategic choice.',
             judge_response: 'The intentionality analysis under Art. 30(1) is correct and the internal document is dispositive on the question of deliberate non-compliance. The observation that OmniTech has monetised the fine ceiling as a commercial externality is a legitimate and serious aggravating factor in fine calibration. The Commission accepts this argument.',
             legal_reasoning: 'Correctly cites Art. 30(1) and the \'intentionally or negligently\' standard. Uses the board presentation to establish intentional violation beyond doubt. Addresses the fine ceiling as a floor rather than a ceiling when the violating party has explicitly calculated non-compliance as cheaper. Disposes of the good faith defence with the internal document. Art. 30(2) repeat infringement avenue is correctly not raised since no prior decision exists on the facts.'
           },
@@ -23684,7 +23664,7 @@ verdict: {
           {
             id: 'arg3-weak',
             quality: 'weak',
-            text: 'OmniTech\'s board presentation is very damning and shows that it was not acting in good faith at all. The company calculated that breaking the law was cheaper than following it and deliberately chose to do so. This is exactly the kind of cynical attitude the DMA was designed to prevent. The Commission should impose the maximum possible fine to send a message to other gatekeepers that this kind of deliberate non-compliance will not be tolerated. OmniTech should not be rewarded for calculating that violations are commercially rational. Any reasonable person would recognise that the respondent acted improperly and that meaningful intervention is needed to prevent recurrence.',
+            text: 'OmniTech\'s board presentation is very damning and shows that it was not acting in good faith at all. The company calculated that breaking the law was cheaper than following it and deliberately chose to do so. This is exactly the kind of cynical attitude the DMA was designed to prevent. The Commission should impose the maximum possible fine to send a message to other gatekeepers that this kind of deliberate non-compliance will not be tolerated. OmniTech should not be rewarded for calculating that violations are commercially rational.',
             judge_response: 'Counsel has correctly characterised the conduct and the deterrence objective, but has not cited Art. 30(1) or identified the specific legal basis for a maximum fine. Which provision of Art. 30 applies, and what element of OmniTech\'s conduct satisfies the legal standard for maximum fine imposition? The board presentation is compelling evidence but requires legal analysis to translate into a specific fine finding.',
             legal_reasoning: 'Does not cite Art. 30(1) or its \'intentionally or negligently\' standard. The deterrence argument is correct in policy terms but cannot sustain a specific fine finding without the article citation. Treats the board presentation as self-evidently sufficient without connecting it to the legal standard. Policy advocacy rather than legal analysis.'
           },
@@ -23793,7 +23773,6 @@ verdict: {
           witnessResponse: 'There are — abuse prevention considerations extend beyond production isolation. We need to prevent bulk data harvesting and ensure access is genuinely user-initiated.',
           followUpImpact: 'positive'
         },
-        impact: 'positive',
         impactExplanation: 'The documentation contradicts the infrastructure justification by confirming the portability API is isolated from production. The follow-up forces Yuen to abandon the capacity argument and pivot to abuse prevention — an argument unsupported by any documentation and inconsistent with the fact that the API requires user authentication by design.'
       },
       {
@@ -23807,7 +23786,6 @@ verdict: {
           witnessResponse: 'I would need to review our internal engineering records to confirm the full range of options considered.',
           followUpImpact: 'positive'
         },
-        impact: 'positive',
         impactExplanation: 'Forces Yuen to either produce evidence of a genuine rate limit evaluation — which does not exist given the memo\'s specific targeting — or confirm by inability to produce documents that the 99.7% reduction was the design objective. The memo\'s phrasing makes it very difficult to characterise the rate limit as anything other than a deliberate choice.'
       },
       {
@@ -23821,7 +23799,6 @@ verdict: {
           witnessResponse: 'Those are different engineering workstreams with different — different teams and different timelines.',
           followUpImpact: 'positive'
         },
-        impact: 'positive',
         impactExplanation: 'Establishes that SocialNet affirmatively chose to build a new proprietary obfuscated format rather than expose an existing standard it already had. This eliminates any claim of engineering difficulty and confirms the proprietary format was a deliberate design choice to prevent interoperability.'
       },
       {
@@ -23830,7 +23807,6 @@ verdict: {
         category: 'risky',
         witnessResponse: 'I strongly disagree. SocialNet operates in a highly competitive market — we compete vigorously with many platforms for user attention and engagement every day. Our users have genuine choices and we work hard every day to earn their continued participation. The suggestion that competition is impossible misrepresents the dynamic nature of social networking markets and the genuine competition we face.',
         followUp: { available: false },
-        impact: 'neutral',
         impactExplanation: 'This question hands Yuen a platform to reframe SocialNet as a competitive market participant rather than an entrenched gatekeeper, and to dispute the premise that portability matters — exactly the opposite of what the Commission needs to hear. It also potentially undermines the complainant\'s case by suggesting the DMA remedy is ineffective. Never concede that the obligation being enforced is pointless, even rhetorically.'
       },
       {
@@ -23839,7 +23815,6 @@ verdict: {
         category: 'ineffective',
         witnessResponse: 'SocialNet\'s infrastructure organisation includes over 4,000 engineers globally, including specialised teams for data systems, API infrastructure, and privacy engineering. We invest heavily in technical excellence and our infrastructure is recognised as among the most sophisticated in the industry.',
         followUp: { available: false },
-        impact: 'negative',
         impactExplanation: 'This produces an unprompted testimonial to SocialNet\'s engineering scale and capability — the exact opposite of what is needed at this point in proceedings, where SocialNet is arguing that genuine portability is technically complex and resource-intensive. The answer actually undermines SocialNet\'s own engineering difficulty defence, but that benefit is incidental and the question generates far more reputational advantage for SocialNet than legal damage.'
       }
     ]
@@ -23865,12 +23840,12 @@ verdict: {
         ],
         oppositionArgument: 'SocialNet has complied with Art. 6(9) DMA. Users can download their data through the Download Your Data feature and third parties can access data through the provisioned portability API. Art. 6(9) does not prescribe technical specifications, minimum transfer speeds, or format standards — it requires portability tooling to be provided, and SocialNet has provided it. The Commission cannot impose a de facto interoperability standard through portability enforcement or require SocialNet to expose its internal technical architecture to competitors. Data portability and interoperability are distinct obligations in the DMA, and Art. 6(9) addresses only the former.',
         writePrompt: 'Using the technical expert report (ev2) and Art. 6(9) DMA, argue that SocialNet\'s export format and API rate limit fail the \'effective\' portability standard. Address Dr. Hoffmann\'s argument that the DMA does not prescribe technical specifications.',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg1-strong',
             quality: 'strong',
-            text: 'Art. 6(9) DMA requires gatekeepers to provide \'effective portability of data\' including \'continuous and real-time access\' and \'tools to facilitate the effective exercise of such data portability.\' The word \'effective\' is operative and substantive: it means the portability mechanism must actually work for users and third parties, not merely exist in name. A mechanism that achieves a 0.3% migration completion rate and takes three years to transfer a typical user\'s data is not effective by any reasonable construction. The technical report establishes that the rate limit is not a technical constraint — SocialNet\'s internal replication operates at 50,000 records per second on the same infrastructure. It is a deliberate design choice.',
+            text: 'Art. 6(9) DMA requires gatekeepers to provide \'effective portability of data\' including \'continuous and real-time access\' and \'tools to facilitate the effective exercise of such data portability.\' The word \'effective\' is operative and substantive: it means the portability mechanism must actually work for users and third parties, not merely exist in name. A mechanism that achieves a 0.3% migration completion rate and takes three years to transfer a typical user\'s data is not effective by any reasonable construction. The technical report establishes that the rate limit is not a technical constraint — SocialNet\'s internal replication operates at 50,000 records per second on the same infrastructure. It is a deliberate design choice. Similarly, an export format in a proprietary, undocumented schema that SocialNet\'s own terms of service prohibit importers from reverse-engineering is not a tool that \'facilitates effective exercise\' of portability — it is an obstacle disguised as a tool. Dr. Hoffmann\'s argument that Art. 6(9) imposes no technical specifications is correct as a general proposition but irrelevant here: the Commission does not need to specify a minimum transfer rate to find that three years is not real-time.',
             judge_response: 'Counsel correctly identifies \'effective\' as the operative standard and correctly applies it to the 0.3% completion rate and three-year migration time. The observation that the Commission need not define \'real-time\' in the abstract to find that three years fails the standard is legally astute. The technical report\'s evidence on internal versus external transfer rates is decisive. The Commission is persuaded.',
             legal_reasoning: 'Correctly identifies Art. 6(9)\'s effective and real-time access requirements, applies the effectiveness standard to concrete outcome metrics (completion rate, migration time), uses the technical report to rebut the capacity justification, and disposes of the no-technical-specification argument by noting that the Commission can find a violation without defining minimum standards. Legally precise and factually grounded.'
           },
@@ -23912,12 +23887,12 @@ verdict: {
         ],
         oppositionArgument: 'SocialNet is entitled to protect its proprietary data schema through its terms of service. Intellectual property rights and trade secrets are legitimate interests that DMA obligations cannot override. Section 14.3 of SocialNet\'s Developer Terms is a standard industry measure to protect SocialNet\'s technical innovations from appropriation by competitors. The DMA does not require gatekeepers to open-source their data models or expose proprietary technical architecture. Art. 6(9) requires portability tooling; it does not require SocialNet to publish technical specifications that would undermine its competitive position.',
         writePrompt: 'Using the Project Moat memorandum (ev3) and Art. 13(4) DMA, argue that the combination of the proprietary export format and the contractual prohibition on reverse-engineering constitutes anti-circumvention conduct that undermines Art. 6(9). Address the intellectual property defence.',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg2-strong',
             quality: 'strong',
-            text: 'Art. 13(4) DMA prohibits gatekeepers from engaging in \'any behaviour that undermines effective compliance with the obligations of Articles 5, 6 and 7 regardless of whether that behaviour is of a contractual, commercial or technical nature.\' SocialNet has constructed a two-layer circumvention mechanism: first, a technical layer — an export format using 847 undocumented proprietary field names that no standard import tool can process; second, a contractual layer — a terms of service prohibition on reverse-engineering that closes the only path by which importers could make the export usable. Neither layer alone defeats portability; together they constitute a system whose explicit purpose — confirmed in the Project Moat memorandum — is to \'reduce migration completion rates by 99.7%.\' The intellectual property defence fails because Art. 13(4) specifically reaches \'contractual\' as well as \'technical\' conduct.',
+            text: 'Art. 13(4) DMA prohibits gatekeepers from engaging in \'any behaviour that undermines effective compliance with the obligations of Articles 5, 6 and 7 regardless of whether that behaviour is of a contractual, commercial or technical nature.\' SocialNet has constructed a two-layer circumvention mechanism: first, a technical layer — an export format using 847 undocumented proprietary field names that no standard import tool can process; second, a contractual layer — a terms of service prohibition on reverse-engineering that closes the only path by which importers could make the export usable. Neither layer alone defeats portability; together they constitute a system whose explicit purpose — confirmed in the Project Moat memorandum — is to \'reduce migration completion rates by 99.7%.\' The intellectual property defence fails because Art. 13(4) specifically reaches \'contractual\' as well as \'technical\' conduct. SocialNet cannot invoke trade secret protection for a format that was purpose-built to obstruct a regulatory obligation — the Project Moat memo confirms the format was not derived from SocialNet\'s operational data model but designed specifically for the Download Your Data feature. There is no intellectual property interest in a schema engineered to obstruct compliance.',
             judge_response: 'The two-layer circumvention analysis is compelling and the Art. 13(4) application to combined technical and contractual obstruction is legally precise. Using the Project Moat document to show the format was purpose-built for obstruction rather than operational necessity eliminates the intellectual property defence at its factual foundation. The Commission accepts this argument.',
             legal_reasoning: 'Correctly identifies Art. 13(4) and its explicit reach to \'contractual\' conduct, applies it to the combined technical-plus-ToS mechanism, uses the internal document to establish that the format was designed for obstruction rather than developed for legitimate operational reasons, and disposes of the IP defence by reference to the memo\'s own description of the format\'s origins. Comprehensive and legally precise.'
           },
@@ -23931,7 +23906,7 @@ verdict: {
           {
             id: 'arg2-weak',
             quality: 'weak',
-            text: 'SocialNet cannot hide behind intellectual property to obstruct the DMA. The Project Moat memo shows that the proprietary format was specifically designed to prevent migration, not to protect any genuine trade secret. SocialNet cannot claim intellectual property protection for something it built specifically to circumvent a regulatory obligation. The terms of service prohibition on reverse-engineering is just another layer of the same obstruction strategy. The Commission should see through these technical and contractual mechanisms and find that SocialNet has violated its DMA obligations. The Authority should send a clear signal that regulated entities cannot treat their obligations this way and must be held to the standards the law requires.',
+            text: 'SocialNet cannot hide behind intellectual property to obstruct the DMA. The Project Moat memo shows that the proprietary format was specifically designed to prevent migration, not to protect any genuine trade secret. SocialNet cannot claim intellectual property protection for something it built specifically to circumvent a regulatory obligation. The terms of service prohibition on reverse-engineering is just another layer of the same obstruction strategy. The Commission should see through these technical and contractual mechanisms and find that SocialNet has violated its DMA obligations.',
             judge_response: 'Counsel correctly uses the internal document to rebut the IP defence and correctly identifies the combined technical-plus-contractual mechanism. However, the argument needs an explicit legal foundation — which DMA provision specifically addresses conduct that undermines obligations through contractual and technical means? Identifying Art. 13(4) and its explicit reach to \'contractual\' behaviour would significantly strengthen this submission.',
             legal_reasoning: 'Factually correct and uses the Project Moat memo well but fails to cite Art. 13(4) or its explicit \'contractual... or technical nature\' language. The IP defence rebuttal is right but not anchored to a legal provision. Without Art. 13(4), this is a policy argument that cannot sustain a formal enforcement finding on the circumvention dimension.'
           },
@@ -23959,12 +23934,12 @@ verdict: {
         ],
         oppositionArgument: 'Even if the rate limit were found to be inadequate, the appropriate remedy is a technical specification negotiation between the Commission and SocialNet — not a finding of violation. Art. 8(2) DMA empowers the Commission to specify implementing measures; this is the correct pathway for technical portability disputes. The Coalition\'s evidence of failed migrations reflects the teething difficulties of a new regulatory regime, not bad faith by SocialNet. SocialNet has made portability tools available and the market should be allowed to develop solutions over time as technical standards mature.',
         writePrompt: 'Using the Coalition statement (ev5) and Art. 6(9)\'s specific language on continuous real-time access and high-quality technical measures, argue that SocialNet\'s API fails the third-party portability obligation and address Dr. Hoffmann\'s \'Art. 8 specification\' argument.',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg3-strong',
             quality: 'strong',
-            text: 'Art. 6(9) DMA requires SocialNet to provide portability to \'end users and third parties authorised by an end user,\' including \'continuous and real-time access\' via \'appropriate and high quality technical measures, such as application programming interfaces.\' The phrase \'high quality\' in Recital 59 is not satisfied by an API that achieves a 0.3% migration completion rate across 14 requesting platforms. Zero of 14 Coalition members has successfully migrated a user with more than two years of activity history. This is not teething difficulty — it is systematic failure. Dr.',
+            text: 'Art. 6(9) DMA requires SocialNet to provide portability to \'end users and third parties authorised by an end user,\' including \'continuous and real-time access\' via \'appropriate and high quality technical measures, such as application programming interfaces.\' The phrase \'high quality\' in Recital 59 is not satisfied by an API that achieves a 0.3% migration completion rate across 14 requesting platforms. Zero of 14 Coalition members has successfully migrated a user with more than two years of activity history. This is not teething difficulty — it is systematic failure. Dr. Hoffmann\'s Art. 8(2) argument misreads the provision: Art. 8(2) allows the Commission to specify implementing measures for obligations under Art. 6 that are \'susceptible of being further specified,\' but this does not convert Art. 6(9) into a negotiation rather than an obligation. The Commission can find a violation of Art. 6(9)\'s existing standard and separately specify implementing measures — these are not mutually exclusive. SocialNet cannot use the availability of Art. 8 specification proceedings as a shield against a non-compliance finding for an obligation whose core content — effective, continuous, real-time — has clearly not been met.',
             judge_response: 'The third-party portability obligation is correctly identified and the Recital 59 \'high quality\' standard is precisely applied to the 0.3% completion rate. The Art. 8(2) procedural argument is correctly analysed: specification powers do not replace the obligation and cannot be invoked to defer a non-compliance finding. The Commission is persuaded.',
             legal_reasoning: 'Correctly identifies the third-party dimension of Art. 6(9), applies the Recital 59 high quality standard, uses Coalition evidence to confirm systemic failure, and correctly disposes of the Art. 8(2) specification argument by noting that specification and non-compliance findings are not mutually exclusive. Comprehensive and procedurally precise.'
           },
@@ -24087,7 +24062,6 @@ verdict: {
           witnessResponse: 'Legal opinions are privileged. I cannot disclose their content in these proceedings.',
           followUpImpact: 'positive'
         },
-        impact: 'positive',
         impactExplanation: 'Inability to produce a contemporaneous compliance opinion, combined with the memo\'s unambiguous presentation of the conflict as confirmed rather than contested, establishes that the good faith defence is unavailable and the non-compliance was deliberate and commercially calculated — exactly the intentional conduct that maximises fines under Art. 30(1).'
       },
       {
@@ -24101,7 +24075,6 @@ verdict: {
           witnessResponse: 'BookingMax\'s position is that Art. 5(3) does not prohibit all parity obligations — we believe a narrowly scoped parity clause is consistent with the DMA. We are reviewing our Partner Agreement in light of the current proceedings.',
           followUpImpact: 'positive'
         },
-        impact: 'positive',
         impactExplanation: 'Forces an admission that BookingMax is reviewing the clause — implicitly conceding the violation — while on record having penalised EuroStay for conduct Art. 5(3) explicitly protects. The \'narrowly scoped\' parity argument also signals the defence BookingMax will run in the hearing, which can be pre-empted in argument.'
       },
       {
@@ -24115,7 +24088,6 @@ verdict: {
           witnessResponse: 'The — the consumer benefits from the comparison infrastructure BookingMax provides, which has a cost that is reflected in the commission.',
           followUpImpact: 'positive'
         },
-        impact: 'positive',
         impactExplanation: 'Forces Voss to abandon the consumer protection narrative and reveal that parity protects BookingMax\'s commission at the expense of consumer savings. The follow-up converts the consumer trust argument into a commission protection argument in real time, eliminating the public justification and replacing it with the revenue motive confirmed in the memo.'
       },
       {
@@ -24124,7 +24096,6 @@ verdict: {
         category: 'risky',
         witnessResponse: 'That characterisation is completely wrong. BookingMax competes vigorously with Expedia, Hotels.com, Airbnb, and hundreds of other platforms for both hotel partners and consumer bookings. Our market share reflects our investment in technology, consumer experience, and marketing. Hotels choose to list with BookingMax because we deliver bookings they would not otherwise receive. Calling this a monopoly misrepresents a dynamic, competitive market that benefits millions of European travellers every year.',
         followUp: { available: false },
-        impact: 'neutral',
         impactExplanation: 'This loaded question allows Voss to deliver a lengthy, sympathetic market competitiveness defence that reframes BookingMax as a value-adding intermediary competing vigorously in a dynamic market. It invites a narrative that directly rehabilitates BookingMax\'s market position and shifts attention from the specific legal violation to abstract market structure arguments. The concrete admissions already obtained in ce1-ce3 are far more valuable than any response to this rhetorical framing.'
       },
       {
@@ -24133,7 +24104,6 @@ verdict: {
         category: 'ineffective',
         witnessResponse: 'BookingMax facilitated over 340 million hotel nights across the EU last year, generating significant tourism revenue for hotels, local economies, and the wider hospitality sector. We are proud to be the leading platform connecting European travellers with accommodation options across every price point and category.',
         followUp: { available: false },
-        impact: 'negative',
         impactExplanation: 'This generates an unprompted scale and value testimonial that reinforces BookingMax\'s indispensability — precisely the narrative that justifies its gatekeeper designation but also, in this context, makes it appear as a beneficial market participant rather than a regulatory violator. Transaction volume is irrelevant to Art. 5(3) and the question wastes a cross-examination slot entirely.'
       }
     ]
@@ -24159,12 +24129,12 @@ verdict: {
         ],
         oppositionArgument: 'Art. 5(3) does not categorically prohibit all parity obligations — it prohibits gatekeepers from \'preventing\' different pricing on direct channels. BookingMax\'s Clause 4.1 is not a prevention: hotels remain free to delist from BookingMax entirely and offer any prices they choose elsewhere. Parity is a condition of platform participation, not a market-wide restriction. Hotels that prefer to price differently retain that freedom by exiting the BookingMax platform. This is a standard commercial condition equivalent to any exclusivity or quality standard that platforms impose. Art. 5(3) targets coercive market-wide restrictions, not bilateral commercial terms that hotels voluntarily accept.',
         writePrompt: 'Using the Partner Agreement (ev4) and Art. 5(3) DMA, argue that Clause 4.1 directly violates Art. 5(3). Address Dr. Brenner\'s \'voluntary commercial condition\' and \'exit freedom\' defences.',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg1-strong',
             quality: 'strong',
-            text: 'Art. 5(3) DMA provides that a gatekeeper \'shall not prevent business users from offering the same products or services... through their own direct online sales channel at prices or conditions that are different from those offered through the online intermediation services of the gatekeeper.\' Clause 4.1 does exactly this: it requires hotels to maintain rates on BookingMax \'equal to or lower than\' rates offered through any other channel, including the hotel\'s own direct website. EuroStay\'s Direct Booking Advantage programme — a 10% direct discount — is precisely the differentiated direct-channel pricing Art. 5(3) protects.',
+            text: 'Art. 5(3) DMA provides that a gatekeeper \'shall not prevent business users from offering the same products or services... through their own direct online sales channel at prices or conditions that are different from those offered through the online intermediation services of the gatekeeper.\' Clause 4.1 does exactly this: it requires hotels to maintain rates on BookingMax \'equal to or lower than\' rates offered through any other channel, including the hotel\'s own direct website. EuroStay\'s Direct Booking Advantage programme — a 10% direct discount — is precisely the differentiated direct-channel pricing Art. 5(3) protects. BookingMax\'s threat of delisting and algorithmic demotion is the mechanism of prevention: it does not matter whether the restriction operates through a physical barrier or a commercial sanction. The \'exit freedom\' defence fails because Art. 5(3) is a per se prohibition — it does not ask whether the business user can escape by exiting the platform. The Commission does not conduct a counterfactual analysis of whether hotels could survive without BookingMax. A gatekeeper cannot condition platform access on waiver of rights the DMA vests in business users. Art. 5(3) is self-executing and contains no voluntary acceptance exception.',
             judge_response: 'Counsel correctly identifies Art. 5(3) as a per se prohibition, correctly applies \'prevent\' to include commercial sanctions such as delisting and algorithmic demotion, and correctly disposes of the exit freedom argument by reference to Art. 5\'s per se structure. The observation that DMA rights cannot be waived as a condition of platform access is precisely correct. The Commission is persuaded.',
             legal_reasoning: 'Correctly identifies Art. 5(3) as self-executing with no voluntary acceptance exception, applies \'prevent\' broadly to commercial enforcement mechanisms, notes that DMA rights cannot be contractually waived, and disposes of the exit freedom argument by reference to the per se nature of Art. 5 obligations. Legally precise and factually grounded.'
           },
@@ -24206,12 +24176,12 @@ verdict: {
         ],
         oppositionArgument: 'Even if Art. 5(3) applies, BookingMax has a legitimate justification. Price parity ensures that consumers using BookingMax receive the best available rates — it is a genuine quality assurance mechanism that protects the platform\'s value proposition. Without parity, sophisticated consumers would game the system by using BookingMax for discovery and then booking directly, degrading the platform experience for less sophisticated users who rely on BookingMax for both discovery and booking. This is a consumer protection rationale that the Commission must weigh against the impact on business users.',
         writePrompt: 'Using the internal memorandum (ev3) and the structure of Art. 5 DMA, argue that the consumer trust justification is legally unavailable under Art. 5(3) and factually pretextual. Address the \'platform degradation\' argument.',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg2-strong',
             quality: 'strong',
-            text: 'Art. 5(3) is located in Art. 5 DMA — the self-executing obligations that contain no consumer benefit exception, no proportionality test, and no balancing against platform quality concerns. This is a deliberate legislative choice: the Union legislature determined that parity clauses are per se prohibited for designated gatekeepers, not subject to case-by-case weighing of consumer and platform interests. The consumer trust justification has no legal home in Art. 5(3). It would be available under an Art. 101(3) TFEU efficiency defence — which is precisely why the legislature placed the obligation in Art. 5 rather than Art. 6, to eliminate that avenue. The justification is also factually false.',
+            text: 'Art. 5(3) is located in Art. 5 DMA — the self-executing obligations that contain no consumer benefit exception, no proportionality test, and no balancing against platform quality concerns. This is a deliberate legislative choice: the Union legislature determined that parity clauses are per se prohibited for designated gatekeepers, not subject to case-by-case weighing of consumer and platform interests. The consumer trust justification has no legal home in Art. 5(3). It would be available under an Art. 101(3) TFEU efficiency defence — which is precisely why the legislature placed the obligation in Art. 5 rather than Art. 6, to eliminate that avenue. The justification is also factually false. BookingMax\'s internal memorandum does not mention consumer protection. It identifies the purpose of Clause 4.1 as preventing hotels from \'migrating bookings to direct channels\' and protecting €1.8–4.1 billion in commission revenue. Consumer trust appears only as a public framing strategy — not an operational rationale. A court should not accept an Art. 101(3)-style defence imported by a party that chose to argue Art. 5(3) in a proceeding where that defence does not exist.',
             judge_response: 'The structural argument distinguishing Art. 5 from Art. 6 on the availability of justifications is correct. The internal memo is dispositive on the factual pretextuality of the consumer trust claim. The observation that the consumer trust argument effectively imports an Art. 101(3) defence into a proceeding where no such defence is available is legally astute. The Commission accepts this argument.',
             legal_reasoning: 'Correctly identifies Art. 5(3) as per se with no efficiency or consumer benefit exception, draws the correct structural contrast with Art. 6\'s qualified obligations, notes that Art. 5 was chosen precisely to exclude this type of balancing, and uses the internal memo to establish factual pretextuality. Two-track argument covering legal unavailability and factual falsity.'
           },
@@ -24225,7 +24195,7 @@ verdict: {
           {
             id: 'arg2-weak',
             quality: 'weak',
-            text: 'BookingMax\'s consumer trust argument does not hold up when you look at the internal memo. The memo does not mention consumers at all — it is entirely about protecting commission revenue. The consumer protection argument was clearly invented for these proceedings and the Commission should not be fooled by it. Consumers would actually benefit from lower direct prices, so the consumer trust argument is backwards. The DMA is designed to help businesses like EuroStay compete and the consumer trust defence just tries to distract from that. Any reasonable person would recognise that the respondent acted improperly and that meaningful intervention is needed to prevent recurrence.',
+            text: 'BookingMax\'s consumer trust argument does not hold up when you look at the internal memo. The memo does not mention consumers at all — it is entirely about protecting commission revenue. The consumer protection argument was clearly invented for these proceedings and the Commission should not be fooled by it. Consumers would actually benefit from lower direct prices, so the consumer trust argument is backwards. The DMA is designed to help businesses like EuroStay compete and the consumer trust defence just tries to distract from that.',
             judge_response: 'The internal memo is correctly used and the consumer benefit analysis is right. However, counsel has not addressed the more fundamental legal question: whether a consumer trust justification is available under Art. 5(3) at all, regardless of its factual merits. If Art. 5(3) is a per se rule with no balancing test, the factual rebuttal is supplementary. Please address the legal structure of Art. 5.',
             legal_reasoning: 'Correctly uses the memo but fails to make the primary legal argument: that Art. 5(3) contains no consumer benefit or proportionality exception. The factual rebuttal is correct but incomplete without the structural legislative analysis. Same pattern as Case 72 arg2 weak answer — fights the justification on its merits without first establishing it has no legal standing.'
           },
@@ -24253,12 +24223,12 @@ verdict: {
         ],
         oppositionArgument: 'Even if Clause 4.1 were found to violate Art. 5(3), the enforcement action against EuroStay was a legitimate contractual remedy for a clear breach of agreed terms. Platforms must be able to enforce their agreements — without enforcement mechanisms, partner agreements are meaningless. BookingMax restored EuroStay\'s rankings immediately upon EuroStay\'s withdrawal of the offending programme. The temporary demotion was a proportionate, reversible response to a genuine contractual breach. The Hotels Association survey evidence is irrelevant to the specific facts of EuroStay\'s case and cannot form the basis of a Commission enforcement finding.',
         writePrompt: 'Using the Hotels Association statement (ev5) and Art. 13(6) DMA, argue that BookingMax\'s algorithmic demotion of EuroStay constitutes an independent violation and that the 87% chilling effect confirms market-wide Art. 13(6) degradation. Address the \'legitimate contractual enforcement\' argument.',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg3-strong',
             quality: 'strong',
-            text: 'Art. 13(6) DMA prohibits gatekeepers from degrading \'the conditions or quality of any of the core platform services provided to business users... who avail themselves of the rights or choices laid down in Articles 5, 6 and 7.\' EuroStay attempted to exercise its Art. 5(3) right to offer a direct-channel discount. BookingMax responded with an immediate algorithmic demotion that reduced EuroStay\'s booking volume by 67% in seven days — a severe degradation of the core platform service conditioned directly on EuroStay\'s attempt to exercise a DMA right. Dr. Brenner\'s characterisation of this as \'legitimate contractual enforcement\' is circular: BookingMax cannot legitimately enforce a clause that is itself prohibited by Art. 5(3).',
+            text: 'Art. 13(6) DMA prohibits gatekeepers from degrading \'the conditions or quality of any of the core platform services provided to business users... who avail themselves of the rights or choices laid down in Articles 5, 6 and 7.\' EuroStay attempted to exercise its Art. 5(3) right to offer a direct-channel discount. BookingMax responded with an immediate algorithmic demotion that reduced EuroStay\'s booking volume by 67% in seven days — a severe degradation of the core platform service conditioned directly on EuroStay\'s attempt to exercise a DMA right. Dr. Brenner\'s characterisation of this as \'legitimate contractual enforcement\' is circular: BookingMax cannot legitimately enforce a clause that is itself prohibited by Art. 5(3). A party cannot rely on an illegal contract term as the basis for a contractual remedy. The Hotels Association evidence confirms that the demotion was not an isolated incident but part of a systematic enforcement architecture that has achieved an 87% self-censorship rate — 87% of hotels have abandoned direct discount programmes due to enforcement risk. Art. 13(6) is violated not only by actual degradation but by enforcement architecture that makes the exercise of DMA rights \'unduly difficult\' across the market.',
             judge_response: 'The Art. 13(6) analysis is well-constructed. The circularity point — that a prohibited clause cannot provide legal basis for contractual enforcement — is decisive. The 87% chilling effect evidence establishes market-wide Art. 13(6) impact through enforcement architecture rather than just individual demotion actions. The Commission accepts this as an independent violation finding.',
             legal_reasoning: 'Correctly applies Art. 13(6) to algorithmic demotion triggered by DMA rights exercise, disposes of the contractual enforcement defence by noting it relies on an illegal underlying clause, and extends the Art. 13(6) analysis to market-wide chilling effects through enforcement architecture. Comprehensive and legally precise.'
           },
@@ -24382,7 +24352,6 @@ verdict: {
           witnessResponse: 'Any such opinions would be subject to legal professional privilege and cannot be disclosed in these proceedings.',
           followUpImpact: 'positive'
         },
-        impact: 'positive',
         impactExplanation: 'The privilege claim confirms — without explicitly stating — that no exculpatory opinion exists. If such an opinion existed and supported RideApp\'s position, the incentive to disclose it would be strong. Claiming privilege over documents that would help the respondent\'s case effectively concedes their absence, eliminating the good faith defence and confirming deliberate knowing non-compliance.'
       },
       {
@@ -24396,7 +24365,6 @@ verdict: {
           witnessResponse: 'The letter communicated the contractual consequences of a breach. Drivers who had signed the Agreement were entitled to know what their obligations were.',
           followUpImpact: 'positive'
         },
-        impact: 'positive',
         impactExplanation: 'Forces Mehta to characterise a letter invoking a clause that threatens account termination as merely \'informational\' — a position that is both factually untenable and legally irrelevant, since Art. 5(6) prohibits preventing complaints regardless of mechanism. The follow-up establishes that the economic threat is inherent in the clause regardless of the letter\'s tone.'
       },
       {
@@ -24410,7 +24378,6 @@ verdict: {
           witnessResponse: 'Clause 11.4 reflects a standard commercial dispute resolution framework. We did not design it to exclude access to public institutions.',
           followUpImpact: 'positive'
         },
-        impact: 'positive',
         impactExplanation: 'Establishes the economic barrier argument precisely — Clause 11.4 does not technically prevent complaints but makes them commercially irrational for drivers earning €1,340 per month. Art. 5(6) protects access to public authorities including national courts; substituting a prohibitively expensive private forum eliminates the protected pathway regardless of technical availability.'
       },
       {
@@ -24419,7 +24386,6 @@ verdict: {
         category: 'risky',
         witnessResponse: 'Driver classification is a complex legal and policy question that is actively litigated and legislated across the EU. RideApp complies with all applicable laws in every jurisdiction where it operates. The characterisation of our model as \'misclassification\' is legally contested and reflects a particular policy position. Conflating driver classification with the specific question before this Commission — the complaint waiver clause — is not a fair characterisation of these proceedings or RideApp\'s business.',
         followUp: { available: false },
-        impact: 'neutral',
         impactExplanation: 'This question introduces a highly contested political and legal issue — driver classification — that is not before the Commission in Art. 5(6) proceedings. It allows Mehta to reframe the hearing as a labour law controversy, generate sympathy by pointing to genuine legal complexity, and dilute the Commission\'s focus on the specific contractual clauses at issue. The employment status question is a live debate with no settled answer, making it fertile ground for extended narrative that benefits the respondent.'
       },
       {
@@ -24428,7 +24394,6 @@ verdict: {
         category: 'ineffective',
         witnessResponse: 'RideApp operates in 23 EU Member States and provides earning opportunities to approximately 4.2 million drivers across the Union. We are proud to be one of the largest platforms for flexible earning in Europe, supporting millions of people who value the independence and flexibility of working with RideApp on their own terms.',
         followUp: { available: false },
-        impact: 'negative',
         impactExplanation: 'This produces an unprompted testimonial to RideApp\'s scale and the employment it claims to provide, reframing the company as a beneficial market participant supporting \'millions of people\' rather than a gatekeeper with systematic rights suppression clauses. The scale figure is also the same one used in the internal memo to calculate 23,000 projected complainants — meaning the answer inadvertently confirms the scale of the suppression architecture\'s intended reach, but this benefit is incidental and the overall effect of the question is to give RideApp a platform to appear benevolent.'
       }
     ]
@@ -24454,12 +24419,12 @@ verdict: {
         ],
         oppositionArgument: 'RideApp\'s Clause 11.2 is a valid contractual term that drivers freely accepted when joining the platform. Freedom of contract is a fundamental principle of EU private law — parties are entitled to agree commercial terms. Art. 5(6) DMA does not override freedom of contract in commercial relationships. Drivers who accepted the Driver Service Agreement made an informed commercial decision. The DMA does not require platforms to have no terms of service — it regulates certain specific practices. A complaint waiver is a standard dispute resolution clause of the kind used in commercial contracts globally and should not be read as a suppression of regulatory rights.',
         writePrompt: 'Using the Driver Service Agreement (ev4) and Art. 5(6) DMA, argue that Clause 11.2 directly violates Art. 5(6). Address Dr. Weil\'s freedom of contract and informed acceptance defences.',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg1-strong',
             quality: 'strong',
-            text: 'Art. 5(6) DMA provides that a gatekeeper \'shall not directly or indirectly prevent or restrict business users or end users from raising any issue of non-compliance with the relevant Union or national law by the gatekeeper with any relevant public authority, including national courts.\' Clause 11.2 requires drivers to \'irrevocably waive any right to file complaints... with any competition authority, regulatory body... or other public institution.\' This is not an indirect or ambiguous restriction — it names exactly the institutions Art. 5(6) protects access to and requires their irrevocable waiver. The freedom of contract defence is legally unavailable for two independent reasons.',
+            text: 'Art. 5(6) DMA provides that a gatekeeper \'shall not directly or indirectly prevent or restrict business users or end users from raising any issue of non-compliance with the relevant Union or national law by the gatekeeper with any relevant public authority, including national courts.\' Clause 11.2 requires drivers to \'irrevocably waive any right to file complaints... with any competition authority, regulatory body... or other public institution.\' This is not an indirect or ambiguous restriction — it names exactly the institutions Art. 5(6) protects access to and requires their irrevocable waiver. The freedom of contract defence is legally unavailable for two independent reasons. First, Art. 5(6) is a self-executing per se obligation in Art. 5 DMA — it contains no exception for voluntarily accepted contractual terms. A party cannot contractually waive rights vested in them by EU regulation: EU law takes precedence over private contract. Second, the \'informed acceptance\' defence assumes drivers had a genuine commercial choice, which they did not: RideApp\'s 35% commission increase affected all 4.2 million EU drivers simultaneously with no alternative platform of equivalent scale available. Acceptance under those conditions is not free choice.',
             judge_response: 'Counsel correctly identifies Art. 5(6) as a per se prohibition that cannot be waived by contract, correctly notes EU law\'s precedence over private agreements, and correctly challenges the voluntariness assumption underlying the freedom of contract argument. The Commission is persuaded.',
             legal_reasoning: 'Correctly identifies Art. 5(6) as per se, correctly notes that EU regulatory rights cannot be contractually waived, applies the text of Clause 11.2 directly to the text of Art. 5(6), and challenges the voluntariness of acceptance. Two independent legal bases for rejecting the freedom of contract defence. Legally precise and factually grounded.'
           },
@@ -24501,12 +24466,12 @@ verdict: {
         ],
         oppositionArgument: 'Clause 11.4 is a legitimate commercial arbitration clause used across millions of international contracts. Arbitration provides faster, more expert dispute resolution than national courts. Singapore is a respected neutral jurisdiction with world-class legal infrastructure. The DMA does not prohibit arbitration clauses — Art. 5(6) explicitly preserves the right of gatekeepers and business users to \'lay down in their agreements the terms of use of lawful complaints-handling mechanisms, including any use of alternative dispute resolution mechanisms.\' RideApp is using exactly the mechanism the DMA preserves.',
         writePrompt: 'Using the internal memorandum (ev3) and Art. 5(6)\'s \'indirectly restrict\' language, argue that Clause 11.4 violates Art. 5(6) despite the DMA\'s explicit preservation of alternative dispute resolution mechanisms. Address the ADR carve-out argument directly.',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg2-strong',
             quality: 'strong',
-            text: 'Art. 5(6) DMA prohibits gatekeepers from \'directly or indirectly\' preventing or restricting access to public authorities. The word \'indirectly\' is critical: an economic barrier that makes the exercise of a right practically impossible constitutes indirect restriction even if no explicit prohibition exists. Clause 11.4 requires Singapore arbitration costing €12,000–15,000 for drivers earning €1,340 per month — a cost equivalent to nine to eleven months of gross income. This is not a genuine alternative dispute resolution mechanism: it is a prohibitive economic barrier that substitutes a free public right with an unaffordable private one.',
+            text: 'Art. 5(6) DMA prohibits gatekeepers from \'directly or indirectly\' preventing or restricting access to public authorities. The word \'indirectly\' is critical: an economic barrier that makes the exercise of a right practically impossible constitutes indirect restriction even if no explicit prohibition exists. Clause 11.4 requires Singapore arbitration costing €12,000–15,000 for drivers earning €1,340 per month — a cost equivalent to nine to eleven months of gross income. This is not a genuine alternative dispute resolution mechanism: it is a prohibitive economic barrier that substitutes a free public right with an unaffordable private one. Art. 5(6)\'s ADR carve-out states that gatekeepers may \'lay down in their agreements the terms of use of lawful complaints-handling mechanisms, including any use of alternative dispute resolution mechanisms.\' The carve-out preserves ADR as a supplement to public authority access — it cannot be read as permitting ADR mechanisms that substitute for and economically eliminate public authority access entirely. RideApp\'s internal memo confirms the purpose: Clause 11.4 was designed to eliminate \'commercially rational complaint pathways,\' not to provide a better dispute resolution option. A mechanism designed to be unaffordable is not a lawful complaints-handling mechanism.',
             judge_response: 'The \'indirectly restrict\' analysis is precise and the economic barrier argument is compelling. The ADR carve-out analysis — that it permits supplemental ADR but not ADR that eliminates public access — is the correct statutory interpretation and is supported by the legislative context. The internal document confirming the prohibitive cost was intentional is decisive. The Commission accepts this argument.',
             legal_reasoning: 'Correctly applies \'indirectly restrict\' to an economic barrier, correctly interprets the ADR carve-out as supplemental rather than substitutional, and uses the internal document to confirm that the prohibitive cost was deliberately designed rather than incidental. Addresses the specific carve-out argument raised by Dr. Weil with precision.'
           },
@@ -24520,7 +24485,7 @@ verdict: {
           {
             id: 'arg2-weak',
             quality: 'weak',
-            text: 'The Singapore arbitration clause is clearly designed to make complaints impossible for drivers. Nobody earning €1,340 per month can afford €12,000 to bring a claim in Singapore. The internal memo even says this was the purpose — \'eliminates commercially rational complaint pathways.\' This is not a genuine dispute resolution mechanism at all — it is just a barrier designed to stop drivers from exercising their rights. The Commission should declare Clause 11.4 void along with the other two clauses. The Authority should send a clear signal that regulated entities cannot treat their obligations this way and must be held to the standards the law requires.',
+            text: 'The Singapore arbitration clause is clearly designed to make complaints impossible for drivers. Nobody earning €1,340 per month can afford €12,000 to bring a claim in Singapore. The internal memo even says this was the purpose — \'eliminates commercially rational complaint pathways.\' This is not a genuine dispute resolution mechanism at all — it is just a barrier designed to stop drivers from exercising their rights. The Commission should declare Clause 11.4 void along with the other two clauses.',
             judge_response: 'The factual characterisation is correct and the internal memo is well used. However, counsel has not addressed the specific DMA provision Art. 5(6)\'s \'indirectly restrict\' language — or explained why the ADR carve-out that Dr. Weil invoked does not protect Clause 11.4. Which element of Art. 5(6) covers economic barriers to public authority access, and how does the ADR carve-out interact with it?',
             legal_reasoning: 'Correctly uses the memo but fails to apply Art. 5(6)\'s \'indirectly restrict\' language to the economic barrier, and does not engage with the ADR carve-out argument that is the crux of Dr. Weil\'s defence. Cannot sustain a finding on Clause 11.4 without addressing both elements.'
           },
@@ -24548,12 +24513,12 @@ verdict: {
         ],
         oppositionArgument: 'Clause 15.1 is a standard commercial non-disparagement clause protecting RideApp\'s legitimate reputational interests. Non-disparagement clauses are common in commercial contracts across all industries and are entirely distinct from complaint suppression. Drivers remain free to file complaints with authorities under Clause 15.1 — the clause only limits public negative commentary, not regulatory engagement. Art. 5(6) DMA protects the right to raise issues with public authorities; it does not create a right to make unlimited public statements about a platform\'s commercial practices. Non-disparagement is a separate contractual matter outside the scope of Art. 5(6).',
         writePrompt: 'Using the Platform Workers Alliance statement (ev5) and Art. 5(6)\'s \'indirectly restrict\' language, argue that Clause 15.1 falls within Art. 5(6)\'s scope and contributes to the market-wide suppression documented by the Alliance. Address the \'separate contractual matter\' argument.',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg3-strong',
             quality: 'strong',
-            text: 'Art. 5(6) prohibits both directly and \'indirectly\' preventing or restricting the raising of issues with public authorities. A non-disparagement clause falls within Art. 5(6)\'s scope because public communication about a platform\'s practices — including commission rates — is directly connected to the process of raising regulatory issues. Competition authority complaints are routinely preceded and accompanied by public statements, media commentary, and collective advocacy: these are how individual grievances develop into regulatory investigations. A clause prohibiting any \'public or private\' communication critical of RideApp\'s \'commission structure\' suppresses the communications ecosystem that sustains regulatory scrutiny, indirectly restricting the pathway to formal complaints. Clause 15.1 is also not the \'separate matter\' Dr.',
+            text: 'Art. 5(6) prohibits both directly and \'indirectly\' preventing or restricting the raising of issues with public authorities. A non-disparagement clause falls within Art. 5(6)\'s scope because public communication about a platform\'s practices — including commission rates — is directly connected to the process of raising regulatory issues. Competition authority complaints are routinely preceded and accompanied by public statements, media commentary, and collective advocacy: these are how individual grievances develop into regulatory investigations. A clause prohibiting any \'public or private\' communication critical of RideApp\'s \'commission structure\' suppresses the communications ecosystem that sustains regulatory scrutiny, indirectly restricting the pathway to formal complaints. Clause 15.1 is also not the \'separate matter\' Dr. Weil describes: the internal memo explicitly links it to regulatory risk management — it \'prevents public pressure campaigns that accelerate regulatory attention.\' A clause designed to reduce regulatory attention is a clause that indirectly restricts access to regulatory authorities within the meaning of Art. 5(6). The Alliance evidence confirms the systemic effect: complaint rates on platforms with suppression clauses are 90% below the benchmark rate, demonstrating that the combined architecture of Clauses 11.2, 11.4, and 15.1 achieves a market-wide restriction that Art. 5(6) was designed to prevent.',
             judge_response: 'The indirect restriction analysis applied to non-disparagement is sound — the connection between public communication and regulatory complaint pathways is well-established in enforcement practice. The internal memo\'s explicit regulatory risk framing is decisive on Clause 15.1\'s purpose. The market-wide chilling effect evidence from the Alliance strengthens the systemic dimension of the finding. The Commission accepts this argument.',
             legal_reasoning: 'Correctly applies \'indirectly restrict\' to non-disparagement, correctly connects public communication to regulatory complaint pathways, uses the internal memo to establish that Clause 15.1 was designed for regulatory suppression rather than commercial reputation, and uses Alliance evidence to confirm market-wide systemic effect. Addresses the \'separate matter\' argument directly by reference to the memo\'s stated purpose.'
           },
@@ -24567,7 +24532,7 @@ verdict: {
           {
             id: 'arg3-weak',
             quality: 'weak',
-            text: 'Clause 15.1 is clearly designed to silence drivers. The internal memo says it prevents \'public pressure campaigns that accelerate regulatory attention\' — which confirms it is designed to protect RideApp from regulatory scrutiny, not to protect legitimate commercial reputation. Non-disparagement clauses that prevent people from talking about unfair practices are wrong and the DMA should be used to remove them. The Commission should void all three clauses together as a coordinated complaint suppression strategy. The Authority should send a clear signal that regulated entities cannot treat their obligations this way and must be held to the standards the law requires.',
+            text: 'Clause 15.1 is clearly designed to silence drivers. The internal memo says it prevents \'public pressure campaigns that accelerate regulatory attention\' — which confirms it is designed to protect RideApp from regulatory scrutiny, not to protect legitimate commercial reputation. Non-disparagement clauses that prevent people from talking about unfair practices are wrong and the DMA should be used to remove them. The Commission should void all three clauses together as a coordinated complaint suppression strategy.',
             judge_response: 'The internal memo is correctly used and the three-clause coordination point is well observed. However, counsel has not addressed why Clause 15.1 specifically falls within Art. 5(6)\'s scope — Dr. Weil has argued it is a separate matter from regulatory access. Which element of Art. 5(6) covers non-disparagement clauses and how does \'indirectly restrict\' apply to public communication?',
             legal_reasoning: 'Correctly uses the memo and makes the important systemic point but fails to address the specific legal question of whether non-disparagement falls within Art. 5(6)\'s scope and how. Does not apply \'indirectly restrict\' to non-disparagement or explain the connection between public communication and regulatory complaint pathways. The \'separate matter\' defence is not addressed on legal terms.'
           },
@@ -24676,7 +24641,6 @@ verdict: {
           witnessResponse: 'Privacy assessments are part of our standard product development process. The documentation would be available through our internal compliance team.',
           followUpImpact: 'positive'
         },
-        impact: 'positive',
         impactExplanation: 'The failure to produce a contemporaneous privacy assessment confirms that the privacy justification was retrofitted after the commercial decision was made. The memo\'s explicit fine-versus-revenue calculation — the same pattern as OmniTech in Case 72 — establishes deliberate, commercially calculated non-compliance, maximising fine exposure under Art. 30(1).'
       },
       {
@@ -24690,7 +24654,6 @@ verdict: {
           witnessResponse: 'That is — a characterisation I would dispute. AdPlatform complies with all its DMA obligations.',
           followUpImpact: 'positive'
         },
-        impact: 'positive',
         impactExplanation: 'Establishes that the Art. 5(9)/(10) violation is not merely a procedural reporting failure but is concealing substantive competitive harm under Art. 6(5). This strengthens the Commission\'s motivation to treat the reporting obligation as enforcement-critical, not merely administrative, and to apply maximum fine calibration.'
       },
       {
@@ -24704,7 +24667,6 @@ verdict: {
           witnessResponse: 'Internal operational data serves different purposes from regulatory disclosure obligations. These are different categories.',
           followUpImpact: 'positive'
         },
-        impact: 'positive',
         impactExplanation: 'Establishes the core inequity: AdPlatform\'s own division operates with real-time impression-level data while competitors — advertisers and publishers — fund the system but operate blind. The AuctionView system proves the data is technically available; the asymmetric access confirms it is withheld for competitive advantage, not privacy protection.'
       },
       {
@@ -24713,7 +24675,6 @@ verdict: {
         category: 'risky',
         witnessResponse: 'The characterisation of programmatic advertising as \'structurally corrupt\' is completely unfair and inaccurate. AdPlatform operates a sophisticated, efficient marketplace that delivers value to millions of advertisers and publishers. The US DOJ proceedings concern US competition law under entirely different legal standards and have no bearing on EU DMA enforcement. Structural remedies of the kind you describe are not within the scope of these proceedings and would be disproportionate to any identified concern.',
         followUp: { available: false },
-        impact: 'neutral',
         impactExplanation: 'Introducing US DOJ structural separation arguments allows Dr. Henne to reframe as a competition law case, invoke different legal standards, portray the Commission\'s action as disproportionate by comparison, and generate sympathy by pointing to proceedings in a different jurisdiction with different outcomes. The current proceedings concern Art. 5(9) and Art. 5(10) reporting obligations — a much narrower and more clearly established violation. Overreaching to structural remedies hands the witness a platform to make the Commission appear unreasonable.'
       },
       {
@@ -24722,7 +24683,6 @@ verdict: {
         category: 'ineffective',
         witnessResponse: 'AdPlatform processes approximately 4.8 million ad auctions per second across EU markets, generating tens of billions of data points daily. This scale requires sophisticated infrastructure and represents an enormous technical achievement that has made digital advertising more efficient and accessible for businesses of all sizes across Europe.',
         followUp: { available: false },
-        impact: 'negative',
         impactExplanation: 'This produces an unprompted scale and technical sophistication testimonial that reframes AdPlatform as an impressive engineering achievement rather than a data-withholding gatekeeper. The auction volume figure actually strengthens the argument that impression-level data is generated and retained at scale — making the technical feasibility of compliance obvious — but this benefit is incidental and significantly outweighed by the reputational benefit to AdPlatform of appearing impressively capable and market-beneficial.'
       }
     ]
@@ -24748,12 +24708,12 @@ verdict: {
         ],
         oppositionArgument: 'AdPlatform\'s reporting suite satisfies Art. 5(9) and Art. 5(10) DMA. The articles require \'access to performance measuring tools\' and \'information\' — they do not mandate impression-level granularity, define a minimum data schema, or specify API architecture. AdPlatform provides weekly reports covering campaign-level CPMs, total spend, and reach — all commercially relevant performance metrics. The DMA cannot be read to require gatekeepers to build bespoke data infrastructure for every advertiser\'s preferred reporting format. Art. 5(9) and Art. 5(10) are satisfied by meaningful aggregate data that enables performance evaluation at the campaign level. Individual impression data introduces significant privacy risks that justify AdPlatform\'s aggregate approach.',
         writePrompt: 'Using AdPlatform\'s reporting documentation (ev4) and the text of Art. 5(9) and Art. 5(10) DMA, argue that weekly aggregate reports fail both obligations. Address Dr. Strauss\'s \'aggregate data is sufficient\' and privacy defences.',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg1-strong',
             quality: 'strong',
-            text: 'Art. 5(9) DMA is textually specific. It requires AdPlatform to provide, upon request and free of charge, \'information on a daily basis... concerning each advertisement placed by the advertiser\' regarding: \'(a) the price and fees paid by that advertiser... (b) the remuneration received by the publisher... (c) the metrics on which each of the prices, fees and remunerations are calculated.\' Three operative requirements follow directly from the text. First, frequency: \'daily basis\' — AdPlatform provides weekly reports. Second, granularity: \'each advertisement\' — AdPlatform provides aggregate campaign reports. Third, content: \'price and fees paid\' and \'remuneration received by the publisher\' — AdPlatform provides neither. Art. 5(10) imposes the mirror obligation for publishers.',
+            text: 'Art. 5(9) DMA is textually specific. It requires AdPlatform to provide, upon request and free of charge, \'information on a daily basis... concerning each advertisement placed by the advertiser\' regarding: \'(a) the price and fees paid by that advertiser... (b) the remuneration received by the publisher... (c) the metrics on which each of the prices, fees and remunerations are calculated.\' Three operative requirements follow directly from the text. First, frequency: \'daily basis\' — AdPlatform provides weekly reports. Second, granularity: \'each advertisement\' — AdPlatform provides aggregate campaign reports. Third, content: \'price and fees paid\' and \'remuneration received by the publisher\' — AdPlatform provides neither. Art. 5(10) imposes the mirror obligation for publishers. AdPlatform\'s reporting suite fails all three requirements simultaneously. The privacy defence is legally unavailable: Art. 5(9) is in Art. 5 DMA — the self-executing obligations with no proportionality or privacy exception. Moreover, Art. 5(9) itself specifies that where a publisher does not consent, the gatekeeper shall provide \'daily average remuneration\' rather than individual publisher data — confirming the legislature considered and calibrated the privacy concern within the article\'s own text, without permitting aggregate weekly reporting as a substitute.',
             judge_response: 'Counsel has conducted a precise textual analysis of Art. 5(9)\'s three operative requirements — frequency, granularity, and content — and demonstrated that AdPlatform fails all three. The observation that Art. 5(9) contains its own privacy calibration in the publisher consent provision is particularly compelling: the legislature addressed the privacy concern within the article, leaving no room for a broader privacy exception. The Commission is persuaded.',
             legal_reasoning: 'Three-part textual analysis of Art. 5(9)\'s specific requirements: daily frequency, per-advertisement granularity, and content (price/fees/remuneration). Correctly identifies Art. 5(9) as per se with no privacy exception. Crucially identifies the intra-article privacy calibration — the publisher consent averaging mechanism — as evidence that the legislature addressed and resolved the privacy concern without permitting aggregate weekly reports. Legally precise and analytically rigorous.'
           },
@@ -24767,7 +24727,7 @@ verdict: {
           {
             id: 'arg1-weak',
             quality: 'weak',
-            text: 'AdPlatform is not providing the data that advertisers and publishers are entitled to under the DMA. PharmaGroup has asked four times for placement-level data and been refused each time. MediaHouse cannot verify whether it is receiving fair revenue. The DMA requires this information to be provided daily at the placement level and AdPlatform is providing weekly aggregates that are useless for the purpose. The Commission should require AdPlatform to implement proper daily reporting immediately and impose a fine that reflects the deliberate nature of the refusal. This kind of behaviour should not be tolerated in a modern regulatory framework and the Authority must take decisive action to protect the affected parties.',
+            text: 'AdPlatform is not providing the data that advertisers and publishers are entitled to under the DMA. PharmaGroup has asked four times for placement-level data and been refused each time. MediaHouse cannot verify whether it is receiving fair revenue. The DMA requires this information to be provided daily at the placement level and AdPlatform is providing weekly aggregates that are useless for the purpose. The Commission should require AdPlatform to implement proper daily reporting immediately and impose a fine that reflects the deliberate nature of the refusal.',
             judge_response: 'Counsel has correctly identified the failure and the context but has not conducted the specific textual analysis of Art. 5(9)\'s requirements. Which three specific elements does Art. 5(9) mandate that AdPlatform\'s reporting fails to provide, and why does the privacy defence fail as a matter of the article\'s own structure?',
             legal_reasoning: 'Correctly identifies the problem and uses the evidence well but fails to conduct the three-part textual analysis (daily frequency, per-advertisement granularity, content requirements) that Art. 5(9)\'s specific language demands. Also fails to address the intra-article privacy calibration that disposes of the privacy defence. Insufficient for a formal enforcement finding on Art. 5(9)\'s specific text.'
           },
@@ -24795,12 +24755,12 @@ verdict: {
         ],
         oppositionArgument: 'The privacy defence is genuine and legally relevant. Impression-level auction data contains signals — device identifiers, location proxies, behavioural segments, timestamp patterns — that in combination can re-identify individual users. The GDPR requires AdPlatform to ensure that data it shares with advertisers and publishers cannot be used to violate user privacy. Providing impression-level data to third parties would require extensive pseudonymisation and privacy engineering that AdPlatform is not required to build under Art. 5(9) and Art. 5(10). The DMA must be interpreted consistently with GDPR obligations. AdPlatform\'s aggregate reporting represents a proportionate balance between transparency and privacy protection.',
         writePrompt: 'Using the technical report (ev2) and Art. 5(9)\'s internal structure, argue that AdPlatform\'s privacy defence fails both legally — because Art. 5(9) contains its own calibrated privacy mechanism — and factually — because the AuctionView system proves the data is shared internally without equivalent privacy concern.',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg2-strong',
             quality: 'strong',
-            text: 'AdPlatform\'s privacy defence fails on two independent grounds. First, it is legally foreclosed by Art. 5(9)\'s own structure. The article contains a specific privacy calibration: \'In the event that a publisher does not consent to the sharing of information regarding the remuneration received, the gatekeeper shall provide each advertiser free of charge with information concerning the daily average remuneration received by that publisher.\' This provision demonstrates that the legislature considered the privacy tension between individual publisher data and advertiser access, and resolved it by providing for daily averages in non-consent cases — not weekly aggregate campaign reports.',
+            text: 'AdPlatform\'s privacy defence fails on two independent grounds. First, it is legally foreclosed by Art. 5(9)\'s own structure. The article contains a specific privacy calibration: \'In the event that a publisher does not consent to the sharing of information regarding the remuneration received, the gatekeeper shall provide each advertiser free of charge with information concerning the daily average remuneration received by that publisher.\' This provision demonstrates that the legislature considered the privacy tension between individual publisher data and advertiser access, and resolved it by providing for daily averages in non-consent cases — not weekly aggregate campaign reports. The legislature calibrated the privacy balance within the article itself, leaving no room for AdPlatform to argue a broader privacy exception. A gatekeeper cannot invoke a privacy concern that the legislature has already addressed and resolved within the obligation\'s own text. Second, the privacy defence is factually false. The technical report confirms that AdPlatform\'s AuctionView system provides its own ad-buying division with impression-level data including publisher revenue shares in real time. If impression-level data created the re-identification risks AdPlatform claims, it would not share that data internally with AuctionView. The privacy concern is applied asymmetrically: freely shared with internal divisions, refused to external parties whose funding generates the data.',
             judge_response: 'The intra-article privacy calibration argument is analytically precise and legally decisive. The legislature\'s explicit resolution of the privacy-transparency tension within Art. 5(9)\'s own text eliminates the broader privacy exception AdPlatform claims. The AuctionView evidence exposes the privacy defence as selectively applied. The Commission accepts this argument as the definitive rebuttal to the privacy defence.',
             legal_reasoning: 'Two-track argument: legal foreclosure through intra-article privacy calibration (the legislature addressed and resolved the privacy concern within Art. 5(9) itself), and factual falsity through AuctionView asymmetric application. The intra-article analysis is the most sophisticated legal point across all six cases in the DMA series and is the key analytical contribution of this Hard-difficulty case.'
           },
@@ -24814,7 +24774,7 @@ verdict: {
           {
             id: 'arg2-weak',
             quality: 'weak',
-            text: 'The privacy defence does not hold up because AdPlatform already shares impression-level data internally through AuctionView. If the data were truly a privacy risk, AuctionView would not exist. The privacy argument is just a cover for protecting commercial advantage, as the memo shows. Art. 5(9) requires daily placement data and AdPlatform has the infrastructure to provide it. The Commission should reject the privacy defence and order compliance. The Authority should send a clear signal that regulated entities cannot treat their obligations this way and must be held to the standards the law requires.',
+            text: 'The privacy defence does not hold up because AdPlatform already shares impression-level data internally through AuctionView. If the data were truly a privacy risk, AuctionView would not exist. The privacy argument is just a cover for protecting commercial advantage, as the memo shows. Art. 5(9) requires daily placement data and AdPlatform has the infrastructure to provide it. The Commission should reject the privacy defence and order compliance.',
             judge_response: 'The AuctionView point is well-taken and correctly used. However, counsel has not addressed the more fundamental legal argument: why the privacy defence is legally unavailable under Art. 5(9)\'s own structure, independent of the factual AuctionView rebuttal. Art. 5(9) contains a specific privacy calibration mechanism — what is it, and what does it mean for AdPlatform\'s broader privacy exception claim?',
             legal_reasoning: 'Correctly uses AuctionView but misses the primary legal point: the intra-article privacy calibration. Factual rebuttal is necessary but not sufficient for Hard-difficulty analysis. The strongest argument is the legal one — that the legislature resolved the privacy concern within Art. 5(9) itself — which this answer does not identify.'
           },
@@ -24842,12 +24802,12 @@ verdict: {
         ],
         oppositionArgument: 'Even if Art. 5(9) required more granular data for advertisers, Art. 5(10) for publishers involves different privacy considerations. Publisher-level revenue data includes commercially sensitive information about third parties. Providing advertisers with publisher revenue data risks exposing publishers\' commercial terms to their competitors. This creates a privacy and commercial confidentiality concern that justifies aggregate reporting for publisher-side data. Furthermore, any fine should be minimal — this is a technical reporting dispute between commercial parties, not a fundamental consumer harm. The DMA\'s proportionality principles require the Commission to calibrate remedies to the actual harm, which is limited to a data access dispute.',
         writePrompt: 'Using the internal memorandum (ev3) and Art. 5(10) DMA, argue that the publisher-side violation is independently established, that the self-preferencing concealment dimension aggravates the violation, and that Art. 30(1) justifies a fine at or near the maximum threshold. Address the \'minimal harm\' and commercial confidentiality arguments.',
-        minWords: 20,
+        minWords: 10,
         options: [
           {
             id: 'arg3-strong',
             quality: 'strong',
-            text: 'Art. 5(10) DMA independently requires AdPlatform to provide each publisher, upon request and free of charge, \'information on a daily basis, concerning each advertisement displayed on the publisher\'s inventory\' regarding \'the remuneration received and the fees paid by that publisher\' and \'the price paid by the advertiser.\' AdPlatform provides publishers with only weekly aggregate revenue totals — failing the daily frequency requirement, the per-advertisement granularity requirement, and the fee breakdown requirement simultaneously. The commercial confidentiality argument fails because Art. 5(10) addresses exactly this situation: the publisher\'s own remuneration data is information about that publisher\'s own transactions, not third-party commercial terms. A publisher receiving its own per-placement revenue data is not accessing competitors\' information.',
+            text: 'Art. 5(10) DMA independently requires AdPlatform to provide each publisher, upon request and free of charge, \'information on a daily basis, concerning each advertisement displayed on the publisher\'s inventory\' regarding \'the remuneration received and the fees paid by that publisher\' and \'the price paid by the advertiser.\' AdPlatform provides publishers with only weekly aggregate revenue totals — failing the daily frequency requirement, the per-advertisement granularity requirement, and the fee breakdown requirement simultaneously. The commercial confidentiality argument fails because Art. 5(10) addresses exactly this situation: the publisher\'s own remuneration data is information about that publisher\'s own transactions, not third-party commercial terms. A publisher receiving its own per-placement revenue data is not accessing competitors\' information. The \'minimal harm\' argument is rebutted by the internal memorandum\'s explicit calculation: AdPlatform retains 45–55% of advertiser spend — two to three times the market rate — while the opacity Art. 5(10) would cure conceals this extraction. The concealed 28–32% self-preferencing differential identified in the memo additionally constitutes a potential Art. 6(5) violation that the Art. 5(10) data would expose. Non-disclosure is not a technical reporting dispute: it is a mechanism for concealing both excessive fee retention and structural self-preferencing. Under Art. 30(1), the deliberate, commercially calculated nature of the violation — explicitly acknowledged in the internal memo — warrants a fine at the maximum 10% threshold.',
             judge_response: 'The Art. 5(10) textual analysis is correct and mirrors the Art. 5(9) analysis. The commercial confidentiality rebuttal — that publishers\' own transaction data is not third-party information — is precisely correct. The connection between Art. 5(10) non-compliance and Art. 6(5) self-preferencing concealment is well-drawn and relevant to fine calibration. The Art. 30(1) maximum fine argument is supported by the internal memo. The Commission accepts this argument.',
             legal_reasoning: 'Applies the same three-part textual analysis (daily frequency, per-advertisement granularity, content) to Art. 5(10), correctly rebuts commercial confidentiality by noting publishers\' own data is not third-party information, connects Art. 5(10) non-compliance to Art. 6(5) self-preferencing concealment as an aggravating factor, and correctly calibrates Art. 30(1) to the deliberate, commercially calculated violation documented in the memo.'
           },
@@ -24861,7 +24821,7 @@ verdict: {
           {
             id: 'arg3-weak',
             quality: 'weak',
-            text: 'MediaHouse deserves the same data that AdPlatform\'s own media properties receive through AuctionView. The 28–32% revenue differential mentioned in the memo shows that AdPlatform is cheating publishers. The Art. 5(10) requirement is clear — daily data per placement — and AdPlatform is not providing it. The Commission should impose the maximum fine and require full data disclosure. The \'minimal harm\' argument is absurd given that AdPlatform retains 45–55% of advertiser spend without publishers being able to verify or challenge this. The Authority should send a clear signal that regulated entities cannot treat their obligations this way and must be held to the standards the law requires.',
+            text: 'MediaHouse deserves the same data that AdPlatform\'s own media properties receive through AuctionView. The 28–32% revenue differential mentioned in the memo shows that AdPlatform is cheating publishers. The Art. 5(10) requirement is clear — daily data per placement — and AdPlatform is not providing it. The Commission should impose the maximum fine and require full data disclosure. The \'minimal harm\' argument is absurd given that AdPlatform retains 45–55% of advertiser spend without publishers being able to verify or challenge this.',
             judge_response: 'The AuctionView inequity point and the fee retention figure are correctly cited. However, counsel has not conducted the Art. 5(10) textual analysis — which requires identifying the same three elements as Art. 5(9) — and has not addressed the commercial confidentiality argument on legal grounds. Why does publishers\' own remuneration data not constitute third-party commercial information, and which specific elements of Art. 5(10) are violated?',
             legal_reasoning: 'Correctly identifies the problem and uses the evidence but fails to conduct the three-part textual analysis of Art. 5(10)\'s specific requirements. Also fails to address the commercial confidentiality argument legally. For a Hard-difficulty case, the textual analysis of both Art. 5(9) and Art. 5(10) is the core analytical requirement.'
           },
@@ -24939,7 +24899,7 @@ const TAXONOMY = [
   { id: 50, title: 'Over-removal / censorship of legal speech', framework: 'dsa', articles: 'Art. 14(4), 17', playable: true },
   { id: 51, title: 'Algorithmic amplification — eating disorders', framework: 'dsa', articles: 'Art. 34(1)(d), 35', playable: true, caseId: 'the-feed-knows' },
   { id: 52, title: 'Algorithmic amplification — self-harm', framework: 'dsa', articles: 'Art. 34(1)(d), 35', playable: true },
-  { id: 53, title: 'Algorithmic amplification — disinformation', framework: 'dsa', articles: 'Art. 34(1)(b)-(c)', playable: WebTransportDatagramDuplexStream },
+  { id: 53, title: 'Algorithmic amplification — disinformation', framework: 'dsa', articles: 'Art. 34(1)(b)-(c)', playable: true },
   { id: 54, title: 'Dark patterns — cookie consent', framework: 'dsa', articles: 'Art. 25', playable: true },
   { id: 55, title: 'Dark patterns — subscription cancellation', framework: 'dsa', articles: 'Art. 25', playable: true },
   { id: 56, title: 'Dark patterns — children interface', framework: 'dsa', articles: 'Art. 25, 28', playable: true },
@@ -24964,3 +24924,71 @@ const TAXONOMY = [
   { id: 75, title: 'Preventing business user complaints', framework: 'dma', articles: 'Art. 5(6)', playable: true },
   { id: 76, title: 'Advertising transparency data refusal', framework: 'dma', articles: 'Art. 5(9)-(10)', playable: true },
 ];
+
+// ============================================
+// LEGAL CODEX — Reference Articles
+// ============================================
+const CODEX = {
+  'ai-act': {
+    label: 'EU AI Act',
+    articles: [
+      { id: 'art5', number: 'Art. 5', title: 'Prohibited AI Practices', officialText: 'The following artificial intelligence practices shall be prohibited: (a) the placing on the market, the putting into service, or the use of an AI system that deploys subliminal techniques beyond a person\u2019s consciousness or purposefully manipulative or deceptive techniques, with the objective or the effect of materially distorting the behaviour of a person...', plainLanguage: 'Certain AI uses are completely banned in the EU, including systems that manipulate people without their awareness, exploit vulnerable groups, perform social scoring by public authorities, or use real-time biometric identification in public spaces (with narrow exceptions for law enforcement).' },
+      { id: 'art5-1a', number: 'Art. 5(1)(a)', title: 'Subliminal Manipulation', officialText: 'AI systems that deploy subliminal techniques beyond a person\u2019s consciousness or purposefully manipulative or deceptive techniques, with the objective or the effect of materially distorting the behaviour of a person or a group of persons by appreciably impairing their ability to make an informed decision.', plainLanguage: 'AI that secretly manipulates people into decisions they would not otherwise make is banned. The manipulation must impair their ability to decide freely.' },
+      { id: 'art5-1c', number: 'Art. 5(1)(c)', title: 'Social Scoring', officialText: 'AI systems for the evaluation or classification of natural persons over a certain period of time based on their social behaviour or known, inferred or predicted personal or personality characteristics, with the social score leading to detrimental or unfavourable treatment that is unjustified or disproportionate.', plainLanguage: 'AI systems that score people based on their social behaviour or personality traits, where that score leads to unfair treatment in unrelated contexts, are banned.' },
+      { id: 'art5-1f', number: 'Art. 5(1)(f)', title: 'Emotion Recognition in Workplace/Education', officialText: 'AI systems to infer emotions of a natural person in the areas of workplace and education institutions, except where the use of the AI system is intended to be put in place or into the market for medical or safety reasons.', plainLanguage: 'Using AI to detect emotions in workplaces or schools is banned, unless it serves medical or safety purposes.' },
+      { id: 'art5-1g', number: 'Art. 5(1)(g)', title: 'Biometric Categorisation', officialText: 'AI systems that create or expand facial recognition databases through the untargeted scraping of facial images from the internet or CCTV footage; biometric categorisation systems that categorise individually natural persons based on their biometric data to deduce or infer their race, political opinions, trade union membership, religious or philosophical beliefs, sex life or sexual orientation.', plainLanguage: 'AI that scrapes faces to build databases or that categorises people by race, politics, religion, or sexual orientation from biometric data is banned.' },
+      { id: 'art5-1h', number: 'Art. 5(1)(h)', title: 'Real-Time Biometric Identification', officialText: 'The use of real-time remote biometric identification systems in publicly accessible spaces for the purposes of law enforcement, unless strictly necessary for targeted search for specific victims, prevention of specific imminent threats, or detection of suspects of specific criminal offences.', plainLanguage: 'Live facial recognition in public places by police is banned except in narrow emergencies: finding kidnap victims, preventing imminent terrorist attacks, or locating suspects of serious crimes \u2014 always requiring prior judicial authorisation.' },
+      { id: 'art9', number: 'Art. 9', title: 'Risk Management System', officialText: 'A risk management system shall be established, implemented, documented and maintained in relation to high-risk AI systems. It shall be a continuous iterative process planned and run throughout the entire lifecycle of a high-risk AI system.', plainLanguage: 'High-risk AI must have an ongoing risk management process from design through deployment, identifying risks and implementing mitigation measures throughout.' },
+      { id: 'art10', number: 'Art. 10', title: 'Data and Data Governance', officialText: 'High-risk AI systems which make use of techniques involving the training of AI models with data shall be developed on the basis of training, validation and testing data sets that meet the quality criteria referred to in paragraphs 2 to 5.', plainLanguage: 'Training data for high-risk AI must be relevant, representative, as free of errors as possible, and complete. Providers must examine data for possible biases.' },
+      { id: 'art13', number: 'Art. 13', title: 'Transparency and Information', officialText: 'High-risk AI systems shall be designed and developed in such a way as to ensure that their operation is sufficiently transparent to enable deployers to interpret a system\u2019s output and use it appropriately.', plainLanguage: 'High-risk AI must be transparent enough for its users to understand what it produces and how to use its outputs properly.' },
+      { id: 'art14', number: 'Art. 14', title: 'Human Oversight', officialText: 'High-risk AI systems shall be designed and developed in such a way, including with appropriate human-machine interface tools, that they can be effectively overseen by natural persons during the period in which they are in use.', plainLanguage: 'High-risk AI must allow real humans to monitor and override it. Oversight must include the ability to disregard, override, or reverse the AI\u2019s output.' },
+      { id: 'art50', number: 'Art. 50', title: 'Transparency for Certain AI Systems', officialText: 'Providers shall ensure that AI systems intended to interact directly with natural persons are designed and developed in such a way that the natural person is informed that they are interacting with an AI system, unless this is obvious from the circumstances and the context of use.', plainLanguage: 'People must be told when they\u2019re talking to an AI (like chatbots). Deepfakes and AI-generated content must be labelled as such, with exceptions for artistic/satirical use.' },
+      { id: 'art50-4', number: 'Art. 50(4)', title: 'Deepfake Disclosure', officialText: 'Deployers of an AI system that generates or manipulates image, audio or video content constituting a deep fake, shall disclose that the content has been artificially generated or manipulated. Content published for artistic, satirical, or fictional purposes is exempt provided it does not constitute a prohibited practice.', plainLanguage: 'Anyone using AI to create deepfakes must disclose this. Satire and artistic works are exempt, but the exemption does not cover content designed to deceive.' },
+      { id: 'art53', number: 'Art. 53', title: 'GPAI Model Obligations', officialText: 'Providers of general-purpose AI models shall: (a) draw up and keep up to date the technical documentation of the model; (c) put in place a policy to comply with Union copyright law, in particular to identify and comply with reservations of rights expressed pursuant to Article 4(3) of Directive 2019/790; (d) draw up and make publicly available a sufficiently detailed summary about the content used for training of the general-purpose AI model.', plainLanguage: 'Companies releasing general-purpose AI models (like large language models) must document how they work, respect copyright opt-outs from content creators, and publish a detailed summary of what data was used to train them.' },
+      { id: 'art22-1', number: 'Art. 22(1) GDPR', title: 'Automated Decision-Making Prohibition', officialText: 'The data subject shall have the right not to be subject to a decision based solely on automated processing, including profiling, which produces legal effects concerning him or her or similarly significantly affects him or her.', plainLanguage: 'You have the right not to have important decisions about you made entirely by a computer. Decisions that affect your legal rights or similarly seriously impact you must involve a human.' }
+    ]
+  },
+  'gdpr': {
+    label: 'GDPR',
+    articles: [
+      { id: 'gdpr-art5', number: 'Art. 5', title: 'Principles of Processing', officialText: 'Personal data shall be: (a) processed lawfully, fairly and in a transparent manner; (b) collected for specified, explicit and legitimate purposes; (c) adequate, relevant and limited to what is necessary; (d) accurate and kept up to date; (e) kept no longer than necessary; (f) processed with appropriate security.', plainLanguage: 'All data processing must be lawful, fair, transparent, purposeful, minimal, accurate, time-limited, and secure. The controller must be able to demonstrate compliance.' },
+      { id: 'gdpr-art6', number: 'Art. 6', title: 'Lawfulness of Processing', officialText: 'Processing shall be lawful only if at least one of the following applies: (a) consent; (b) contract necessity; (c) legal obligation; (d) vital interests; (e) public interest; (f) legitimate interests.', plainLanguage: 'Every use of personal data must have one of six legal bases: consent, contract, legal obligation, vital interests, public task, or legitimate interests balanced against the person\u2019s rights.' },
+      { id: 'gdpr-art9', number: 'Art. 9', title: 'Special Categories of Data', officialText: 'Processing of personal data revealing racial or ethnic origin, political opinions, religious or philosophical beliefs, trade union membership, genetic data, biometric data, health data, or data concerning sex life or sexual orientation shall be prohibited unless specific exceptions apply.', plainLanguage: 'Sensitive data (race, health, religion, politics, biometrics, etc.) gets extra protection. Processing is banned unless you have explicit consent, a legal obligation, or another specific exception.' },
+      { id: 'gdpr-art13', number: 'Art. 13', title: 'Information at Collection', officialText: 'Where personal data are collected from the data subject, the controller shall provide: identity and contact details, purposes and legal basis, recipients, transfer details, retention period, data subject rights, and where automated decision-making exists, meaningful information about the logic involved.', plainLanguage: 'When collecting your data, organisations must tell you who they are, why they want it, who sees it, how long they keep it, your rights, and if AI is making decisions about you \u2014 including explaining the logic.' },
+      { id: 'gdpr-art14', number: 'Art. 14', title: 'Information When Data Not from Subject', officialText: 'Where personal data have not been obtained from the data subject, the controller shall provide the same information as Art. 13 within a reasonable period, and additionally the source of the data and the categories of data concerned.', plainLanguage: 'If your data came from a third party (not directly from you), the organisation must still tell you everything Art. 13 requires, plus where they got your data from.' },
+      { id: 'gdpr-art15', number: 'Art. 15', title: 'Right of Access', officialText: 'The data subject shall have the right to obtain from the controller confirmation as to whether personal data concerning him or her are being processed, and access to the data and information including: purposes, categories, recipients, retention, rights, source, and the existence of automated decision-making including profiling with meaningful information about the logic involved, significance, and envisaged consequences.', plainLanguage: 'You can ask any organisation if they hold your data and get a copy of it, plus details on how it\u2019s used. If AI makes decisions about you, they must explain the logic and what it means for you.' },
+      { id: 'gdpr-art22', number: 'Art. 22', title: 'Automated Decision-Making', officialText: '(1) Right not to be subject to solely automated decisions with legal or significant effects. (2) Exceptions: contract necessity, law authorisation, explicit consent. (3) Safeguards: at least right to human intervention, express point of view, contest decision. (4) Special categories require explicit consent or substantial public interest.', plainLanguage: 'You have the right not to have significant decisions made entirely by a computer. Exceptions exist for contracts, legal authority, or your explicit consent \u2014 but even then, you must be able to get a human to review the decision, give your side, and challenge it.' },
+      { id: 'gdpr-art35', number: 'Art. 35', title: 'Data Protection Impact Assessment', officialText: 'Where processing is likely to result in a high risk to rights and freedoms, the controller shall carry out an assessment of the impact of the envisaged processing operations on the protection of personal data, prior to the processing.', plainLanguage: 'Before starting high-risk data processing (like large-scale profiling or systematic monitoring), organisations must formally assess and document the risks to people\u2019s rights.' },
+      { id: 'gdpr-art83', number: 'Art. 83', title: 'Administrative Fines', officialText: 'Infringements of basic principles (Arts. 5-9) and data subject rights (Arts. 12-22) are subject to fines up to EUR 20,000,000 or 4% of total worldwide annual turnover, whichever is higher.', plainLanguage: 'GDPR violations can result in fines of up to \u20AC20 million or 4% of global revenue. Aggravating factors include deliberate infringement and failure to cooperate.' }
+    ]
+  },
+  'dsa': {
+    label: 'Digital Services Act',
+    articles: [
+      { id: 'dsa-art14', number: 'Art. 14', title: 'Terms and Conditions', officialText: 'Providers of intermediary services shall include information on any restrictions that they impose in relation to the use of their service in their terms and conditions. That information shall be set out in clear, plain, intelligible, user-friendly and unambiguous language.', plainLanguage: 'Platforms must write their rules in clear language that users can actually understand. Content policies cannot be hidden in legalese.' },
+      { id: 'dsa-art16', number: 'Art. 16', title: 'Notice-and-Action Mechanism', officialText: 'Hosting services shall put mechanisms in place to allow any individual or entity to notify them of the presence on their service of specific items of information that the individual or entity considers to be illegal content. Those mechanisms shall be easy to access, user-friendly, and allow for the submission of notices exclusively by electronic means.', plainLanguage: 'Platforms must provide easy-to-use reporting tools for illegal content. When someone reports content with enough detail, the platform must act promptly.' },
+      { id: 'dsa-art17', number: 'Art. 17', title: 'Statement of Reasons', officialText: 'Where a provider of hosting services decides to remove or disable access to specific information or restrict its visibility, it shall provide the recipient of the service with a clear and specific statement of reasons for that decision.', plainLanguage: 'When a platform removes your content or restricts your account, they must give you a clear, specific explanation \u2014 not a generic \u201Ccommunity guidelines violation\u201D message.' },
+      { id: 'dsa-art25', number: 'Art. 25', title: 'Dark Pattern Prohibition', officialText: 'Providers of online platforms shall not design, organise or operate their online interfaces in a way that deceives or manipulates the recipients of their service or in a way that otherwise materially distorts or impairs the ability of the recipients of their service to make free and informed decisions.', plainLanguage: 'Platforms cannot use manipulative design tricks (dark patterns) to deceive users or push them into choices they would not freely make \u2014 like hiding cancellation buttons or using confusing cookie banners.' },
+      { id: 'dsa-art26', number: 'Art. 26', title: 'Advertising Transparency', officialText: 'Providers of online platforms shall ensure that, for each specific advertisement displayed, recipients can identify in a clear, concise and unambiguous manner and in real time: (a) that the information is an advertisement; (b) the natural or legal person on whose behalf the advertisement is presented; (c) meaningful information about the main parameters used to determine the recipient to whom the advertisement is presented.', plainLanguage: 'Every ad on a platform must be clearly marked as an ad in real time, showing who paid for it and why you\u2019re seeing it (the targeting criteria used).' },
+      { id: 'dsa-art27', number: 'Art. 27', title: 'Recommender System Transparency', officialText: 'Providers of VLOPs shall set out in their terms and conditions, in plain and intelligible language, the main parameters used in their recommender systems, as well as any options for the recipients of the service to modify or influence those parameters, including at least one option which is not based on profiling.', plainLanguage: 'Large platforms must explain how their recommendation algorithms work and give users at least one feed option that isn\u2019t based on profiling (e.g. a chronological feed).' },
+      { id: 'dsa-art28', number: 'Art. 28', title: 'Online Protection of Minors', officialText: 'Providers of online platforms shall not present advertising on their online interfaces based on profiling using personal data of the recipient of the service when they are aware with reasonable certainty that the recipient of the service is a minor.', plainLanguage: 'Platforms must not show profiling-based ads to users they know or should know are under 18. If you require a birthdate at registration, you know.' },
+      { id: 'dsa-art34', number: 'Art. 34', title: 'Systemic Risk Assessment', officialText: 'Providers of VLOPs shall diligently identify, analyse and assess any systemic risks stemming from the design, functioning and use of their service, including risks related to: illegal content dissemination, fundamental rights impacts, electoral process integrity, gender-based violence, public health impacts, and serious negative consequences for minors.', plainLanguage: 'Very large platforms must conduct serious risk assessments covering illegal content, fundamental rights, elections, child safety, and public health \u2014 not just a box-ticking 3-page report.' },
+      { id: 'dsa-art35', number: 'Art. 35', title: 'Mitigation of Systemic Risks', officialText: 'Providers of VLOPs shall put in place reasonable, proportionate and effective mitigation measures, tailored to the specific systemic risks identified. Such measures may include adapting the design, functioning or use of the service, including algorithmic systems.', plainLanguage: 'After identifying risks, large platforms must actually do something effective about them \u2014 not just monitor. This can mean changing how algorithms work, not just adding warning labels.' },
+      { id: 'dsa-art40', number: 'Art. 40', title: 'Data Access for Researchers', officialText: 'Providers of VLOPs shall provide the Digital Services Coordinator of establishment or the Commission, upon their reasoned request, access to data that are necessary to monitor and assess compliance with this Regulation, and shall provide vetted researchers with access to data.', plainLanguage: 'Large platforms must share data with approved researchers studying systemic risks. Trade secrets and privacy are protected through the vetting process, not by blanket refusal.' }
+    ]
+  },
+  'dma': {
+    label: 'Digital Markets Act',
+    articles: [
+      { id: 'dma-art5-2', number: 'Art. 5(2)', title: 'Cross-Service Data Combination', officialText: 'The gatekeeper shall not combine personal data sourced from the relevant core platform service with personal data from any other services offered by the gatekeeper or with personal data from third-party services, unless the end user has been presented with the specific choice and has given consent.', plainLanguage: 'Gatekeepers cannot merge your data across their different services (e.g. search + email + video) without your specific, informed consent \u2014 and they must offer a genuine alternative that doesn\u2019t require this.' },
+      { id: 'dma-art5-3', number: 'Art. 5(3)', title: 'Anti-Parity Clause Prohibition', officialText: 'The gatekeeper shall not prevent business users from offering the same products or services to end users through third party online intermediation services or through their own direct online sales channel at prices or conditions that are different from those offered through the online intermediation services of the gatekeeper.', plainLanguage: 'Gatekeepers cannot force businesses to offer the same (or higher) prices on their platform as on other channels. Hotels can offer cheaper direct-booking rates, and app developers can sell cheaper off-platform.' },
+      { id: 'dma-art5-4', number: 'Art. 5(4)', title: 'Anti-Steering Prohibition', officialText: 'The gatekeeper shall allow business users, free of charge, to communicate and promote offers, including under different conditions, to end users acquired via its core platform service or through other channels, and to conclude contracts with those end users.', plainLanguage: 'Gatekeepers must let businesses tell their own customers about cheaper options elsewhere \u2014 including linking to their own website from within the gatekeeper\u2019s platform.' },
+      { id: 'dma-art5-8', number: 'Art. 5(8)', title: 'Anti-Tying Prohibition', officialText: 'The gatekeeper shall not require end users or business users to subscribe to, or register with, any further core platform services as a condition for being able to use, access, sign up to, or register with any of that gatekeeper\u2019s core platform services.', plainLanguage: 'Gatekeepers cannot force you to use one of their services as a condition of accessing another (e.g. requiring their payment system to use their cloud platform).' },
+      { id: 'dma-art6-3', number: 'Art. 6(3)', title: 'Default Settings and Uninstallation', officialText: 'The gatekeeper shall allow and technically enable end users to easily un-install any software applications on the operating system of the gatekeeper, allow end users to easily change default settings on the operating system, virtual assistant and web browser of the gatekeeper.', plainLanguage: 'Gatekeepers must let you uninstall their pre-loaded apps and easily change default browser, search engine, maps, etc. through meaningful choice screens.' },
+      { id: 'dma-art6-4', number: 'Art. 6(4)', title: 'Sideloading and Third-Party Stores', officialText: 'The gatekeeper shall allow and technically enable the installation and effective use of third-party software applications or software application stores using, or interoperating with, its operating system.', plainLanguage: 'Gatekeepers must allow users to install apps from outside the official store (sideloading) and permit third-party app stores. Security measures must be proportionate, not designed to discourage.' },
+      { id: 'dma-art6-5', number: 'Art. 6(5)', title: 'Self-Preferencing Prohibition', officialText: 'The gatekeeper shall not treat more favourably, in ranking and related indexing and crawling, services and products offered by the gatekeeper itself or by any third party belonging to the same undertaking, compared to similar services or products of a third party.', plainLanguage: 'Gatekeepers cannot rank their own products above competitors in search results or marketplace listings. This is a per se rule \u2014 no efficiency or quality defense is available.' },
+      { id: 'dma-art6-7', number: 'Art. 6(7)', title: 'Messaging Interoperability', officialText: 'The gatekeeper of number-independent interpersonal communications services shall, upon request, make the basic functionalities of its interpersonal communications services interoperable with a third-party provider of such services.', plainLanguage: 'Dominant messaging apps must allow smaller competitors to interconnect, so users of one app can message users of another. Basic features like text, images, and group chats must work across platforms.' },
+      { id: 'dma-art6-9', number: 'Art. 6(9)', title: 'Effective Data Portability', officialText: 'The gatekeeper shall provide effective portability of data generated through the activity of a business user or end user and shall, in particular, provide tools facilitating the exercise of data portability, including by the provision of continuous and real-time access to such data.', plainLanguage: 'Gatekeepers must let you take your data with you in usable formats with real-time access tools \u2014 not a 47GB zip of unreadable JSON that takes years to export at throttled speeds.' }
+    ]
+  }
+};

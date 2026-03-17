@@ -1,1 +1,125 @@
-LAW GAME 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="About the Digital Rights Courtroom — methodology, design, and credits.">
+    <title>About &amp; Methodology — Digital Rights Courtroom</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .about-page { max-width: 800px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+        .about-page h1 { font-size: 1.8rem; margin-bottom: 0.25rem; }
+        .about-page .lead { font-size: 1.05rem; color: var(--text-secondary, #8a8f98); margin-bottom: 2.5rem; line-height: 1.6; }
+        .about-section { margin-bottom: 2.5rem; }
+        .about-section h2 { font-size: 1.15rem; color: var(--accent-gold, #c9a84c); margin-bottom: 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.5rem; }
+        .about-section p, .about-section li { font-size: 0.92rem; line-height: 1.7; color: var(--text-secondary, #8a8f98); margin-bottom: 0.75rem; }
+        .about-section ul { padding-left: 1.25rem; margin-bottom: 1rem; }
+        .about-section li { margin-bottom: 0.4rem; }
+        .about-section strong { color: var(--text-primary, #e4e4e7); }
+        .scoring-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin: 1rem 0; }
+        .scoring-table th, .scoring-table td { border: 1px solid rgba(255,255,255,0.1); padding: 0.5rem 0.75rem; text-align: left; }
+        .scoring-table th { background: rgba(255,255,255,0.04); font-weight: 600; color: var(--text-secondary, #8a8f98); text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.04em; }
+        .framework-badge { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; margin-right: 0.3rem; }
+        .fw-aiact { background: rgba(99,102,241,0.15); color: #818cf8; }
+        .fw-gdpr { background: rgba(74,222,128,0.15); color: #4ade80; }
+        .fw-dsa { background: rgba(251,191,36,0.15); color: #fbbf24; }
+        .fw-dma { background: rgba(248,113,113,0.15); color: #f87171; }
+        .back-link { display: inline-block; margin-bottom: 1.5rem; color: var(--accent-gold, #c9a84c); text-decoration: none; font-size: 0.9rem; }
+        .back-link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="about-page">
+        <a href="index.html" class="back-link">&larr; Back to Digital Rights Courtroom</a>
+
+        <h1>&#9878;&#65039; Digital Rights Courtroom</h1>
+        <p class="lead">A browser-based litigation simulator for EU digital law education, developed for <strong>Prof. Eisenberger's</strong> course at the <strong>University of Vienna</strong>.</p>
+
+        <div class="about-section">
+            <h2>What Is This?</h2>
+            <p>The Digital Rights Courtroom is an interactive educational tool that places students in the role of a lawyer litigating cases under four EU digital regulation frameworks. Each case presents a realistic scenario involving a conflict between a complainant (your client) and a respondent (the party you argue against), heard before a regulatory authority or court.</p>
+            <p>Students progress through five phases per case: <strong>Briefing</strong> (understand the facts), <strong>Investigation</strong> (review evidence documents), <strong>Cross-Examination</strong> (question a hostile witness), <strong>Courtroom Arguments</strong> (write and select legal arguments), and <strong>Verdict</strong> (receive a score and outcome).</p>
+        </div>
+
+        <div class="about-section">
+            <h2>Regulatory Frameworks</h2>
+            <p>The game covers four EU regulatory instruments:</p>
+            <ul>
+                <li><span class="framework-badge fw-aiact">AI Act</span> <strong>EU AI Act (Regulation 2024/1689)</strong> &mdash; 34 cases covering prohibited practices (Art. 5), high-risk system requirements (Arts. 9&ndash;15), transparency obligations (Art. 50), and GPAI model duties (Art. 53).</li>
+                <li><span class="framework-badge fw-gdpr">GDPR</span> <strong>General Data Protection Regulation (2016/679)</strong> &mdash; 14 cases focused on automated decision-making (Art. 22), the right to explanation (Arts. 13&ndash;15), consent requirements, and the tension between algorithmic efficiency and individual rights.</li>
+                <li><span class="framework-badge fw-dsa">DSA</span> <strong>Digital Services Act (Regulation 2022/2065)</strong> &mdash; 16 cases covering content moderation (Arts. 16&ndash;17), dark patterns (Art. 25), recommender transparency (Art. 27), minor protection (Art. 28), VLOP systemic risk obligations (Arts. 34&ndash;35), and researcher data access (Art. 40).</li>
+                <li><span class="framework-badge fw-dma">DMA</span> <strong>Digital Markets Act (Regulation 2022/1925)</strong> &mdash; 12 cases on gatekeeper obligations including self-preferencing (Art. 6(5)), interoperability (Art. 6(7)), sideloading (Art. 6(4)), anti-steering (Art. 5(4)), data portability (Art. 6(9)), and cross-service data combination (Art. 5(2)).</li>
+            </ul>
+        </div>
+
+        <div class="about-section">
+            <h2>Case Design Methodology</h2>
+            <p>Each case is built around a <strong>plausible-trap architecture</strong>. In the courtroom phase, students choose between four argument options of similar length and legal tone:</p>
+            <ul>
+                <li><strong>Strong:</strong> The correct legal argument citing the right provision with proper application to the facts.</li>
+                <li><strong>Plausible:</strong> A sophisticated-sounding argument that contains one specific legal error &mdash; typically invoking the wrong framework (e.g., citing the AI Act when GDPR applies), the wrong article within the right framework, or accepting a defence that should be rejected. This is the designed trap for students who have surface-level knowledge.</li>
+                <li><strong>Weak:</strong> An argument that identifies the right problem intuitively but fails to cite specific legal provisions or engage with the statutory test.</li>
+                <li><strong>Wrong:</strong> A fundamentally flawed argument based on a misunderstanding of the legal framework.</li>
+            </ul>
+            <p>Case scenarios are inspired by real enforcement actions, CJEU preliminary rulings, and DPA decisions across EU Member States. All names, companies, and specific facts are fictionalised. No real individuals or entities are represented.</p>
+        </div>
+
+        <div class="about-section">
+            <h2>Scoring System</h2>
+            <table class="scoring-table">
+                <thead>
+                    <tr><th>Phase</th><th>Weight</th><th>How Points Are Earned</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong>Evidence Review</strong></td><td>10 pts</td><td>Proportional to documents reviewed (all 6 = full marks)</td></tr>
+                    <tr><td><strong>Cross-Examination</strong></td><td>25 pts</td><td>Based on question selection: effective questions (with follow-up) score highest; risky questions may backfire; ineffective questions waste limited turns</td></tr>
+                    <tr><td><strong>Courtroom Arguments</strong></td><td>65 pts</td><td>Quality of selected argument (strong = full, weak = half, plausible/wrong = zero) &times; citation accuracy (correct evidence = 1.0&times;, wrong evidence = 0.5&times;)</td></tr>
+                </tbody>
+            </table>
+            <p><strong>Verdicts:</strong> Won (&ge;75), Won with Reservations (&ge;50), Lost (&ge;25), Dismissed (&lt;25).</p>
+        </div>
+
+        <div class="about-section">
+            <h2>Cross-Examination Design</h2>
+            <p>Each case presents 5 possible questions but students may only ask 3. The questions are categorised as:</p>
+            <ul>
+                <li><strong>Effective (3 available):</strong> Use specific evidence from the case file to extract damaging admissions. These advance the legal argument directly. Most include a follow-up question that deepens the admission.</li>
+                <li><strong>Risky (1 available):</strong> Give the witness an opportunity to deliver a compelling defence narrative. They may sound reasonable but hand the witness the floor.</li>
+                <li><strong>Ineffective (1 available):</strong> Ask about peripheral matters (budget, staffing, timelines) that do not establish a legal violation. They waste a limited question slot.</li>
+            </ul>
+        </div>
+
+        <div class="about-section">
+            <h2>Keyword Validation</h2>
+            <p>Before seeing the multiple-choice options in the courtroom phase, students must write their own response. The system checks for key legal concepts (article numbers, legal tests, case-specific terms) using a hidden keyword validation. If the response demonstrates understanding of the relevant concepts, the options are revealed immediately. If not, the student receives feedback showing which concepts were matched (green) and missed (red), along with a hint, and may retry once.</p>
+        </div>
+
+        <div class="about-section">
+            <h2>Legal Codex</h2>
+            <p>The sidebar Legal Codex provides quick reference to the key articles from all four regulatory frameworks. Each entry includes the official regulatory text alongside a plain-language summary. The codex highlights articles relevant to the current case. Students are encouraged to use it during gameplay, just as a practitioner would consult the statute during proceedings.</p>
+        </div>
+
+        <div class="about-section">
+            <h2>For Instructors</h2>
+            <p>An instructor panel is available at <code>?instructor=true</code> appended to the game URL. It displays student results and feedback submitted via the in-game feedback button. Data can be exported as JSON or CSV. Since the game runs entirely client-side, student data is stored in each student's browser &mdash; instructors can collect it by having students download their data or by accessing the panel on the student's device.</p>
+            <p>The feedback button (&#128232; in the bottom-right corner) is available throughout gameplay. Students can flag legal errors, report confusing content, or submit suggestions. All submissions include the student's name, the case number, and a timestamp.</p>
+        </div>
+
+        <div class="about-section">
+            <h2>Technical Details</h2>
+            <p>The Digital Rights Courtroom is a fully client-side application. No server, no database, no user accounts. It runs entirely in the browser using vanilla JavaScript, HTML, and CSS. Student progress and results are stored in <code>localStorage</code>. The game is deployed as a static site on GitHub Pages.</p>
+            <p><strong>Repository:</strong> <a href="https://github.com/Pratibh10/digital-rights-courtroom" style="color: var(--accent-gold, #c9a84c);">github.com/Pratibh10/digital-rights-courtroom</a></p>
+        </div>
+
+        <div class="about-section">
+            <h2>Credits</h2>
+            <p>Developed as an educational project for the University of Vienna, Department of Innovation and Digitalisation in Law, under the supervision of <strong>Prof. Iris Eisenberger</strong>.</p>
+            <p style="font-size: 0.8rem; color: var(--text-secondary, #8a8f98); margin-top: 2rem;">All case scenarios are fictional. Any resemblance to real persons, companies, or proceedings is coincidental. The game is intended for educational purposes only and does not constitute legal advice.</p>
+        </div>
+
+        <div style="text-align: center; margin-top: 3rem;">
+            <a href="index.html" class="btn btn-primary">&larr; Back to Digital Rights Courtroom</a>
+        </div>
+    </div>
+</body>
+</html>
