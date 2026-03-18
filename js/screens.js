@@ -21,9 +21,11 @@
 
       screen.innerHTML = `
         <div class="dashboard-hero">
+          <img src="img/uni-vienna-logo.png" alt="University of Vienna" class="dashboard-uni-logo" onerror="this.style.display='none'">
           ${studentLabel}
           <h1>Digital Rights Courtroom</h1>
           <p class="tagline">A Litigation Simulator for EU Digital Law</p>
+          <p class="uni-credit">University of Vienna \u2022 Department of Innovation and Digitalisation in Law</p>
           <div class="stats-row">
             <div class="stat-item">
               <span class="stat-number">${TAXONOMY.length}</span>
@@ -48,6 +50,9 @@
         <div class="divider"></div>
   
         <div class="dashboard-footer">
+          <button class="btn btn-ghost" onclick="Game.showScreen('leaderboard')">
+            \uD83C\uDFC6 Leaderboard
+          </button>
           <button class="btn btn-ghost" onclick="Game.showScreen('taxonomy')">
             Scenario Library (${TAXONOMY.length} Types)
           </button>
@@ -1128,7 +1133,30 @@
             <span class="score-value">${score.courtroom.earned}/${score.courtroom.possible}</span>
             <span class="score-detail">${score.courtroom.arguments.filter(a => a.quality === 'strong').length} of ${totalArgs} strong arguments, ${citationsCorrect} of ${totalArgs} correct citations</span>
           </div>
+
+          ${score.elapsedSeconds ? `
+          <div class="score-row">
+            <span class="score-label">\u23F1\uFE0F Time Taken</span>
+            <span class="score-value">${Math.floor(score.elapsedSeconds / 60)}:${String(score.elapsedSeconds % 60).padStart(2, '0')}</span>
+            <span class="score-detail">${score.elapsedSeconds < 300 ? 'Quick work!' : score.elapsedSeconds < 600 ? 'Solid pace' : 'Thorough analysis'}</span>
+          </div>
+          ` : ''}
         </div>
+
+        ${score.achievements && score.achievements.length > 0 ? `
+        <div class="achievements-section">
+          <h3>\uD83C\uDFC5 Achievements Unlocked</h3>
+          <div class="achievements-grid">
+            ${score.achievements.map(a => `
+              <div class="achievement-badge">
+                <span class="achievement-icon">${a.icon}</span>
+                <span class="achievement-label">${a.label}</span>
+                <span class="achievement-desc">${a.desc}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+        ` : ''}
   
         <div class="model-answer-section">
           <h3>Model Answer</h3>
@@ -1351,92 +1379,376 @@
     // ========================
     // INSTRUCTOR PANEL
     // ========================
+    // ========================
+    // LEADERBOARD
+    // ========================
+    renderLeaderboard(container) {
+      const lb = Game.getLeaderboard();
+      const screen = document.createElement('div');
+      screen.className = 'screen';
+      const myId = Game.state.studentId;
+
+      // Overall ranking: sum of first-attempt scores per student
+      const studentTotals = {};
+      lb.forEach(e => {
+        const key = e.studentId || e.studentName;
+        if (!studentTotals[key]) {
+          studentTotals[key] = { name: e.studentName, id: e.studentId, totalScore: 0, casesPlayed: 0, achievements: new Set() };
+        }
+        studentTotals[key].totalScore += e.score;
+        studentTotals[key].casesPlayed++;
+        if (e.achievements) e.achievements.forEach(a => studentTotals[key].achievements.add(a));
+      });
+
+      const overallRanking = Object.values(studentTotals)
+        .sort((a, b) => b.totalScore - a.totalScore || b.casesPlayed - a.casesPlayed);
+
+      // Build overall: top 3 + own position only
+      let overallRows = '';
+      if (overallRanking.length === 0) {
+        overallRows = '<tr><td colspan="5" style="text-align:center;color:var(--text-secondary);padding:2rem;">No scores yet. Complete a case to appear on the leaderboard!</td></tr>';
+      } else {
+        const medals = ['\uD83E\uDD47', '\uD83E\uDD48', '\uD83E\uDD49'];
+        overallRanking.slice(0, 3).forEach((s, i) => {
+          const avg = Math.round(s.totalScore / s.casesPlayed);
+          const isMe = s.id === myId;
+          const hl = isMe ? 'background:rgba(201,168,76,0.08);' : '';
+          overallRows += `<tr style="${hl}">
+            <td style="font-size:1.4rem;text-align:center;">${medals[i]}</td>
+            <td><strong>${s.name}</strong>${isMe ? ' <span style="color:var(--accent-gold);font-size:0.75rem;">(you)</span>' : ''}</td>
+            <td>${s.totalScore}</td>
+            <td>${s.casesPlayed} (avg ${avg})</td>
+            <td>${s.achievements.size}</td>
+          </tr>`;
+        });
+        // Show own position if not in top 3
+        const myRank = overallRanking.findIndex(s => s.id === myId);
+        if (myRank >= 3) {
+          const me = overallRanking[myRank];
+          const avg = Math.round(me.totalScore / me.casesPlayed);
+          overallRows += `<tr><td colspan="5" style="text-align:center;color:var(--text-secondary);font-size:0.8rem;padding:0.4rem;">\u22EE</td></tr>`;
+          overallRows += `<tr style="background:rgba(201,168,76,0.08);">
+            <td style="text-align:center;color:var(--text-secondary);">${myRank + 1}</td>
+            <td><strong>${me.name}</strong> <span style="color:var(--accent-gold);font-size:0.75rem;">(you)</span></td>
+            <td>${me.totalScore}</td>
+            <td>${me.casesPlayed} (avg ${avg})</td>
+            <td>${me.achievements.size}</td>
+          </tr>`;
+        }
+      }
+
+      // Per-case: top 3 + own position
+      const caseNumbers = [...new Set(lb.map(e => e.caseNumber))].filter(Boolean).sort((a, b) => a - b);
+      let caseTabs = '<button class="lb-tab active" data-case="overall" onclick="Screens._switchLBTab(\'overall\')">Overall</button>';
+      caseNumbers.forEach(cn => {
+        caseTabs += `<button class="lb-tab" data-case="${cn}" onclick="Screens._switchLBTab('${cn}')">Case ${String(cn).padStart(2, '0')}</button>`;
+      });
+
+      let casePanels = '';
+      caseNumbers.forEach(cn => {
+        const caseEntries = lb.filter(e => e.caseNumber === cn).sort((a, b) => b.score - a.score);
+        const medals = ['\uD83E\uDD47', '\uD83E\uDD48', '\uD83E\uDD49'];
+        let rows = '';
+        caseEntries.slice(0, 3).forEach((e, i) => {
+          const time = e.elapsedSeconds ? `${Math.floor(e.elapsedSeconds / 60)}:${String(e.elapsedSeconds % 60).padStart(2, '0')}` : '-';
+          const vc = e.verdict === 'won' ? '#4ade80' : e.verdict === 'won_with_reservations' ? '#c9a84c' : '#f87171';
+          const isMe = e.studentId === myId;
+          const hl = isMe ? 'background:rgba(201,168,76,0.08);' : '';
+          rows += `<tr style="${hl}">
+            <td style="font-size:1.4rem;text-align:center;">${medals[i]}</td>
+            <td><strong>${e.studentName}</strong>${isMe ? ' <span style="color:var(--accent-gold);font-size:0.75rem;">(you)</span>' : ''}</td>
+            <td>${e.score}/100</td>
+            <td style="color:${vc}">${e.verdict}</td>
+            <td>${time}</td>
+          </tr>`;
+        });
+        const myIdx = caseEntries.findIndex(e => e.studentId === myId);
+        if (myIdx >= 3) {
+          const me = caseEntries[myIdx];
+          const time = me.elapsedSeconds ? `${Math.floor(me.elapsedSeconds / 60)}:${String(me.elapsedSeconds % 60).padStart(2, '0')}` : '-';
+          const vc = me.verdict === 'won' ? '#4ade80' : me.verdict === 'won_with_reservations' ? '#c9a84c' : '#f87171';
+          rows += `<tr><td colspan="5" style="text-align:center;color:var(--text-secondary);font-size:0.8rem;padding:0.4rem;">\u22EE</td></tr>`;
+          rows += `<tr style="background:rgba(201,168,76,0.08);">
+            <td style="text-align:center;color:var(--text-secondary);">${myIdx + 1}</td>
+            <td><strong>${me.studentName}</strong> <span style="color:var(--accent-gold);font-size:0.75rem;">(you)</span></td>
+            <td>${me.score}/100</td>
+            <td style="color:${vc}">${me.verdict}</td>
+            <td>${time}</td>
+          </tr>`;
+        }
+        if (!rows) rows = '<tr><td colspan="5" style="text-align:center;color:var(--text-secondary);">No attempts yet.</td></tr>';
+        casePanels += `<div class="lb-case-panel" id="lb-panel-${cn}" style="display:none;">
+          <table class="instructor-table"><thead><tr><th>#</th><th>Student</th><th>Score</th><th>Verdict</th><th>Time</th></tr></thead><tbody>${rows}</tbody></table>
+        </div>`;
+      });
+
+      screen.innerHTML = `
+        <div class="screen-header">
+          <div class="breadcrumb">
+            <a href="#" onclick="Game.goToDashboard(); return false;">Dashboard</a> / Leaderboard
+          </div>
+          <h1>\uD83C\uDFC6 Leaderboard</h1>
+          <p class="subtitle">Top 3 performers \u2022 First-attempt scores only</p>
+        </div>
+
+        <div class="lb-tabs" id="lb-tabs">${caseTabs}</div>
+
+        <div class="lb-panel" id="lb-panel-overall">
+          <table class="instructor-table">
+            <thead><tr><th>#</th><th>Student</th><th>Total Points</th><th>Cases (Avg)</th><th>Achievements</th></tr></thead>
+            <tbody>${overallRows}</tbody>
+          </table>
+        </div>
+        ${casePanels}
+
+        <div class="text-center mt-xl">
+          <button class="btn btn-ghost" onclick="Game.goToDashboard()">&larr; Back to Dashboard</button>
+        </div>
+      `;
+
+      container.appendChild(screen);
+    },
+
+    _switchLBTab(caseKey) {
+      // Hide all panels
+      document.querySelectorAll('.lb-panel, .lb-case-panel').forEach(p => p.style.display = 'none');
+      document.querySelectorAll('.lb-tab').forEach(t => t.classList.remove('active'));
+
+      if (caseKey === 'overall') {
+        document.getElementById('lb-panel-overall').style.display = 'block';
+      } else {
+        const panel = document.getElementById('lb-panel-' + caseKey);
+        if (panel) panel.style.display = 'block';
+      }
+      
+      // Activate tab
+      document.querySelector(`.lb-tab[data-case="${caseKey}"]`).classList.add('active');
+    },
+
+    // ========================
+    // INSTRUCTOR PANEL
+    // ========================
     renderInstructorPanel(container) {
       const results = Game.getDetailedResults();
-      const feedback = Game.getFeedbackLog();
-
       const screen = document.createElement('div');
       screen.className = 'screen';
 
-      // Build results table rows
-      let resultRows = '';
-      if (results.length === 0) {
-        resultRows = '<tr><td colspan="7" style="text-align:center;color:var(--text-secondary);">No student results yet. Results appear here after students complete cases on this device.</td></tr>';
+      // Group results by student (using studentId if available, else name)
+      const students = {};
+      results.forEach(r => {
+        const key = r.studentId || r.studentName || 'Unknown';
+        if (!students[key]) {
+          students[key] = { name: r.studentName || 'Unknown', id: r.studentId || '', attempts: [] };
+        }
+        students[key].attempts.push(r);
+      });
+
+      // Build student summary cards
+      let studentCards = '';
+      const studentKeys = Object.keys(students);
+
+      if (studentKeys.length === 0) {
+        studentCards = '<p style="color:var(--text-secondary);text-align:center;padding:2rem;">No student results yet. Results appear after students complete cases on this device.</p>';
       } else {
-        results.forEach(r => {
-          const verdictClass = r.verdict === 'won' ? 'color:#4ade80' : r.verdict === 'won_with_reservations' ? 'color:#c9a84c' : 'color:#f87171';
-          resultRows += `<tr>
-            <td>${r.studentName || 'Unknown'}</td>
-            <td>Case ${String(r.caseNumber || '?').padStart(2,'0')}</td>
-            <td>${r.caseTitle || ''}</td>
-            <td><strong>${r.totalScore}/100</strong></td>
-            <td style="${verdictClass}">${r.verdict}</td>
-            <td>${r.evidence ? r.evidence.earned + '/' + r.evidence.possible : ''} | ${r.crossExam ? r.crossExam.earned + '/' + r.crossExam.possible : ''} | ${r.courtroom ? r.courtroom.earned + '/' + r.courtroom.possible : ''}</td>
-            <td>${r.timestamp ? new Date(r.timestamp).toLocaleDateString() : ''}</td>
-          </tr>`;
+        studentKeys.forEach(key => {
+          const stu = students[key];
+          // Group attempts by case
+          const cases = {};
+          stu.attempts.forEach(a => {
+            const ck = a.caseNumber || a.caseId;
+            if (!cases[ck]) cases[ck] = { title: a.caseTitle || '', number: a.caseNumber, attempts: [] };
+            cases[ck].attempts.push(a);
+          });
+
+          const totalCasesPlayed = Object.keys(cases).length;
+          const totalAttempts = stu.attempts.length;
+          const avgScore = Math.round(stu.attempts.reduce((s, a) => s + (a.totalScore || 0), 0) / totalAttempts);
+          const bestScore = Math.max(...stu.attempts.map(a => a.totalScore || 0));
+
+          // Build per-case rows
+          let caseRows = '';
+          Object.values(cases).sort((a, b) => (a.number || 0) - (b.number || 0)).forEach(c => {
+            const best = c.attempts.reduce((b, a) => (a.totalScore || 0) > (b.totalScore || 0) ? a : b, c.attempts[0]);
+            const vc = best.verdict === 'won' ? '#4ade80' : best.verdict === 'won_with_reservations' ? '#c9a84c' : '#f87171';
+            caseRows += `<tr>
+              <td>Case ${String(c.number || '?').padStart(2, '0')}</td>
+              <td>${c.title}</td>
+              <td><strong>${best.totalScore}/100</strong></td>
+              <td style="color:${vc}">${best.verdict}</td>
+              <td>${best.evidence ? best.evidence.earned + '/' + best.evidence.possible : ''} | ${best.crossExam ? best.crossExam.earned + '/' + best.crossExam.possible : ''} | ${best.courtroom ? best.courtroom.earned + '/' + best.courtroom.possible : ''}</td>
+              <td>${c.attempts.length}</td>
+              <td>${best.timestamp ? new Date(best.timestamp).toLocaleDateString() : ''}</td>
+            </tr>`;
+          });
+
+          studentCards += `
+            <div class="instructor-student-card">
+              <div class="instructor-student-header" onclick="this.parentElement.classList.toggle('expanded')">
+                <div class="instructor-student-info">
+                  <span class="instructor-student-name">${stu.name}</span>
+                  <span class="instructor-student-meta">${totalCasesPlayed} case${totalCasesPlayed !== 1 ? 's' : ''} \u2022 ${totalAttempts} attempt${totalAttempts !== 1 ? 's' : ''} \u2022 Avg: ${avgScore} \u2022 Best: ${bestScore}</span>
+                </div>
+                <span class="instructor-expand-icon">\u25BC</span>
+              </div>
+              <div class="instructor-student-body">
+                <table class="instructor-table">
+                  <thead><tr><th>Case</th><th>Title</th><th>Best Score</th><th>Verdict</th><th>Ev | CE | Court</th><th>Plays</th><th>Last</th></tr></thead>
+                  <tbody>${caseRows}</tbody>
+                </table>
+              </div>
+            </div>`;
         });
       }
 
-      // Build feedback table rows
+      screen.innerHTML = `
+        <div class="screen-header">
+          <img src="img/uni-vienna-logo.png" alt="" style="height:40px;opacity:0.8;margin-bottom:0.5rem;" onerror="this.style.display='none'">
+          <h1>\uD83C\uDF93 Instructor Panel</h1>
+          <p class="subtitle">Student performance overview. Access via <code>?instructor=true</code></p>
+        </div>
+
+        <div style="display:flex;gap:0.75rem;margin-bottom:2rem;flex-wrap:wrap;">
+          <button class="btn btn-primary" onclick="Game.downloadExport()">\u2B07 Export All Data (JSON)</button>
+          <button class="btn btn-secondary" onclick="Screens._downloadCSV()">Export Results (CSV)</button>
+          <button class="btn btn-ghost" onclick="window.location.href=window.location.pathname;">Back to Game</button>
+        </div>
+
+        <div style="background:rgba(248,113,113,0.06);border:1px solid rgba(248,113,113,0.2);border-radius:8px;padding:1rem 1.25rem;margin-bottom:2rem;">
+          <h3 style="margin:0 0 0.5rem;color:#f87171;font-size:0.95rem;">\uD83D\uDD12 Session Management</h3>
+          <p style="font-size:0.82rem;color:var(--text-secondary);margin-bottom:0.75rem;">
+            To end the current session and lock students out, change the access code. Students who already have the old code stored will be locked out next time they clear their browser data or use a new device.
+          </p>
+          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;align-items:center;">
+            <input type="text" id="new-access-code" placeholder="New access code (e.g. DIGLAW2026)" style="padding:0.5rem 0.75rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);border-radius:6px;color:var(--text-primary);font-size:0.85rem;flex:1;min-width:200px;box-sizing:border-box;">
+            <button class="btn btn-secondary" onclick="Screens._changeAccessCode()" style="white-space:nowrap;">Change Code</button>
+            <button class="btn btn-ghost" onclick="Screens._revokeAllAccess()" style="white-space:nowrap;color:#f87171;">Revoke All Access</button>
+          </div>
+          <p id="access-code-msg" style="font-size:0.78rem;margin:0.5rem 0 0;min-height:1rem;color:var(--accent-gold);"></p>
+        </div>
+
+        <div class="instructor-summary-bar">
+          <div class="instructor-stat"><span class="instructor-stat-num">${studentKeys.length}</span><span class="instructor-stat-label">Students</span></div>
+          <div class="instructor-stat"><span class="instructor-stat-num">${results.length}</span><span class="instructor-stat-label">Total Attempts</span></div>
+          <div class="instructor-stat"><span class="instructor-stat-num">${results.length > 0 ? Math.round(results.reduce((s,r) => s + (r.totalScore||0), 0) / results.length) : 0}</span><span class="instructor-stat-label">Avg Score</span></div>
+          <div class="instructor-stat"><span class="instructor-stat-num">${results.filter(r => r.verdict === 'won').length}</span><span class="instructor-stat-label">Cases Won</span></div>
+        </div>
+
+        <h2 style="margin-bottom:0.75rem;">Students (${studentKeys.length})</h2>
+        <div id="instructor-students">${studentCards}</div>
+
+        <div style="margin-top:2rem;padding:1rem;background:rgba(255,255,255,0.03);border-radius:8px;">
+          <h3 style="margin:0 0 0.5rem;">How to collect data</h3>
+          <p style="font-size:0.85rem;color:var(--text-secondary);line-height:1.6;">
+            Data is stored in each student\u2019s browser. To collect:<br>
+            \u2022 <strong>In class:</strong> Open <code>?instructor=true</code> on their device<br>
+            \u2022 <strong>Remote:</strong> Students open <code>?instructor=true</code>, click Export, and email you the file<br>
+            \u2022 <strong>Developer feedback:</strong> Available at <code>?dev=true</code> (separate from this panel)
+          </p>
+        </div>
+      `;
+
+      container.appendChild(screen);
+    },
+
+    // ========================
+    // DEVELOPER PANEL
+    // ========================
+    renderDeveloperPanel(container) {
+      const feedback = Game.getFeedbackLog();
+      const results = Game.getDetailedResults();
+      const screen = document.createElement('div');
+      screen.className = 'screen';
+
       let feedbackRows = '';
       if (feedback.length === 0) {
-        feedbackRows = '<tr><td colspan="5" style="text-align:center;color:var(--text-secondary);">No feedback submitted yet.</td></tr>';
+        feedbackRows = '<tr><td colspan="6" style="text-align:center;color:var(--text-secondary);">No feedback submitted yet.</td></tr>';
       } else {
-        feedback.forEach(f => {
+        feedback.forEach((f, i) => {
+          const typeColors = { 'flag-error': '#f87171', 'flag-unclear': '#fbbf24', 'flag-bug': '#f97316', 'suggestion': '#818cf8', 'general': '#8a8f98' };
+          const tc = typeColors[f.type] || '#8a8f98';
           feedbackRows += `<tr>
-            <td>${f.studentName || f.type || ''}</td>
-            <td>${f.caseNumber ? 'Case ' + String(f.caseNumber).padStart(2,'0') : 'General'}</td>
-            <td>${f.type || ''}</td>
-            <td>${f.text || ''}</td>
-            <td>${f.timestamp ? new Date(f.timestamp).toLocaleDateString() : ''}</td>
+            <td>${f.studentName || 'Anon'}</td>
+            <td>${f.caseNumber ? 'Case ' + String(f.caseNumber).padStart(2, '0') : 'General'}</td>
+            <td style="color:${tc}">${f.type || ''}</td>
+            <td>${f.screen || ''}</td>
+            <td style="max-width:300px;word-wrap:break-word;">${f.text || ''}</td>
+            <td>${f.timestamp ? new Date(f.timestamp).toLocaleString() : ''}</td>
           </tr>`;
         });
       }
 
       screen.innerHTML = `
         <div class="screen-header">
-          <h1>\uD83C\uDF93 Instructor Panel</h1>
-          <p class="subtitle">Review student performance and feedback. Access this page by adding <code>?instructor=true</code> to the URL.</p>
+          <h1>\uD83D\uDEE0\uFE0F Developer Panel</h1>
+          <p class="subtitle">Bug reports, feedback flags, and raw data. Access via <code>?dev=true</code></p>
         </div>
 
         <div style="display:flex;gap:0.75rem;margin-bottom:2rem;flex-wrap:wrap;">
-          <button class="btn btn-primary" onclick="Game.downloadExport()">\u2B07 Download All Data (JSON)</button>
-          <button class="btn btn-secondary" onclick="Screens._downloadCSV()">Download Results (CSV)</button>
+          <button class="btn btn-primary" onclick="Game.downloadExport()">\u2B07 Export All Data (JSON)</button>
+          <button class="btn btn-ghost" onclick="if(confirm('Clear ALL feedback? This cannot be undone.')){localStorage.removeItem('drc_feedback');location.reload();}">\uD83D\uDDD1 Clear Feedback</button>
+          <button class="btn btn-ghost" onclick="if(confirm('Clear ALL student results? This cannot be undone.')){localStorage.removeItem('drc-detailed-results');localStorage.removeItem('drc-progress');location.reload();}">\uD83D\uDDD1 Clear Results</button>
+          <button class="btn btn-ghost" onclick="if(confirm('Factory reset? Clears everything including student identity.')){localStorage.clear();location.reload();}">\u26A0\uFE0F Factory Reset</button>
           <button class="btn btn-ghost" onclick="window.location.href=window.location.pathname;">Back to Game</button>
         </div>
 
-        <h2 style="margin-bottom:0.75rem;">Student Results (${results.length} entries)</h2>
-        <div style="overflow-x:auto;margin-bottom:2rem;">
-          <table class="instructor-table">
-            <thead><tr>
-              <th>Student</th><th>Case</th><th>Title</th><th>Score</th><th>Verdict</th><th>Ev | CE | Court</th><th>Date</th>
-            </tr></thead>
-            <tbody>${resultRows}</tbody>
-          </table>
+        <div class="instructor-summary-bar">
+          <div class="instructor-stat"><span class="instructor-stat-num">${feedback.length}</span><span class="instructor-stat-label">Feedback Items</span></div>
+          <div class="instructor-stat"><span class="instructor-stat-num">${feedback.filter(f => f.type === 'flag-error').length}</span><span class="instructor-stat-label">Legal Errors</span></div>
+          <div class="instructor-stat"><span class="instructor-stat-num">${feedback.filter(f => f.type === 'flag-bug').length}</span><span class="instructor-stat-label">Bug Reports</span></div>
+          <div class="instructor-stat"><span class="instructor-stat-num">${results.length}</span><span class="instructor-stat-label">Total Results</span></div>
         </div>
 
-        <h2 style="margin-bottom:0.75rem;">Feedback & Flags (${feedback.length} entries)</h2>
+        <h2 style="margin-bottom:0.75rem;">Feedback & Flags (${feedback.length})</h2>
         <div style="overflow-x:auto;margin-bottom:2rem;">
           <table class="instructor-table">
-            <thead><tr>
-              <th>From</th><th>Case</th><th>Type</th><th>Feedback</th><th>Date</th>
-            </tr></thead>
+            <thead><tr><th>From</th><th>Case</th><th>Type</th><th>Screen</th><th>Feedback</th><th>Time</th></tr></thead>
             <tbody>${feedbackRows}</tbody>
           </table>
         </div>
 
-        <div style="margin-top:2rem;padding:1rem;background:rgba(255,255,255,0.03);border-radius:8px;">
-          <h3 style="margin:0 0 0.5rem;">How to use this panel</h3>
-          <p style="font-size:0.85rem;color:var(--text-secondary);line-height:1.6;">
-            This panel shows data stored in the <strong>current browser on this device</strong>. Since the game runs client-side, each student's results are stored on their own computer.<br><br>
-            <strong>Option A (in class):</strong> Walk to the student's computer, open <code>?instructor=true</code> in the URL bar, and view or download their data.<br>
-            <strong>Option B (remote collection):</strong> Have each student click the \uD83D\uDCE8 feedback button and submit a "general feedback" with their final scores, or ask them to open <code>?instructor=true</code> and click "Download All Data" and email you the JSON file.<br>
-            <strong>Option C (student self-report):</strong> The verdict screen already shows each student their breakdown. They can screenshot it.
-          </p>
+        <h2 style="margin-bottom:0.75rem;">Raw localStorage Keys</h2>
+        <div style="background:rgba(255,255,255,0.03);border-radius:8px;padding:1rem;font-size:0.8rem;color:var(--text-secondary);font-family:monospace;">
+          ${Object.keys(localStorage).filter(k => k.startsWith('drc')).map(k => {
+            const val = localStorage.getItem(k);
+            const size = val ? (val.length / 1024).toFixed(1) + ' KB' : '0 KB';
+            return `<div style="margin-bottom:0.3rem;"><strong>${k}</strong> (${size})</div>`;
+          }).join('') || '<p>No DRC data found.</p>'}
         </div>
       `;
 
       container.appendChild(screen);
+    },
+
+    async _changeAccessCode() {
+      const input = document.getElementById('new-access-code');
+      const msg = document.getElementById('access-code-msg');
+      const code = (input.value || '').trim().toUpperCase();
+      if (!code || code.length < 4) {
+        msg.style.color = '#f87171';
+        msg.textContent = 'Code must be at least 4 characters.';
+        return;
+      }
+      const hash = await Game._sha256(code);
+      Game._accessCodeHash = hash;
+      msg.style.color = '#4ade80';
+      msg.textContent = 'Access code changed to: ' + code + ' (hash: ' + hash.substr(0, 12) + '...). Update _accessCodeHash in engine.js to make this permanent.';
+      input.value = '';
+
+      // Also copy to clipboard
+      try {
+        await navigator.clipboard.writeText("_accessCodeHash: '" + hash + "',");
+        msg.textContent += ' Hash copied to clipboard.';
+      } catch(e) {}
+    },
+
+    _revokeAllAccess() {
+      if (!confirm('This will clear the access-granted flag from THIS browser. To lock out all students, you must also change the access code hash in engine.js. Continue?')) return;
+      localStorage.removeItem('drc-access-granted');
+      const msg = document.getElementById('access-code-msg');
+      if (msg) {
+        msg.style.color = '#fbbf24';
+        msg.textContent = 'Access revoked on this device. Change the code hash in engine.js to lock out all students.';
+      }
     },
 
     _downloadCSV() {

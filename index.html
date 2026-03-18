@@ -6,7 +6,6 @@
     <meta name="description" content="Digital Rights Courtroom — A browser-based litigation simulator for EU digital law education.">
     <title>Digital Rights Courtroom</title>
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/css-keywords.css">
     <noscript>
         <style>
             body { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
@@ -23,6 +22,24 @@
         </div>
     </noscript>
 
+    <!-- Decorative Gavel — fixed bottom-left corner -->
+    <div class="deco-gavel" aria-hidden="true">
+        <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" fill="none">
+            <!-- Gavel head -->
+            <rect x="30" y="18" width="60" height="22" rx="4" fill="currentColor" opacity="0.12" stroke="currentColor" stroke-width="1" opacity="0.25"/>
+            <rect x="34" y="22" width="52" height="14" rx="2" fill="currentColor" opacity="0.06"/>
+            <!-- Handle -->
+            <rect x="56" y="40" width="8" height="50" rx="3" fill="currentColor" opacity="0.12" stroke="currentColor" stroke-width="1" opacity="0.2"/>
+            <!-- Strike plate -->
+            <ellipse cx="60" cy="100" rx="35" ry="6" fill="currentColor" opacity="0.08" stroke="currentColor" stroke-width="1" opacity="0.15"/>
+            <!-- Decorative scale of justice lines -->
+            <line x1="60" y1="8" x2="60" y2="14" stroke="currentColor" stroke-width="1" opacity="0.2"/>
+            <line x1="40" y1="10" x2="80" y2="10" stroke="currentColor" stroke-width="1" opacity="0.15"/>
+            <circle cx="40" cy="13" r="3" fill="currentColor" opacity="0.1"/>
+            <circle cx="80" cy="13" r="3" fill="currentColor" opacity="0.1"/>
+        </svg>
+    </div>
+
     <!-- Main App Container -->
     <div id="app">
         <!-- Screens are rendered here by JavaScript -->
@@ -30,11 +47,11 @@
 
     <!-- Legal Codex Sidebar -->
     <button class="codex-toggle" id="codex-toggle-btn">
-        <span>⚖</span> LEGAL CODEX
+        <span>&#9878;</span> LEGAL CODEX
     </button>
     <aside id="codex-sidebar">
         <div class="codex-header">
-            <h2>⚖ Legal Codex</h2>
+            <h2>&#9878; Legal Codex</h2>
             <input type="text" class="codex-search" placeholder="Search articles..." id="codex-search">
         </div>
         <div class="codex-tabs">

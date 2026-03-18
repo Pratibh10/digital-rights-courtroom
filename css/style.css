@@ -2123,3 +2123,219 @@ display: flex; align-items: center; justify-content: center;
 .instructor-table th, .instructor-table td { border: 1px solid var(--border-color, rgba(255,255,255,0.1)); padding: 0.5rem 0.65rem; text-align: left; vertical-align: top; }
 .instructor-table th { background: rgba(255,255,255,0.04); font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-secondary, #8a8f98); white-space: nowrap; }
 .instructor-table tbody tr:hover { background: rgba(255,255,255,0.03); }
+
+/* --- University Branding --- */
+.dashboard-uni-logo {
+height: 55px;
+margin-bottom: 0.75rem;
+opacity: 0.85;
+filter: brightness(1.1);
+}
+.uni-credit {
+font-size: 0.75rem;
+letter-spacing: 0.06em;
+color: var(--accent-gold, #c9a84c);
+opacity: 0.7;
+margin-top: -0.25rem;
+margin-bottom: 0.75rem;
+}
+
+/* --- Instructor Panel Redesign --- */
+.instructor-summary-bar {
+display: flex;
+gap: 1rem;
+margin-bottom: 2rem;
+flex-wrap: wrap;
+}
+.instructor-stat {
+flex: 1;
+min-width: 100px;
+text-align: center;
+padding: 1rem;
+background: var(--surface-alt, rgba(255,255,255,0.04));
+border: 1px solid var(--border-color, rgba(255,255,255,0.08));
+border-radius: 8px;
+}
+.instructor-stat-num {
+display: block;
+font-size: 1.6rem;
+font-weight: 700;
+color: var(--accent-gold, #c9a84c);
+}
+.instructor-stat-label {
+font-size: 0.72rem;
+text-transform: uppercase;
+letter-spacing: 0.06em;
+color: var(--text-secondary, #8a8f98);
+}
+
+.instructor-student-card {
+border: 1px solid var(--border-color, rgba(255,255,255,0.08));
+border-radius: 8px;
+margin-bottom: 0.6rem;
+overflow: hidden;
+}
+.instructor-student-header {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 0.85rem 1rem;
+cursor: pointer;
+transition: background 0.15s;
+}
+.instructor-student-header:hover {
+background: rgba(255,255,255,0.03);
+}
+.instructor-student-info {
+display: flex;
+flex-direction: column;
+gap: 0.2rem;
+}
+.instructor-student-name {
+font-weight: 600;
+font-size: 0.95rem;
+color: var(--text-primary, #e4e4e7);
+}
+.instructor-student-meta {
+font-size: 0.78rem;
+color: var(--text-secondary, #8a8f98);
+}
+.instructor-expand-icon {
+font-size: 0.7rem;
+color: var(--text-secondary, #8a8f98);
+transition: transform 0.25s;
+}
+.instructor-student-card.expanded .instructor-expand-icon {
+transform: rotate(180deg);
+}
+.instructor-student-body {
+max-height: 0;
+overflow: hidden;
+transition: max-height 0.35s ease;
+}
+.instructor-student-card.expanded .instructor-student-body {
+max-height: 1000px;
+overflow-y: auto;
+padding: 0 0.75rem 0.75rem;
+border-top: 1px solid var(--border-color, rgba(255,255,255,0.06));
+}
+
+/* --- Logo Glow Effect --- */
+.dashboard-uni-logo {
+height: 60px;
+margin-bottom: 0.75rem;
+filter: drop-shadow(0 0 15px rgba(100, 180, 220, 0.5)) drop-shadow(0 0 30px rgba(100, 180, 220, 0.25)) brightness(1.15);
+transition: filter 0.3s;
+}
+.dashboard-uni-logo:hover {
+filter: drop-shadow(0 0 20px rgba(100, 180, 220, 0.7)) drop-shadow(0 0 40px rgba(100, 180, 220, 0.35)) brightness(1.25);
+}
+
+/* --- Achievements --- */
+.achievements-section {
+margin: 2rem 0;
+}
+.achievements-section h3 {
+margin-bottom: 0.75rem;
+}
+.achievements-grid {
+display: flex;
+flex-wrap: wrap;
+gap: 0.75rem;
+}
+.achievement-badge {
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 1rem 1.25rem;
+background: linear-gradient(135deg, rgba(201, 168, 76, 0.08), rgba(201, 168, 76, 0.02));
+border: 1px solid rgba(201, 168, 76, 0.25);
+border-radius: 10px;
+min-width: 130px;
+text-align: center;
+animation: achievePop 0.4s ease-out;
+}
+@keyframes achievePop {
+0% { transform: scale(0.7); opacity: 0; }
+70% { transform: scale(1.08); }
+100% { transform: scale(1); opacity: 1; }
+}
+.achievement-icon {
+font-size: 1.8rem;
+margin-bottom: 0.4rem;
+}
+.achievement-label {
+font-weight: 600;
+font-size: 0.82rem;
+color: var(--accent-gold, #c9a84c);
+margin-bottom: 0.2rem;
+}
+.achievement-desc {
+font-size: 0.7rem;
+color: var(--text-secondary, #8a8f98);
+line-height: 1.35;
+}
+
+/* --- Leaderboard --- */
+.lb-tabs {
+display: flex;
+flex-wrap: wrap;
+gap: 0.4rem;
+margin-bottom: 1.5rem;
+padding-bottom: 0.75rem;
+border-bottom: 1px solid var(--border-color, rgba(255,255,255,0.08));
+}
+.lb-tab {
+padding: 0.4rem 0.8rem;
+border-radius: 6px;
+border: 1px solid var(--border-color, rgba(255,255,255,0.1));
+background: transparent;
+color: var(--text-secondary, #8a8f98);
+font-size: 0.78rem;
+cursor: pointer;
+transition: all 0.2s;
+}
+.lb-tab:hover {
+background: rgba(255,255,255,0.05);
+color: var(--text-primary, #e4e4e7);
+}
+.lb-tab.active {
+background: rgba(201, 168, 76, 0.12);
+border-color: var(--accent-gold, #c9a84c);
+color: var(--accent-gold, #c9a84c);
+font-weight: 600;
+}
+
+/* --- Decorative Gavel --- */
+.deco-gavel {
+position: fixed;
+bottom: 0.5rem;
+left: 0.75rem;
+width: 70px;
+height: 70px;
+color: var(--accent-gold, #c9a84c);
+opacity: 0.35;
+z-index: 1;
+pointer-events: none;
+transition: opacity 0.5s, transform 0.5s;
+transform: rotate(-12deg);
+filter: drop-shadow(0 0 8px rgba(201, 168, 76, 0.15));
+}
+.deco-gavel:hover {
+opacity: 0.55;
+}
+/* Subtle idle animation — very slow breathing glow */
+@keyframes gavelGlow {
+0%, 100% { filter: drop-shadow(0 0 6px rgba(201, 168, 76, 0.1)); }
+50% { filter: drop-shadow(0 0 14px rgba(201, 168, 76, 0.25)); }
+}
+.deco-gavel svg {
+width: 100%;
+height: 100%;
+animation: gavelGlow 6s ease-in-out infinite;
+}
+
+/* Hide gavel on small screens to avoid clutter */
+@media (max-width: 768px) {
+.deco-gavel { display: none; }
+}

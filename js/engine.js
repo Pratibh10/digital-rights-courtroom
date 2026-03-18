@@ -1,6 +1,6 @@
 /* ============================================
-   DIGITAL RIGHTS COURTROOM — Game Engine v5
-   Keywords + student tracking + instructor export
+   DIGITAL RIGHTS COURTROOM — Game Engine v6
+   Student ID lock + grouped instructor panel + dev page
    ============================================ */
 
    const Game = {
@@ -26,73 +26,193 @@
       },
   
       completedCases: {},
-      studentName: null
+      studentName: null,
+      studentId: null
     },
   
+    // --- Access Code (SHA-256 hash — set by instructor) ---
+    // To change the access code, replace the hash below.
+    // Generate a new hash at: https://emn178.github.io/online-tools/sha256.html
+    // Current code: VIENNA2026
+    _accessCodeHash: 'bd23fbda7155631026c89ce45c26c85cc6b74d10237c156dda4d1859ba176813',
+
+    async _sha256(text) {
+      const data = new TextEncoder().encode(text);
+      const hash = await crypto.subtle.digest('SHA-256', data);
+      return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
+    },
+
+    // --- Offensive Name Filter ---
+    _offensivePatterns: [
+      /\b(fuck|shit|ass|dick|cock|pussy|bitch|bastard|damn|crap|cunt|whore|slut|fag|nigger|nigga|nazi|hitler|penis|vagina|anus|retard|rape)\b/i,
+      /(.)\1{4,}/,  // 5+ repeated characters
+      /^[^a-zA-ZÀ-ÿ\s\-']+$/,  // no letters at all
+    ],
+
+    _isNameOffensive(name) {
+      for (const pattern of this._offensivePatterns) {
+        if (pattern.test(name)) return true;
+      }
+      // Check for "fake" names: all same word repeated, single characters
+      const words = name.trim().split(/\s+/);
+      if (words.length >= 2 && new Set(words.map(w => w.toLowerCase())).size === 1) return true;
+      if (words.some(w => w.length < 2)) return true;
+      return false;
+    },
+
     // --- Initialization ---
     init() {
       this.loadProgress();
-      this.loadStudentName();
+      this.loadStudentIdentity();
 
-      // Instructor mode via URL param: ?instructor=true
       const params = new URLSearchParams(window.location.search);
       if (params.get('instructor') === 'true') {
         this.showScreen('instructor');
         Screens.initFeedbackButton();
         return;
       }
-
-      // Prompt for student name if not set
-      if (!this.state.studentName) {
-        this.promptStudentName(() => {
-          this.showScreen('dashboard');
-        });
-      } else {
-        this.showScreen('dashboard');
+      if (params.get('dev') === 'true') {
+        this.showScreen('developer');
+        Screens.initFeedbackButton();
+        return;
       }
 
-      Screens.initFeedbackButton();
-      console.log('Digital Rights Courtroom v5 initialized.');
+      // Check if already authenticated
+      const authed = localStorage.getItem('drc-access-granted');
+      if (authed && this.state.studentName) {
+        this.showScreen('dashboard');
+        Screens.initFeedbackButton();
+      } else {
+        this.promptAccessAndName(() => {
+          this.showScreen('dashboard');
+          Screens.initFeedbackButton();
+        });
+      }
+
+      console.log('Digital Rights Courtroom v7 initialized.');
     },
 
-    // --- Student Identity ---
-    promptStudentName(callback) {
+    // --- Combined Access Code + Student Name Prompt ---
+    promptAccessAndName(callback) {
+      const needsName = !this.state.studentName;
+      const needsCode = !localStorage.getItem('drc-access-granted');
+
       const overlay = document.createElement('div');
       overlay.id = 'student-name-overlay';
-      overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:10000;display:flex;align-items:center;justify-content:center;padding:1rem;';
+      overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:10000;display:flex;align-items:center;justify-content:center;padding:1rem;';
       overlay.innerHTML = `
-        <div style="background:var(--surface-card,#1e1e32);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:2rem;max-width:420px;width:100%;text-align:center;">
-          <h2 style="margin:0 0 0.5rem;color:var(--text-primary,#e4e4e7);">\u2696\uFE0F Digital Rights Courtroom</h2>
-          <p style="color:var(--text-secondary,#8a8f98);font-size:0.9rem;margin-bottom:1.5rem;">Enter your name so your instructor can review your results.</p>
-          <input type="text" id="student-name-input" placeholder="Your full name (e.g. Maria Chen)" style="width:100%;padding:0.65rem 0.8rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);border-radius:6px;color:var(--text-primary,#e4e4e7);font-size:1rem;margin-bottom:1rem;box-sizing:border-box;" autofocus>
-          <button class="btn btn-primary" id="student-name-submit" style="width:100%;">Start Playing</button>
+        <div style="background:var(--surface-card,#1e1e32);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:2rem;max-width:440px;width:100%;text-align:center;">
+          <img src="img/uni-vienna-logo.png" alt="University of Vienna" style="height:50px;margin-bottom:1rem;filter:drop-shadow(0 0 12px rgba(100,180,220,0.4));" onerror="this.style.display='none'">
+          <h2 style="margin:0 0 0.25rem;color:var(--text-primary,#e4e4e7);">\u2696\uFE0F Digital Rights Courtroom</h2>
+          <p style="color:var(--accent-gold,#c9a84c);font-size:0.78rem;margin:0 0 1.25rem;letter-spacing:0.04em;">University of Vienna \u2022 Department of Innovation and Digitalisation in Law</p>
+
+          ${needsCode ? `
+          <div style="text-align:left;margin-bottom:1rem;">
+            <label style="font-size:0.78rem;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-secondary,#8a8f98);display:block;margin-bottom:0.35rem;">Course Access Code</label>
+            <input type="text" id="access-code-input" placeholder="Enter the code provided by your instructor" style="width:100%;padding:0.6rem 0.8rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);border-radius:6px;color:var(--text-primary,#e4e4e7);font-size:0.95rem;box-sizing:border-box;letter-spacing:0.1em;">
+          </div>
+          ` : ''}
+
+          ${needsName ? `
+          <div style="text-align:left;margin-bottom:0.5rem;">
+            <label style="font-size:0.78rem;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-secondary,#8a8f98);display:block;margin-bottom:0.35rem;">Your Full Name</label>
+            <input type="text" id="student-name-input" placeholder="First and last name (e.g. Maria Chen)" style="width:100%;padding:0.6rem 0.8rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);border-radius:6px;color:var(--text-primary,#e4e4e7);font-size:0.95rem;box-sizing:border-box;">
+            <p style="font-size:0.72rem;color:var(--text-secondary,#8a8f98);margin:0.35rem 0 0;text-align:left;">Your name is linked to your scores and visible on the leaderboard. It cannot be changed later.</p>
+          </div>
+          ` : ''}
+
+          <p id="access-error" style="color:#f87171;font-size:0.8rem;min-height:1.2rem;margin:0.5rem 0 0.75rem;"></p>
+          <button class="btn btn-primary" id="access-submit" style="width:100%;">${needsName ? 'Register & Start Playing' : 'Enter'}</button>
         </div>
       `;
       document.body.appendChild(overlay);
 
-      const input = document.getElementById('student-name-input');
-      const btn = document.getElementById('student-name-submit');
+      const codeInput = document.getElementById('access-code-input');
+      const nameInput = document.getElementById('student-name-input');
+      const btn = document.getElementById('access-submit');
+      const errorEl = document.getElementById('access-error');
 
-      const submit = () => {
-        const name = input.value.trim();
-        if (!name) { input.focus(); return; }
-        this.state.studentName = name;
-        this.saveStudentName();
+      const submit = async () => {
+        errorEl.textContent = '';
+
+        // Validate access code
+        if (needsCode) {
+          const code = (codeInput.value || '').trim().toUpperCase();
+          if (!code) { errorEl.textContent = 'Please enter the course access code.'; codeInput.focus(); return; }
+          const hash = await this._sha256(code);
+          if (hash !== this._accessCodeHash) {
+            errorEl.textContent = 'Incorrect access code. Contact your instructor.';
+            codeInput.focus();
+            return;
+          }
+          localStorage.setItem('drc-access-granted', 'true');
+        }
+
+        // Validate student name
+        if (needsName) {
+          const name = (nameInput.value || '').trim();
+          if (!name) { errorEl.textContent = 'Please enter your name.'; nameInput.focus(); return; }
+          
+          const words = name.split(/\s+/);
+          if (words.length < 2) { errorEl.textContent = 'Please enter your full name (first and last).'; nameInput.focus(); return; }
+          if (name.length < 5) { errorEl.textContent = 'Name is too short. Enter your real name.'; nameInput.focus(); return; }
+          if (name.length > 60) { errorEl.textContent = 'Name is too long.'; nameInput.focus(); return; }
+          if (!/^[a-zA-ZÀ-ÿ\s\-']+$/.test(name)) { errorEl.textContent = 'Name can only contain letters, spaces, hyphens, and apostrophes.'; nameInput.focus(); return; }
+          if (this._isNameOffensive(name)) { errorEl.textContent = 'Please enter your real name.'; nameInput.focus(); return; }
+
+          // Capitalise properly
+          const formatted = words.map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+
+          const id = 'stu-' + this._hashString(formatted + Date.now()) + '-' + Math.random().toString(36).substr(2, 4);
+          this.state.studentName = formatted;
+          this.state.studentId = id;
+          this.saveStudentIdentity();
+        }
+
         overlay.remove();
         if (callback) callback();
       };
 
       btn.onclick = submit;
-      input.addEventListener('keydown', (e) => { if (e.key === 'Enter') submit(); });
+      const firstInput = codeInput || nameInput;
+      if (firstInput) {
+        firstInput.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            if (codeInput && nameInput && document.activeElement === codeInput) {
+              nameInput.focus();
+            } else {
+              submit();
+            }
+          }
+        });
+        if (nameInput && nameInput !== firstInput) {
+          nameInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') submit(); });
+        }
+        setTimeout(() => firstInput.focus(), 100);
+      }
     },
 
-    saveStudentName() {
-      try { localStorage.setItem('drc-student-name', this.state.studentName); } catch(e) {}
+    _hashString(str) {
+      let hash = 0;
+      for (let i = 0; i < str.length; i++) {
+        const c = str.charCodeAt(i);
+        hash = ((hash << 5) - hash) + c;
+        hash |= 0;
+      }
+      return Math.abs(hash).toString(36).substr(0, 6);
     },
 
-    loadStudentName() {
+    saveStudentIdentity() {
+      try {
+        localStorage.setItem('drc-student-name', this.state.studentName);
+        localStorage.setItem('drc-student-id', this.state.studentId);
+      } catch(e) {}
+    },
+
+    loadStudentIdentity() {
       try {
         this.state.studentName = localStorage.getItem('drc-student-name') || null;
+        this.state.studentId = localStorage.getItem('drc-student-id') || null;
       } catch(e) {}
     },
 
@@ -128,6 +248,12 @@
         case 'instructor':
           Screens.renderInstructorPanel(app);
           break;
+        case 'developer':
+          Screens.renderDeveloperPanel(app);
+          break;
+        case 'leaderboard':
+          Screens.renderLeaderboard(app);
+          break;
         default:
           app.innerHTML = '<p>Screen not found.</p>';
       }
@@ -147,6 +273,7 @@
   
       this.state.currentCaseId = caseId;
       this.state.currentCase = caseData;
+      this.state.caseStartTime = Date.now();
   
       this.state.collectedEvidence = [];
       this.state.readEvidence = [];
@@ -278,17 +405,61 @@
         evidence: { earned: evidenceScore, possible: 10, found: readCount, total: totalEvidence },
         crossExam: { earned: crossExamScore, possible: 25, questionsAsked: this.state.crossExamResults.questionsAsked },
         courtroom: { earned: courtroomScore, possible: 65, arguments: argumentDetails },
-        writtenAnswers: { ...this.state.writtenAnswers }
+        writtenAnswers: { ...this.state.writtenAnswers },
+        elapsedSeconds: this.state.caseStartTime ? Math.round((Date.now() - this.state.caseStartTime) / 1000) : 0
       };
-  
+
+      // Determine if this is the student's first attempt at this case
+      const isFirstAttempt = !this.state.completedCases[this.state.currentCaseId];
+
+      // Calculate achievements
+      score.achievements = [];
+      if (score.evidence.found === score.evidence.total) score.achievements.push({ id: 'perfect-evidence', label: 'Thorough Investigator', icon: '\uD83D\uDD0D', desc: 'Reviewed all evidence documents' });
+      if (score.crossExam.questionsAsked.filter(q => q.impact === 'positive').length >= 3) score.achievements.push({ id: 'master-cross', label: 'Master Cross-Examiner', icon: '\uD83E\uDDD1\u200D\u2696\uFE0F', desc: 'All effective cross-examination questions' });
+      if (score.courtroom.arguments.every(a => a.quality === 'strong')) score.achievements.push({ id: 'legal-eagle', label: 'Legal Eagle', icon: '\uD83E\uDD85', desc: 'Selected the strongest argument every round' });
+      if (score.courtroom.arguments.every(a => a.citationCorrect)) score.achievements.push({ id: 'perfect-citation', label: 'Sharp Citation', icon: '\uD83C\uDFAF', desc: 'Cited the correct evidence every round' });
+      if (score.elapsedSeconds > 0 && score.elapsedSeconds < 300 && score.total >= 75) score.achievements.push({ id: 'speed-demon', label: 'Speed Demon', icon: '\u26A1', desc: 'Won the case in under 5 minutes' });
+      if (score.total === 100) score.achievements.push({ id: 'perfect-score', label: 'Flawless Victory', icon: '\uD83C\uDFC6', desc: 'Achieved a perfect score' });
+
       this.state.completedCases[this.state.currentCaseId] = {
         completed: true, score: total, verdict: verdict,
-        timestamp: new Date().toISOString(), studentName: this.state.studentName
+        timestamp: new Date().toISOString(),
+        studentName: this.state.studentName,
+        studentId: this.state.studentId
       };
       this.saveProgress();
       this.saveDetailedResult(this.state.currentCaseId, score);
+
+      // Save to leaderboard (first attempt only)
+      if (isFirstAttempt) {
+        this.saveLeaderboardEntry(this.state.currentCaseId, score);
+      }
   
       return score;
+    },
+
+    // --- Leaderboard ---
+    saveLeaderboardEntry(caseId, score) {
+      try {
+        const lb = JSON.parse(localStorage.getItem('drc-leaderboard') || '[]');
+        lb.push({
+          studentName: this.state.studentName,
+          studentId: this.state.studentId,
+          caseId: caseId,
+          caseNumber: this.state.currentCase ? this.state.currentCase.number : null,
+          caseTitle: this.state.currentCase ? this.state.currentCase.title : null,
+          score: score.total,
+          verdict: score.verdict,
+          elapsedSeconds: score.elapsedSeconds,
+          achievements: score.achievements.map(a => a.id),
+          timestamp: new Date().toISOString()
+        });
+        localStorage.setItem('drc-leaderboard', JSON.stringify(lb));
+      } catch(e) {}
+    },
+
+    getLeaderboard() {
+      try { return JSON.parse(localStorage.getItem('drc-leaderboard') || '[]'); } catch(e) { return []; }
     },
 
     // --- Detailed Results for Instructor ---
@@ -297,6 +468,7 @@
         const results = JSON.parse(localStorage.getItem('drc-detailed-results') || '[]');
         results.push({
           studentName: this.state.studentName,
+          studentId: this.state.studentId,
           caseId, caseNumber: this.state.currentCase ? this.state.currentCase.number : null,
           caseTitle: this.state.currentCase ? this.state.currentCase.title : null,
           timestamp: new Date().toISOString(),
