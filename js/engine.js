@@ -32,21 +32,39 @@
     },
   
     // --- Class Access Codes (SHA-256 hashed) ---
-    // IMPORTANT: This is the ONLY place class codes are defined.
-    // To add a class: use the instructor panel hash generator, then paste the line here.
-    // To remove a class: delete or comment out the line.
-    // To change a code: delete the old line, add a new one.
-    //
-    // HOW TO GENERATE A HASH:
-    //   1. Open the instructor panel (?panel=instructor)
-    //   2. Use the "Generate Hash" tool — it gives you the exact line to paste here
-    //   OR: run in terminal: echo -n "YOURCODE" | sha256sum
-    //
+    // Default classes are hardcoded here. Instructors can create additional
+    // classes via the instructor panel — it generates a shareable URL.
     _classCodes: {
       'bd23fbda7155631026c89ce45c26c85cc6b74d10237c156dda4d1859ba176813': 'Class A',   // VIENNA2026
       '7f85a8ac20935d4aac3017eeb45edd067d35122a4d38bd5c1786ff708f0efd2d': 'Class B',   // DIGLAW2026
-      // To add Class C, paste a new line here like:
-      // 'HASH_HERE': 'Class C',   // YOURCODE
+    },
+
+    // Merges hardcoded + URL-imported classes
+    getAllClassCodes() {
+      const codes = { ...this._classCodes };
+      try {
+        const imported = JSON.parse(localStorage.getItem('drc-imported-classes') || '{}');
+        Object.assign(codes, imported);
+      } catch(e) {}
+      return codes;
+    },
+
+    // Import classes from URL parameter
+    async importClassesFromURL(encodedData) {
+      try {
+        const json = atob(encodedData);
+        const classes = JSON.parse(json); // [{name:'Class C', code:'EUROLAW2026'}, ...]
+        const imported = {};
+        for (const cls of classes) {
+          const hash = await this._sha256(cls.code.toUpperCase());
+          imported[hash] = cls.name;
+        }
+        // Merge with any existing imported classes
+        const existing = JSON.parse(localStorage.getItem('drc-imported-classes') || '{}');
+        Object.assign(existing, imported);
+        localStorage.setItem('drc-imported-classes', JSON.stringify(existing));
+        return Object.values(imported);
+      } catch(e) { return []; }
     },
 
     async _sha256(text) {
@@ -74,10 +92,10 @@
     },
 
     // --- Panel Access Passphrases (SHA-256 hashed) ---
-    // Instructor passphrase: PROF2026
-    _instructorHash: '8509bbd7680391aceb4a2ed1ca6ed5685e84d85076b840b8199b1147bb252fb2',
-    // Developer passphrase: DEVADMIN2026
-    _developerHash: '0f2ebe157878faf335c0b74359afce43c1f16fb9dd149d8a93b2f921249cdef0',
+    // Instructor passphrase: EISENBERGER2026DRC
+    _instructorHash: '014d027f21fe4c6135f767fce8ee24df5996807544ca67160cd58e6feda1cbdf',
+    // Developer passphrase: PRATIBHDEV2026DRC
+    _developerHash: '1c727f94e8537246864c94a94bacd4e592aec9e7e96885ea9f7fc792c38f8d9a',
 
     // --- Initialization ---
     init() {
@@ -86,13 +104,26 @@
 
       const params = new URLSearchParams(window.location.search);
 
-      // Instructor panel — requires passphrase
+      // Instructor/developer panel
       if (params.has('panel')) {
         this._promptPanelAccess(params.get('panel'));
         return;
       }
 
-      // Check if already authenticated as student
+      // Import classes from URL parameter (?c=BASE64DATA)
+      const classData = params.get('c');
+      if (classData) {
+        this.importClassesFromURL(classData).then(() => {
+          // Clean URL so the long ?c= doesn't stay in the address bar
+          window.history.replaceState({}, '', window.location.pathname);
+          this._continueInit();
+        });
+      } else {
+        this._continueInit();
+      }
+    },
+
+    _continueInit() {
       const authed = localStorage.getItem('drc-access-granted');
       if (authed && this.state.studentName) {
         this.showScreen('dashboard');
@@ -103,8 +134,7 @@
           Screens.initFeedbackButton();
         });
       }
-
-      console.log('Digital Rights Courtroom v8 initialized.');
+      console.log('Digital Rights Courtroom v9 initialized.');
     },
 
     _promptPanelAccess(panelType) {
@@ -202,7 +232,7 @@
           const code = (codeInput.value || '').trim().toUpperCase();
           if (!code) { errorEl.textContent = 'Please enter the course access code.'; codeInput.focus(); return; }
           const hash = await this._sha256(code);
-          const matchedClass = this._classCodes[hash];
+          const matchedClass = this.getAllClassCodes()[hash];
           if (!matchedClass) {
             errorEl.textContent = 'Incorrect access code. Contact your instructor.';
             codeInput.focus();
