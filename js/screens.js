@@ -1209,14 +1209,18 @@
           <div class="taxonomy-framework">
             <h3><span class="framework-tag ${meta.tagClass}">${meta.label}</span></h3>
             <div class="taxonomy-list">
-              ${grouped[fw].map(t => `
-                <div class="taxonomy-item ${t.playable ? 'playable' : 'locked'}">
+              ${grouped[fw].map(t => {
+                const caseData = CASES.find(c => c.number === t.id);
+                const hasContent = caseData && caseData.evidence && caseData.evidence.length > 0;
+                const caseId = caseData ? caseData.id : null;
+                return `
+                <div class="taxonomy-item ${hasContent ? 'playable' : 'locked'}">
                   <span class="taxonomy-id">${t.id}.</span>
                   <span class="taxonomy-title">${t.title}</span>
                   <span class="taxonomy-articles">${t.articles}</span>
-                  ${t.playable ? `<button class="btn btn-ghost btn-sm" onclick="Game.startCase('${t.caseId}')">Play</button>` : '<span class="taxonomy-status">Coming Soon</span>'}
+                  ${hasContent && caseId ? `<button class="btn btn-ghost btn-sm" onclick="Game.startCase('${caseId}')">Play</button>` : '<span class="taxonomy-status">Coming Soon</span>'}
                 </div>
-              `).join('')}
+              `}).join('')}
             </div>
           </div>
         `;
@@ -1618,38 +1622,51 @@
         </div>
 
         <div style="background:rgba(99,102,241,0.06);border:1px solid rgba(99,102,241,0.2);border-radius:8px;padding:1rem 1.25rem;margin-bottom:2rem;">
-          <h3 style="margin:0 0 0.75rem;color:#818cf8;font-size:0.95rem;">\uD83D\uDD12 Class Codes</h3>
+          <h3 style="margin:0 0 0.5rem;color:#818cf8;font-size:0.95rem;">\uD83D\uDD12 Class Management</h3>
 
           <div style="font-size:0.82rem;margin-bottom:1rem;">
+            <p style="color:var(--text-secondary);margin-bottom:0.5rem;">Active classes:</p>
             <table class="instructor-table" style="font-size:0.82rem;">
-              <thead><tr><th>Class</th><th>Status</th></tr></thead>
+              <thead><tr><th>Class</th><th>Source</th></tr></thead>
               <tbody>
                 ${Object.values(Game._classCodes).map(cls =>
-                  `<tr><td><strong>${cls}</strong></td><td style="color:#4ade80;">\u2705 Active</td></tr>`
-                ).join('') || '<tr><td colspan="2" style="text-align:center;">No classes configured.</td></tr>'}
+                  `<tr><td><strong>${cls}</strong></td><td style="color:#4ade80;">Built-in</td></tr>`
+                ).join('')}
+                ${(() => {
+                  try {
+                    const imp = JSON.parse(localStorage.getItem('drc-imported-classes') || '{}');
+                    return Object.values(imp).filter(c => !Object.values(Game._classCodes).includes(c)).map(cls =>
+                      `<tr><td><strong>${cls}</strong></td><td style="color:#818cf8;">Added via link</td></tr>`
+                    ).join('');
+                  } catch(e) { return ''; }
+                })()}
               </tbody>
             </table>
           </div>
 
           <div style="border-top:1px solid rgba(255,255,255,0.06);padding-top:0.75rem;">
-            <p style="font-size:0.82rem;color:var(--text-secondary);margin-bottom:0.5rem;"><strong>Add or remove a class:</strong></p>
+            <p style="font-size:0.88rem;color:var(--text-primary);font-weight:600;margin-bottom:0.5rem;">Create a New Class</p>
             <p style="font-size:0.78rem;color:var(--text-secondary);margin-bottom:0.75rem;line-height:1.5;">
-              Step 1: Type a class name and code below, click "Generate". It will produce the exact line of code.<br>
-              Step 2: Open <code>js/engine.js</code> on GitHub (pencil icon to edit). Find <code>_classCodes</code>.<br>
-              Step 3: Paste the new line. Click "Commit changes".<br>
-              Step 4: Wait 1\u20132 minutes. The new code works on all devices.<br>
-              To remove a class: delete its line from <code>_classCodes</code> and commit.
+              Enter a class name and an access code. Click "Create Link". Share the generated link with students (on Moodle, by email, or on screen). When students open the link, the new class is instantly registered on their device.
             </p>
-            <div style="display:flex;gap:0.5rem;flex-wrap:wrap;align-items:center;">
-              <input type="text" id="new-class-label" placeholder="Class name (e.g. Class C)" style="padding:0.45rem 0.65rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);border-radius:6px;color:var(--text-primary);font-size:0.82rem;width:130px;box-sizing:border-box;">
-              <input type="text" id="new-access-code" placeholder="Access code (e.g. EUROLAW2026)" style="padding:0.45rem 0.65rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);border-radius:6px;color:var(--text-primary);font-size:0.82rem;flex:1;min-width:150px;box-sizing:border-box;">
-              <button class="btn btn-secondary" onclick="Screens._generateClassHash()" style="white-space:nowrap;font-size:0.82rem;">Generate</button>
+
+            <div id="class-builder-entries">
+              <div class="class-builder-row" style="display:flex;gap:0.5rem;margin-bottom:0.4rem;flex-wrap:wrap;">
+                <input type="text" class="class-builder-name" placeholder="Class name (e.g. Tues 10am)" style="padding:0.45rem 0.65rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);border-radius:6px;color:var(--text-primary);font-size:0.82rem;width:160px;box-sizing:border-box;">
+                <input type="text" class="class-builder-code" placeholder="Access code (e.g. TUES2026)" style="padding:0.45rem 0.65rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);border-radius:6px;color:var(--text-primary);font-size:0.82rem;flex:1;min-width:140px;box-sizing:border-box;">
+              </div>
             </div>
-            <div id="hash-output" style="margin-top:0.75rem;display:none;">
-              <p style="font-size:0.78rem;color:var(--text-secondary);margin-bottom:0.35rem;">Copy this line into <code>_classCodes</code> in engine.js:</p>
-              <div style="background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:0.6rem 0.8rem;font-family:monospace;font-size:0.78rem;color:#4ade80;word-break:break-all;" id="hash-code-line"></div>
-              <button class="btn btn-ghost" onclick="Screens._copyHashLine()" style="margin-top:0.5rem;font-size:0.78rem;">\uD83D\uDCCB Copy to Clipboard</button>
-              <p id="hash-copy-msg" style="font-size:0.72rem;color:var(--accent-gold);margin-top:0.25rem;min-height:1rem;"></p>
+            <div style="display:flex;gap:0.5rem;margin-top:0.5rem;">
+              <button class="btn btn-ghost" onclick="Screens._addClassRow()" style="font-size:0.78rem;">+ Add Another Class</button>
+              <button class="btn btn-primary" onclick="Screens._generateClassLink()" style="font-size:0.82rem;">Create Link</button>
+            </div>
+
+            <div id="class-link-output" style="margin-top:1rem;display:none;">
+              <p style="font-size:0.82rem;color:#4ade80;font-weight:600;margin-bottom:0.4rem;">\u2705 Link Generated!</p>
+              <p style="font-size:0.78rem;color:var(--text-secondary);margin-bottom:0.4rem;">Share this link with students. They open it once and the class is registered on their device:</p>
+              <div style="background:rgba(0,0,0,0.3);border:1px solid rgba(74,222,128,0.3);border-radius:6px;padding:0.6rem 0.8rem;font-size:0.78rem;color:#4ade80;word-break:break-all;cursor:pointer;" id="class-link-url" onclick="Screens._copyClassLink()"></div>
+              <button class="btn btn-secondary" onclick="Screens._copyClassLink()" style="margin-top:0.5rem;font-size:0.78rem;">\uD83D\uDCCB Copy Link</button>
+              <p id="class-link-msg" style="font-size:0.72rem;color:var(--accent-gold);margin-top:0.25rem;min-height:1rem;"></p>
             </div>
           </div>
         </div>
@@ -1755,35 +1772,60 @@
       container.appendChild(screen);
     },
 
-    async _generateClassHash() {
-      const labelInput = document.getElementById('new-class-label');
-      const codeInput = document.getElementById('new-access-code');
-      const label = (labelInput.value || '').trim();
-      const code = (codeInput.value || '').trim().toUpperCase();
-      if (!label) { alert('Enter a class name.'); return; }
-      if (!code || code.length < 4) { alert('Access code must be at least 4 characters.'); return; }
-      
-      const hash = await Game._sha256(code);
-      const line = `      '${hash}': '${label}',   // ${code}`;
-      
-      document.getElementById('hash-code-line').textContent = line;
-      document.getElementById('hash-output').style.display = 'block';
-      this._lastHashLine = line;
+    _addClassRow() {
+      const container = document.getElementById('class-builder-entries');
+      const row = document.createElement('div');
+      row.className = 'class-builder-row';
+      row.style.cssText = 'display:flex;gap:0.5rem;margin-bottom:0.4rem;flex-wrap:wrap;';
+      row.innerHTML = `
+        <input type="text" class="class-builder-name" placeholder="Class name" style="padding:0.45rem 0.65rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);border-radius:6px;color:var(--text-primary);font-size:0.82rem;width:160px;box-sizing:border-box;">
+        <input type="text" class="class-builder-code" placeholder="Access code" style="padding:0.45rem 0.65rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);border-radius:6px;color:var(--text-primary);font-size:0.82rem;flex:1;min-width:140px;box-sizing:border-box;">
+        <button class="btn btn-ghost" onclick="this.parentElement.remove()" style="font-size:0.75rem;color:#f87171;padding:0.3rem 0.5rem;">\u2715</button>
+      `;
+      container.appendChild(row);
     },
 
-    async _copyHashLine() {
-      const msg = document.getElementById('hash-copy-msg');
+    _generateClassLink() {
+      const rows = document.querySelectorAll('.class-builder-row');
+      const classes = [];
+      let hasError = false;
+
+      rows.forEach(row => {
+        const name = row.querySelector('.class-builder-name').value.trim();
+        const code = row.querySelector('.class-builder-code').value.trim().toUpperCase();
+        if (!name || !code) { hasError = true; return; }
+        if (code.length < 4) { hasError = true; return; }
+        classes.push({ name, code });
+      });
+
+      if (hasError || classes.length === 0) {
+        alert('Please fill in all class name and code fields. Codes must be at least 4 characters.');
+        return;
+      }
+
+      // Encode as base64
+      const json = JSON.stringify(classes);
+      const encoded = btoa(json);
+      const baseURL = window.location.origin + window.location.pathname.replace(/\?.*$/, '');
+      const link = baseURL + '?c=' + encoded;
+
+      this._lastClassLink = link;
+      document.getElementById('class-link-url').textContent = link;
+      document.getElementById('class-link-output').style.display = 'block';
+    },
+
+    async _copyClassLink() {
+      const msg = document.getElementById('class-link-msg');
       try {
-        await navigator.clipboard.writeText(this._lastHashLine);
-        msg.textContent = 'Copied! Now paste it into _classCodes in engine.js on GitHub.';
+        await navigator.clipboard.writeText(this._lastClassLink);
+        msg.textContent = 'Link copied! Share it with your students.';
       } catch(e) {
-        // Fallback: select the text
-        const el = document.getElementById('hash-code-line');
+        const el = document.getElementById('class-link-url');
         const range = document.createRange();
         range.selectNodeContents(el);
         window.getSelection().removeAllRanges();
         window.getSelection().addRange(range);
-        msg.textContent = 'Text selected. Press Ctrl+C to copy, then paste into engine.js.';
+        msg.textContent = 'Text selected \u2014 press Ctrl+C to copy.';
       }
     },
 
