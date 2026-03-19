@@ -45,6 +45,7 @@
     _classCodes: {
       'bd23fbda7155631026c89ce45c26c85cc6b74d10237c156dda4d1859ba176813': 'Class A',   // VIENNA2026
       '7f85a8ac20935d4aac3017eeb45edd067d35122a4d38bd5c1786ff708f0efd2d': 'Class B',   // DIGLAW2026
+      '86546ddf187e4bc752092efc749a3d448eb3fbb1ae41d1da637b54d315aab092': 'Rafael class',   // RAFA1234
       // To add Class C, paste a new line here like:
       // 'HASH_HERE': 'Class C',   // YOURCODE
     },
