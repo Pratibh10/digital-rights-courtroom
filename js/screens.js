@@ -1608,7 +1608,7 @@
         <div class="screen-header">
           <img src="img/uni-vienna-logo.png" alt="" style="height:40px;opacity:0.8;margin-bottom:0.5rem;" onerror="this.style.display='none'">
           <h1>\uD83C\uDF93 Instructor Panel</h1>
-          <p class="subtitle">Student performance overview. Access via <code>?instructor=true</code></p>
+          <p class="subtitle">Student performance overview. Access via <code>?panel=instructor</code></p>
         </div>
 
         <div style="display:flex;gap:0.75rem;margin-bottom:2rem;flex-wrap:wrap;">
@@ -1618,21 +1618,46 @@
         </div>
 
         <div style="background:rgba(248,113,113,0.06);border:1px solid rgba(248,113,113,0.2);border-radius:8px;padding:1rem 1.25rem;margin-bottom:2rem;">
-          <h3 style="margin:0 0 0.5rem;color:#f87171;font-size:0.95rem;">\uD83D\uDD12 Session & Class Management</h3>
-          <p style="font-size:0.82rem;color:var(--text-secondary);margin-bottom:0.75rem;">
-            Each class has its own access code. To add a new class or change an existing code, generate a SHA-256 hash and update <code>_classCodes</code> in engine.js.
-          </p>
-          <div style="font-size:0.8rem;color:var(--text-secondary);margin-bottom:0.75rem;padding:0.5rem 0.75rem;background:rgba(255,255,255,0.03);border-radius:6px;">
-            <strong>Current class codes:</strong><br>
-            ${Object.entries(Game._classCodes).map(([h, c]) => `${c}: hash ${h.substr(0, 10)}...`).join('<br>')}
+          <h3 style="margin:0 0 0.5rem;color:#f87171;font-size:0.95rem;">\uD83D\uDD12 Class Management</h3>
+
+          <div style="font-size:0.8rem;margin-bottom:0.75rem;">
+            <table class="instructor-table" style="font-size:0.8rem;">
+              <thead><tr><th>Class</th><th>Status</th><th>Action</th></tr></thead>
+              <tbody>
+                ${(() => {
+                  const codes = Game.getClassCodes();
+                  const revokedRaw = JSON.parse(localStorage.getItem('drc-revoked-classes') || '[]');
+                  // Get all known classes (active + revoked)
+                  const allKnown = new Set(Object.values(codes));
+                  revokedRaw.forEach(c => allKnown.add(c));
+                  // Also include from default codes
+                  Object.values(Game._defaultClassCodes).forEach(c => allKnown.add(c));
+                  let rows = '';
+                  [...allKnown].sort().forEach(cls => {
+                    const isActive = Object.values(codes).includes(cls);
+                    const status = isActive
+                      ? '<span style="color:#4ade80;">\u2705 Active</span>'
+                      : '<span style="color:#f87171;">\u274C Revoked</span>';
+                    const action = isActive
+                      ? `<button class="btn btn-ghost" style="font-size:0.75rem;padding:0.25rem 0.5rem;color:#f87171;" onclick="Game.revokeClass('${cls}');location.reload();">Revoke</button>`
+                      : `<button class="btn btn-ghost" style="font-size:0.75rem;padding:0.25rem 0.5rem;color:#4ade80;" onclick="Game.unrevokeClass('${cls}');location.reload();">Reactivate</button>`;
+                    rows += '<tr><td><strong>' + cls + '</strong></td><td>' + status + '</td><td>' + action + '</td></tr>';
+                  });
+                  return rows || '<tr><td colspan="3" style="text-align:center;">No classes configured.</td></tr>';
+                })()}
+              </tbody>
+            </table>
           </div>
-          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;align-items:center;">
-            <input type="text" id="new-class-label" placeholder="Class name (e.g. Class C)" style="padding:0.5rem 0.75rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);border-radius:6px;color:var(--text-primary);font-size:0.85rem;width:140px;box-sizing:border-box;">
-            <input type="text" id="new-access-code" placeholder="New code (e.g. EUROLAW2026)" style="padding:0.5rem 0.75rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);border-radius:6px;color:var(--text-primary);font-size:0.85rem;flex:1;min-width:160px;box-sizing:border-box;">
-            <button class="btn btn-secondary" onclick="Screens._addClassCode()" style="white-space:nowrap;">Generate Hash</button>
-            <button class="btn btn-ghost" onclick="Screens._revokeAllAccess()" style="white-space:nowrap;color:#f87171;">Revoke All Access</button>
+
+          <div style="border-top:1px solid rgba(255,255,255,0.06);padding-top:0.75rem;margin-top:0.5rem;">
+            <p style="font-size:0.78rem;color:var(--text-secondary);margin-bottom:0.5rem;"><strong>Add a new class</strong> (takes effect immediately \u2014 no code changes needed):</p>
+            <div style="display:flex;gap:0.5rem;flex-wrap:wrap;align-items:center;">
+              <input type="text" id="new-class-label" placeholder="Class name (e.g. Class C)" style="padding:0.45rem 0.65rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);border-radius:6px;color:var(--text-primary);font-size:0.82rem;width:130px;box-sizing:border-box;">
+              <input type="text" id="new-access-code" placeholder="Access code (e.g. EUROLAW2026)" style="padding:0.45rem 0.65rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);border-radius:6px;color:var(--text-primary);font-size:0.82rem;flex:1;min-width:150px;box-sizing:border-box;">
+              <button class="btn btn-secondary" onclick="Screens._addClassCode()" style="white-space:nowrap;font-size:0.82rem;">Add Class</button>
+            </div>
+            <p id="access-code-msg" style="font-size:0.78rem;margin:0.5rem 0 0;min-height:1rem;color:var(--accent-gold);"></p>
           </div>
-          <p id="access-code-msg" style="font-size:0.78rem;margin:0.5rem 0 0;min-height:1rem;color:var(--accent-gold);"></p>
         </div>
 
         <div class="instructor-summary-bar">
@@ -1657,9 +1682,9 @@
           <h3 style="margin:0 0 0.5rem;">How to collect data</h3>
           <p style="font-size:0.85rem;color:var(--text-secondary);line-height:1.6;">
             Data is stored in each student\u2019s browser. To collect:<br>
-            \u2022 <strong>In class:</strong> Open <code>?instructor=true</code> on their device<br>
-            \u2022 <strong>Remote:</strong> Students open <code>?instructor=true</code>, click Export, and email you the file<br>
-            \u2022 <strong>Developer feedback:</strong> Available at <code>?dev=true</code> (separate from this panel)
+            \u2022 <strong>In class:</strong> Open <code>?panel=instructor</code> on their device<br>
+            \u2022 <strong>Remote:</strong> Students open <code>?panel=instructor</code>, click Export, and email you the file<br>
+            \u2022 <strong>Developer feedback:</strong> Available at <code>?panel=dev</code> (separate from this panel)
           </p>
         </div>
       `;
@@ -1697,7 +1722,7 @@
       screen.innerHTML = `
         <div class="screen-header">
           <h1>\uD83D\uDEE0\uFE0F Developer Panel</h1>
-          <p class="subtitle">Bug reports, feedback flags, and raw data. Access via <code>?dev=true</code></p>
+          <p class="subtitle">Bug reports, feedback flags, and raw data. Access via <code>?panel=dev</code></p>
         </div>
 
         <div style="display:flex;gap:0.75rem;margin-bottom:2rem;flex-wrap:wrap;">
@@ -1741,18 +1766,18 @@
       const codeInput = document.getElementById('new-access-code');
       const msg = document.getElementById('access-code-msg');
       const label = (labelInput.value || '').trim();
-      const code = (codeInput.value || '').trim().toUpperCase();
+      const code = (codeInput.value || '').trim();
       if (!label) { msg.style.color = '#f87171'; msg.textContent = 'Enter a class name.'; return; }
       if (!code || code.length < 4) { msg.style.color = '#f87171'; msg.textContent = 'Code must be at least 4 characters.'; return; }
-      const hash = await Game._sha256(code);
+      
+      const hash = await Game.addClassCode(code, label);
       msg.style.color = '#4ade80';
-      msg.textContent = `Hash for "${label}" (code: ${code}): '${hash}': '${label}'  — Add this line to _classCodes in engine.js.`;
-      try {
-        await navigator.clipboard.writeText(`      '${hash}': '${label}',   // ${code}`);
-        msg.textContent += ' Copied to clipboard!';
-      } catch(e) {}
+      msg.textContent = `Class "${label}" added with code "${code.toUpperCase()}". Active immediately!`;
       labelInput.value = '';
       codeInput.value = '';
+      
+      // Refresh after 1.5s to show updated table
+      setTimeout(() => location.reload(), 1500);
     },
 
     _filterByClass(className, btn) {
@@ -1768,16 +1793,6 @@
           card.style.display = 'none';
         }
       });
-    },
-
-    _revokeAllAccess() {
-      if (!confirm('This will clear the access-granted flag from THIS browser. To lock out all students, you must also change the access code hash in engine.js. Continue?')) return;
-      localStorage.removeItem('drc-access-granted');
-      const msg = document.getElementById('access-code-msg');
-      if (msg) {
-        msg.style.color = '#fbbf24';
-        msg.textContent = 'Access revoked on this device. Change the code hash in engine.js to lock out all students.';
-      }
     },
 
     _downloadCSV() {

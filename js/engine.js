@@ -32,12 +32,60 @@
     },
   
     // --- Access Codes (one per class, SHA-256 hashed) ---
-    // Each code maps to a class name. Students in different classes get different codes.
-    // To add/change codes: hash the code at https://emn178.github.io/online-tools/sha256.html
-    // then add it below with the class label.
-    _classCodes: {
+    // Default codes are hardcoded below. Additional codes can be added
+    // live from the instructor panel (stored in localStorage).
+    _defaultClassCodes: {
       'bd23fbda7155631026c89ce45c26c85cc6b74d10237c156dda4d1859ba176813': 'Class A',   // VIENNA2026
       '7f85a8ac20935d4aac3017eeb45edd067d35122a4d38bd5c1786ff708f0efd2d': 'Class B',   // DIGLAW2026
+    },
+
+    // Returns merged map of hardcoded + localStorage codes
+    getClassCodes() {
+      const codes = { ...this._defaultClassCodes };
+      try {
+        const extra = JSON.parse(localStorage.getItem('drc-extra-class-codes') || '{}');
+        Object.assign(codes, extra);
+      } catch(e) {}
+      // Filter out revoked classes
+      try {
+        const revoked = JSON.parse(localStorage.getItem('drc-revoked-classes') || '[]');
+        revoked.forEach(cls => {
+          Object.keys(codes).forEach(h => { if (codes[h] === cls) delete codes[h]; });
+        });
+      } catch(e) {}
+      return codes;
+    },
+
+    async addClassCode(code, className) {
+      const hash = await this._sha256(code.toUpperCase());
+      try {
+        const extra = JSON.parse(localStorage.getItem('drc-extra-class-codes') || '{}');
+        extra[hash] = className;
+        localStorage.setItem('drc-extra-class-codes', JSON.stringify(extra));
+      } catch(e) {}
+      // Unrevoke if previously revoked
+      try {
+        let revoked = JSON.parse(localStorage.getItem('drc-revoked-classes') || '[]');
+        revoked = revoked.filter(c => c !== className);
+        localStorage.setItem('drc-revoked-classes', JSON.stringify(revoked));
+      } catch(e) {}
+      return hash;
+    },
+
+    revokeClass(className) {
+      try {
+        const revoked = JSON.parse(localStorage.getItem('drc-revoked-classes') || '[]');
+        if (!revoked.includes(className)) revoked.push(className);
+        localStorage.setItem('drc-revoked-classes', JSON.stringify(revoked));
+      } catch(e) {}
+    },
+
+    unrevokeClass(className) {
+      try {
+        let revoked = JSON.parse(localStorage.getItem('drc-revoked-classes') || '[]');
+        revoked = revoked.filter(c => c !== className);
+        localStorage.setItem('drc-revoked-classes', JSON.stringify(revoked));
+      } catch(e) {}
     },
 
     async _sha256(text) {
@@ -64,24 +112,26 @@
       return false;
     },
 
+    // --- Panel Access Passphrases (SHA-256 hashed) ---
+    // Instructor passphrase: PROF2026
+    _instructorHash: '8509bbd7680391aceb4a2ed1ca6ed5685e84d85076b840b8199b1147bb252fb2',
+    // Developer passphrase: DEVADMIN2026
+    _developerHash: '0f2ebe157878faf335c0b74359afce43c1f16fb9dd149d8a93b2f921249cdef0',
+
     // --- Initialization ---
     init() {
       this.loadProgress();
       this.loadStudentIdentity();
 
       const params = new URLSearchParams(window.location.search);
-      if (params.get('instructor') === 'true') {
-        this.showScreen('instructor');
-        Screens.initFeedbackButton();
-        return;
-      }
-      if (params.get('dev') === 'true') {
-        this.showScreen('developer');
-        Screens.initFeedbackButton();
+
+      // Instructor panel — requires passphrase
+      if (params.has('panel')) {
+        this._promptPanelAccess(params.get('panel'));
         return;
       }
 
-      // Check if already authenticated
+      // Check if already authenticated as student
       const authed = localStorage.getItem('drc-access-granted');
       if (authed && this.state.studentName) {
         this.showScreen('dashboard');
@@ -93,7 +143,54 @@
         });
       }
 
-      console.log('Digital Rights Courtroom v7 initialized.');
+      console.log('Digital Rights Courtroom v8 initialized.');
+    },
+
+    _promptPanelAccess(panelType) {
+      const overlay = document.createElement('div');
+      overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:10000;display:flex;align-items:center;justify-content:center;padding:1rem;';
+      const label = panelType === 'dev' ? 'Developer' : 'Instructor';
+      overlay.innerHTML = `
+        <div style="background:var(--surface-card,#1e1e32);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:2rem;max-width:380px;width:100%;text-align:center;">
+          <h2 style="margin:0 0 0.75rem;color:var(--text-primary,#e4e4e7);">\uD83D\uDD12 ${label} Panel</h2>
+          <p style="color:var(--text-secondary,#8a8f98);font-size:0.85rem;margin-bottom:1.25rem;">Enter the ${label.toLowerCase()} passphrase to continue.</p>
+          <input type="password" id="panel-pass-input" placeholder="Passphrase" style="width:100%;padding:0.6rem 0.8rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);border-radius:6px;color:var(--text-primary,#e4e4e7);font-size:1rem;margin-bottom:0.5rem;box-sizing:border-box;">
+          <p id="panel-pass-error" style="color:#f87171;font-size:0.8rem;min-height:1.2rem;margin:0 0 0.5rem;"></p>
+          <div style="display:flex;gap:0.5rem;">
+            <button class="btn btn-primary" id="panel-pass-submit" style="flex:1;">Enter</button>
+            <button class="btn btn-ghost" onclick="window.location.href=window.location.pathname;" style="flex:1;">Cancel</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(overlay);
+
+      const input = document.getElementById('panel-pass-input');
+      const error = document.getElementById('panel-pass-error');
+      const btn = document.getElementById('panel-pass-submit');
+
+      const submit = async () => {
+        const pass = (input.value || '').trim();
+        if (!pass) { error.textContent = 'Enter the passphrase.'; input.focus(); return; }
+        const hash = await this._sha256(pass.toUpperCase());
+
+        if (panelType === 'dev' && hash === this._developerHash) {
+          overlay.remove();
+          this.showScreen('developer');
+          Screens.initFeedbackButton();
+        } else if (panelType !== 'dev' && hash === this._instructorHash) {
+          overlay.remove();
+          this.showScreen('instructor');
+          Screens.initFeedbackButton();
+        } else {
+          error.textContent = 'Incorrect passphrase.';
+          input.value = '';
+          input.focus();
+        }
+      };
+
+      btn.onclick = submit;
+      input.addEventListener('keydown', (e) => { if (e.key === 'Enter') submit(); });
+      setTimeout(() => input.focus(), 100);
     },
 
     // --- Combined Access Code + Student Name Prompt ---
@@ -144,7 +241,8 @@
           const code = (codeInput.value || '').trim().toUpperCase();
           if (!code) { errorEl.textContent = 'Please enter the course access code.'; codeInput.focus(); return; }
           const hash = await this._sha256(code);
-          const matchedClass = this._classCodes[hash];
+          const classCodes = this.getClassCodes();
+          const matchedClass = classCodes[hash];
           if (!matchedClass) {
             errorEl.textContent = 'Incorrect access code. Contact your instructor.';
             codeInput.focus();
