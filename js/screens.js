@@ -1617,46 +1617,40 @@
           <button class="btn btn-ghost" onclick="window.location.href=window.location.pathname;">Back to Game</button>
         </div>
 
-        <div style="background:rgba(248,113,113,0.06);border:1px solid rgba(248,113,113,0.2);border-radius:8px;padding:1rem 1.25rem;margin-bottom:2rem;">
-          <h3 style="margin:0 0 0.5rem;color:#f87171;font-size:0.95rem;">\uD83D\uDD12 Class Management</h3>
+        <div style="background:rgba(99,102,241,0.06);border:1px solid rgba(99,102,241,0.2);border-radius:8px;padding:1rem 1.25rem;margin-bottom:2rem;">
+          <h3 style="margin:0 0 0.75rem;color:#818cf8;font-size:0.95rem;">\uD83D\uDD12 Class Codes</h3>
 
-          <div style="font-size:0.8rem;margin-bottom:0.75rem;">
-            <table class="instructor-table" style="font-size:0.8rem;">
-              <thead><tr><th>Class</th><th>Status</th><th>Action</th></tr></thead>
+          <div style="font-size:0.82rem;margin-bottom:1rem;">
+            <table class="instructor-table" style="font-size:0.82rem;">
+              <thead><tr><th>Class</th><th>Status</th></tr></thead>
               <tbody>
-                ${(() => {
-                  const codes = Game.getClassCodes();
-                  const revokedRaw = JSON.parse(localStorage.getItem('drc-revoked-classes') || '[]');
-                  // Get all known classes (active + revoked)
-                  const allKnown = new Set(Object.values(codes));
-                  revokedRaw.forEach(c => allKnown.add(c));
-                  // Also include from default codes
-                  Object.values(Game._defaultClassCodes).forEach(c => allKnown.add(c));
-                  let rows = '';
-                  [...allKnown].sort().forEach(cls => {
-                    const isActive = Object.values(codes).includes(cls);
-                    const status = isActive
-                      ? '<span style="color:#4ade80;">\u2705 Active</span>'
-                      : '<span style="color:#f87171;">\u274C Revoked</span>';
-                    const action = isActive
-                      ? `<button class="btn btn-ghost" style="font-size:0.75rem;padding:0.25rem 0.5rem;color:#f87171;" onclick="Game.revokeClass('${cls}');location.reload();">Revoke</button>`
-                      : `<button class="btn btn-ghost" style="font-size:0.75rem;padding:0.25rem 0.5rem;color:#4ade80;" onclick="Game.unrevokeClass('${cls}');location.reload();">Reactivate</button>`;
-                    rows += '<tr><td><strong>' + cls + '</strong></td><td>' + status + '</td><td>' + action + '</td></tr>';
-                  });
-                  return rows || '<tr><td colspan="3" style="text-align:center;">No classes configured.</td></tr>';
-                })()}
+                ${Object.values(Game._classCodes).map(cls =>
+                  `<tr><td><strong>${cls}</strong></td><td style="color:#4ade80;">\u2705 Active</td></tr>`
+                ).join('') || '<tr><td colspan="2" style="text-align:center;">No classes configured.</td></tr>'}
               </tbody>
             </table>
           </div>
 
-          <div style="border-top:1px solid rgba(255,255,255,0.06);padding-top:0.75rem;margin-top:0.5rem;">
-            <p style="font-size:0.78rem;color:var(--text-secondary);margin-bottom:0.5rem;"><strong>Add a new class</strong> (takes effect immediately \u2014 no code changes needed):</p>
+          <div style="border-top:1px solid rgba(255,255,255,0.06);padding-top:0.75rem;">
+            <p style="font-size:0.82rem;color:var(--text-secondary);margin-bottom:0.5rem;"><strong>Add or remove a class:</strong></p>
+            <p style="font-size:0.78rem;color:var(--text-secondary);margin-bottom:0.75rem;line-height:1.5;">
+              Step 1: Type a class name and code below, click "Generate". It will produce the exact line of code.<br>
+              Step 2: Open <code>js/engine.js</code> on GitHub (pencil icon to edit). Find <code>_classCodes</code>.<br>
+              Step 3: Paste the new line. Click "Commit changes".<br>
+              Step 4: Wait 1\u20132 minutes. The new code works on all devices.<br>
+              To remove a class: delete its line from <code>_classCodes</code> and commit.
+            </p>
             <div style="display:flex;gap:0.5rem;flex-wrap:wrap;align-items:center;">
               <input type="text" id="new-class-label" placeholder="Class name (e.g. Class C)" style="padding:0.45rem 0.65rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);border-radius:6px;color:var(--text-primary);font-size:0.82rem;width:130px;box-sizing:border-box;">
               <input type="text" id="new-access-code" placeholder="Access code (e.g. EUROLAW2026)" style="padding:0.45rem 0.65rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);border-radius:6px;color:var(--text-primary);font-size:0.82rem;flex:1;min-width:150px;box-sizing:border-box;">
-              <button class="btn btn-secondary" onclick="Screens._addClassCode()" style="white-space:nowrap;font-size:0.82rem;">Add Class</button>
+              <button class="btn btn-secondary" onclick="Screens._generateClassHash()" style="white-space:nowrap;font-size:0.82rem;">Generate</button>
             </div>
-            <p id="access-code-msg" style="font-size:0.78rem;margin:0.5rem 0 0;min-height:1rem;color:var(--accent-gold);"></p>
+            <div id="hash-output" style="margin-top:0.75rem;display:none;">
+              <p style="font-size:0.78rem;color:var(--text-secondary);margin-bottom:0.35rem;">Copy this line into <code>_classCodes</code> in engine.js:</p>
+              <div style="background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:0.6rem 0.8rem;font-family:monospace;font-size:0.78rem;color:#4ade80;word-break:break-all;" id="hash-code-line"></div>
+              <button class="btn btn-ghost" onclick="Screens._copyHashLine()" style="margin-top:0.5rem;font-size:0.78rem;">\uD83D\uDCCB Copy to Clipboard</button>
+              <p id="hash-copy-msg" style="font-size:0.72rem;color:var(--accent-gold);margin-top:0.25rem;min-height:1rem;"></p>
+            </div>
           </div>
         </div>
 
@@ -1761,23 +1755,36 @@
       container.appendChild(screen);
     },
 
-    async _addClassCode() {
+    async _generateClassHash() {
       const labelInput = document.getElementById('new-class-label');
       const codeInput = document.getElementById('new-access-code');
-      const msg = document.getElementById('access-code-msg');
       const label = (labelInput.value || '').trim();
-      const code = (codeInput.value || '').trim();
-      if (!label) { msg.style.color = '#f87171'; msg.textContent = 'Enter a class name.'; return; }
-      if (!code || code.length < 4) { msg.style.color = '#f87171'; msg.textContent = 'Code must be at least 4 characters.'; return; }
+      const code = (codeInput.value || '').trim().toUpperCase();
+      if (!label) { alert('Enter a class name.'); return; }
+      if (!code || code.length < 4) { alert('Access code must be at least 4 characters.'); return; }
       
-      const hash = await Game.addClassCode(code, label);
-      msg.style.color = '#4ade80';
-      msg.textContent = `Class "${label}" added with code "${code.toUpperCase()}". Active immediately!`;
-      labelInput.value = '';
-      codeInput.value = '';
+      const hash = await Game._sha256(code);
+      const line = `      '${hash}': '${label}',   // ${code}`;
       
-      // Refresh after 1.5s to show updated table
-      setTimeout(() => location.reload(), 1500);
+      document.getElementById('hash-code-line').textContent = line;
+      document.getElementById('hash-output').style.display = 'block';
+      this._lastHashLine = line;
+    },
+
+    async _copyHashLine() {
+      const msg = document.getElementById('hash-copy-msg');
+      try {
+        await navigator.clipboard.writeText(this._lastHashLine);
+        msg.textContent = 'Copied! Now paste it into _classCodes in engine.js on GitHub.';
+      } catch(e) {
+        // Fallback: select the text
+        const el = document.getElementById('hash-code-line');
+        const range = document.createRange();
+        range.selectNodeContents(el);
+        window.getSelection().removeAllRanges();
+        window.getSelection().addRange(range);
+        msg.textContent = 'Text selected. Press Ctrl+C to copy, then paste into engine.js.';
+      }
     },
 
     _filterByClass(className, btn) {

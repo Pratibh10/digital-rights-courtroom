@@ -31,61 +31,22 @@
       className: null
     },
   
-    // --- Access Codes (one per class, SHA-256 hashed) ---
-    // Default codes are hardcoded below. Additional codes can be added
-    // live from the instructor panel (stored in localStorage).
-    _defaultClassCodes: {
+    // --- Class Access Codes (SHA-256 hashed) ---
+    // IMPORTANT: This is the ONLY place class codes are defined.
+    // To add a class: use the instructor panel hash generator, then paste the line here.
+    // To remove a class: delete or comment out the line.
+    // To change a code: delete the old line, add a new one.
+    //
+    // HOW TO GENERATE A HASH:
+    //   1. Open the instructor panel (?panel=instructor)
+    //   2. Use the "Generate Hash" tool — it gives you the exact line to paste here
+    //   OR: run in terminal: echo -n "YOURCODE" | sha256sum
+    //
+    _classCodes: {
       'bd23fbda7155631026c89ce45c26c85cc6b74d10237c156dda4d1859ba176813': 'Class A',   // VIENNA2026
       '7f85a8ac20935d4aac3017eeb45edd067d35122a4d38bd5c1786ff708f0efd2d': 'Class B',   // DIGLAW2026
-    },
-
-    // Returns merged map of hardcoded + localStorage codes
-    getClassCodes() {
-      const codes = { ...this._defaultClassCodes };
-      try {
-        const extra = JSON.parse(localStorage.getItem('drc-extra-class-codes') || '{}');
-        Object.assign(codes, extra);
-      } catch(e) {}
-      // Filter out revoked classes
-      try {
-        const revoked = JSON.parse(localStorage.getItem('drc-revoked-classes') || '[]');
-        revoked.forEach(cls => {
-          Object.keys(codes).forEach(h => { if (codes[h] === cls) delete codes[h]; });
-        });
-      } catch(e) {}
-      return codes;
-    },
-
-    async addClassCode(code, className) {
-      const hash = await this._sha256(code.toUpperCase());
-      try {
-        const extra = JSON.parse(localStorage.getItem('drc-extra-class-codes') || '{}');
-        extra[hash] = className;
-        localStorage.setItem('drc-extra-class-codes', JSON.stringify(extra));
-      } catch(e) {}
-      // Unrevoke if previously revoked
-      try {
-        let revoked = JSON.parse(localStorage.getItem('drc-revoked-classes') || '[]');
-        revoked = revoked.filter(c => c !== className);
-        localStorage.setItem('drc-revoked-classes', JSON.stringify(revoked));
-      } catch(e) {}
-      return hash;
-    },
-
-    revokeClass(className) {
-      try {
-        const revoked = JSON.parse(localStorage.getItem('drc-revoked-classes') || '[]');
-        if (!revoked.includes(className)) revoked.push(className);
-        localStorage.setItem('drc-revoked-classes', JSON.stringify(revoked));
-      } catch(e) {}
-    },
-
-    unrevokeClass(className) {
-      try {
-        let revoked = JSON.parse(localStorage.getItem('drc-revoked-classes') || '[]');
-        revoked = revoked.filter(c => c !== className);
-        localStorage.setItem('drc-revoked-classes', JSON.stringify(revoked));
-      } catch(e) {}
+      // To add Class C, paste a new line here like:
+      // 'HASH_HERE': 'Class C',   // YOURCODE
     },
 
     async _sha256(text) {
@@ -241,8 +202,7 @@
           const code = (codeInput.value || '').trim().toUpperCase();
           if (!code) { errorEl.textContent = 'Please enter the course access code.'; codeInput.focus(); return; }
           const hash = await this._sha256(code);
-          const classCodes = this.getClassCodes();
-          const matchedClass = classCodes[hash];
+          const matchedClass = this._classCodes[hash];
           if (!matchedClass) {
             errorEl.textContent = 'Incorrect access code. Contact your instructor.';
             codeInput.focus();
