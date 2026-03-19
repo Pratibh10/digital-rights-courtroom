@@ -27,14 +27,18 @@
   
       completedCases: {},
       studentName: null,
-      studentId: null
+      studentId: null,
+      className: null
     },
   
-    // --- Access Code (SHA-256 hash — set by instructor) ---
-    // To change the access code, replace the hash below.
-    // Generate a new hash at: https://emn178.github.io/online-tools/sha256.html
-    // Current code: VIENNA2026
-    _accessCodeHash: 'bd23fbda7155631026c89ce45c26c85cc6b74d10237c156dda4d1859ba176813',
+    // --- Access Codes (one per class, SHA-256 hashed) ---
+    // Each code maps to a class name. Students in different classes get different codes.
+    // To add/change codes: hash the code at https://emn178.github.io/online-tools/sha256.html
+    // then add it below with the class label.
+    _classCodes: {
+      'bd23fbda7155631026c89ce45c26c85cc6b74d10237c156dda4d1859ba176813': 'Class A',   // VIENNA2026
+      '7f85a8ac20935d4aac3017eeb45edd067d35122a4d38bd5c1786ff708f0efd2d': 'Class B',   // DIGLAW2026
+    },
 
     async _sha256(text) {
       const data = new TextEncoder().encode(text);
@@ -135,17 +139,20 @@
       const submit = async () => {
         errorEl.textContent = '';
 
-        // Validate access code
+        // Validate access code against class codes
         if (needsCode) {
           const code = (codeInput.value || '').trim().toUpperCase();
           if (!code) { errorEl.textContent = 'Please enter the course access code.'; codeInput.focus(); return; }
           const hash = await this._sha256(code);
-          if (hash !== this._accessCodeHash) {
+          const matchedClass = this._classCodes[hash];
+          if (!matchedClass) {
             errorEl.textContent = 'Incorrect access code. Contact your instructor.';
             codeInput.focus();
             return;
           }
+          this.state.className = matchedClass;
           localStorage.setItem('drc-access-granted', 'true');
+          localStorage.setItem('drc-class-name', matchedClass);
         }
 
         // Validate student name
@@ -206,6 +213,7 @@
       try {
         localStorage.setItem('drc-student-name', this.state.studentName);
         localStorage.setItem('drc-student-id', this.state.studentId);
+        if (this.state.className) localStorage.setItem('drc-class-name', this.state.className);
       } catch(e) {}
     },
 
@@ -213,6 +221,7 @@
       try {
         this.state.studentName = localStorage.getItem('drc-student-name') || null;
         this.state.studentId = localStorage.getItem('drc-student-id') || null;
+        this.state.className = localStorage.getItem('drc-class-name') || null;
       } catch(e) {}
     },
 
@@ -425,7 +434,8 @@
         completed: true, score: total, verdict: verdict,
         timestamp: new Date().toISOString(),
         studentName: this.state.studentName,
-        studentId: this.state.studentId
+        studentId: this.state.studentId,
+        className: this.state.className
       };
       this.saveProgress();
       this.saveDetailedResult(this.state.currentCaseId, score);
@@ -445,6 +455,7 @@
         lb.push({
           studentName: this.state.studentName,
           studentId: this.state.studentId,
+          className: this.state.className,
           caseId: caseId,
           caseNumber: this.state.currentCase ? this.state.currentCase.number : null,
           caseTitle: this.state.currentCase ? this.state.currentCase.title : null,
@@ -469,6 +480,7 @@
         results.push({
           studentName: this.state.studentName,
           studentId: this.state.studentId,
+          className: this.state.className,
           caseId, caseNumber: this.state.currentCase ? this.state.currentCase.number : null,
           caseTitle: this.state.currentCase ? this.state.currentCase.title : null,
           timestamp: new Date().toISOString(),

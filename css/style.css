@@ -2339,3 +2339,18 @@ animation: gavelGlow 6s ease-in-out infinite;
 @media (max-width: 768px) {
 .deco-gavel { display: none; }
 }
+
+/* --- Class Tag in Instructor Panel --- */
+.instructor-class-tag {
+display: inline-block;
+font-size: 0.68rem;
+font-weight: 600;
+text-transform: uppercase;
+letter-spacing: 0.04em;
+padding: 0.15rem 0.45rem;
+border-radius: 4px;
+background: rgba(99, 102, 241, 0.12);
+color: #818cf8;
+margin-left: 0.4rem;
+vertical-align: middle;
+}

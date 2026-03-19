@@ -15,8 +15,9 @@
       const completedCount = Object.keys(Game.state.completedCases).length;
       const totalCases = CASES.filter(c => c.evidence.length > 0).length;
   
+      const classLabel = Game.state.className ? ` \u2022 ${Game.state.className}` : '';
       const studentLabel = Game.state.studentName
-        ? `<div class="student-badge">\uD83C\uDF93 ${Game.state.studentName}</div>`
+        ? `<div class="student-badge">\uD83C\uDF93 ${Game.state.studentName}${classLabel}</div>`
         : '';
 
       screen.innerHTML = `
@@ -1533,17 +1534,20 @@
       const screen = document.createElement('div');
       screen.className = 'screen';
 
-      // Group results by student (using studentId if available, else name)
+      // Detect all classes
+      const allClasses = [...new Set(results.map(r => r.className || 'Unassigned'))].sort();
+
+      // Group results by student
       const students = {};
       results.forEach(r => {
         const key = r.studentId || r.studentName || 'Unknown';
         if (!students[key]) {
-          students[key] = { name: r.studentName || 'Unknown', id: r.studentId || '', attempts: [] };
+          students[key] = { name: r.studentName || 'Unknown', id: r.studentId || '', className: r.className || 'Unassigned', attempts: [] };
         }
         students[key].attempts.push(r);
       });
 
-      // Build student summary cards
+      // Build student summary cards with data-class attribute for filtering
       let studentCards = '';
       const studentKeys = Object.keys(students);
 
@@ -1582,10 +1586,10 @@
           });
 
           studentCards += `
-            <div class="instructor-student-card">
+            <div class="instructor-student-card" data-class="${stu.className}">
               <div class="instructor-student-header" onclick="this.parentElement.classList.toggle('expanded')">
                 <div class="instructor-student-info">
-                  <span class="instructor-student-name">${stu.name}</span>
+                  <span class="instructor-student-name">${stu.name} <span class="instructor-class-tag">${stu.className}</span></span>
                   <span class="instructor-student-meta">${totalCasesPlayed} case${totalCasesPlayed !== 1 ? 's' : ''} \u2022 ${totalAttempts} attempt${totalAttempts !== 1 ? 's' : ''} \u2022 Avg: ${avgScore} \u2022 Best: ${bestScore}</span>
                 </div>
                 <span class="instructor-expand-icon">\u25BC</span>
@@ -1614,13 +1618,18 @@
         </div>
 
         <div style="background:rgba(248,113,113,0.06);border:1px solid rgba(248,113,113,0.2);border-radius:8px;padding:1rem 1.25rem;margin-bottom:2rem;">
-          <h3 style="margin:0 0 0.5rem;color:#f87171;font-size:0.95rem;">\uD83D\uDD12 Session Management</h3>
+          <h3 style="margin:0 0 0.5rem;color:#f87171;font-size:0.95rem;">\uD83D\uDD12 Session & Class Management</h3>
           <p style="font-size:0.82rem;color:var(--text-secondary);margin-bottom:0.75rem;">
-            To end the current session and lock students out, change the access code. Students who already have the old code stored will be locked out next time they clear their browser data or use a new device.
+            Each class has its own access code. To add a new class or change an existing code, generate a SHA-256 hash and update <code>_classCodes</code> in engine.js.
           </p>
+          <div style="font-size:0.8rem;color:var(--text-secondary);margin-bottom:0.75rem;padding:0.5rem 0.75rem;background:rgba(255,255,255,0.03);border-radius:6px;">
+            <strong>Current class codes:</strong><br>
+            ${Object.entries(Game._classCodes).map(([h, c]) => `${c}: hash ${h.substr(0, 10)}...`).join('<br>')}
+          </div>
           <div style="display:flex;gap:0.5rem;flex-wrap:wrap;align-items:center;">
-            <input type="text" id="new-access-code" placeholder="New access code (e.g. DIGLAW2026)" style="padding:0.5rem 0.75rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);border-radius:6px;color:var(--text-primary);font-size:0.85rem;flex:1;min-width:200px;box-sizing:border-box;">
-            <button class="btn btn-secondary" onclick="Screens._changeAccessCode()" style="white-space:nowrap;">Change Code</button>
+            <input type="text" id="new-class-label" placeholder="Class name (e.g. Class C)" style="padding:0.5rem 0.75rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);border-radius:6px;color:var(--text-primary);font-size:0.85rem;width:140px;box-sizing:border-box;">
+            <input type="text" id="new-access-code" placeholder="New code (e.g. EUROLAW2026)" style="padding:0.5rem 0.75rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);border-radius:6px;color:var(--text-primary);font-size:0.85rem;flex:1;min-width:160px;box-sizing:border-box;">
+            <button class="btn btn-secondary" onclick="Screens._addClassCode()" style="white-space:nowrap;">Generate Hash</button>
             <button class="btn btn-ghost" onclick="Screens._revokeAllAccess()" style="white-space:nowrap;color:#f87171;">Revoke All Access</button>
           </div>
           <p id="access-code-msg" style="font-size:0.78rem;margin:0.5rem 0 0;min-height:1rem;color:var(--accent-gold);"></p>
@@ -1634,6 +1643,14 @@
         </div>
 
         <h2 style="margin-bottom:0.75rem;">Students (${studentKeys.length})</h2>
+
+        ${allClasses.length > 1 ? `
+        <div class="lb-tabs" style="margin-bottom:1rem;">
+          <button class="lb-tab active" onclick="Screens._filterByClass('all', this)">All Classes</button>
+          ${allClasses.map(c => `<button class="lb-tab" onclick="Screens._filterByClass('${c}', this)">${c}</button>`).join('')}
+        </div>
+        ` : ''}
+
         <div id="instructor-students">${studentCards}</div>
 
         <div style="margin-top:2rem;padding:1rem;background:rgba(255,255,255,0.03);border-radius:8px;">
@@ -1719,26 +1736,38 @@
       container.appendChild(screen);
     },
 
-    async _changeAccessCode() {
-      const input = document.getElementById('new-access-code');
+    async _addClassCode() {
+      const labelInput = document.getElementById('new-class-label');
+      const codeInput = document.getElementById('new-access-code');
       const msg = document.getElementById('access-code-msg');
-      const code = (input.value || '').trim().toUpperCase();
-      if (!code || code.length < 4) {
-        msg.style.color = '#f87171';
-        msg.textContent = 'Code must be at least 4 characters.';
-        return;
-      }
+      const label = (labelInput.value || '').trim();
+      const code = (codeInput.value || '').trim().toUpperCase();
+      if (!label) { msg.style.color = '#f87171'; msg.textContent = 'Enter a class name.'; return; }
+      if (!code || code.length < 4) { msg.style.color = '#f87171'; msg.textContent = 'Code must be at least 4 characters.'; return; }
       const hash = await Game._sha256(code);
-      Game._accessCodeHash = hash;
       msg.style.color = '#4ade80';
-      msg.textContent = 'Access code changed to: ' + code + ' (hash: ' + hash.substr(0, 12) + '...). Update _accessCodeHash in engine.js to make this permanent.';
-      input.value = '';
-
-      // Also copy to clipboard
+      msg.textContent = `Hash for "${label}" (code: ${code}): '${hash}': '${label}'  — Add this line to _classCodes in engine.js.`;
       try {
-        await navigator.clipboard.writeText("_accessCodeHash: '" + hash + "',");
-        msg.textContent += ' Hash copied to clipboard.';
+        await navigator.clipboard.writeText(`      '${hash}': '${label}',   // ${code}`);
+        msg.textContent += ' Copied to clipboard!';
       } catch(e) {}
+      labelInput.value = '';
+      codeInput.value = '';
+    },
+
+    _filterByClass(className, btn) {
+      // Toggle active tab
+      document.querySelectorAll('.lb-tabs .lb-tab').forEach(t => t.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+
+      // Show/hide student cards
+      document.querySelectorAll('.instructor-student-card').forEach(card => {
+        if (className === 'all' || card.dataset.class === className) {
+          card.style.display = '';
+        } else {
+          card.style.display = 'none';
+        }
+      });
     },
 
     _revokeAllAccess() {
