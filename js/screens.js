@@ -54,6 +54,9 @@
           <button class="btn btn-ghost" onclick="Game.showScreen('leaderboard')">
             \uD83C\uDFC6 Leaderboard
           </button>
+          <button class="btn btn-ghost" onclick="Game.downloadMyResults()">
+            \uD83D\uDCE5 Export My Results
+          </button>
           <button class="btn btn-ghost" onclick="Game.showScreen('taxonomy')">
             Scenario Library (${TAXONOMY.length} Types)
           </button>
@@ -1173,6 +1176,9 @@
           <button class="btn btn-primary btn-large" onclick="Game.goToDashboard()">
             Return to Dashboard
           </button>
+          <div style="margin-top:0.75rem;">
+            <button class="btn btn-ghost" onclick="Game.downloadMyResults()">\uD83D\uDCE5 Export My Results</button>
+          </div>
         </div>
       `;
   
@@ -1533,174 +1539,309 @@
     // ========================
     // INSTRUCTOR PANEL
     // ========================
+    // ========================
+    // INSTRUCTOR PANEL — Class-Based Dashboard
+    // ========================
     renderInstructorPanel(container) {
       const results = Game.getDetailedResults();
       const screen = document.createElement('div');
       screen.className = 'screen';
 
-      // Detect all classes
-      const allClasses = [...new Set(results.map(r => r.className || 'Unassigned'))].sort();
-
-      // Group results by student
-      const students = {};
-      results.forEach(r => {
-        const key = r.studentId || r.studentName || 'Unknown';
-        if (!students[key]) {
-          students[key] = { name: r.studentName || 'Unknown', id: r.studentId || '', className: r.className || 'Unassigned', attempts: [] };
-        }
-        students[key].attempts.push(r);
-      });
-
-      // Build student summary cards with data-class attribute for filtering
-      let studentCards = '';
-      const studentKeys = Object.keys(students);
-
-      if (studentKeys.length === 0) {
-        studentCards = '<p style="color:var(--text-secondary);text-align:center;padding:2rem;">No student results yet. Results appear after students complete cases on this device.</p>';
-      } else {
-        studentKeys.forEach(key => {
-          const stu = students[key];
-          // Group attempts by case
-          const cases = {};
-          stu.attempts.forEach(a => {
-            const ck = a.caseNumber || a.caseId;
-            if (!cases[ck]) cases[ck] = { title: a.caseTitle || '', number: a.caseNumber, attempts: [] };
-            cases[ck].attempts.push(a);
-          });
-
-          const totalCasesPlayed = Object.keys(cases).length;
-          const totalAttempts = stu.attempts.length;
-          const avgScore = Math.round(stu.attempts.reduce((s, a) => s + (a.totalScore || 0), 0) / totalAttempts);
-          const bestScore = Math.max(...stu.attempts.map(a => a.totalScore || 0));
-
-          // Build per-case rows
-          let caseRows = '';
-          Object.values(cases).sort((a, b) => (a.number || 0) - (b.number || 0)).forEach(c => {
-            const best = c.attempts.reduce((b, a) => (a.totalScore || 0) > (b.totalScore || 0) ? a : b, c.attempts[0]);
-            const vc = best.verdict === 'won' ? '#4ade80' : best.verdict === 'won_with_reservations' ? '#c9a84c' : '#f87171';
-            caseRows += `<tr>
-              <td>Case ${String(c.number || '?').padStart(2, '0')}</td>
-              <td>${c.title}</td>
-              <td><strong>${best.totalScore}/100</strong></td>
-              <td style="color:${vc}">${best.verdict}</td>
-              <td>${best.evidence ? best.evidence.earned + '/' + best.evidence.possible : ''} | ${best.crossExam ? best.crossExam.earned + '/' + best.crossExam.possible : ''} | ${best.courtroom ? best.courtroom.earned + '/' + best.courtroom.possible : ''}</td>
-              <td>${c.attempts.length}</td>
-              <td>${best.timestamp ? new Date(best.timestamp).toLocaleDateString() : ''}</td>
-            </tr>`;
-          });
-
-          studentCards += `
-            <div class="instructor-student-card" data-class="${stu.className}">
-              <div class="instructor-student-header" onclick="this.parentElement.classList.toggle('expanded')">
-                <div class="instructor-student-info">
-                  <span class="instructor-student-name">${stu.name} <span class="instructor-class-tag">${stu.className}</span></span>
-                  <span class="instructor-student-meta">${totalCasesPlayed} case${totalCasesPlayed !== 1 ? 's' : ''} \u2022 ${totalAttempts} attempt${totalAttempts !== 1 ? 's' : ''} \u2022 Avg: ${avgScore} \u2022 Best: ${bestScore}</span>
-                </div>
-                <span class="instructor-expand-icon">\u25BC</span>
-              </div>
-              <div class="instructor-student-body">
-                <table class="instructor-table">
-                  <thead><tr><th>Case</th><th>Title</th><th>Best Score</th><th>Verdict</th><th>Ev | CE | Court</th><th>Plays</th><th>Last</th></tr></thead>
-                  <tbody>${caseRows}</tbody>
-                </table>
-              </div>
-            </div>`;
-        });
-      }
+      const classNames = Object.values(Game._classCodes);
 
       screen.innerHTML = `
         <div class="screen-header">
           <img src="img/uni-vienna-logo.png" alt="" style="height:40px;opacity:0.8;margin-bottom:0.5rem;" onerror="this.style.display='none'">
-          <h1>\uD83C\uDF93 Instructor Panel</h1>
-          <p class="subtitle">Student performance overview. Access via <code>?panel=instructor</code></p>
+          <h1>\uD83C\uDF93 Instructor Dashboard</h1>
+          <p class="subtitle">Class-based performance analytics</p>
         </div>
 
-        <div style="display:flex;gap:0.75rem;margin-bottom:2rem;flex-wrap:wrap;">
+        <div style="display:flex;gap:0.75rem;margin-bottom:1.5rem;flex-wrap:wrap;">
           <button class="btn btn-primary" onclick="Game.downloadExport()">\u2B07 Export All Data (JSON)</button>
-          <button class="btn btn-secondary" onclick="Screens._downloadCSV()">Export Results (CSV)</button>
+          <button class="btn btn-secondary" onclick="Screens._instrDownloadCSV()">Export All (CSV)</button>
+          <div style="flex:1;"></div>
+          <label class="btn btn-secondary" style="cursor:pointer;">
+            \uD83D\uDCE5 Import Student Files
+            <input type="file" accept=".json" multiple style="display:none;" onchange="Screens._instrImportFiles(this.files)">
+          </label>
           <button class="btn btn-ghost" onclick="window.location.href=window.location.pathname;">Back to Game</button>
         </div>
 
-        <div style="background:rgba(99,102,241,0.06);border:1px solid rgba(99,102,241,0.2);border-radius:8px;padding:1rem 1.25rem;margin-bottom:2rem;">
-          <h3 style="margin:0 0 0.5rem;color:#818cf8;font-size:0.95rem;">\uD83D\uDD12 Class Management</h3>
+        <div id="import-msg" style="font-size:0.82rem;min-height:1rem;margin-bottom:1rem;"></div>
 
-          <div style="font-size:0.82rem;margin-bottom:1rem;">
-            <p style="color:var(--text-secondary);margin-bottom:0.5rem;">Active classes:</p>
-            <table class="instructor-table" style="font-size:0.82rem;">
-              <thead><tr><th>Class</th><th>Source</th></tr></thead>
-              <tbody>
-                ${Object.values(Game._classCodes).map(cls =>
-                  `<tr><td><strong>${cls}</strong></td><td style="color:#4ade80;">Built-in</td></tr>`
-                ).join('')}
-                ${(() => {
-                  try {
-                    const imp = JSON.parse(localStorage.getItem('drc-imported-classes') || '{}');
-                    return Object.values(imp).filter(c => !Object.values(Game._classCodes).includes(c)).map(cls =>
-                      `<tr><td><strong>${cls}</strong></td><td style="color:#818cf8;">Added via link</td></tr>`
-                    ).join('');
-                  } catch(e) { return ''; }
-                })()}
-              </tbody>
-            </table>
-          </div>
-
-          <div style="border-top:1px solid rgba(255,255,255,0.06);padding-top:0.75rem;">
-            <p style="font-size:0.88rem;color:var(--text-primary);font-weight:600;margin-bottom:0.5rem;">Create a New Class</p>
-            <p style="font-size:0.78rem;color:var(--text-secondary);margin-bottom:0.75rem;line-height:1.5;">
-              Enter a class name and an access code. Click "Create Link". Share the generated link with students (on Moodle, by email, or on screen). When students open the link, the new class is instantly registered on their device.
-            </p>
-
-            <div id="class-builder-entries">
-              <div class="class-builder-row" style="display:flex;gap:0.5rem;margin-bottom:0.4rem;flex-wrap:wrap;">
-                <input type="text" class="class-builder-name" placeholder="Class name (e.g. Tues 10am)" style="padding:0.45rem 0.65rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);border-radius:6px;color:var(--text-primary);font-size:0.82rem;width:160px;box-sizing:border-box;">
-                <input type="text" class="class-builder-code" placeholder="Access code (e.g. TUES2026)" style="padding:0.45rem 0.65rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);border-radius:6px;color:var(--text-primary);font-size:0.82rem;flex:1;min-width:140px;box-sizing:border-box;">
-              </div>
-            </div>
-            <div style="display:flex;gap:0.5rem;margin-top:0.5rem;">
-              <button class="btn btn-ghost" onclick="Screens._addClassRow()" style="font-size:0.78rem;">+ Add Another Class</button>
-              <button class="btn btn-primary" onclick="Screens._generateClassLink()" style="font-size:0.82rem;">Create Link</button>
-            </div>
-
-            <div id="class-link-output" style="margin-top:1rem;display:none;">
-              <p style="font-size:0.82rem;color:#4ade80;font-weight:600;margin-bottom:0.4rem;">\u2705 Link Generated!</p>
-              <p style="font-size:0.78rem;color:var(--text-secondary);margin-bottom:0.4rem;">Share this link with students. They open it once and the class is registered on their device:</p>
-              <div style="background:rgba(0,0,0,0.3);border:1px solid rgba(74,222,128,0.3);border-radius:6px;padding:0.6rem 0.8rem;font-size:0.78rem;color:#4ade80;word-break:break-all;cursor:pointer;" id="class-link-url" onclick="Screens._copyClassLink()"></div>
-              <button class="btn btn-secondary" onclick="Screens._copyClassLink()" style="margin-top:0.5rem;font-size:0.78rem;">\uD83D\uDCCB Copy Link</button>
-              <p id="class-link-msg" style="font-size:0.72rem;color:var(--accent-gold);margin-top:0.25rem;min-height:1rem;"></p>
-            </div>
-          </div>
+        <div class="lb-tabs" id="class-tabs" style="margin-bottom:1.5rem;">
+          <button class="lb-tab active" onclick="Screens._instrShowClass('all', this)">All Classes</button>
+          ${classNames.map(c => `<button class="lb-tab" onclick="Screens._instrShowClass('${c}', this)">${c}</button>`).join('')}
         </div>
 
-        <div class="instructor-summary-bar">
-          <div class="instructor-stat"><span class="instructor-stat-num">${studentKeys.length}</span><span class="instructor-stat-label">Students</span></div>
-          <div class="instructor-stat"><span class="instructor-stat-num">${results.length}</span><span class="instructor-stat-label">Total Attempts</span></div>
-          <div class="instructor-stat"><span class="instructor-stat-num">${results.length > 0 ? Math.round(results.reduce((s,r) => s + (r.totalScore||0), 0) / results.length) : 0}</span><span class="instructor-stat-label">Avg Score</span></div>
-          <div class="instructor-stat"><span class="instructor-stat-num">${results.filter(r => r.verdict === 'won').length}</span><span class="instructor-stat-label">Cases Won</span></div>
-        </div>
-
-        <h2 style="margin-bottom:0.75rem;">Students (${studentKeys.length})</h2>
-
-        ${allClasses.length > 1 ? `
-        <div class="lb-tabs" style="margin-bottom:1rem;">
-          <button class="lb-tab active" onclick="Screens._filterByClass('all', this)">All Classes</button>
-          ${allClasses.map(c => `<button class="lb-tab" onclick="Screens._filterByClass('${c}', this)">${c}</button>`).join('')}
-        </div>
-        ` : ''}
-
-        <div id="instructor-students">${studentCards}</div>
-
-        <div style="margin-top:2rem;padding:1rem;background:rgba(255,255,255,0.03);border-radius:8px;">
-          <h3 style="margin:0 0 0.5rem;">How to collect data</h3>
-          <p style="font-size:0.85rem;color:var(--text-secondary);line-height:1.6;">
-            Data is stored in each student\u2019s browser. To collect:<br>
-            \u2022 <strong>In class:</strong> Open <code>?panel=instructor</code> on their device<br>
-            \u2022 <strong>Remote:</strong> Students open <code>?panel=instructor</code>, click Export, and email you the file<br>
-            \u2022 <strong>Developer feedback:</strong> Available at <code>?panel=dev</code> (separate from this panel)
-          </p>
-        </div>
+        <div id="instructor-class-content"></div>
       `;
 
       container.appendChild(screen);
+
+      // Render default view
+      this._instrShowClass('all');
+    },
+
+    _instrBuildClassData(results, className) {
+      const filtered = className === 'all' ? results : results.filter(r => r.className === className);
+
+      // Group by student
+      const students = {};
+      filtered.forEach(r => {
+        const key = r.studentId || r.studentName || 'Unknown';
+        if (!students[key]) {
+          students[key] = { name: r.studentName || 'Unknown', className: r.className || '?', attempts: [] };
+        }
+        students[key].attempts.push(r);
+      });
+
+      // Per-student summary (dedup by case)
+      const studentSummaries = Object.values(students).map(stu => {
+        const cases = {};
+        stu.attempts.forEach(a => {
+          const ck = a.caseNumber || a.caseId;
+          if (!cases[ck]) cases[ck] = { number: a.caseNumber, title: a.caseTitle || '', scores: [], verdicts: [], timestamps: [] };
+          cases[ck].scores.push(a.totalScore || 0);
+          cases[ck].verdicts.push(a.verdict);
+          cases[ck].timestamps.push(a.timestamp);
+        });
+
+        const caseList = Object.values(cases);
+        const allScores = caseList.map(c => Math.max(...c.scores));
+        const totalAttempts = stu.attempts.length;
+
+        return {
+          name: stu.name,
+          className: stu.className,
+          casesPlayed: caseList.length,
+          totalAttempts: totalAttempts,
+          avgScore: allScores.length ? Math.round(allScores.reduce((a,b) => a+b, 0) / allScores.length) : 0,
+          bestScore: allScores.length ? Math.max(...allScores) : 0,
+          worstScore: allScores.length ? Math.min(...allScores) : 0,
+          lastActive: stu.attempts.length ? new Date(Math.max(...stu.attempts.map(a => new Date(a.timestamp || 0)))).toLocaleDateString() : '-',
+          cases: caseList.map(c => ({
+            number: c.number,
+            title: c.title,
+            best: Math.max(...c.scores),
+            worst: Math.min(...c.scores),
+            attempts: c.scores.length,
+            lastVerdict: c.verdicts[c.verdicts.length - 1]
+          })).sort((a,b) => (a.number||0) - (b.number||0))
+        };
+      }).sort((a,b) => b.avgScore - a.avgScore);
+
+      // Analytics
+      const allBestScores = studentSummaries.map(s => s.avgScore);
+      const brackets = [0,0,0,0]; // 0-25, 25-50, 50-75, 75-100
+      allBestScores.forEach(s => {
+        if (s >= 75) brackets[3]++;
+        else if (s >= 50) brackets[2]++;
+        else if (s >= 25) brackets[1]++;
+        else brackets[0]++;
+      });
+
+      const totalStudents = studentSummaries.length;
+      const totalAttempts = filtered.length;
+      const avgScore = totalStudents ? Math.round(allBestScores.reduce((a,b)=>a+b,0)/totalStudents) : 0;
+      const winRate = totalAttempts ? Math.round(100 * filtered.filter(r => r.verdict === 'won').length / totalAttempts) : 0;
+
+      return { studentSummaries, brackets, totalStudents, totalAttempts, avgScore, winRate };
+    },
+
+    _instrShowClass(className, btn) {
+      // Update tabs
+      if (btn) {
+        document.querySelectorAll('#class-tabs .lb-tab').forEach(t => t.classList.remove('active'));
+        btn.classList.add('active');
+      }
+
+      const results = Game.getDetailedResults();
+      const data = this._instrBuildClassData(results, className);
+      const el = document.getElementById('instructor-class-content');
+      const label = className === 'all' ? 'All Classes' : className;
+      const maxBar = Math.max(...data.brackets, 1);
+
+      el.innerHTML = `
+        <div class="instructor-summary-bar" style="margin-bottom:1.5rem;">
+          <div class="instructor-stat"><span class="instructor-stat-num">${data.totalStudents}</span><span class="instructor-stat-label">Students</span></div>
+          <div class="instructor-stat"><span class="instructor-stat-num">${data.totalAttempts}</span><span class="instructor-stat-label">Total Plays</span></div>
+          <div class="instructor-stat"><span class="instructor-stat-num">${data.avgScore}</span><span class="instructor-stat-label">Avg Score</span></div>
+          <div class="instructor-stat"><span class="instructor-stat-num">${data.winRate}%</span><span class="instructor-stat-label">Win Rate</span></div>
+        </div>
+
+        ${className === 'all' ? this._instrClassComparison(results) : ''}
+
+        <div style="background:var(--surface-card,#1e1e32);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:1.25rem;margin-bottom:1.5rem;">
+          <h3 style="margin:0 0 0.75rem;font-size:0.9rem;color:var(--text-secondary);">Score Distribution — ${label}</h3>
+          <div style="display:flex;gap:0.75rem;align-items:flex-end;height:100px;">
+            ${['0–24 (Dismissed)', '25–49 (Lost)', '50–74 (Partial)', '75–100 (Won)'].map((lbl, i) => {
+              const colors = ['#ef4444', '#f97316', '#eab308', '#4ade80'];
+              const h = data.brackets[i] ? Math.max(8, Math.round(90 * data.brackets[i] / maxBar)) : 4;
+              return `<div style="flex:1;text-align:center;">
+                <div style="font-size:0.82rem;font-weight:700;color:${colors[i]};margin-bottom:0.25rem;">${data.brackets[i]}</div>
+                <div style="height:${h}px;background:${colors[i]};border-radius:4px 4px 0 0;opacity:0.7;"></div>
+                <div style="font-size:0.65rem;color:var(--text-secondary);margin-top:0.3rem;">${lbl}</div>
+              </div>`;
+            }).join('')}
+          </div>
+        </div>
+
+        <h3 style="margin-bottom:0.75rem;">Students (${data.totalStudents})</h3>
+        ${data.totalStudents === 0 ? '<p style="color:var(--text-secondary);text-align:center;padding:2rem;">No student data yet. Ask students to click \u201CExport My Results\u201D and import their files above.</p>' : `
+        <table class="instructor-table" style="font-size:0.82rem;">
+          <thead>
+            <tr>
+              <th>Student</th>
+              ${className === 'all' ? '<th>Class</th>' : ''}
+              <th>Cases</th>
+              <th>Avg</th>
+              <th>Best</th>
+              <th>Worst</th>
+              <th>Plays</th>
+              <th>Last Active</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            ${data.studentSummaries.map((s, i) => {
+              const avgColor = s.avgScore >= 75 ? '#4ade80' : s.avgScore >= 50 ? '#eab308' : '#f87171';
+              return `<tr id="stu-row-${i}">
+                <td><strong>${s.name}</strong></td>
+                ${className === 'all' ? `<td><span class="instructor-class-tag">${s.className}</span></td>` : ''}
+                <td>${s.casesPlayed}</td>
+                <td style="color:${avgColor};font-weight:700;">${s.avgScore}</td>
+                <td>${s.bestScore}</td>
+                <td>${s.worstScore}</td>
+                <td>${s.totalAttempts}</td>
+                <td style="font-size:0.75rem;">${s.lastActive}</td>
+                <td><button class="btn btn-ghost" style="font-size:0.7rem;padding:0.2rem 0.4rem;" onclick="Screens._instrToggleStudent(${i})">\u25BC</button></td>
+              </tr>
+              <tr id="stu-detail-${i}" style="display:none;">
+                <td colspan="${className === 'all' ? 9 : 8}" style="padding:0;">
+                  <div style="background:rgba(255,255,255,0.02);padding:0.75rem;border-top:1px solid rgba(255,255,255,0.05);">
+                    <table class="instructor-table" style="font-size:0.78rem;margin:0;">
+                      <thead><tr><th>Case</th><th>Title</th><th>Best</th><th>Worst</th><th>Plays</th><th>Last Verdict</th></tr></thead>
+                      <tbody>
+                        ${s.cases.map(c => {
+                          const vc = c.lastVerdict === 'won' ? '#4ade80' : c.lastVerdict === 'won_with_reservations' ? '#eab308' : '#f87171';
+                          return `<tr>
+                            <td>Case ${String(c.number || '?').padStart(2, '0')}</td>
+                            <td>${c.title}</td>
+                            <td style="font-weight:700;">${c.best}/100</td>
+                            <td>${c.worst}/100</td>
+                            <td>${c.attempts}</td>
+                            <td style="color:${vc}">${c.lastVerdict || '-'}</td>
+                          </tr>`;
+                        }).join('')}
+                      </tbody>
+                    </table>
+                  </div>
+                </td>
+              </tr>`;
+            }).join('')}
+          </tbody>
+        </table>`}
+      `;
+    },
+
+    _instrClassComparison(results) {
+      const classNames = Object.values(Game._classCodes);
+      const classData = classNames.map(cls => {
+        const d = this._instrBuildClassData(results, cls);
+        return { name: cls, ...d };
+      }).filter(d => d.totalStudents > 0);
+
+      if (classData.length < 2) return '';
+
+      const maxAvg = Math.max(...classData.map(d => d.avgScore), 1);
+
+      return `
+        <div style="background:var(--surface-card,#1e1e32);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:1.25rem;margin-bottom:1.5rem;">
+          <h3 style="margin:0 0 0.75rem;font-size:0.9rem;color:var(--text-secondary);">Class Comparison</h3>
+          <div style="display:flex;gap:1rem;align-items:flex-end;height:120px;">
+            ${classData.map(d => {
+              const h = Math.max(12, Math.round(100 * d.avgScore / maxAvg));
+              const color = d.avgScore >= 75 ? '#4ade80' : d.avgScore >= 50 ? '#eab308' : '#f87171';
+              return `<div style="flex:1;text-align:center;">
+                <div style="font-size:0.95rem;font-weight:700;color:${color};margin-bottom:0.25rem;">${d.avgScore}</div>
+                <div style="height:${h}px;background:${color};border-radius:4px 4px 0 0;opacity:0.6;"></div>
+                <div style="font-size:0.72rem;color:var(--text-secondary);margin-top:0.3rem;">${d.name}</div>
+                <div style="font-size:0.65rem;color:var(--text-secondary);">${d.totalStudents} students</div>
+              </div>`;
+            }).join('')}
+          </div>
+          <table class="instructor-table" style="font-size:0.78rem;margin-top:1rem;">
+            <thead><tr><th>Class</th><th>Students</th><th>Avg Score</th><th>Win Rate</th><th>Total Plays</th></tr></thead>
+            <tbody>
+              ${classData.map(d => `<tr>
+                <td><strong>${d.name}</strong></td>
+                <td>${d.totalStudents}</td>
+                <td>${d.avgScore}</td>
+                <td>${d.winRate}%</td>
+                <td>${d.totalAttempts}</td>
+              </tr>`).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
+    },
+
+    _instrToggleStudent(idx) {
+      const row = document.getElementById('stu-detail-' + idx);
+      const btn = document.querySelector('#stu-row-' + idx + ' button');
+      if (row.style.display === 'none') {
+        row.style.display = '';
+        if (btn) btn.textContent = '\u25B2';
+      } else {
+        row.style.display = 'none';
+        if (btn) btn.textContent = '\u25BC';
+      }
+    },
+
+    async _instrImportFiles(files) {
+      const msg = document.getElementById('import-msg');
+      if (!files || files.length === 0) return;
+      let totalAdded = 0;
+      const names = [];
+      for (const file of files) {
+        try {
+          const result = await Game.importStudentFile(file);
+          totalAdded += result.added;
+          names.push(result.name);
+        } catch(e) {
+          msg.style.color = '#f87171';
+          msg.innerHTML = '\u274C Error in ' + file.name + ': ' + e;
+          return;
+        }
+      }
+      msg.style.color = '#4ade80';
+      msg.innerHTML = '\u2705 Imported ' + totalAdded + ' new result(s) from ' + files.length + ' file(s). Refreshing...';
+      setTimeout(() => location.reload(), 1200);
+    },
+
+    _instrDownloadCSV() {
+      const results = Game.getDetailedResults();
+      if (results.length === 0) { alert('No data to export.'); return; }
+      const headers = ['Student Name', 'Class', 'Case Number', 'Case Title', 'Score', 'Verdict', 'Evidence', 'Cross-Exam', 'Courtroom', 'Timestamp'];
+      const rows = results.map(r => [
+        r.studentName, r.className || '', r.caseNumber, r.caseTitle || '',
+        r.totalScore, r.verdict,
+        r.evidence ? r.evidence.earned + '/' + r.evidence.possible : '',
+        r.crossExam ? r.crossExam.earned + '/' + r.crossExam.possible : '',
+        r.courtroom ? r.courtroom.earned + '/' + r.courtroom.possible : '',
+        r.timestamp || ''
+      ]);
+      const csv = [headers, ...rows].map(r => r.map(c => '"' + String(c).replace(/"/g, '""') + '"').join(',')).join('\n');
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'drc-all-results-' + new Date().toISOString().slice(0,10) + '.csv';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
     },
 
     // ========================
@@ -1772,105 +1913,6 @@
       container.appendChild(screen);
     },
 
-    _addClassRow() {
-      const container = document.getElementById('class-builder-entries');
-      const row = document.createElement('div');
-      row.className = 'class-builder-row';
-      row.style.cssText = 'display:flex;gap:0.5rem;margin-bottom:0.4rem;flex-wrap:wrap;';
-      row.innerHTML = `
-        <input type="text" class="class-builder-name" placeholder="Class name" style="padding:0.45rem 0.65rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);border-radius:6px;color:var(--text-primary);font-size:0.82rem;width:160px;box-sizing:border-box;">
-        <input type="text" class="class-builder-code" placeholder="Access code" style="padding:0.45rem 0.65rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);border-radius:6px;color:var(--text-primary);font-size:0.82rem;flex:1;min-width:140px;box-sizing:border-box;">
-        <button class="btn btn-ghost" onclick="this.parentElement.remove()" style="font-size:0.75rem;color:#f87171;padding:0.3rem 0.5rem;">\u2715</button>
-      `;
-      container.appendChild(row);
-    },
 
-    _generateClassLink() {
-      const rows = document.querySelectorAll('.class-builder-row');
-      const classes = [];
-      let hasError = false;
 
-      rows.forEach(row => {
-        const name = row.querySelector('.class-builder-name').value.trim();
-        const code = row.querySelector('.class-builder-code').value.trim().toUpperCase();
-        if (!name || !code) { hasError = true; return; }
-        if (code.length < 4) { hasError = true; return; }
-        classes.push({ name, code });
-      });
-
-      if (hasError || classes.length === 0) {
-        alert('Please fill in all class name and code fields. Codes must be at least 4 characters.');
-        return;
-      }
-
-      // Encode as base64
-      const json = JSON.stringify(classes);
-      const encoded = btoa(json);
-      const baseURL = window.location.origin + window.location.pathname.replace(/\?.*$/, '');
-      const link = baseURL + '?c=' + encoded;
-
-      this._lastClassLink = link;
-      document.getElementById('class-link-url').textContent = link;
-      document.getElementById('class-link-output').style.display = 'block';
-    },
-
-    async _copyClassLink() {
-      const msg = document.getElementById('class-link-msg');
-      try {
-        await navigator.clipboard.writeText(this._lastClassLink);
-        msg.textContent = 'Link copied! Share it with your students.';
-      } catch(e) {
-        const el = document.getElementById('class-link-url');
-        const range = document.createRange();
-        range.selectNodeContents(el);
-        window.getSelection().removeAllRanges();
-        window.getSelection().addRange(range);
-        msg.textContent = 'Text selected \u2014 press Ctrl+C to copy.';
-      }
-    },
-
-    _filterByClass(className, btn) {
-      // Toggle active tab
-      document.querySelectorAll('.lb-tabs .lb-tab').forEach(t => t.classList.remove('active'));
-      if (btn) btn.classList.add('active');
-
-      // Show/hide student cards
-      document.querySelectorAll('.instructor-student-card').forEach(card => {
-        if (className === 'all' || card.dataset.class === className) {
-          card.style.display = '';
-        } else {
-          card.style.display = 'none';
-        }
-      });
-    },
-
-    _downloadCSV() {
-      const results = Game.getDetailedResults();
-      if (results.length === 0) { alert('No results to export.'); return; }
-
-      let csv = 'Student,Case Number,Case Title,Total Score,Verdict,Evidence,CrossExam,Courtroom,Date\\n';
-      results.forEach(r => {
-        csv += [
-          '"' + (r.studentName || '') + '"',
-          r.caseNumber || '',
-          '"' + (r.caseTitle || '') + '"',
-          r.totalScore,
-          r.verdict,
-          r.evidence ? r.evidence.earned + '/' + r.evidence.possible : '',
-          r.crossExam ? r.crossExam.earned + '/' + r.crossExam.possible : '',
-          r.courtroom ? r.courtroom.earned + '/' + r.courtroom.possible : '',
-          r.timestamp ? new Date(r.timestamp).toLocaleDateString() : ''
-        ].join(',') + '\\n';
-      });
-
-      const blob = new Blob([csv], { type: 'text/csv' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'drc-results-' + new Date().toISOString().slice(0,10) + '.csv';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    }
   };
