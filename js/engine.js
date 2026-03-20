@@ -31,40 +31,86 @@
       className: null
     },
   
-    // --- Class Access Codes (SHA-256 hashed) ---
-    // Default classes are hardcoded here. Instructors can create additional
-    // classes via the instructor panel — it generates a shareable URL.
-    _classCodes: {
-      'bd23fbda7155631026c89ce45c26c85cc6b74d10237c156dda4d1859ba176813': 'Class A',   // VIENNA2026
-      '7f85a8ac20935d4aac3017eeb45edd067d35122a4d38bd5c1786ff708f0efd2d': 'Class B',   // DIGLAW2026
+    // =====================================================
+    // GOOGLE APPS SCRIPT INTEGRATION
+    // =====================================================
+    // ONE URL handles everything: score collection + class config.
+    // Setup: see setup-guide.md (5 minutes, one-time)
+    //
+    // PASTE YOUR APPS SCRIPT URL HERE (the URL you get after deploying):
+    _apiURL: '',
+    //
+    // Fallback codes (used when API is not configured or unreachable):
+    _fallbackCodes: {
+      '7e02c53f3ebd46d24429b7381c5f3356d6599b6cbb5842281c273707d4a94b35': 'Class A',   // CLASSA2026
+      'b5c18f39db0a69461123267c3c1bd1d25e3742d3951153381404a288b193b4dd': 'Class B',   // CLASSB2026
+      '6ad575bd92bd14bee0529d711d08189aa94edf284eaa15ab39b59eb39cbc396c': 'Class C',   // CLASSC2026
+      'b19163f6ee95a35431927dc043db712fc11305fb48d1045e7723bd7cc0ab6951': 'Class D',   // CLASSD2026
     },
 
-    // Merges hardcoded + URL-imported classes
-    getAllClassCodes() {
-      const codes = { ...this._classCodes };
-      try {
-        const imported = JSON.parse(localStorage.getItem('drc-imported-classes') || '{}');
-        Object.assign(codes, imported);
-      } catch(e) {}
-      return codes;
-    },
+    _classCodes: {},
+    _classStatus: {},
 
-    // Import classes from URL parameter
-    async importClassesFromURL(encodedData) {
-      try {
-        const json = atob(encodedData);
-        const classes = JSON.parse(json); // [{name:'Class C', code:'EUROLAW2026'}, ...]
-        const imported = {};
-        for (const cls of classes) {
-          const hash = await this._sha256(cls.code.toUpperCase());
-          imported[hash] = cls.name;
+    // Fetch class config from Apps Script
+    async loadClassConfig() {
+      if (this._apiURL) {
+        try {
+          const resp = await fetch(this._apiURL + '?action=config', { cache: 'no-store' });
+          const data = await resp.json();
+          if (data.classes) {
+            const codes = {};
+            const status = {};
+            for (const cls of data.classes) {
+              if (cls.code) {
+                const hash = await this._sha256(cls.code.toUpperCase());
+                if (cls.status === 'ACTIVE') {
+                  codes[hash] = cls.name;
+                }
+                status[cls.name] = cls.status;
+              }
+            }
+            this._classCodes = codes;
+            this._classStatus = status;
+            return;
+          }
+        } catch(e) {
+          console.warn('API unreachable, using fallback codes');
         }
-        // Merge with any existing imported classes
-        const existing = JSON.parse(localStorage.getItem('drc-imported-classes') || '{}');
-        Object.assign(existing, imported);
-        localStorage.setItem('drc-imported-classes', JSON.stringify(existing));
-        return Object.values(imported);
-      } catch(e) { return []; }
+      }
+      // Fallback
+      this._classCodes = { ...this._fallbackCodes };
+      Object.values(this._classCodes).forEach(c => { this._classStatus[c] = 'ACTIVE'; });
+    },
+
+    // Submit score to Apps Script (silent, fire-and-forget)
+    submitScore(caseId, score) {
+      if (!this._apiURL) return;
+      const data = {
+        action: 'submit',
+        studentName: this.state.studentName || '',
+        studentId: this.state.studentId || '',
+        className: this.state.className || '',
+        caseNumber: this.state.currentCase ? this.state.currentCase.number : '',
+        caseTitle: this.state.currentCase ? this.state.currentCase.title : '',
+        totalScore: score.total,
+        verdict: score.verdict,
+        evidence: score.evidence ? score.evidence.earned + '/' + score.evidence.possible : '',
+        crossExam: score.crossExam ? score.crossExam.earned + '/' + score.crossExam.possible : '',
+        courtroom: score.courtroom ? score.courtroom.earned + '/' + score.courtroom.possible : '',
+        timestamp: new Date().toISOString()
+      };
+      fetch(this._apiURL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify(data)
+      }).catch(() => {});
+    },
+
+    isClassActive(className) {
+      if (!className) return true;
+      const status = this._classStatus[className];
+      return !status || status === 'ACTIVE';
     },
 
     async _sha256(text) {
@@ -110,31 +156,25 @@
         return;
       }
 
-      // Import classes from URL parameter (?c=BASE64DATA)
-      const classData = params.get('c');
-      if (classData) {
-        this.importClassesFromURL(classData).then(() => {
-          // Clean URL so the long ?c= doesn't stay in the address bar
-          window.history.replaceState({}, '', window.location.pathname);
-          this._continueInit();
-        });
-      } else {
-        this._continueInit();
-      }
-    },
+      // Load class config from Google Sheet, then proceed
+      this.loadClassConfig().then(() => {
+        // Check if already-logged-in student's class has been ended
+        if (this.state.className && !this.isClassActive(this.state.className)) {
+          // Session ended — log student out
+          localStorage.removeItem('drc-access-granted');
+          this.state.studentName = null;
+          this.state.studentId = null;
+          this.state.className = null;
+        }
 
-    _continueInit() {
-      const authed = localStorage.getItem('drc-access-granted');
-      if (authed && this.state.studentName) {
-        this.showScreen('dashboard');
-        Screens.initFeedbackButton();
-      } else {
-        this.promptAccessAndName(() => {
+        const authed = localStorage.getItem('drc-access-granted');
+        if (authed && this.state.studentName) {
           this.showScreen('dashboard');
-          Screens.initFeedbackButton();
-        });
-      }
-      console.log('Digital Rights Courtroom v9 initialized.');
+        } else {
+          this.promptAccessAndName(() => { this.showScreen('dashboard'); });
+        }
+        Screens.initFeedbackButton();
+      });
     },
 
     _promptPanelAccess(panelType) {
@@ -232,7 +272,7 @@
           const code = (codeInput.value || '').trim().toUpperCase();
           if (!code) { errorEl.textContent = 'Please enter the course access code.'; codeInput.focus(); return; }
           const hash = await this._sha256(code);
-          const matchedClass = this.getAllClassCodes()[hash];
+          const matchedClass = this._classCodes[hash];
           if (!matchedClass) {
             errorEl.textContent = 'Incorrect access code. Contact your instructor.';
             codeInput.focus();
@@ -528,6 +568,9 @@
       this.saveProgress();
       this.saveDetailedResult(this.state.currentCaseId, score);
 
+      // Auto-submit to Google Sheet (instructor sees it immediately)
+      this.submitScore(this.state.currentCaseId, score);
+
       // Save to leaderboard (first attempt only)
       if (isFirstAttempt) {
         this.saveLeaderboardEntry(this.state.currentCaseId, score);
@@ -610,6 +653,77 @@
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
+    },
+
+    // Student downloads their own results (to send to instructor)
+    downloadMyResults() {
+      const name = (this.state.studentName || 'student').replace(/\s+/g, '-');
+      const cls = (this.state.className || 'no-class').replace(/\s+/g, '-');
+      const myResults = this.getDetailedResults().filter(r =>
+        r.studentId === this.state.studentId || r.studentName === this.state.studentName
+      );
+      const data = {
+        studentName: this.state.studentName,
+        studentId: this.state.studentId,
+        className: this.state.className,
+        exportDate: new Date().toISOString(),
+        results: myResults
+      };
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `drc-${cls}-${name}-${new Date().toISOString().slice(0,10)}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    },
+
+    // Instructor imports student JSON files into the panel view
+    importStudentFile(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          try {
+            const data = JSON.parse(e.target.result);
+            const results = data.results || data.studentResults || [];
+            if (results.length === 0) { reject('No results found in file.'); return; }
+            // Merge into drc-detailed-results
+            const existing = this.getDetailedResults();
+            const existingIds = new Set(existing.map(r => r.studentId + '-' + r.caseId + '-' + r.timestamp));
+            let added = 0;
+            results.forEach(r => {
+              const key = (r.studentId || r.studentName) + '-' + r.caseId + '-' + r.timestamp;
+              if (!existingIds.has(key)) {
+                existing.push(r);
+                added++;
+              }
+            });
+            localStorage.setItem('drc-detailed-results', JSON.stringify(existing));
+            // Also merge into leaderboard
+            const lb = this.getLeaderboard();
+            const lbIds = new Set(lb.map(e => e.studentId + '-' + e.caseId));
+            results.forEach(r => {
+              const key = (r.studentId || r.studentName) + '-' + r.caseId;
+              if (!lbIds.has(key)) {
+                lb.push({
+                  studentName: r.studentName, studentId: r.studentId,
+                  className: r.className || data.className,
+                  caseId: r.caseId, caseNumber: r.caseNumber, caseTitle: r.caseTitle,
+                  score: r.totalScore, verdict: r.verdict,
+                  elapsedSeconds: r.elapsedSeconds, achievements: r.achievements || [],
+                  timestamp: r.timestamp
+                });
+              }
+            });
+            localStorage.setItem('drc-leaderboard', JSON.stringify(lb));
+            resolve({ name: data.studentName || 'Unknown', class: data.className || 'Unknown', added });
+          } catch(e) { reject('Invalid file format: ' + e.message); }
+        };
+        reader.onerror = () => reject('Could not read file.');
+        reader.readAsText(file);
+      });
     },
   
     // --- Persistence ---
