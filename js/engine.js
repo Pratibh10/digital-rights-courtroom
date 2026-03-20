@@ -32,15 +32,12 @@
     },
   
     // =====================================================
-    // GOOGLE APPS SCRIPT INTEGRATION
+    // SUPABASE INTEGRATION
     // =====================================================
-    // ONE URL handles everything: score collection + class config.
-    // Setup: see setup-guide.md (5 minutes, one-time)
-    //
-    // PASTE YOUR APPS SCRIPT URL HERE (the URL you get after deploying):
-    _apiURL: '',
-    //
-    // Fallback codes (used when API is not configured or unreachable):
+    _supabaseURL: 'https://rqzckaqipfpajwhvkbdw.supabase.co',
+    _supabaseKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJxemNrYXFpcGZwYWp3aHZrYmR3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwMDczMzgsImV4cCI6MjA4OTU4MzMzOH0.9iYJjiZOWKD6uEpGnfF61U0LXjJ1K6uosoriaxih5FY',
+
+    // Fallback codes (used when Supabase is unreachable)
     _fallbackCodes: {
       '7e02c53f3ebd46d24429b7381c5f3356d6599b6cbb5842281c273707d4a94b35': 'Class A',   // CLASSA2026
       'b5c18f39db0a69461123267c3c1bd1d25e3742d3951153381404a288b193b4dd': 'Class B',   // CLASSB2026
@@ -51,22 +48,34 @@
     _classCodes: {},
     _classStatus: {},
 
-    // Fetch class config from Apps Script
+    _supaHeaders() {
+      return {
+        'apikey': this._supabaseKey,
+        'Authorization': 'Bearer ' + this._supabaseKey,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      };
+    },
+
+    // Fetch class config from Supabase
     async loadClassConfig() {
-      if (this._apiURL) {
+      if (this._supabaseURL) {
         try {
-          const resp = await fetch(this._apiURL + '?action=config', { cache: 'no-store' });
-          const data = await resp.json();
-          if (data.classes) {
+          const resp = await fetch(
+            this._supabaseURL + '/rest/v1/class_config?select=class_name,status,access_code',
+            { headers: this._supaHeaders(), cache: 'no-store' }
+          );
+          if (resp.ok) {
+            const rows = await resp.json();
             const codes = {};
             const status = {};
-            for (const cls of data.classes) {
-              if (cls.code) {
-                const hash = await this._sha256(cls.code.toUpperCase());
-                if (cls.status === 'ACTIVE') {
-                  codes[hash] = cls.name;
+            for (const row of rows) {
+              if (row.access_code) {
+                const hash = await this._sha256(row.access_code.toUpperCase());
+                if (row.status === 'ACTIVE') {
+                  codes[hash] = row.class_name;
                 }
-                status[cls.name] = cls.status;
+                status[row.class_name] = row.status;
               }
             }
             this._classCodes = codes;
@@ -74,7 +83,7 @@
             return;
           }
         } catch(e) {
-          console.warn('API unreachable, using fallback codes');
+          console.warn('Supabase unreachable, using fallback codes');
         }
       }
       // Fallback
@@ -82,28 +91,26 @@
       Object.values(this._classCodes).forEach(c => { this._classStatus[c] = 'ACTIVE'; });
     },
 
-    // Submit score to Apps Script (silent, fire-and-forget)
+    // Submit score to Supabase (silent, fire-and-forget)
     submitScore(caseId, score) {
-      if (!this._apiURL) return;
-      const data = {
-        action: 'submit',
-        studentName: this.state.studentName || '',
-        studentId: this.state.studentId || '',
-        className: this.state.className || '',
-        caseNumber: this.state.currentCase ? this.state.currentCase.number : '',
-        caseTitle: this.state.currentCase ? this.state.currentCase.title : '',
-        totalScore: score.total,
+      if (!this._supabaseURL) return;
+      const row = {
+        student_name: this.state.studentName || '',
+        student_id: this.state.studentId || '',
+        class_name: this.state.className || '',
+        case_number: this.state.currentCase ? this.state.currentCase.number : null,
+        case_title: this.state.currentCase ? this.state.currentCase.title : '',
+        total_score: score.total,
         verdict: score.verdict,
         evidence: score.evidence ? score.evidence.earned + '/' + score.evidence.possible : '',
-        crossExam: score.crossExam ? score.crossExam.earned + '/' + score.crossExam.possible : '',
+        cross_exam: score.crossExam ? score.crossExam.earned + '/' + score.crossExam.possible : '',
         courtroom: score.courtroom ? score.courtroom.earned + '/' + score.courtroom.possible : '',
-        timestamp: new Date().toISOString()
+        submitted_at: new Date().toISOString()
       };
-      fetch(this._apiURL, {
+      fetch(this._supabaseURL + '/rest/v1/results', {
         method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'text/plain' },
-        body: JSON.stringify(data)
+        headers: this._supaHeaders(),
+        body: JSON.stringify(row)
       }).catch(() => {});
     },
 
