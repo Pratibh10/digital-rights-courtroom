@@ -640,6 +640,39 @@
       try { return JSON.parse(localStorage.getItem('drc_feedback') || '[]'); } catch(e) { return []; }
     },
 
+    // Submit feedback/flag to Supabase (so developer can see it from any device)
+    submitFeedbackToSupabase(entry) {
+      if (!this._supabaseURL) return;
+      const row = {
+        student_name: entry.studentName || '',
+        class_name: this.state.className || '',
+        case_number: entry.caseNumber || null,
+        case_id: entry.caseId || '',
+        feedback_type: entry.type || '',
+        feedback_text: entry.text || '',
+        screen: entry.screen || '',
+        submitted_at: entry.timestamp || new Date().toISOString()
+      };
+      fetch(this._supabaseURL + '/rest/v1/feedback', {
+        method: 'POST',
+        headers: this._supaHeaders(),
+        body: JSON.stringify(row)
+      }).catch(() => {});
+    },
+
+    // Fetch all feedback from Supabase (for developer panel)
+    async fetchAllFeedback() {
+      if (!this._supabaseURL) return this.getFeedbackLog();
+      try {
+        const resp = await fetch(
+          this._supabaseURL + '/rest/v1/feedback?select=*&order=submitted_at.desc',
+          { headers: this._supaHeaders() }
+        );
+        if (resp.ok) return await resp.json();
+      } catch(e) {}
+      return this.getFeedbackLog();
+    },
+
     exportAllData() {
       return JSON.stringify({
         exportDate: new Date().toISOString(),
