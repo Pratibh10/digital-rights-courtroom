@@ -1364,10 +1364,13 @@
         screen: Game.state.currentScreen || 'unknown'
       };
 
-      // Store in localStorage
+      // Store locally
       const feedbackLog = JSON.parse(localStorage.getItem('drc_feedback') || '[]');
       feedbackLog.push(entry);
       localStorage.setItem('drc_feedback', JSON.stringify(feedbackLog));
+
+      // Send to Supabase (developer sees it from any device)
+      Game.submitFeedbackToSupabase(entry);
 
       // Replace modal content with confirmation
       const modal = document.querySelector('.feedback-modal');
@@ -1378,8 +1381,7 @@
             <button class="feedback-modal-close" onclick="document.getElementById('feedback-modal-overlay').remove()">\u2715</button>
           </div>
           <div class="feedback-modal-body" style="text-align: center; padding: 2rem;">
-            <p>Thank you! Your feedback has been saved.</p>
-            <p class="text-muted" style="font-size: 0.8rem; margin-top: 0.5rem;">Feedback is stored locally and can be exported by the instructor from the browser console:<br><code>localStorage.getItem('drc_feedback')</code></p>
+            <p>Thank you! Your feedback has been recorded.</p>
             <button class="btn btn-ghost mt-lg" onclick="document.getElementById('feedback-modal-overlay').remove()">Close</button>
           </div>
         `;
@@ -1848,69 +1850,87 @@
     // DEVELOPER PANEL
     // ========================
     renderDeveloperPanel(container) {
-      const feedback = Game.getFeedbackLog();
       const results = Game.getDetailedResults();
       const screen = document.createElement('div');
       screen.className = 'screen';
 
-      let feedbackRows = '';
-      if (feedback.length === 0) {
-        feedbackRows = '<tr><td colspan="6" style="text-align:center;color:var(--text-secondary);">No feedback submitted yet.</td></tr>';
-      } else {
-        feedback.forEach((f, i) => {
-          const typeColors = { 'flag-error': '#f87171', 'flag-unclear': '#fbbf24', 'flag-bug': '#f97316', 'suggestion': '#818cf8', 'general': '#8a8f98' };
-          const tc = typeColors[f.type] || '#8a8f98';
-          feedbackRows += `<tr>
-            <td>${f.studentName || 'Anon'}</td>
-            <td>${f.caseNumber ? 'Case ' + String(f.caseNumber).padStart(2, '0') : 'General'}</td>
-            <td style="color:${tc}">${f.type || ''}</td>
-            <td>${f.screen || ''}</td>
-            <td style="max-width:300px;word-wrap:break-word;">${f.text || ''}</td>
-            <td>${f.timestamp ? new Date(f.timestamp).toLocaleString() : ''}</td>
-          </tr>`;
-        });
-      }
-
+      // Show loading state, then fetch from Supabase
       screen.innerHTML = `
         <div class="screen-header">
           <h1>\uD83D\uDEE0\uFE0F Developer Panel</h1>
-          <p class="subtitle">Bug reports, feedback flags, and raw data. Access via <code>?panel=dev</code></p>
+          <p class="subtitle">Bug reports, feedback flags, and system data. Access via <code>?panel=dev</code></p>
         </div>
-
-        <div style="display:flex;gap:0.75rem;margin-bottom:2rem;flex-wrap:wrap;">
-          <button class="btn btn-primary" onclick="Game.downloadExport()">\u2B07 Export All Data (JSON)</button>
-          <button class="btn btn-ghost" onclick="if(confirm('Clear ALL feedback? This cannot be undone.')){localStorage.removeItem('drc_feedback');location.reload();}">\uD83D\uDDD1 Clear Feedback</button>
-          <button class="btn btn-ghost" onclick="if(confirm('Clear ALL student results? This cannot be undone.')){localStorage.removeItem('drc-detailed-results');localStorage.removeItem('drc-progress');location.reload();}">\uD83D\uDDD1 Clear Results</button>
-          <button class="btn btn-ghost" onclick="if(confirm('Factory reset? Clears everything including student identity.')){localStorage.clear();location.reload();}">\u26A0\uFE0F Factory Reset</button>
-          <button class="btn btn-ghost" onclick="window.location.href=window.location.pathname;">Back to Game</button>
-        </div>
-
-        <div class="instructor-summary-bar">
-          <div class="instructor-stat"><span class="instructor-stat-num">${feedback.length}</span><span class="instructor-stat-label">Feedback Items</span></div>
-          <div class="instructor-stat"><span class="instructor-stat-num">${feedback.filter(f => f.type === 'flag-error').length}</span><span class="instructor-stat-label">Legal Errors</span></div>
-          <div class="instructor-stat"><span class="instructor-stat-num">${feedback.filter(f => f.type === 'flag-bug').length}</span><span class="instructor-stat-label">Bug Reports</span></div>
-          <div class="instructor-stat"><span class="instructor-stat-num">${results.length}</span><span class="instructor-stat-label">Total Results</span></div>
-        </div>
-
-        <h2 style="margin-bottom:0.75rem;">Feedback & Flags (${feedback.length})</h2>
-        <div style="overflow-x:auto;margin-bottom:2rem;">
-          <table class="instructor-table">
-            <thead><tr><th>From</th><th>Case</th><th>Type</th><th>Screen</th><th>Feedback</th><th>Time</th></tr></thead>
-            <tbody>${feedbackRows}</tbody>
-          </table>
-        </div>
-
-        <h2 style="margin-bottom:0.75rem;">Raw localStorage Keys</h2>
-        <div style="background:rgba(255,255,255,0.03);border-radius:8px;padding:1rem;font-size:0.8rem;color:var(--text-secondary);font-family:monospace;">
-          ${Object.keys(localStorage).filter(k => k.startsWith('drc')).map(k => {
-            const val = localStorage.getItem(k);
-            const size = val ? (val.length / 1024).toFixed(1) + ' KB' : '0 KB';
-            return `<div style="margin-bottom:0.3rem;"><strong>${k}</strong> (${size})</div>`;
-          }).join('') || '<p>No DRC data found.</p>'}
-        </div>
+        <p style="color:var(--text-secondary);padding:2rem;text-align:center;">Loading feedback from database...</p>
       `;
-
       container.appendChild(screen);
+
+      // Fetch feedback from Supabase (falls back to localStorage)
+      Game.fetchAllFeedback().then(feedback => {
+        let feedbackRows = '';
+        if (!feedback || feedback.length === 0) {
+          feedbackRows = '<tr><td colspan="7" style="text-align:center;color:var(--text-secondary);">No feedback submitted yet.</td></tr>';
+        } else {
+          feedback.forEach(f => {
+            const name = f.student_name || f.studentName || 'Anon';
+            const caseNum = f.case_number || f.caseNumber;
+            const type = f.feedback_type || f.type || '';
+            const text = f.feedback_text || f.text || '';
+            const scr = f.screen || '';
+            const cls = f.class_name || f.className || '';
+            const ts = f.submitted_at || f.timestamp;
+            const typeColors = { 'flag-error': '#f87171', 'flag-unclear': '#fbbf24', 'flag-bug': '#f97316', 'suggestion': '#818cf8', 'general': '#8a8f98' };
+            const tc = typeColors[type] || '#8a8f98';
+            feedbackRows += `<tr>
+              <td>${name}</td>
+              <td>${cls}</td>
+              <td>${caseNum ? 'Case ' + String(caseNum).padStart(2, '0') : 'General'}</td>
+              <td style="color:${tc}">${type}</td>
+              <td>${scr}</td>
+              <td style="max-width:300px;word-wrap:break-word;">${text}</td>
+              <td style="font-size:0.75rem;">${ts ? new Date(ts).toLocaleString() : ''}</td>
+            </tr>`;
+          });
+        }
+
+        const errorCount = feedback.filter(f => (f.feedback_type || f.type) === 'flag-error').length;
+        const bugCount = feedback.filter(f => (f.feedback_type || f.type) === 'flag-bug').length;
+
+        screen.innerHTML = `
+          <div class="screen-header">
+            <h1>\uD83D\uDEE0\uFE0F Developer Panel</h1>
+            <p class="subtitle">All feedback from all devices (via Supabase)</p>
+          </div>
+
+          <div style="display:flex;gap:0.75rem;margin-bottom:2rem;flex-wrap:wrap;">
+            <button class="btn btn-primary" onclick="Game.downloadExport()">\u2B07 Export Local Data</button>
+            <button class="btn btn-ghost" onclick="window.location.href=window.location.pathname;">Back to Game</button>
+          </div>
+
+          <div class="instructor-summary-bar">
+            <div class="instructor-stat"><span class="instructor-stat-num">${feedback.length}</span><span class="instructor-stat-label">Total Feedback</span></div>
+            <div class="instructor-stat"><span class="instructor-stat-num">${errorCount}</span><span class="instructor-stat-label">Legal Errors</span></div>
+            <div class="instructor-stat"><span class="instructor-stat-num">${bugCount}</span><span class="instructor-stat-label">Bug Reports</span></div>
+            <div class="instructor-stat"><span class="instructor-stat-num">${results.length}</span><span class="instructor-stat-label">Local Results</span></div>
+          </div>
+
+          <h2 style="margin-bottom:0.75rem;">Feedback & Flags (${feedback.length})</h2>
+          <div style="overflow-x:auto;margin-bottom:2rem;">
+            <table class="instructor-table">
+              <thead><tr><th>From</th><th>Class</th><th>Case</th><th>Type</th><th>Screen</th><th>Feedback</th><th>Time</th></tr></thead>
+              <tbody>${feedbackRows}</tbody>
+            </table>
+          </div>
+
+          <h2 style="margin-bottom:0.75rem;">Raw localStorage Keys</h2>
+          <div style="background:rgba(255,255,255,0.03);border-radius:8px;padding:1rem;font-size:0.8rem;color:var(--text-secondary);font-family:monospace;">
+            ${Object.keys(localStorage).filter(k => k.startsWith('drc')).map(k => {
+              const val = localStorage.getItem(k);
+              const size = val ? (val.length / 1024).toFixed(1) + ' KB' : '0 KB';
+              return `<div style="margin-bottom:0.3rem;"><strong>${k}</strong> (${size})</div>`;
+            }).join('') || '<p>No DRC data found.</p>'}
+          </div>
+        `;
+      });
     },
 
 
