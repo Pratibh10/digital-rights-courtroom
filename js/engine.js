@@ -611,6 +611,19 @@
       try { return JSON.parse(localStorage.getItem('drc-leaderboard') || '[]'); } catch(e) { return []; }
     },
 
+    // Fetch all results from Supabase (for leaderboard + instructor panel)
+    async fetchResultsFromSupabase() {
+      if (!this._supabaseURL) return [];
+      try {
+        const resp = await fetch(
+          this._supabaseURL + '/rest/v1/results?select=*&order=submitted_at.desc',
+          { headers: this._supaHeaders() }
+        );
+        if (resp.ok) return await resp.json();
+      } catch(e) {}
+      return [];
+    },
+
     // --- Detailed Results for Instructor ---
     saveDetailedResult(caseId, score) {
       try {
