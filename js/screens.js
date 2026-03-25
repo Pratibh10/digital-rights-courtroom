@@ -1396,147 +1396,97 @@
     // LEADERBOARD
     // ========================
     renderLeaderboard(container) {
-      const lb = Game.getLeaderboard();
       const screen = document.createElement('div');
       screen.className = 'screen';
       const myId = Game.state.studentId;
+      const myClass = Game.state.className;
 
-      // Overall ranking: sum of first-attempt scores per student
-      const studentTotals = {};
-      lb.forEach(e => {
-        const key = e.studentId || e.studentName;
-        if (!studentTotals[key]) {
-          studentTotals[key] = { name: e.studentName, id: e.studentId, totalScore: 0, casesPlayed: 0, achievements: new Set() };
-        }
-        studentTotals[key].totalScore += e.score;
-        studentTotals[key].casesPlayed++;
-        if (e.achievements) e.achievements.forEach(a => studentTotals[key].achievements.add(a));
-      });
-
-      const overallRanking = Object.values(studentTotals)
-        .sort((a, b) => b.totalScore - a.totalScore || b.casesPlayed - a.casesPlayed);
-
-      // Build overall: top 3 + own position only
-      let overallRows = '';
-      if (overallRanking.length === 0) {
-        overallRows = '<tr><td colspan="5" style="text-align:center;color:var(--text-secondary);padding:2rem;">No scores yet. Complete a case to appear on the leaderboard!</td></tr>';
-      } else {
-        const medals = ['\uD83E\uDD47', '\uD83E\uDD48', '\uD83E\uDD49'];
-        overallRanking.slice(0, 3).forEach((s, i) => {
-          const avg = Math.round(s.totalScore / s.casesPlayed);
-          const isMe = s.id === myId;
-          const hl = isMe ? 'background:rgba(201,168,76,0.08);' : '';
-          overallRows += `<tr style="${hl}">
-            <td style="font-size:1.4rem;text-align:center;">${medals[i]}</td>
-            <td><strong>${s.name}</strong>${isMe ? ' <span style="color:var(--accent-gold);font-size:0.75rem;">(you)</span>' : ''}</td>
-            <td>${s.totalScore}</td>
-            <td>${s.casesPlayed} (avg ${avg})</td>
-            <td>${s.achievements.size}</td>
-          </tr>`;
-        });
-        // Show own position if not in top 3
-        const myRank = overallRanking.findIndex(s => s.id === myId);
-        if (myRank >= 3) {
-          const me = overallRanking[myRank];
-          const avg = Math.round(me.totalScore / me.casesPlayed);
-          overallRows += `<tr><td colspan="5" style="text-align:center;color:var(--text-secondary);font-size:0.8rem;padding:0.4rem;">\u22EE</td></tr>`;
-          overallRows += `<tr style="background:rgba(201,168,76,0.08);">
-            <td style="text-align:center;color:var(--text-secondary);">${myRank + 1}</td>
-            <td><strong>${me.name}</strong> <span style="color:var(--accent-gold);font-size:0.75rem;">(you)</span></td>
-            <td>${me.totalScore}</td>
-            <td>${me.casesPlayed} (avg ${avg})</td>
-            <td>${me.achievements.size}</td>
-          </tr>`;
-        }
-      }
-
-      // Per-case: top 3 + own position
-      const caseNumbers = [...new Set(lb.map(e => e.caseNumber))].filter(Boolean).sort((a, b) => a - b);
-      let caseTabs = '<button class="lb-tab active" data-case="overall" onclick="Screens._switchLBTab(\'overall\')">Overall</button>';
-      caseNumbers.forEach(cn => {
-        caseTabs += `<button class="lb-tab" data-case="${cn}" onclick="Screens._switchLBTab('${cn}')">Case ${String(cn).padStart(2, '0')}</button>`;
-      });
-
-      let casePanels = '';
-      caseNumbers.forEach(cn => {
-        const caseEntries = lb.filter(e => e.caseNumber === cn).sort((a, b) => b.score - a.score);
-        const medals = ['\uD83E\uDD47', '\uD83E\uDD48', '\uD83E\uDD49'];
-        let rows = '';
-        caseEntries.slice(0, 3).forEach((e, i) => {
-          const time = e.elapsedSeconds ? `${Math.floor(e.elapsedSeconds / 60)}:${String(e.elapsedSeconds % 60).padStart(2, '0')}` : '-';
-          const vc = e.verdict === 'won' ? '#4ade80' : e.verdict === 'won_with_reservations' ? '#c9a84c' : '#f87171';
-          const isMe = e.studentId === myId;
-          const hl = isMe ? 'background:rgba(201,168,76,0.08);' : '';
-          rows += `<tr style="${hl}">
-            <td style="font-size:1.4rem;text-align:center;">${medals[i]}</td>
-            <td><strong>${e.studentName}</strong>${isMe ? ' <span style="color:var(--accent-gold);font-size:0.75rem;">(you)</span>' : ''}</td>
-            <td>${e.score}/100</td>
-            <td style="color:${vc}">${e.verdict}</td>
-            <td>${time}</td>
-          </tr>`;
-        });
-        const myIdx = caseEntries.findIndex(e => e.studentId === myId);
-        if (myIdx >= 3) {
-          const me = caseEntries[myIdx];
-          const time = me.elapsedSeconds ? `${Math.floor(me.elapsedSeconds / 60)}:${String(me.elapsedSeconds % 60).padStart(2, '0')}` : '-';
-          const vc = me.verdict === 'won' ? '#4ade80' : me.verdict === 'won_with_reservations' ? '#c9a84c' : '#f87171';
-          rows += `<tr><td colspan="5" style="text-align:center;color:var(--text-secondary);font-size:0.8rem;padding:0.4rem;">\u22EE</td></tr>`;
-          rows += `<tr style="background:rgba(201,168,76,0.08);">
-            <td style="text-align:center;color:var(--text-secondary);">${myIdx + 1}</td>
-            <td><strong>${me.studentName}</strong> <span style="color:var(--accent-gold);font-size:0.75rem;">(you)</span></td>
-            <td>${me.score}/100</td>
-            <td style="color:${vc}">${me.verdict}</td>
-            <td>${time}</td>
-          </tr>`;
-        }
-        if (!rows) rows = '<tr><td colspan="5" style="text-align:center;color:var(--text-secondary);">No attempts yet.</td></tr>';
-        casePanels += `<div class="lb-case-panel" id="lb-panel-${cn}" style="display:none;">
-          <table class="instructor-table"><thead><tr><th>#</th><th>Student</th><th>Score</th><th>Verdict</th><th>Time</th></tr></thead><tbody>${rows}</tbody></table>
-        </div>`;
-      });
-
+      // Show loading, then fetch from Supabase
       screen.innerHTML = `
         <div class="screen-header">
-          <div class="breadcrumb">
-            <a href="#" onclick="Game.goToDashboard(); return false;">Dashboard</a> / Leaderboard
-          </div>
+          <div class="breadcrumb"><a href="#" onclick="Game.goToDashboard(); return false;">Dashboard</a> / Leaderboard</div>
           <h1>\uD83C\uDFC6 Leaderboard</h1>
-          <p class="subtitle">Top 3 performers \u2022 First-attempt scores only</p>
-        </div>
-
-        <div class="lb-tabs" id="lb-tabs">${caseTabs}</div>
-
-        <div class="lb-panel" id="lb-panel-overall">
-          <table class="instructor-table">
-            <thead><tr><th>#</th><th>Student</th><th>Total Points</th><th>Cases (Avg)</th><th>Achievements</th></tr></thead>
-            <tbody>${overallRows}</tbody>
-          </table>
-        </div>
-        ${casePanels}
-
-        <div class="text-center mt-xl">
-          <button class="btn btn-ghost" onclick="Game.goToDashboard()">&larr; Back to Dashboard</button>
+          <p class="subtitle">Loading scores...</p>
         </div>
       `;
-
       container.appendChild(screen);
+
+      Game.fetchResultsFromSupabase().then(allResults => {
+        // Filter to only the current student's class
+        const results = myClass ? allResults.filter(r => r.class_name === myClass) : allResults;
+
+        // Group by student, get BEST score per case (deduplicated)
+        const students = {};
+        results.forEach(r => {
+          const key = r.student_id || r.student_name;
+          if (!students[key]) students[key] = { name: r.student_name, id: r.student_id, cases: {} };
+          const cn = r.case_number;
+          if (!students[key].cases[cn] || r.total_score > students[key].cases[cn].score) {
+            students[key].cases[cn] = { score: r.total_score, verdict: r.verdict, title: r.case_title };
+          }
+        });
+
+        // Build ranking: sum of best scores per case
+        const ranking = Object.values(students).map(s => {
+          const caseList = Object.values(s.cases);
+          return {
+            name: s.name, id: s.id,
+            totalScore: caseList.reduce((sum, c) => sum + (c.score || 0), 0),
+            casesPlayed: caseList.length,
+            avgScore: caseList.length ? Math.round(caseList.reduce((sum, c) => sum + (c.score || 0), 0) / caseList.length) : 0
+          };
+        }).sort((a, b) => b.totalScore - a.totalScore || b.casesPlayed - a.casesPlayed);
+
+        // Top 3 + own position
+        const medals = ['\uD83E\uDD47', '\uD83E\uDD48', '\uD83E\uDD49'];
+        let overallRows = '';
+        if (ranking.length === 0) {
+          overallRows = '<tr><td colspan="4" style="text-align:center;color:var(--text-secondary);padding:2rem;">No scores yet. Complete a case to appear on the leaderboard!</td></tr>';
+        } else {
+          ranking.slice(0, 3).forEach((s, i) => {
+            const isMe = s.id === myId;
+            const hl = isMe ? 'background:rgba(201,168,76,0.08);' : '';
+            overallRows += `<tr style="${hl}">
+              <td style="font-size:1.4rem;text-align:center;">${medals[i]}</td>
+              <td><strong>${s.name}</strong>${isMe ? ' <span style="color:var(--accent-gold);font-size:0.75rem;">(you)</span>' : ''}</td>
+              <td>${s.totalScore}</td>
+              <td>${s.casesPlayed} cases (avg ${s.avgScore})</td>
+            </tr>`;
+          });
+          const myRank = ranking.findIndex(s => s.id === myId);
+          if (myRank >= 3) {
+            const me = ranking[myRank];
+            overallRows += `<tr><td colspan="4" style="text-align:center;color:var(--text-secondary);font-size:0.8rem;">\u22EE</td></tr>`;
+            overallRows += `<tr style="background:rgba(201,168,76,0.08);">
+              <td style="text-align:center;color:var(--text-secondary);">${myRank + 1}</td>
+              <td><strong>${me.name}</strong> <span style="color:var(--accent-gold);font-size:0.75rem;">(you)</span></td>
+              <td>${me.totalScore}</td>
+              <td>${me.casesPlayed} cases (avg ${me.avgScore})</td>
+            </tr>`;
+          }
+        }
+
+        screen.innerHTML = `
+          <div class="screen-header">
+            <div class="breadcrumb"><a href="#" onclick="Game.goToDashboard(); return false;">Dashboard</a> / Leaderboard</div>
+            <h1>\uD83C\uDFC6 Leaderboard</h1>
+            <p class="subtitle">Top 3 in ${myClass || 'your class'} \u2022 Best scores per case</p>
+          </div>
+
+          <div class="lb-panel" id="lb-panel-overall">
+            <table class="instructor-table">
+              <thead><tr><th>#</th><th>Student</th><th>Total Points</th><th>Performance</th></tr></thead>
+              <tbody>${overallRows}</tbody>
+            </table>
+          </div>
+
+          <div class="text-center mt-xl">
+            <button class="btn btn-ghost" onclick="Game.goToDashboard()">&larr; Back to Dashboard</button>
+          </div>
+        `;
+      });
     },
 
-    _switchLBTab(caseKey) {
-      // Hide all panels
-      document.querySelectorAll('.lb-panel, .lb-case-panel').forEach(p => p.style.display = 'none');
-      document.querySelectorAll('.lb-tab').forEach(t => t.classList.remove('active'));
-
-      if (caseKey === 'overall') {
-        document.getElementById('lb-panel-overall').style.display = 'block';
-      } else {
-        const panel = document.getElementById('lb-panel-' + caseKey);
-        if (panel) panel.style.display = 'block';
-      }
-      
-      // Activate tab
-      document.querySelector(`.lb-tab[data-case="${caseKey}"]`).classList.add('active');
-    },
 
     // ========================
     // INSTRUCTOR PANEL
@@ -1545,44 +1495,62 @@
     // INSTRUCTOR PANEL — Class-Based Dashboard
     // ========================
     renderInstructorPanel(container) {
-      const results = Game.getDetailedResults();
       const screen = document.createElement('div');
       screen.className = 'screen';
-
-      const classNames = Object.values(Game._classCodes);
 
       screen.innerHTML = `
         <div class="screen-header">
           <img src="img/uni-vienna-logo.png" alt="" style="height:40px;opacity:0.8;margin-bottom:0.5rem;" onerror="this.style.display='none'">
           <h1>\uD83C\uDF93 Instructor Dashboard</h1>
-          <p class="subtitle">Class-based performance analytics</p>
+          <p class="subtitle">Loading data from database...</p>
         </div>
-
-        <div style="display:flex;gap:0.75rem;margin-bottom:1.5rem;flex-wrap:wrap;">
-          <button class="btn btn-primary" onclick="Game.downloadExport()">\u2B07 Export All Data (JSON)</button>
-          <button class="btn btn-secondary" onclick="Screens._instrDownloadCSV()">Export All (CSV)</button>
-          <div style="flex:1;"></div>
-          <label class="btn btn-secondary" style="cursor:pointer;">
-            \uD83D\uDCE5 Import Student Files
-            <input type="file" accept=".json" multiple style="display:none;" onchange="Screens._instrImportFiles(this.files)">
-          </label>
-          <button class="btn btn-ghost" onclick="window.location.href=window.location.pathname;">Back to Game</button>
-        </div>
-
-        <div id="import-msg" style="font-size:0.82rem;min-height:1rem;margin-bottom:1rem;"></div>
-
-        <div class="lb-tabs" id="class-tabs" style="margin-bottom:1.5rem;">
-          <button class="lb-tab active" onclick="Screens._instrShowClass('all', this)">All Classes</button>
-          ${classNames.map(c => `<button class="lb-tab" onclick="Screens._instrShowClass('${c}', this)">${c}</button>`).join('')}
-        </div>
-
-        <div id="instructor-class-content"></div>
       `;
-
       container.appendChild(screen);
 
-      // Render default view
-      this._instrShowClass('all');
+      // Fetch all results from Supabase
+      Game.fetchResultsFromSupabase().then(supaResults => {
+        // Normalize Supabase column names to match what _instrBuildClassData expects
+        const results = supaResults.map(r => ({
+          studentName: r.student_name,
+          studentId: r.student_id,
+          className: r.class_name,
+          caseNumber: r.case_number,
+          caseTitle: r.case_title,
+          totalScore: r.total_score,
+          verdict: r.verdict,
+          evidence: r.evidence,
+          crossExam: r.cross_exam,
+          courtroom: r.courtroom,
+          timestamp: r.submitted_at
+        }));
+
+        // Store for use by _instrShowClass
+        this._instrResults = results;
+
+        const classNames = Object.values(Game._classCodes);
+
+        screen.innerHTML = `
+          <div class="screen-header">
+            <img src="img/uni-vienna-logo.png" alt="" style="height:40px;opacity:0.8;margin-bottom:0.5rem;" onerror="this.style.display='none'">
+            <h1>\uD83C\uDF93 Instructor Dashboard</h1>
+            <p class="subtitle">Live data from Supabase \u2022 ${results.length} total attempts</p>
+          </div>
+
+          <div style="display:flex;gap:0.75rem;margin-bottom:1.5rem;flex-wrap:wrap;">
+            <button class="btn btn-secondary" onclick="Screens._instrDownloadCSV()">Export All (CSV)</button>
+            <button class="btn btn-ghost" onclick="window.location.href=window.location.pathname;">Back to Game</button>
+          </div>
+
+          <div class="lb-tabs" id="class-tabs" style="margin-bottom:1.5rem;">
+            <button class="lb-tab active" onclick="Screens._instrShowClass('all', this)">All Classes</button>
+            ${classNames.map(c => `<button class="lb-tab" onclick="Screens._instrShowClass('${c}', this)">${c}</button>`).join('')}
+          </div>
+
+          <div id="instructor-class-content"></div>
+        `;
+
+        this._instrShowClass('all');
+      });
     },
 
     _instrBuildClassData(results, className) {
@@ -1652,13 +1620,12 @@
     },
 
     _instrShowClass(className, btn) {
-      // Update tabs
       if (btn) {
         document.querySelectorAll('#class-tabs .lb-tab').forEach(t => t.classList.remove('active'));
         btn.classList.add('active');
       }
 
-      const results = Game.getDetailedResults();
+      const results = this._instrResults || [];
       const data = this._instrBuildClassData(results, className);
       const el = document.getElementById('instructor-class-content');
       const label = className === 'all' ? 'All Classes' : className;
@@ -1823,15 +1790,13 @@
     },
 
     _instrDownloadCSV() {
-      const results = Game.getDetailedResults();
+      const results = this._instrResults || [];
       if (results.length === 0) { alert('No data to export.'); return; }
       const headers = ['Student Name', 'Class', 'Case Number', 'Case Title', 'Score', 'Verdict', 'Evidence', 'Cross-Exam', 'Courtroom', 'Timestamp'];
       const rows = results.map(r => [
         r.studentName, r.className || '', r.caseNumber, r.caseTitle || '',
         r.totalScore, r.verdict,
-        r.evidence ? r.evidence.earned + '/' + r.evidence.possible : '',
-        r.crossExam ? r.crossExam.earned + '/' + r.crossExam.possible : '',
-        r.courtroom ? r.courtroom.earned + '/' + r.courtroom.possible : '',
+        r.evidence || '', r.crossExam || '', r.courtroom || '',
         r.timestamp || ''
       ]);
       const csv = [headers, ...rows].map(r => r.map(c => '"' + String(c).replace(/"/g, '""') + '"').join(',')).join('\n');
