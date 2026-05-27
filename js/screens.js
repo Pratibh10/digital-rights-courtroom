@@ -9,112 +9,194 @@
     // DASHBOARD
     // ========================
     renderDashboard(container) {
+      this._dashActiveFilters = { fw: 'all', status: 'all' };
       const screen = document.createElement('div');
       screen.className = 'screen';
-  
-      const completedCount = Object.keys(Game.state.completedCases).length;
-      const totalCases = CASES.filter(c => c.evidence.length > 0).length;
-  
-      const classLabel = Game.state.className ? ` \u2022 ${Game.state.className}` : '';
-      const studentLabel = Game.state.studentName
+
+      const completedCases = Game.state.completedCases;
+      const completedIds   = Object.keys(completedCases);
+      const completedCount = completedIds.length;
+      const totalCases     = CASES.filter(c => c.evidence.length > 0).length;
+
+      const scores    = completedIds.map(id => completedCases[id].score).filter(s => s !== undefined);
+      const avgScore  = scores.length ? Math.round(scores.reduce((a,b)=>a+b,0)/scores.length) : 0;
+      const bestScore = scores.length ? Math.max(...scores) : 0;
+      const winCount  = completedIds.filter(id => completedCases[id].verdict === 'won').length;
+      const winRate   = completedCount ? Math.round(100*winCount/completedCount) : 0;
+
+      const fwMeta = [
+        {key:'ai-act', label:'AI Act', color:'#4a90d9'},
+        {key:'gdpr',   label:'GDPR',   color:'#4a9e6a'},
+        {key:'dsa',    label:'DSA',    color:'#d4843a'},
+        {key:'dma',    label:'DMA',    color:'#9a6ad9'},
+      ];
+      const fwStats = fwMeta.map(fw => {
+        const total = CASES.filter(c => c.framework===fw.key && c.evidence.length>0).length;
+        const done  = completedIds.filter(id => { const c=CASES.find(ca=>ca.id===id); return c&&c.framework===fw.key; }).length;
+        return {...fw, total, done, pct: total ? Math.round(100*done/total) : 0};
+      });
+
+      const myId = Game.state.studentId, myName = Game.state.studentName;
+      const playCounts = {};
+      Game.getDetailedResults().forEach(r => {
+        if (r.studentId===myId||r.studentName===myName) playCounts[r.caseId]=(playCounts[r.caseId]||0)+1;
+      });
+
+      const classLabel = Game.state.className ? ' \u2022 '+Game.state.className : '';
+
+      const statsHTML = completedCount > 0 ? `
+        <div class="dash-stats-bar">
+          <div class="dash-stat"><span class="dash-stat-num">${completedCount}<span class="dash-stat-denom">/${totalCases}</span></span><span class="dash-stat-label">Cases Done</span></div>
+          <div class="dash-stat"><span class="dash-stat-num">${avgScore}</span><span class="dash-stat-label">Avg Score</span></div>
+          <div class="dash-stat"><span class="dash-stat-num">${winRate}<span class="dash-stat-denom">%</span></span><span class="dash-stat-label">Win Rate</span></div>
+          <div class="dash-stat"><span class="dash-stat-num">${bestScore}</span><span class="dash-stat-label">Best Score</span></div>
+          <div class="dash-stat"><span class="dash-stat-num" id="dash-rank-val">&mdash;</span><span class="dash-stat-label">Class Rank</span></div>
+        </div>
+        <div class="dash-fw-progress">
+          ${fwStats.map(fw=>`<div class="dash-fw-row"><span class="dash-fw-label" style="color:${fw.color}">${fw.label}</span><div class="dash-fw-track"><div class="dash-fw-fill" style="width:${fw.pct}%;background:${fw.color}"></div></div><span class="dash-fw-count">${fw.done}/${fw.total}</span></div>`).join('')}
+        </div>` : '';
+
+      const studentBadge = Game.state.studentName
         ? `<div class="student-badge">\uD83C\uDF93 ${Game.state.studentName}${classLabel}</div>`
         : '';
 
       screen.innerHTML = `
         <div class="dashboard-hero">
           <img src="img/uni-vienna-logo.png" alt="University of Vienna" class="dashboard-uni-logo" onerror="this.style.display='none'">
-          ${studentLabel}
+          ${studentBadge}
           <h1>Digital Rights Courtroom</h1>
           <p class="tagline">A Litigation Simulator for EU Digital Law</p>
-          <p class="uni-credit">University of Vienna \u2022 Department of Innovation and Digitalisation in Law</p>
-          <div class="stats-row">
-            <div class="stat-item">
-              <span class="stat-number">${TAXONOMY.length}</span>
-              <span class="stat-label">Scenario Types</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-number">5</span>
-              <span class="stat-label">EU Frameworks</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-number">${completedCount}/${totalCases}</span>
-              <span class="stat-label">Cases Completed</span>
-            </div>
+          <p class="uni-credit">University of Vienna &bull; Department of Innovation and Digitalisation in Law</p>
+        </div>
+        ${statsHTML}
+        <div class="divider"></div>
+        <div class="dash-filter-bar">
+          <div class="dash-filter-row" id="fw-filter-tabs">
+            <button class="dash-filter-tab active" data-fw="all" onclick="Screens._dashFilter(this,'fw')">All <span class="dash-filter-ct">${totalCases}</span></button>
+            ${fwStats.map(fw=>`<button class="dash-filter-tab" data-fw="${fw.key}" onclick="Screens._dashFilter(this,'fw')">${fw.label} <span class="dash-filter-ct">${fw.total}</span></button>`).join('')}
+          </div>
+          <div class="dash-filter-row" id="status-filter-tabs" style="margin-top:0.5rem;">
+            <button class="dash-filter-tab active" data-status="all" onclick="Screens._dashFilter(this,'status')">All</button>
+            <button class="dash-filter-tab" data-status="pending" onclick="Screens._dashFilter(this,'status')">Not started</button>
+            <button class="dash-filter-tab" data-status="completed" onclick="Screens._dashFilter(this,'status')">Completed</button>
           </div>
         </div>
-  
-        <div class="divider"></div>
-  
-        <p class="cases-section-title">Select a Case</p>
         <div class="cases-grid" id="cases-grid"></div>
-  
         <div class="divider"></div>
-  
         <div class="dashboard-footer">
-          <button class="btn btn-ghost" onclick="Game.showScreen('leaderboard')">
-            \uD83C\uDFC6 Leaderboard
-          </button>
-          <button class="btn btn-ghost" onclick="Game.downloadMyResults()">
-            \uD83D\uDCE5 Export My Results
-          </button>
-          <button class="btn btn-ghost" onclick="Game.showScreen('taxonomy')">
-            Scenario Library (${TAXONOMY.length} Types)
-          </button>
-          <button class="btn btn-ghost" onclick="Codex.toggle()">
-            Legal Codex
-          </button>
-          <a href="about.html" class="btn btn-ghost" target="_blank">
-            About & Methodology
-          </a>
+          <button class="btn btn-ghost" onclick="Game.showScreen('leaderboard')">\uD83C\uDFC6 Leaderboard</button>
+          <button class="btn btn-ghost" onclick="Game.downloadMyResults()">\uD83D\uDCE5 Export My Results</button>
+          <button class="btn btn-ghost" onclick="Game.showScreen('taxonomy')">Scenario Library (${TAXONOMY.length} Types)</button>
+          <button class="btn btn-ghost" onclick="Codex.toggle()">Legal Codex</button>
+          <a href="about.html" class="btn btn-ghost" target="_blank">About &amp; Methodology</a>
         </div>
       `;
-  
+
       container.appendChild(screen);
-  
-      // Render case cards
-      const grid = screen.querySelector('#cases-grid');
-      CASES.forEach(c => {
-        const completed = Game.state.completedCases[c.id];
-        const isPlayable = c.evidence.length > 0;
-  
-        const frameworkClass = {
-          'ai-act': 'tag-ai-act',
-          'gdpr': 'tag-gdpr',
-          'dsa': 'tag-dsa',
-          'dma': 'tag-dma',
-          'data-act': 'tag-data-act',
-          'cross-framework': 'tag-cross-framework'
-        }[c.framework] || '';
-  
-        const card = document.createElement('div');
-        card.className = `case-card ${!isPlayable ? 'case-card-locked' : ''} ${completed ? 'case-card-completed' : ''}`;
-  
-        card.innerHTML = `
-          <div class="case-card-header">
-            <span class="case-number">Case ${String(c.number).padStart(2, '0')}</span>
-            <span class="framework-tag ${frameworkClass}">${c.frameworkLabel}</span>
-          </div>
-          <h3 class="case-title">${c.title}</h3>
-          <p class="case-subtitle">${c.subtitle}</p>
-          <div class="case-meta">
-            <span class="case-difficulty">${c.difficulty}</span>
-            <span class="case-time">${c.estimatedMinutes} min</span>
-            ${c.primaryArticles ? `<span class="case-articles">${c.primaryArticles.join(', ')}</span>` : ''}
-          </div>
-          ${completed ? `<div class="case-score-badge">${completed.score}/100</div>` : ''}
-          ${!isPlayable ? '<div class="case-locked-badge">Coming Soon</div>' : ''}
-        `;
-  
-        if (isPlayable) {
-          card.onclick = () => Game.startCase(c.id);
+      this._dashRenderCards(playCounts);
+
+      if (completedCount > 0 && Game.state.className) {
+        Game.fetchResultsFromSupabase().then(all => {
+          const cr = all.filter(r => r.class_name === Game.state.className);
+          const st = {};
+          cr.forEach(r => {
+            const k = r.student_id||r.student_name;
+            if (!st[k]) st[k] = {};
+            const cn = r.case_number;
+            if (!st[k][cn] || r.total_score > st[k][cn]) st[k][cn] = r.total_score;
+          });
+          const ranked = Object.entries(st)
+            .map(([id,cs]) => ({id, total:Object.values(cs).reduce((a,b)=>a+b,0)}))
+            .sort((a,b) => b.total - a.total);
+          const rank = ranked.findIndex(s => s.id === myId) + 1;
+          const el = document.getElementById('dash-rank-val');
+          if (el && rank > 0) el.textContent = '#'+rank;
+        }).catch(() => {});
+      }
+    },
+
+    _dashActiveFilters: {fw:'all', status:'all'},
+
+    _dashFilter(btn, type) {
+      const gid = type === 'fw' ? 'fw-filter-tabs' : 'status-filter-tabs';
+      document.querySelectorAll('#'+gid+' .dash-filter-tab').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+      if (type === 'fw') this._dashActiveFilters.fw = btn.dataset.fw;
+      else               this._dashActiveFilters.status = btn.dataset.status;
+      const pc = {};
+      Game.getDetailedResults().forEach(r => {
+        if (r.studentId === Game.state.studentId || r.studentName === Game.state.studentName)
+          pc[r.caseId] = (pc[r.caseId]||0)+1;
+      });
+      this._dashRenderCards(pc);
+    },
+
+    _dashRenderCards(playCounts) {
+      const grid = document.getElementById('cases-grid');
+      if (!grid) return;
+      grid.innerHTML = '';
+      const {fw, status} = this._dashActiveFilters;
+      const cc  = Game.state.completedCases;
+      const vc  = {won:'#4a9e6a', won_with_reservations:'#d4a843', lost:'#c94a4a', dismissed:'#6a6a80'};
+      const vl  = {won:'Won', won_with_reservations:'Partial', lost:'Lost', dismissed:'Dismissed'};
+      const ftc = {'ai-act':'tag-ai-act', 'gdpr':'tag-gdpr', 'dsa':'tag-dsa', 'dma':'tag-dma', 'data-act':'tag-data-act'};
+
+      const filtered = CASES.filter(c => {
+        if (fw !== 'all' && c.framework !== fw) return false;
+        if (status === 'pending'   &&  cc[c.id]) return false;
+        if (status === 'completed' && !cc[c.id]) return false;
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '<p style="color:var(--text-secondary);text-align:center;padding:2rem;grid-column:1/-1;">No cases match this filter.</p>';
+        return;
+      }
+
+      filtered.forEach(c => {
+        const comp    = cc[c.id];
+        const playable = c.evidence.length > 0;
+        const plays   = playCounts[c.id] || (comp ? 1 : 0);
+        const card    = document.createElement('div');
+        card.className = 'case-card' + (playable ? '' : ' case-card-locked') + (comp ? ' case-card-completed' : '');
+
+        if (comp) {
+          const color = vc[comp.verdict] || '#6a6a80';
+          card.style.cssText = 'border-color:' + color + ';border-top-width:4px;';
+          card.innerHTML = `
+            <div class="case-card-header">
+              <span class="case-number">Case ${String(c.number).padStart(2,'0')}</span>
+              <span class="framework-tag ${ftc[c.framework]||''}">${c.frameworkLabel}</span>
+            </div>
+            <h3 class="case-title">${c.title}</h3>
+            <div style="display:flex;align-items:center;gap:8px;margin:0.5rem 0 0.3rem;">
+              <span style="font-size:1.5rem;font-weight:700;color:${color};line-height:1;">${comp.score}</span>
+              <span style="font-size:0.7rem;font-weight:600;padding:2px 8px;border-radius:100px;background:${color}25;color:${color};">${vl[comp.verdict]||comp.verdict}</span>
+            </div>
+            <div style="font-size:0.75rem;color:var(--text-muted);">${plays > 1 ? plays + ' plays &middot; Best: ' : ''}${comp.score}/100</div>
+          `;
+        } else {
+          card.innerHTML = `
+            <div class="case-card-header">
+              <span class="case-number">Case ${String(c.number).padStart(2,'0')}</span>
+              <span class="framework-tag ${ftc[c.framework]||''}">${c.frameworkLabel}</span>
+            </div>
+            <h3 class="case-title">${c.title}</h3>
+            <p class="case-subtitle">${c.subtitle}</p>
+            <div class="case-meta">
+              <span class="case-difficulty">${c.difficulty}</span>
+              ${c.primaryArticles ? `<span class="case-articles">${c.primaryArticles.join(', ')}</span>` : ''}
+            </div>
+            ${!playable ? '<div class="case-locked-badge">Coming Soon</div>' : ''}
+          `;
         }
-  
+        if (playable) card.onclick = () => Game.startCase(c.id);
         grid.appendChild(card);
       });
     },
-  
-  
-    // ========================
+
+
+        // ========================
     // BRIEFING
     // ========================
     renderBriefing(container, caseData) {
@@ -165,7 +247,8 @@
           </div>
         </div>
   
-        <div class="text-center mt-xl">
+        <div class="text-center mt-xl" style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+          <button class="btn btn-ghost" onclick="Game.goToDashboard()">&larr; Back to Dashboard</button>
           <button class="btn btn-primary btn-large" onclick="Game.showScreen('investigation')">
             Review the Evidence &rarr;
           </button>
@@ -1067,10 +1150,14 @@
   
         <div class="model-answer-section">
           <h3>Model Answer</h3>
-          <div class="model-answer-toggle" onclick="this.nextElementSibling.classList.toggle('visible'); this.textContent = this.textContent.includes('Show') ? 'Hide Model Answer' : 'Show Model Answer';">
-            Show Model Answer
-          </div>
-          <div class="model-answer-content">
+          <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:0.75rem;">The model answer shows the ideal legal reasoning for this case — compare it with the arguments you chose above.</p>
+          <div class="model-answer-toggle" onclick="
+            const body = this.nextElementSibling;
+            const show = body.style.display === 'none';
+            body.style.display = show ? 'block' : 'none';
+            this.textContent = show ? 'Hide Model Answer' : 'Show Model Answer';
+          ">Show Model Answer</div>
+          <div class="model-answer-content" style="display:none;">
             ${caseData.verdict.modelAnswer}
           </div>
         </div>
