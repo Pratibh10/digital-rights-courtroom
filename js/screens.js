@@ -44,16 +44,32 @@
 
       const classLabel = Game.state.className ? ' \u2022 '+Game.state.className : '';
 
+      const statCard = (num, denom, label) => `
+        <div style="flex:1;min-width:88px;text-align:center;padding:0.85rem 0.75rem;background:var(--bg-surface);border:1px solid var(--border-subtle);border-radius:var(--radius-md);">
+          <div style="font-family:var(--font-heading);font-size:1.5rem;font-weight:700;color:var(--accent-gold);line-height:1.1;margin-bottom:0.15rem;">${num}<span style="font-size:0.85rem;color:var(--text-muted);font-weight:400;">${denom}</span></div>
+          <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-muted);">${label}</div>
+        </div>`;
+
       const statsHTML = completedCount > 0 ? `
-        <div class="dash-stats-bar">
-          <div class="dash-stat"><span class="dash-stat-num">${completedCount}<span class="dash-stat-denom">/${totalCases}</span></span><span class="dash-stat-label">Cases Done</span></div>
-          <div class="dash-stat"><span class="dash-stat-num">${avgScore}</span><span class="dash-stat-label">Avg Score</span></div>
-          <div class="dash-stat"><span class="dash-stat-num">${winRate}<span class="dash-stat-denom">%</span></span><span class="dash-stat-label">Win Rate</span></div>
-          <div class="dash-stat"><span class="dash-stat-num">${bestScore}</span><span class="dash-stat-label">Best Score</span></div>
-          <div class="dash-stat"><span class="dash-stat-num" id="dash-rank-val">&mdash;</span><span class="dash-stat-label">Class Rank</span></div>
+        <div style="display:flex;gap:0.75rem;margin:1.5rem 0 1rem;flex-wrap:wrap;">
+          ${statCard(completedCount, '/'+totalCases, 'Cases Done')}
+          ${statCard(avgScore, '', 'Avg Score')}
+          ${statCard(winRate, '%', 'Win Rate')}
+          ${statCard(bestScore, '', 'Best Score')}
+          <div style="flex:1;min-width:88px;text-align:center;padding:0.85rem 0.75rem;background:var(--bg-surface);border:1px solid var(--border-subtle);border-radius:var(--radius-md);">
+            <div id="dash-rank-val" style="font-family:var(--font-heading);font-size:1.5rem;font-weight:700;color:var(--accent-gold);line-height:1.1;margin-bottom:0.15rem;">&mdash;</div>
+            <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-muted);">Class Rank</div>
+          </div>
         </div>
-        <div class="dash-fw-progress">
-          ${fwStats.map(fw=>`<div class="dash-fw-row"><span class="dash-fw-label" style="color:${fw.color}">${fw.label}</span><div class="dash-fw-track"><div class="dash-fw-fill" style="width:${fw.pct}%;background:${fw.color}"></div></div><span class="dash-fw-count">${fw.done}/${fw.total}</span></div>`).join('')}
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem 1.5rem;margin-bottom:1.5rem;padding:1rem 1.25rem;background:var(--bg-surface);border:1px solid var(--border-subtle);border-radius:var(--radius-md);">
+          ${fwStats.map(fw=>`
+            <div style="display:flex;align-items:center;gap:0.6rem;">
+              <span style="font-size:0.78rem;font-weight:600;color:${fw.color};min-width:44px;">${fw.label}</span>
+              <div style="flex:1;height:5px;background:var(--bg-hover);border-radius:100px;overflow:hidden;">
+                <div style="height:100%;width:${fw.pct}%;background:${fw.color};border-radius:100px;transition:width 0.6s;"></div>
+              </div>
+              <span style="font-size:0.72rem;color:var(--text-muted);min-width:32px;text-align:right;">${fw.done}/${fw.total}</span>
+            </div>`).join('')}
         </div>` : '';
 
       const studentBadge = Game.state.studentName
@@ -70,12 +86,12 @@
         </div>
         ${statsHTML}
         <div class="divider"></div>
-        <div class="dash-filter-bar">
-          <div class="dash-filter-row" id="fw-filter-tabs">
-            <button class="dash-filter-tab active" data-fw="all" onclick="Screens._dashFilter(this,'fw')">All <span class="dash-filter-ct">${totalCases}</span></button>
-            ${fwStats.map(fw=>`<button class="dash-filter-tab" data-fw="${fw.key}" onclick="Screens._dashFilter(this,'fw')">${fw.label} <span class="dash-filter-ct">${fw.total}</span></button>`).join('')}
+        <div style="margin-bottom:1.25rem;">
+          <div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:0.5rem;" id="fw-filter-tabs">
+            <button class="dash-filter-tab active" data-fw="all" onclick="Screens._dashFilter(this,'fw')">All <span style="font-size:0.7rem;opacity:0.7;">${totalCases}</span></button>
+            ${fwStats.map(fw=>`<button class="dash-filter-tab" data-fw="${fw.key}" onclick="Screens._dashFilter(this,'fw')">${fw.label} <span style="font-size:0.7rem;opacity:0.7;">${fw.total}</span></button>`).join('')}
           </div>
-          <div class="dash-filter-row" id="status-filter-tabs" style="margin-top:0.5rem;">
+          <div style="display:flex;flex-wrap:wrap;gap:0.4rem;" id="status-filter-tabs">
             <button class="dash-filter-tab active" data-status="all" onclick="Screens._dashFilter(this,'status')">All</button>
             <button class="dash-filter-tab" data-status="pending" onclick="Screens._dashFilter(this,'status')">Not started</button>
             <button class="dash-filter-tab" data-status="completed" onclick="Screens._dashFilter(this,'status')">Completed</button>
