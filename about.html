@@ -38,8 +38,8 @@
 
         <div class="about-section">
             <h2>What Is This?</h2>
-            <p>The Digital Rights Courtroom is an interactive educational tool that places students in the role of a lawyer litigating cases under four EU digital regulation frameworks. Each case presents a realistic scenario involving a conflict between a complainant (your client) and a respondent (the party you argue against), heard before a regulatory authority or court.</p>
-            <p>Students progress through five phases per case: <strong>Briefing</strong> (understand the facts), <strong>Investigation</strong> (review evidence documents), <strong>Cross-Examination</strong> (question a hostile witness), <strong>Courtroom Arguments</strong> (write and select legal arguments), and <strong>Verdict</strong> (receive a score and outcome).</p>
+            <p>The Digital Rights Courtroom places students in the role of a lawyer litigating cases under four EU digital regulation frameworks. Each case presents a realistic scenario heard before a regulatory authority or court, with the student representing the complainant against a respondent.</p>
+            <p>Students progress through five phases per case: <strong>Briefing</strong> (understand the facts), <strong>Investigation</strong> (review evidence documents and answer a framework identification question), <strong>Witness Examination</strong> (select three questions to put to a hostile witness), <strong>Courtroom Arguments</strong> (identify the legal issue and select the strongest argument for each round), and <strong>Verdict</strong> (receive a score and outcome with a model answer).</p>
         </div>
 
         <div class="about-section">
@@ -58,11 +58,12 @@
             <p>Each case is built around a <strong>plausible-trap architecture</strong>. In the courtroom phase, students choose between four argument options of similar length and legal tone:</p>
             <ul>
                 <li><strong>Strong:</strong> The correct legal argument citing the right provision with proper application to the facts.</li>
-                <li><strong>Plausible:</strong> A sophisticated-sounding argument that contains one specific legal error &mdash; typically invoking the wrong framework (e.g., citing the AI Act when GDPR applies), the wrong article within the right framework, or accepting a defence that should be rejected. This is the designed trap for students who have surface-level knowledge.</li>
+                <li><strong>Plausible:</strong> A sophisticated-sounding argument containing one specific legal error &mdash; typically invoking the wrong framework, the wrong article within the right framework, or accepting a defence that should be rejected. This is the designed trap for students with surface-level knowledge.</li>
                 <li><strong>Weak:</strong> An argument that identifies the right problem intuitively but fails to cite specific legal provisions or engage with the statutory test.</li>
                 <li><strong>Wrong:</strong> A fundamentally flawed argument based on a misunderstanding of the legal framework.</li>
             </ul>
-            <p>Case scenarios are inspired by real enforcement actions, CJEU preliminary rulings, and DPA decisions across EU Member States. All names, companies, and specific facts are fictionalised. No real individuals or entities are represented.</p>
+            <p>Before selecting an argument, students must first identify the core legal issue in each round (&ldquo;Spot the Issue&rdquo;) &mdash; a single-click question that tests whether they have correctly framed the problem before seeing the answer choices.</p>
+            <p>Case scenarios are inspired by real enforcement actions, CJEU preliminary rulings, and DPA decisions across EU Member States. All names, companies, and specific facts are fictionalised.</p>
         </div>
 
         <div class="about-section">
@@ -72,44 +73,39 @@
                     <tr><th>Phase</th><th>Weight</th><th>How Points Are Earned</th></tr>
                 </thead>
                 <tbody>
-                    <tr><td><strong>Evidence Review</strong></td><td>10 pts</td><td>Proportional to documents reviewed (all 6 = full marks)</td></tr>
-                    <tr><td><strong>Cross-Examination</strong></td><td>25 pts</td><td>Based on question selection: effective questions (with follow-up) score highest; risky questions may backfire; ineffective questions waste limited turns</td></tr>
-                    <tr><td><strong>Courtroom Arguments</strong></td><td>65 pts</td><td>Quality of selected argument (strong = full, weak = half, plausible/wrong = zero) &times; citation accuracy (correct evidence = 1.0&times;, wrong evidence = 0.5&times;)</td></tr>
+                    <tr><td><strong>Evidence Review</strong></td><td>10 pts</td><td>Proportional to documents reviewed (all 6 = full marks). Includes a framework identification MCQ on cases that have one.</td></tr>
+                    <tr><td><strong>Witness Examination</strong></td><td>25 pts</td><td>Based on question selection from 5 options (choose 3): effective questions score highest; risky questions may backfire; ineffective questions score lowest.</td></tr>
+                    <tr><td><strong>Courtroom Arguments</strong></td><td>65 pts</td><td>Quality of selected argument (strong = full, weak = half, plausible/wrong = zero) &times; citation accuracy (correct evidence = 1.0&times;, wrong evidence = 0.5&times;).</td></tr>
                 </tbody>
             </table>
             <p><strong>Verdicts:</strong> Won (&ge;75), Won with Reservations (&ge;50), Lost (&ge;25), Dismissed (&lt;25).</p>
         </div>
 
         <div class="about-section">
-            <h2>Cross-Examination Design</h2>
-            <p>Each case presents 5 possible questions but students may only ask 3. The questions are categorised as:</p>
+            <h2>Witness Examination Design</h2>
+            <p>Each case presents 5 possible questions to put to the witness, but students may only select 3. Questions are displayed simultaneously in randomised order so position does not indicate quality. After selecting 3 and submitting, all three exchanges play out with feedback on why each question was effective, risky, or ineffective.</p>
             <ul>
-                <li><strong>Effective (3 available):</strong> Use specific evidence from the case file to extract damaging admissions. These advance the legal argument directly. Most include a follow-up question that deepens the admission.</li>
-                <li><strong>Risky (1 available):</strong> Give the witness an opportunity to deliver a compelling defence narrative. They may sound reasonable but hand the witness the floor.</li>
-                <li><strong>Ineffective (1 available):</strong> Ask about peripheral matters (budget, staffing, timelines) that do not establish a legal violation. They waste a limited question slot.</li>
+                <li><strong>Effective (typically 3 available):</strong> Use specific evidence to extract damaging admissions that advance the legal argument directly.</li>
+                <li><strong>Risky (typically 1 available):</strong> Give the witness an opportunity to deliver a compelling defence. May sound reasonable but hands the witness control of the narrative.</li>
+                <li><strong>Ineffective (typically 1 available):</strong> Address peripheral matters that do not establish a legal violation, wasting a limited question slot.</li>
             </ul>
         </div>
 
         <div class="about-section">
-            <h2>Keyword Validation</h2>
-            <p>Before seeing the multiple-choice options in the courtroom phase, students must write their own response. The system checks for key legal concepts (article numbers, legal tests, case-specific terms) using a hidden keyword validation. If the response demonstrates understanding of the relevant concepts, the options are revealed immediately. If not, the student receives feedback showing which concepts were matched (green) and missed (red), along with a hint, and may retry once.</p>
-        </div>
-
-        <div class="about-section">
             <h2>Legal Codex</h2>
-            <p>The sidebar Legal Codex provides quick reference to the key articles from all four regulatory frameworks. Each entry includes the official regulatory text alongside a plain-language summary. The codex highlights articles relevant to the current case. Students are encouraged to use it during gameplay, just as a practitioner would consult the statute during proceedings.</p>
+            <p>The sidebar Legal Codex provides quick reference to key articles from all four regulatory frameworks. Each entry includes the official regulatory text alongside a plain-language summary. The codex highlights articles relevant to the current case. Students are encouraged to use it during gameplay, just as a practitioner would consult the statute during proceedings.</p>
         </div>
 
         <div class="about-section">
             <h2>For Instructors</h2>
-            <p>An instructor review system is built into the game. Instructors can view student performance data and exported results. Since the game runs entirely client-side, student data is stored in each student's browser &mdash; instructors can collect it by having students download their data or by accessing the review panel on the student's device.</p>
-            <p>The feedback button (&#128232; in the bottom-right corner) is available throughout gameplay. Students can flag legal errors, report confusing content, or submit suggestions. All submissions include the student's name, the case number, and a timestamp.</p>
+            <p>Student scores are collected automatically via a cloud database (Supabase). No student action is required &mdash; scores are recorded the moment a case is completed. Instructors can view all student performance data, filter by class, and export results as CSV from the Supabase dashboard.</p>
+            <p>Sessions are managed per class: the instructor can start and end sessions, and change access codes, directly from the dashboard without any developer involvement.</p>
+            <p>The feedback button (&#128232; in the bottom-right corner) is available throughout gameplay. Students can flag legal errors, report confusing content, or submit suggestions. All submissions include the student's name, class, case number, and screen context.</p>
         </div>
 
         <div class="about-section">
             <h2>Technical Details</h2>
-            <p>The Digital Rights Courtroom is a fully client-side application. No server, no database, no user accounts. It runs entirely in the browser using vanilla JavaScript, HTML, and CSS. Student progress and results are stored in <code>localStorage</code>. The game is deployed as a static site on GitHub Pages.</p>
-            
+            <p>The Digital Rights Courtroom is a client-side application built with vanilla JavaScript, HTML, and CSS, deployed as a static site on GitHub Pages. Student scores and feedback are stored in a Supabase PostgreSQL database. Class configuration (active sessions and access codes) is managed through the Supabase dashboard. No server-side framework is used.</p>
         </div>
 
         <div class="about-section">
