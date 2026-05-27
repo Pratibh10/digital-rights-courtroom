@@ -1992,93 +1992,6 @@
 /* =============================================
    DASHBOARD REDESIGN — Stats, Progress, Filters
    ============================================= */
-
-/* Personal stats bar */
-.dash-stats-bar {
-  display: flex;
-  gap: 0.75rem;
-  margin: 1.5rem 0 1rem;
-  flex-wrap: wrap;
-}
-.dash-stat {
-  flex: 1;
-  min-width: 90px;
-  text-align: center;
-  padding: 0.85rem 0.75rem;
-  background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-}
-.dash-stat-num {
-  display: block;
-  font-family: var(--font-heading);
-  font-size: 1.6rem;
-  font-weight: 700;
-  color: var(--accent-gold);
-  line-height: 1.1;
-  margin-bottom: 0.2rem;
-}
-.dash-stat-denom {
-  font-size: 0.9rem;
-  color: var(--text-muted);
-  font-weight: 400;
-}
-.dash-stat-label {
-  font-size: 0.68rem;
-  text-transform: uppercase;
-  letter-spacing: 0.07em;
-  color: var(--text-muted);
-}
-
-/* Framework progress bars */
-.dash-fw-progress {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.6rem 1.5rem;
-  margin-bottom: 1.5rem;
-  padding: 1rem 1.25rem;
-  background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-}
-.dash-fw-row {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-}
-.dash-fw-label {
-  font-size: 0.78rem;
-  font-weight: 600;
-  min-width: 44px;
-}
-.dash-fw-track {
-  flex: 1;
-  height: 5px;
-  background: var(--bg-hover);
-  border-radius: 100px;
-  overflow: hidden;
-}
-.dash-fw-fill {
-  height: 100%;
-  border-radius: 100px;
-  transition: width 0.6s ease;
-}
-.dash-fw-count {
-  font-size: 0.72rem;
-  color: var(--text-muted);
-  min-width: 32px;
-  text-align: right;
-}
-
-/* Filter bar */
-.dash-filter-bar {
-  margin-bottom: 1.25rem;
-}
-.dash-filter-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-}
 .dash-filter-tab {
   padding: 5px 12px;
   border-radius: var(--radius-md);
@@ -2101,11 +2014,6 @@
   color: var(--accent-gold);
   font-weight: 600;
 }
-.dash-filter-ct {
-  font-size: 0.7rem;
-  opacity: 0.7;
-  margin-left: 2px;
-}
 
 /* Spot-the-Issue courtroom gate */
 .spot-issue-container {
@@ -2121,11 +2029,7 @@
   margin-bottom: 1rem;
   line-height: 1.5;
 }
-.spot-issue-options {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
+.spot-issue-options { display: flex; flex-direction: column; gap: 0.5rem; }
 .spot-issue-btn {
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.12);
@@ -2139,21 +2043,7 @@
   line-height: 1.5;
   font-family: var(--font-body);
 }
-.spot-issue-btn:hover:not(:disabled) {
-  background: rgba(99,102,241,0.12);
-  border-color: rgba(99,102,241,0.4);
-}
-.spot-issue-btn.spot-correct {
-  background: rgba(74,222,128,0.1);
-  border-color: rgba(74,222,128,0.4);
-  color: #4ade80;
-}
-.spot-issue-btn.spot-wrong {
-  background: rgba(248,113,113,0.1);
-  border-color: rgba(248,113,113,0.3);
-  color: #f87171;
-}
-.spot-issue-btn:disabled {
-  cursor: default;
-  opacity: 0.7;
-}
+.spot-issue-btn:hover:not(:disabled) { background: rgba(99,102,241,0.12); border-color: rgba(99,102,241,0.4); }
+.spot-issue-btn.spot-correct { background: rgba(74,222,128,0.1); border-color: rgba(74,222,128,0.4); color: #4ade80; }
+.spot-issue-btn.spot-wrong { background: rgba(248,113,113,0.1); border-color: rgba(248,113,113,0.3); color: #f87171; }
+.spot-issue-btn:disabled { cursor: default; opacity: 0.7; }
