@@ -2307,6 +2307,8 @@ const CASES = [
       modelAnswer: 'A complete legal analysis must establish that the FlowOptimizer violates the absolute prohibition in Article 5(1)(b) of the EU AI Act. First, it must address the "proxy" issue: the AI Act does not require explicit medical data. Training a system to infer cognitive impairment via behavioural telemetry (the Cognitive Load Index) and targeting those users satisfies the element of exploiting a vulnerability due to a disability. Second, it must prove material distortion and significant harm: the AI deliberately suppresses standard options to isolate vulnerable users into "Simplified Plans," directly causing a severe financial penalty (\u20AC480/year) and a dangerous reduction in health coverage. Finally, the argument must assert the structural supremacy of Article 5: because the exploitation of vulnerabilities is an unacceptable risk, it is absolutely prohibited. It cannot be defended as "UX optimization," downgraded to a high-risk system, or legalized through GDPR consent banners. The only lawful remedy is immediate cessation.'
     }
   },
+  
+  
   // --- CASE 7: The Commercial District Scan ---
   {
     id: 'case-commercial-district-scan',
@@ -2315,10 +2317,10 @@ const CASES = [
     subtitle: 'Real-time biometric surveillance for retail protection',
     framework: 'ai-act',
     frameworkLabel: 'EU AI Act',
-    primaryArticles: ['Art. 5(1)(h)', 'Art. 5(2)', 'Art. 5(3)'],
+    primaryArticles: ['Art. 5(1)(h)', 'Art. 5(2)'],
     difficulty: 'Hard',
     estimatedMinutes: 25,
-    codexReferences: ['art5-1h', 'art5-2', 'art5-3', 'annex-ii'],
+    codexReferences: ['art5-1h', 'art5-2', 'annex-ii'],
     briefing: {
       narrative: 'In early 2025, the Metropolitan Police Department (MPD) launched \'Operation ShopShield\' in the city\'s busiest commercial district. They deployed \'Sentinel-RBI\', a real-time facial recognition system integrated into existing public CCTV. The system scans the faces of every pedestrian walking through the district, comparing them against a watchlist of known repeat shoplifters. When a match is found, local beat officers receive an immediate notification on their mobile devices to intercept the individual. The MPD argues this is a necessary response to a 40% spike in retail theft. However, your client, the Digital Rights Alliance, claims the deployment is a prohibited practice under the EU AI Act. The police admit they did not seek prior judicial authorisation, claiming that internal police oversight is sufficient for \'routine crime prevention\' in public spaces.',
       client: { name: 'Elena Vance', role: 'Director of the Digital Rights Alliance' },
@@ -2476,21 +2478,21 @@ const CASES = [
             {
               id: 'arg1-plausible',
               quality: 'plausible',
-              text: 'Your Honour, Sentinel-RBI is clearly a high-risk AI system under Article 6 and Annex III, point 6(e) of the AI Act, which covers biometric systems used by law enforcement. The Metropolitan Police failed to conduct a proper conformity assessment and has not registered the system in the EU database as required by Article 49. Because the police did not meet these high-risk transparency and quality management obligations, the system must be taken offline until they can prove it meets the robustness and accuracy standards of Article 15. The regulatory framework specifically anticipates this kind of conduct and provides targeted obligations that supersede the more general provisions upon which the complainant has based their application.',
+              text: 'Your Honour, Sentinel-RBI is clearly a high-risk AI system under Article 6 and Annex III, point 6(e) of the AI Act, which covers biometric systems used by law enforcement. The Metropolitan Police failed to conduct a proper conformity assessment and has not registered the system in the EU database as required by Article 49. Because the police did not meet these high-risk transparency and quality management obligations, the system must be taken offline until they can prove it meets the robustness and accuracy standards of Article 15.',
               judge_response: 'Counsel, you are arguing that this is a non-compliant high-risk system. But if the system falls under the Article 5 prohibitions, is a conformity assessment even an option?',
               legal_reasoning: 'This is the trap. While law enforcement biometrics are often high-risk (Art 6), real-time RBI in public is a prohibited practice (Art 5). Prohibited practices cannot be \"cured\" by high-risk compliance measures like registration or conformity assessments.'
             },
             {
               id: 'arg1-weak',
               quality: 'weak',
-              text: 'Your Honour, it is simply unfair to scan thousands of innocent people just to find a few shoplifters. This kind of technology is very scary and makes people feel like they are being watched all the time. The AI Act says that people have rights to privacy and that the police can\'t just use facial recognition whenever they want. This operation is way too big and should be stopped because it hurts our freedoms and changes how people act in public spaces. The impact on ordinary people who rely on these services cannot be overstated and the Authority has both the power and the responsibility to ensure that fundamental rights are protected in practice.',
+              text: 'Your Honour, it is simply unfair to scan thousands of innocent people just to find a few shoplifters. This kind of technology is very scary and makes people feel like they are being watched all the time. The AI Act says that people have rights to privacy and that the police can\'t just use facial recognition whenever they want. This operation is way too big and should be stopped because it hurts our freedoms and changes how people act in public spaces.',
               judge_response: 'The court is concerned with specific statutory violations, not general feelings of unfairness. Under which article do you claim this system is prohibited?',
               legal_reasoning: 'This identifies the factual problem but fails to cite Art 5 or apply the specific legal test for RBI, making it a weak legal argument.'
             },
             {
               id: 'arg1-wrong',
               quality: 'wrong',
-              text: 'Your Honour, this is a violation of the General Data Protection Regulation (GDPR), specifically the right to be forgotten under Article 17. The Metropolitan Police failed to allow pedestrians to delete their biometric profiles immediately after being scanned. Under GDPR, any processing of biometric data in public spaces requires the explicit consent of every individual. Since the police didn\'t get consent from everyone in the district, they must delete the database and stop the system immediately. The regulatory framework specifically anticipates situations of this nature and imposes detailed obligations that the respondent has manifestly and systematically failed to satisfy in the present case.',
+              text: 'Your Honour, this is a violation of the General Data Protection Regulation (GDPR), specifically the right to be forgotten under Article 17. The Metropolitan Police failed to allow pedestrians to delete their biometric profiles immediately after being scanned. Under GDPR, any processing of biometric data in public spaces requires the explicit consent of every individual. Since the police didn\'t get consent from everyone in the district, they must delete the database and stop the system immediately.',
               judge_response: 'Counsel, while GDPR is relevant to data protection, we are litigating a case under the Artificial Intelligence Act. Does the specific biometric identification prohibition not take precedence here?',
               legal_reasoning: 'This is fundamentally wrong. It applies the wrong legal framework (GDPR) and cites the wrong legal test (Right to Forgotten) for a case centered on the AI Act\'s biometric prohibitions.'
             }
@@ -2520,21 +2522,21 @@ const CASES = [
             {
               id: 'arg2-plausible',
               quality: 'plausible',
-              text: 'Your Honour, the use of facial recognition for shoplifting violates the proportionality requirements set out in Article 5(2). That provision requires the court to consider the seriousness and scale of the harm against the consequences for the rights and freedoms of the individuals scanned. Scanning thousands of innocent citizens to prevent minor retail theft is fundamentally disproportionate. The police should have used less intrusive methods, such as increased patrols or better store security, rather than deploying high-risk biometric technology that interferes with the public\'s right to privacy. This analysis is consistent with the structure of the regulatory framework which draws deliberate distinctions between different categories of obligation based on the nature of the service and the role of the provider.',
+              text: 'Your Honour, the use of facial recognition for shoplifting violates the proportionality requirements set out in Article 5(2). That provision requires the court to consider the seriousness and scale of the harm against the consequences for the rights and freedoms of the individuals scanned. Scanning thousands of innocent citizens to prevent minor retail theft is fundamentally disproportionate. The police should have used less intrusive methods, such as increased patrols or better store security, rather than deploying high-risk biometric technology that interferes with the public\'s right to privacy.',
               judge_response: 'You argue proportionality, but does Article 5(2) not assume that you are already within one of the valid objectives of Article 5(1)(h)? If the objective itself is invalid, do we even reach the proportionality test?',
               legal_reasoning: 'This sounds sophisticated and cites Art 5(2) correctly, but it misses the primary flaw: you only look at Art 5(2) if the crime fits the Art 5(1)(h) exceptions. Since shoplifting isn\'t in Annex II, the use is prohibited regardless of proportionality.'
             },
             {
               id: 'arg2-weak',
               quality: 'weak',
-              text: 'Your Honour, shoplifting isn\'t a serious enough crime for this. The law lists very specific crimes where you can use facial recognition, like terrorism or major violence. Shoplifting doesn\'t make that list. Also, the punishment for stealing from a shop is usually just a fine or a short time in jail, not the long sentences the law requires. Because the crime is small, the police shouldn\'t be allowed to use this biometric identification system in the city center. The Authority should send a clear signal that regulated entities operating within the European Union cannot treat their legal obligations as optional or subject to their own cost-benefit calculations.',
+              text: 'Your Honour, shoplifting isn\'t a serious enough crime for this. The law lists very specific crimes where you can use facial recognition, like terrorism or major violence. Shoplifting doesn\'t make that list. Also, the punishment for stealing from a shop is usually just a fine or a short time in jail, not the long sentences the law requires. Because the crime is small, the police shouldn\'t be allowed to use this biometric identification system in the city center.',
               judge_response: 'I hear your point about the \"size\" of the crime, but I need you to point to the specific list of offences and the sentencing threshold in the Regulation.',
               legal_reasoning: 'Correct in direction but fails to cite Annex II or the specific \"at least four years\" custodial sentence rule from the Act.'
             },
             {
               id: 'arg2-wrong',
               quality: 'wrong',
-              text: 'Your Honour, shoplifting is clearly a serious crime because it involves a criminal organisation of repeat offenders. Article 2 of the AI Act excludes all law enforcement activities from the scope of the biometric identification prohibition if the system is used to identify more than five people at once. Since Operation ShopShield targets a large group of known offenders, it is completely exempt from the rules in Article 5 and can continue without any restrictions from the AI Office. This violation warrants the strongest possible enforcement response available under the applicable framework including both corrective measures and administrative penalties proportionate to the gravity of the infringement.',
+              text: 'Your Honour, shoplifting is clearly a serious crime because it involves a criminal organisation of repeat offenders. Article 2 of the AI Act excludes all law enforcement activities from the scope of the biometric identification prohibition if the system is used to identify more than five people at once. Since Operation ShopShield targets a large group of known offenders, it is completely exempt from the rules in Article 5 and can continue without any restrictions from the AI Office.',
               judge_response: 'Counsel, Article 2 contains no such exemption for targeting groups of offenders. Where are you finding this \"rule of five\"? The prohibition in Article 5 applies to all deployments in public spaces.',
               legal_reasoning: 'This is a fundamental misunderstanding. Art 2 does not contain any group-based exemptions, and the argument essentially concedes that the AI Act doesn\'t apply.'
             }
@@ -2542,45 +2544,45 @@ const CASES = [
         },
         {
           id: 'arg3',
-          evidenceId: 'ev6-police-manual',
+          evidenceId: 'ev3-internal-email',
           requiredConcepts: [
             {
-              name: 'Judicial Authorisation',
-              keywords: ['judicial', 'warrant', 'court order', 'article 5(3)', 'administrative', 'independent', 'prior authorisation'],
-              hints: ['Does Article 5(3) accept internal police sign-off as sufficient authorisation?', 'Article 5(3) requires prior authorisation from a judicial authority or independent administrative body. Internal police approval does not satisfy this.']
+              name: 'Prohibited vs High-Risk Distinction',
+              keywords: ['prohibited', 'article 5', 'high-risk', 'article 6', 'conformity', 'cease', 'absolute'],
+              hints: ['Can a prohibited practice be "fixed" through high-risk compliance measures?', 'Article 5 prohibitions are absolute. A prohibited AI system cannot be regularised through conformity assessments or high-risk registration — it must stop entirely.']
             }
           ],
-          oppositionArgument: 'Finally, Your Honour, even if a warrant were required, our internal police manual provides for a rigorous \"administrative authorisation\" process. The Commissioner himself signs off on these deployments. The AI Act allows for authorisation by either a judicial authority or an independent administrative authority. The MPD Crime Analytics Team is an independent body within the department that provides the necessary oversight to ensure the system is used responsibly.',
-          writePrompt: 'The respondent claims their internal police sign-off counts as \"administrative authorisation.\" Does a police department count as an \"independent administrative authority\" under Article 5(3)?',
+          oppositionArgument: 'Your Honour, even if this court finds the initial deployment unlawful, the appropriate remedy is not a permanent shutdown. The MPD should be given time to reclassify Sentinel-RBI as a high-risk system under Article 6, conduct the required conformity assessment, and register it in the EU database under Article 49. The AI Act is designed to regulate AI responsibly, not to prevent law enforcement from using modern tools. Once properly certified, the system can be redeployed under a lawful compliance framework with enhanced oversight.',
+          writePrompt: 'The respondent argues the system can be "fixed" through high-risk compliance. Does Article 5 allow prohibited practices to be remedied through conformity assessments or registration?',
           minWords: 10,
           options: [
             {
               id: 'arg3-strong',
               quality: 'strong',
-              text: 'Your Honour, internal police sign-off is not independent administrative authorisation under Article 5(3). The law requires authorisation by a judicial authority or an administrative authority whose decision is binding and independent of the law enforcement agency. A police commissioner cannot authorise their own department\'s use of a prohibited practice. Furthermore, even in urgent cases, Article 5(3) requires that a judge be notified within twenty-four hours. The manual\'s attempt to bypass this external oversight is a clear violation of the Act. Without judicial review, the system is illegal.',
-              judge_response: 'The court agrees. \"Independence\" requires being outside the chain of command of the agency requesting the power. Dr. Sterling, why was no external authority notified?',
-              legal_reasoning: 'This correctly applies Art 5(3), highlighting that the administrative authority must be independent. It also correctly notes the 24-hour urgency rule.'
+              text: 'Your Honour, Article 5 of the AI Act establishes absolute prohibitions. A prohibited practice cannot be converted into a compliant high-risk system through conformity assessments, EU database registration, or any other procedural remedy. Evidence 3 reveals that the MPD themselves considered reclassifying the system as high-risk to avoid the prohibition — a misunderstanding that confirms awareness of the legal problem. The lawfulness of real-time RBI for shoplifting does not depend on compliance paperwork; it depends on whether the deployment falls within the narrow exceptions of Article 5(1)(h). Since shoplifting does not meet the Annex II threshold, no technical compliance measure can authorise it. The system must cease operation entirely.',
+              judge_response: 'The court agrees. Article 5 prohibitions are absolute and substantive, not procedural. You cannot "comply" your way into a prohibited practice. The only lawful outcome is full cessation.',
+              legal_reasoning: 'This correctly distinguishes prohibited practices (Art 5, absolute) from high-risk systems (Art 6, manageable through compliance), establishing that the prohibition is not a procedural hurdle but a substantive ban.'
             },
             {
               id: 'arg3-plausible',
               quality: 'plausible',
-              text: 'Your Honour, the Metropolitan Police are required to follow the transparency obligations in Article 50. Under Article 50(3), deployers of biometric systems must inform natural persons that they are being exposed to the system. The internal police manual fails to mention any requirement for public signage or notifications. Even if the authorisation were valid, the failure to provide the mandatory information to pedestrians at the point of first exposure makes the entire Operation ShopShield deployment unlawful and subject to immediate cessation. Informing the public is a mandatory precondition that was completely ignored. The regulatory framework specifically anticipates this kind of conduct and provides targeted obligations that supersede the more general provisions upon which the complainant has based their application.',
-              judge_response: 'Transparency is important, but if the system is prohibited under Article 5, does the transparency rule in Article 50 even matter? Isn\'t the prohibition the more fundamental issue?',
-              legal_reasoning: 'This is another trap. Art 50 transparency is for permitted systems. If a system is prohibited under Art 5, \"informing\" people doesn\'t make it legal.'
+              text: 'Your Honour, the MPD should be permitted to continue the deployment provided it retroactively commissions a Fundamental Rights Impact Assessment under Article 27. Law enforcement deployers of high-risk AI must conduct a FRIA before deployment, and commissioning one now would demonstrate good faith compliance. The FRIA would specifically evaluate whether real-time RBI for shoplifting is proportionate given the documented 40% rise in retail theft. Once reviewed by the supervisory authority, the system could be relaunched with appropriate safeguards. The framework distinguishes between different categories of obligation based on the nature of the service.',
+              judge_response: 'Counsel, a FRIA under Article 27 is an obligation for permitted high-risk systems. It does not create an exception to an Article 5 prohibition. If the use is prohibited, an assessment cannot legalise it.',
+              legal_reasoning: 'This is the trap. It correctly identifies the FRIA requirement (Art 27) but misapplies it as a mechanism to validate prohibited practices. FRIAs exist for permitted systems, not to override absolute prohibitions.'
             },
             {
               id: 'arg3-weak',
               quality: 'weak',
-              text: 'Your Honour, the police can\'t just grade their own homework. The manual they produced is just an internal document that doesn\'t have the same weight as a real law. Article 5(3) is there to make sure a judge looks at what the police are doing so they don\'t overstep their bounds. By letting a Commissioner sign off on it, they are ignoring the checks and balances that are supposed to protect our civil liberties in the digital age. It needs a real judge to sign.',
-              judge_response: 'A more precise legal analysis would be helpful. What specifically does Article 5(3) say about the nature of the \"administrative authority\" and the timing of the request?',
-              legal_reasoning: 'Correct in spirit but uses informal language (\"grade their own homework\") and fails to cite the specific independence requirement of Art 5(3).'
+              text: 'Your Honour, the police should simply stop using the system because it is illegal. The AI Act bans certain uses of facial recognition, and this is clearly one of them. By claiming they can fix it through a compliance process, the MPD is showing that it does not respect the law. The whole purpose of having rules about AI is to ensure technology is used fairly. A prohibited system cannot be relabelled and reused under a different category just because it would be convenient for the police.',
+              judge_response: 'I agree the system must stop, but I need you to articulate why the high-risk compliance pathway cannot apply here. What is the legal distinction between a prohibited practice and a high-risk system?',
+              legal_reasoning: 'Correct in direction but fails to articulate the key legal distinction between Art 5 (prohibited) and Art 6 (high-risk compliant), which is the central point of this round.'
             },
             {
               id: 'arg3-wrong',
               quality: 'wrong',
-              text: 'Your Honour, the Metropolitan Police do not need any formal authorisation because the safety of the citizens and the protection of private property are paramount. Under international law and general public safety principles, the police have the inherent power to use any technology necessary to catch criminals in the act. Requiring a judge to sign off on routine retail security would be an unnecessary bureaucratic hurdle that prevents the police from doing their jobs effectively and keeping the streets safe. The Authority should exercise its full enforcement competence under this provision to ensure that the respondent brings its practices into compliance with the applicable standards without further delay.',
-              judge_response: 'Counsel, this court is bound by the specific provisions of the AI Act. Are you suggesting that general \"public safety\" principles can override the explicit statutory requirements for judicial authorisation in Article 5?',
-              legal_reasoning: 'This is the clear mistake. It argues that public safety overrides the statute, which is a fundamental misunderstanding of how specific regulations like the AI Act work.'
+              text: 'Your Honour, the Metropolitan Police can continue the deployment by applying for a regulatory sandbox under Article 57 of the AI Act. Sandboxes allow providers to test prohibited AI systems under controlled conditions with national supervisory authority approval. Since the MPD is a law enforcement agency, they qualify for an extended sandbox period during which the prohibition does not apply. They should apply to the national AI authority for emergency sandbox authorisation and the system can remain operational while the application is reviewed.',
+              judge_response: 'Counsel, Article 57 regulatory sandboxes are for testing and developing AI systems before market entry — they do not suspend operational prohibitions on deployed systems. This argument has no legal basis whatsoever.',
+              legal_reasoning: 'This fundamentally misunderstands sandboxes (Art 57), which are for pre-market development and testing, not for circumventing prohibitions on already-operational systems.'
             }
           ]
         }
@@ -2590,9 +2592,10 @@ const CASES = [
     verdict: {
       winText: 'Victory! The Court has issued a permanent injunction against Operation ShopShield. In a landmark ruling, the judge confirmed that real-time RBI for shoplifting is a prohibited practice under Article 5(1)(h). The MPD was found to have violated the Act by targeting crimes that fall below the Annex II threshold and by attempting to use internal police sign-off instead of mandatory judicial authorisation. The city must now delete all biometric data collected during the operation.',
       loseText: 'Defeat. The Court found that while the police may have committed procedural errors, the civil liberties challenge was not specific enough. Because you failed to correctly link the sentencing threshold in Annex II to the specific prohibition in Article 5, the MPD has been given 30 days to \"regularise\" the system rather than being forced to shut it down immediately.',
-      modelAnswer: 'The Metropolitan Police Department\'s use of Sentinel-RBI constitutes a prohibited practice under Article 5(1)(h) of the EU AI Act. Real-time remote biometric identification in publicly accessible spaces for law enforcement is generally forbidden unless it meets strict exceptions. The \"Operation ShopShield\" deployment failed on three levels: 1) The targeted offence (shoplifting) is not listed in Annex II; 2) The offence does not meet the minimum four-year maximum sentence threshold required by Art. 5(1)(h)(iii); and 3) The MPD failed to obtain prior judicial or independent administrative authorisation as mandated by Art. 5(3). The respondent\'s argument that internal police sign-off is sufficient fundamentally ignores the \"independence\" requirement of the Act. Because the system meets the criteria for a prohibited practice, it cannot be \"remedied\" through high-risk compliance (Article 6); it must cease operation entirely.'
+      modelAnswer: 'The Metropolitan Police Department\'s use of Sentinel-RBI constitutes a prohibited practice under Article 5(1)(h) of the EU AI Act. Real-time remote biometric identification in publicly accessible spaces for law enforcement is generally forbidden unless strict exceptions are met. The \'Operation ShopShield\' deployment failed on two substantive grounds: 1) The targeted offence (shoplifting) is not listed in Annex II; and 2) The offence carries a maximum sentence of eighteen months, far below the four-year minimum threshold required by Art. 5(1)(h)(iii). Critically, a prohibited practice under Article 5 is an absolute ban — it cannot be regularised through high-risk compliance measures under Article 6, conformity assessments, or EU database registration. Evidence 3 reveals the MPD\'s own awareness of this, and their attempt to reclassify the system as high-risk only confirms the unlawfulness of the deployment. The system must cease operation entirely and all collected biometric data must be deleted.'
     }
   },
+  
   // --- CASE 8: The Station Sentinel ---
   {
     id: 'case-station-sentinel',
@@ -2601,12 +2604,12 @@ const CASES = [
     subtitle: 'Challenging the proportionality of anti-terror biometric scans',
     framework: 'ai-act',
     frameworkLabel: 'EU AI Act',
-    primaryArticles: ['Art. 5(1)(h)', 'Art. 5(2)', 'Art. 5(3)'],
+    primaryArticles: ['Art. 5(1)(h)', 'Art. 5(2)', 'Art. 27'],
     difficulty: 'Hard',
     estimatedMinutes: 25,
-    codexReferences: ['art5-1h', 'art5-2', 'art5-3'],
+    codexReferences: ['art5-1h', 'art5-2', 'art27'],
     briefing: {
-      narrative: 'Following a high-level intelligence alert regarding a suspected terrorist known as \'The Architect\', the National Police Force (NPF) activated real-time facial recognition across the city\'s Central Station. They obtained a judicial warrant for a 72-hour window. The system scanned the biometric templates of approximately 250,000 travellers, comparing them against a single low-resolution photo of the suspect. Your client, Global Privacy Watch (GPW), has brought a challenge to the Administrative Court. They argue that while the threat was serious, the deployment was a \'dragnet\' that failed the strict necessity and proportionality tests required by Article 5(2). Furthermore, they claim the police failed to conduct a proper Fundamental Rights Impact Assessment (FRIA) as mandated by Article 5(3). As lead counsel for GPW, you must prove that the police exceeded their legal authority under the AI Act\'s narrow exceptions.',
+      narrative: 'Following a high-level intelligence alert regarding a suspected terrorist known as \'The Architect\', the National Police Force (NPF) activated real-time facial recognition across the city\'s Central Station. They obtained a judicial warrant for a 72-hour window. The system scanned the biometric templates of approximately 250,000 travellers, comparing them against a single low-resolution photo of the suspect. Your client, Global Privacy Watch (GPW), has brought a challenge to the Administrative Court. They argue that while the threat was serious, the deployment was a \'dragnet\' that failed the strict necessity and proportionality tests required by Article 5(2). Furthermore, they claim the police failed to conduct a proper Fundamental Rights Impact Assessment (FRIA) as mandated by Article 27. As lead counsel for GPW, you must prove that the police exceeded their legal authority under the AI Act\'s narrow exceptions.',
       client: { name: 'Sarah Jenkins', role: 'Chief Legal Officer, Global Privacy Watch' },
       respondent: { name: 'National Police Force (NPF)', type: 'State Law Enforcement' },
       setting: 'Administrative High Court, National Capital, November 2025'
@@ -2632,7 +2635,7 @@ const CASES = [
         type: 'internal-email',
         title: 'RE: Urgent Warrant Request',
         date: 'October 2, 2025',
-        content: '<div class="doc-section"><div class="doc-section-title">Email Thread: Case 2025-X9</div><p><strong>From:</strong> Legal Liaison (D. Fisher)<br><strong>To:</strong> Comm. Vance<br><strong>Date:</strong> October 2, 2025 14:12</p><p>Commissioner, I must advise against rushing the paperwork. Article 5(3) of the AI Act strictly requires a specific Fundamental Rights Impact Assessment (FRIA) before deploying real-time RBI. If we don\'t properly assess the false-positive risks for a crowd this size, we risk severe regulatory penalties and the warrant could be challenged.</p><hr><p><strong>From:</strong> Comm. Vance<br><strong>To:</strong> Legal Liaison (D. Fisher)<br><strong>Date:</strong> October 2, 2025 14:18</p><p>Fisher, intelligence suggests The Architect might be passing through the capital today. I know Article 5(3) says we need a Fundamental Rights Impact Assessment, but we don\'t have time for a full study or a multi-agency review. <div class="doc-highlight">Just copy the generic FRIA from the shoplifting case last year</div> and change the heading to reflect Central Station. The judge will sign it immediately if we explicitly mention terrorism. We will deal with the compliance paperwork after he\'s in custody.</p></div>'
+        content: '<div class="doc-section"><div class="doc-section-title">Email Thread: Case 2025-X9</div><p><strong>From:</strong> Legal Liaison (D. Fisher)<br><strong>To:</strong> Comm. Vance<br><strong>Date:</strong> October 2, 2025 14:12</p><p>Commissioner, I must advise against rushing the paperwork. Article 27 of the AI Act strictly requires a specific Fundamental Rights Impact Assessment (FRIA) before deploying real-time RBI. If we don\'t properly assess the false-positive risks for a crowd this size, we risk severe regulatory penalties and the warrant could be challenged.</p><hr><p><strong>From:</strong> Comm. Vance<br><strong>To:</strong> Legal Liaison (D. Fisher)<br><strong>Date:</strong> October 2, 2025 14:18</p><p>Fisher, intelligence suggests The Architect might be passing through the capital today. I know Article 27 says we need a Fundamental Rights Impact Assessment, but we don\'t have time for a full study or a multi-agency review. <div class="doc-highlight">Just copy the generic FRIA from the shoplifting case last year</div> and change the heading to reflect Central Station. The judge will sign it immediately if we explicitly mention terrorism. We will deal with the compliance paperwork after he\'s in custody.</p></div>'
       },
       {
         id: 'ev4-the-warrant',
@@ -2672,7 +2675,7 @@ const CASES = [
           witnessResponse: 'We were under immense time pressure. The Architect is a dangerous individual. We felt the core principles of privacy and data security remained the same regardless of the specific crime being investigated.',
           category: 'effective',
           impact: 'positive',
-          impactExplanation: 'This highlights a failure under Art. 5(3), which requires the FRIA to be specific to the situation and consider the consequences for rights and freedoms.',
+          impactExplanation: 'This highlights a failure under Art. 27, which requires the FRIA to be specific to the deployment context and assess the actual consequences for the rights and freedoms of those affected.',
           followUp: {
             available: true,
             questionText: 'Does the \"retail theft\" FRIA address the specific risk of 142 false positives in a crowded train station?',
@@ -2759,7 +2762,7 @@ const CASES = [
             {
               id: 'arg1-plausible',
               quality: 'plausible',
-              text: 'Your Honour, the deployment is illegal because the National Police Force failed to register the Aegis-X system in the EU database for high-risk AI systems before the operation began. Article 49 of the AI Act requires all high-risk systems, including those used for law enforcement biometrics under Annex III, to be registered. Without this registration, the judicial warrant is procedurally invalid. The police cannot exercise the exceptions in Article 5 if they have not met the underlying high-risk compliance obligations that ensure the system is safe and transparent to the public. This analysis is consistent with the structure of the regulatory framework which draws deliberate distinctions between different categories of obligation based on the nature of the service and the role of the provider.',
+              text: 'Your Honour, the deployment is illegal because the National Police Force failed to register the Aegis-X system in the EU database for high-risk AI systems before the operation began. Article 49 of the AI Act requires all high-risk systems, including those used for law enforcement biometrics under Annex III, to be registered. Without this registration, the judicial warrant is procedurally invalid. The police cannot exercise the exceptions in Article 5 if they have not met the underlying high-risk compliance obligations that ensure the system is safe and transparent to the public.',
               judge_response: 'Counsel, while registration is a requirement for high-risk systems, does a failure to register automatically invalidate an Article 5(3) warrant? Are we not focused here on the proportionality of the search itself?',
               legal_reasoning: 'This is the plausible trap. It uses correct AI Act terminology (Art 49, high-risk), but registration in the database is not the legal test for the validity of an Art 5(1)(h) exception. The exception depends on the Art 5(2) and 5(3) criteria.'
             },
@@ -2786,24 +2789,24 @@ const CASES = [
             {
               name: 'FRIA Requirements',
               keywords: ['fundamental rights', 'impact assessment', 'fria', 'article 5(3)', 'specific', 'generic', 'context-specific'],
-              hints: ['Can a fundamental rights impact assessment from one context be reused for a completely different deployment?', 'Article 5(3) requires a context-specific FRIA for each deployment. A generic, reused assessment does not comply.']
+              hints: ['Can a fundamental rights impact assessment from one context be reused for a completely different deployment?', 'Article 27 requires a context-specific FRIA for each deployment. A generic, reused assessment does not comply.']
             }
           ],
-          oppositionArgument: 'Your Honour, we acknowledge the requirement in Article 5(3) for a Fundamental Rights Impact Assessment. However, the law does not specify that the assessment must be drafted from scratch for every single deployment. In an emergency involving a terrorist threat, the NPF used its existing expertise and previous assessments to evaluate the risks. The core impacts on privacy and non-discrimination are consistent across all biometric deployments. To demand a months-long study in the face of an imminent attack would render the Article 5(1)(h) exceptions useless in practice.',
-          writePrompt: 'The respondent admits to using a "generic" FRIA. Does Article 5(3) allow for the reuse of impact assessments from different contexts, such as retail theft?',
+          oppositionArgument: 'Your Honour, we acknowledge the requirement in Article 27 for a Fundamental Rights Impact Assessment. However, the law does not specify that the assessment must be drafted from scratch for every single deployment. In an emergency involving a terrorist threat, the NPF used its existing expertise and previous assessments to evaluate the risks. The core impacts on privacy and non-discrimination are consistent across all biometric deployments. To demand a months-long study in the face of an imminent attack would render the Article 5(1)(h) exceptions useless in practice.',
+          writePrompt: 'The respondent admits to using a "generic" FRIA. Does Article 27 allow for the reuse of impact assessments from entirely different deployment contexts, such as retail theft?',
           minWords: 10,
           options: [
             {
               id: 'arg2-strong',
               quality: 'strong',
-              text: 'Your Honour, Article 5(3) requires that the prior authorization be based on an assessment of the consequences for the rights and freedoms of the individuals concerned. An assessment copied from a retail theft case cannot possibly account for the unique risks of a mass-transit deployment, such as the high rate of false positives in dense crowds or the chilling effect on freedom of movement. By submitting a generic, irrelevant document to the judge, the NPF effectively bypassed the mandatory impact assessment, rendering the resulting warrant legally defective and the deployment prohibited.',
+              text: 'Your Honour, Article 27 requires that the FRIA assess the specific consequences for the rights and freedoms of the individuals concerned in that particular deployment. An assessment copied from a retail theft case cannot possibly account for the unique risks of a mass-transit deployment, such as the high rate of false positives in dense crowds or the chilling effect on freedom of movement. By submitting a generic, irrelevant document to the judge, the NPF effectively bypassed the mandatory impact assessment, rendering the resulting warrant legally defective and the deployment prohibited.',
               judge_response: 'The court is concerned that a "retail" assessment was used for a transit hub. If the risks were not specifically evaluated for this environment, how can the authorization be valid?',
-              legal_reasoning: 'This argument correctly identifies that the FRIA is a mandatory component of the Art 5(3) authorization process and must be specific to the "consequences" of the actual deployment.'
+              legal_reasoning: 'This argument correctly identifies that Art 27 requires a deployment-specific FRIA, and the Art 5(3) authorization is only valid when grounded in an assessment of the specific "consequences" of that actual deployment.'
             },
             {
               id: 'arg2-plausible',
               quality: 'plausible',
-              text: 'Your Honour, the reuse of the assessment is a violation of the Quality Management System requirements under Article 17. All high-risk AI systems must have a specific QMS that includes procedures for post-market monitoring and data governance. By reusing a document, the police failed to ensure the data used for the Aegis-X system was relevant and representative of the station\'s population. The appropriate remedy is for the NPF to be fined under Article 99 for failing to maintain proper technical documentation for their high-risk biometric system. The regulatory framework specifically anticipates this kind of conduct and provides targeted obligations that supersede the more general provisions upon which the complainant has based their application.',
+              text: 'Your Honour, the reuse of the assessment is a violation of the Quality Management System requirements under Article 17. All high-risk AI systems must have a specific QMS that includes procedures for post-market monitoring and data governance. By reusing a document, the police failed to ensure the data used for the Aegis-X system was relevant and representative of the station\'s population. The appropriate remedy is for the NPF to be fined under Article 99 for failing to maintain proper technical documentation for their high-risk biometric system.',
               judge_response: 'Counsel, while Article 17 is important for providers, we are discussing the legality of a law enforcement deployment under Article 5. Is a fine under Article 99 the primary issue here, or is it the prohibition of the system itself?',
               legal_reasoning: 'This is the trap. It applies high-risk system obligations (Art 17) and penalties (Art 99), but for a prohibited practice case, the core issue is the validity of the exception, not a technical documentation fine.'
             },
@@ -2811,15 +2814,15 @@ const CASES = [
               id: 'arg2-weak',
               quality: 'weak',
               text: 'Your Honour, the police just were lazy. They didn\'t want to do the work, so they copied and pasted a document from an old case. This shows they don\'t really care about the AI Act or the rights of the 250,000 people they scanned. A Fundamental Rights Impact Assessment is a very serious thing, and it should be done properly every time, especially when you are looking for a terrorist. If they can\'t take the time to write a new one, they shouldn\'t be allowed to use the cameras.',
-              judge_response: 'I agree that it is a serious matter, but you must explain the legal consequence of this failure under Article 5(3). How does this affect the warrant?',
-              legal_reasoning: 'Correct in spirit but fails to articulate the legal link between the FRIA and the validity of the Art 5(3) authorization.'
+              judge_response: 'I agree that it is a serious matter, but you must explain the legal consequence of this failure under Article 27. How does a defective FRIA affect the validity of the warrant?',
+              legal_reasoning: 'Correct in spirit but fails to articulate the legal link between the Art 27 FRIA requirement and the validity of the Art 5(3) judicial authorization.'
             },
             {
               id: 'arg2-wrong',
               quality: 'wrong',
-              text: 'Your Honour, the police are actually exempt from the FRIA requirement under Article 5(3) because this was an \"urgent\" situation. The AI Act says that in cases of terrorism, the police can deploy the system first and then perform the impact assessment within thirty days after the operation ends. Since the operation only lasted 72 hours, the NPF was well within their rights to skip the paperwork entirely and focus on catching the suspect before he left the station. The regulatory framework specifically anticipates situations of this nature and imposes detailed obligations that the respondent has manifestly and systematically failed to satisfy in the present case.',
-              judge_response: 'Counsel, Article 5(3) allows for deployment without prior authorization in urgent cases, but it *never* allows for skipping the impact assessment. And even then, judicial approval must be sought within 24 hours. Was that done?',
-              legal_reasoning: 'This is wrong because it misrepresents the urgency rules. Art 5(3) requires judicial authorization within 24 hours in emergencies, and the FRIA is still a prerequisite for that authorization.'
+              text: 'Your Honour, the police are actually exempt from the FRIA requirement under Article 27 because this was an \"urgent\" situation. The AI Act says that in cases of terrorism, the police can deploy the system first and then perform the impact assessment within thirty days after the operation ends. Since the operation only lasted 72 hours, the NPF was well within their rights to skip the paperwork entirely and focus on catching the suspect before he left the station.',
+              judge_response: 'Counsel, Article 5(3) allows for deployment without prior judicial authorization in genuinely urgent cases, but Article 27 never permits skipping the Fundamental Rights Impact Assessment itself. And even under urgency, judicial authorization must be obtained within 24 hours. Was that done here?',
+              legal_reasoning: 'This is wrong because it misrepresents the urgency rules. Art 5(3) requires judicial authorization within 24 hours in emergencies, and the Art 27 FRIA is still a prerequisite for the validity of that authorization.'
             }
           ]
         },
@@ -2847,21 +2850,21 @@ const CASES = [
             {
               id: 'arg3-plausible',
               quality: 'plausible',
-              text: 'Your Honour, the 48-hour retention is a violation of the General Data Protection Regulation (GDPR) Article 5(1)(e) on storage limitation. Since the AI Act and GDPR work together, any data kept beyond the immediate real-time match is unlawful. The police have failed to provide a Data Protection Impact Assessment (DPIA) as required by GDPR for high-risk processing. Therefore, the court should order the immediate deletion of all records and fine the NPF for their failure to appoint a Data Protection Officer for this specific biometric operation. The Authority should therefore ground its finding in this specific framework rather than the general provisions the complainant has relied upon, which would provide a more targeted and effective enforcement pathway.',
+              text: 'Your Honour, the 48-hour retention is a violation of the General Data Protection Regulation (GDPR) Article 5(1)(e) on storage limitation. Since the AI Act and GDPR work together, any data kept beyond the immediate real-time match is unlawful. The police have failed to provide a Data Protection Impact Assessment (DPIA) as required by GDPR for high-risk processing. Therefore, the court should order the immediate deletion of all records and fine the NPF for their failure to appoint a Data Protection Officer for this specific biometric operation.',
               judge_response: 'Counsel, while GDPR applies, we are evaluating this under the AI Act. Does the AI Act not provide its own specific rules for the storage and deletion of data in real-time RBI cases?',
               legal_reasoning: 'This is the trap. It relies on GDPR instead of the AI Act. While GDPR is relevant, the AI Act (Art 5) has specific, stricter rules for RBI that take precedence in this litigation.'
             },
             {
               id: 'arg3-weak',
               quality: 'weak',
-              text: 'Your Honour, you can\'t just keep people\'s faces in a computer for two days. It\'s creepy and it\'s wrong. The police said the operation was for 72 hours, so once those 72 hours are up, everything should be deleted. Keeping the data for another 48 hours is like extending the warrant without asking the judge. This proves the police don\'t respect the limits of their power and that they want to keep as much data as possible on everyone. This kind of behaviour should not be tolerated in a modern digital marketplace and the Authority must take decisive action to protect the rights and interests of affected users and the broader public.',
+              text: 'Your Honour, you can\'t just keep people\'s faces in a computer for two days. It\'s creepy and it\'s wrong. The police said the operation was for 72 hours, so once those 72 hours are up, everything should be deleted. Keeping the data for another 48 hours is like extending the warrant without asking the judge. This proves the police don\'t respect the limits of their power and that they want to keep as much data as possible on everyone.',
               judge_response: 'I understand your privacy concerns, but I need a statutory basis. Under which part of the AI Act is this retention prohibited?',
               legal_reasoning: 'Correct in principle but lacks any reference to Art 5(2) or the specific legal definitions within the AI Act.'
             },
             {
               id: 'arg3-wrong',
               quality: 'wrong',
-              text: 'Your Honour, the 48-hour retention is actually mandatory under the AI Act\'s Article 12, which requires high-risk AI systems to automatically record logs of their activity. The police were simply complying with their duty to keep a record of every scan for transparency and accountability purposes. If they had deleted the data immediately, they would be in violation of the log-keeping requirements that allow the AI Office to audit the system later. The retention is therefore a compliance feature, not a violation. The regulatory framework specifically anticipates situations of this nature and imposes detailed obligations that the respondent has manifestly and systematically failed to satisfy in the present case.',
+              text: 'Your Honour, the 48-hour retention is actually mandatory under the AI Act\'s Article 12, which requires high-risk AI systems to automatically record logs of their activity. The police were simply complying with their duty to keep a record of every scan for transparency and accountability purposes. If they had deleted the data immediately, they would be in violation of the log-keeping requirements that allow the AI Office to audit the system later. The retention is therefore a compliance feature, not a violation.',
               judge_response: 'Counsel, Article 12 requires logging of the *system\'s operations*, not the retention of the *biometric templates* of 250,000 innocent people. Do you not see the difference between a log and a biometric database?',
               legal_reasoning: 'This is a fundamental error. It confuses system logs (Art 12) with the storage of biometric data, which is strictly restricted under Art 5.'
             }
@@ -2871,11 +2874,13 @@ const CASES = [
     },
     
     verdict: {
-      winText: 'Victory! The High Court has ruled the deployment unlawful. Justice Rossi found that the National Police Force failed to meet the \"strictly necessary\" test under Article 5(2) by including high-privacy zones like restrooms in the scan. Crucially, the court ruled that the reuse of a retail theft FRIA for a counter-terror operation violated the procedural requirements of Article 5(3). The NPF has been ordered to delete all collected data and the Aegis-X deployment at the station has been declared a prohibited practice.',
+      winText: 'Victory! The High Court has ruled the deployment unlawful. Justice Rossi found that the National Police Force failed to meet the \"strictly necessary\" test under Article 5(2) by including high-privacy zones like restrooms in the scan. Crucially, the court ruled that the reuse of a retail theft FRIA for a counter-terror operation violated the Fundamental Rights Impact Assessment requirements of Article 27. The NPF has been ordered to delete all collected data and the Aegis-X deployment at the station has been declared a prohibited practice.',
       loseText: 'Defeat. The Court found that while the impact assessment was flawed, the imminent threat of terrorism gave the police wide latitude under Article 5(1)(h)(ii). Because you failed to prove that the geographic scope was definitively outside the bounds of \"necessity\" for a transit hub, the court has allowed the police to keep the data for an additional 30 days for \"security auditing.\"',
-      modelAnswer: 'The National Police Force\'s deployment violated the EU AI Act on both substantive and procedural grounds. Under Article 5(2), the use of real-time RBI must be \"strictly necessary\" and \"geographically limited\". Scanning 250,000 people in high-privacy areas like restrooms and shops exceeds what is necessary for a transit-intercept objective. Procedurally, Article 5(3) requires a judicial authorization based on an assessment of rights and freedoms (the FRIA). Submitting a \"generic\" FRIA from a retail context (Evidence 3) constitutes a failure to assess the specific consequences of this deployment. Finally, retaining biometric templates for 48 hours post-operation for further analysis extends the \"real-time\" use beyond the authorized temporal scope, violating the proportionality requirements of Article 5(2).'
+      modelAnswer: 'The National Police Force\'s deployment violated the EU AI Act on both substantive and procedural grounds. Under Article 5(2), the use of real-time RBI must be \"strictly necessary\" and \"geographically limited\". Scanning 250,000 people in high-privacy areas like restrooms and shops exceeds what is necessary for a transit-intercept objective. Procedurally, Article 27 requires a Fundamental Rights Impact Assessment (FRIA) specific to each deployment. Submitting a \"generic\" FRIA from a retail context (Evidence 3) constitutes a failure to assess the specific consequences of this deployment. Finally, retaining biometric templates for 48 hours post-operation for further analysis extends the \"real-time\" use beyond the authorized temporal scope, violating the proportionality requirements of Article 5(2).'
     }
   },
+
+  
   // --- CASE 9: The Sentiment Sentinel ---
   {
     id: 'case-emotion-recognition-workplace',
@@ -7470,7 +7475,7 @@ const CASES = [
         witnessResponse: 'We value consistency. Frequent disagreement with a validated high-risk tool suggests that an officer may be introducing subjective bias into the process.',
         category: 'effective',
         impact: 'positive',
-        impactExplanation: 'This establishes a de facto prohibition on human overrides, violating the Article 14(4)(e) requirement that humans must be able to disregard the AI.',
+        impactExplanation: 'This establishes a de facto prohibition on human overrides, violating the Article 14(4)(d) requirement that humans must be able to disregard or override the AI.',
         followUp: {
           available: false
         }
@@ -7543,7 +7548,7 @@ const CASES = [
           {
             id: 'arg1-plausible',
             quality: 'plausible',
-            text: 'Your Honour, the DIA has violated the social scoring prohibition in Article 5(1)(c). By categorizing applicants as \"unfounded\" based on their behavioral traits and regional origins, the state is creating a social score that leads to detrimental treatment in the context of migration. Social scoring is an absolute prohibition that no amount of human oversight can fix. Because the system profiles vulnerable individuals to deny them access to international protection, it represents an unacceptable risk and must be permanently decommissioned as a prohibited practice under the general safety framework of the Act. This interpretation aligns with the regulatory architecture which carefully distinguishes obligations by service category and provider type within the broader digital governance framework of the European Union.',
+            text: 'Your Honour, the DIA has violated the social scoring prohibition in Article 5(1)(c). By categorizing applicants as \"unfounded\" based on their behavioral traits and regional origins, the state is creating a social score that leads to detrimental treatment in the context of migration. Social scoring is an absolute prohibition that no amount of human oversight can fix. Because the system profiles vulnerable individuals to deny them access to international protection, it represents an unacceptable risk and must be permanently decommissioned as a prohibited practice under the general safety framework of the Act.',
             judge_response: 'Counsel, you are arguing for prohibition. But is a migration triage tool truly \"social scoring\" as defined in Article 5, or is it a high-risk migration system under Annex III? Are you not misapplying the regulatory framework?',
             legal_reasoning: 'This is the trap. It misclassifies a high-risk system (Annex III, 7b) as a prohibited practice (Art 5). While the system is invasive, asylum processing is specifically regulated as High-Risk, not as Social Scoring. This tests if the student understands the Act\'s architecture.'
           },
@@ -7617,7 +7622,7 @@ const CASES = [
               hints: ['Can a provider accept that the system creates unmanageable human review workloads?', 'Article 9 requires managing foreseeable risks. If the system design makes meaningful oversight impossible due to volume, that is a foreseeable and unacceptable residual risk.']
             }
           ],
-        oppositionArgument: 'Finally, Your Honour, we must address the \"backlog\" reality. Article 9(4) of the AI Act states that risk management shall ensure that the residual risk remains acceptable. We identified the risk of automation bias and determined that the benefit of processing cases 40% faster, which allows more people to receive decisions, outweighs the residual risk of a few errors. The 50-case-per-day target (Evidence 3) is a management necessity to fulfill our public service mandate. The provider cannot be held liable for the administrative pressure that the government must manage in a crisis.',
+        oppositionArgument: 'Finally, Your Honour, we must address the \"backlog\" reality. Article 9(5) of the AI Act states that risk management shall ensure that the residual risk remains acceptable. We identified the risk of automation bias and determined that the benefit of processing cases 40% faster, which allows more people to receive decisions, outweighs the residual risk of a few errors. The 50-case-per-day target (Evidence 3) is a management necessity to fulfill our public service mandate. The provider cannot be held liable for the administrative pressure that the government must manage in a crisis.',
         writePrompt: 'The respondent argues "residual risk" justifies the workload. Does Article 9 allow a provider to knowingly accept a lack of oversight to protect their efficiency metrics?',
         minWords: 10,
         options: [
@@ -7631,7 +7636,7 @@ const CASES = [
           {
             id: 'arg3-plausible',
             quality: 'plausible',
-            text: 'Your Honour, the high adherence rate and the speed of rejections are a violation of the \"Accuracy and Robustness\" requirements in Article 15. A system that leads to 97% agreement in under three minutes must be technically flawed or inadequately tested for real-world nuance. The DIA failed to provide benchmarks showing that the AI is actually as accurate as the manual claims. The appropriate remedy is to order a new round of third-party testing under Article 15 to ensure that the algorithm performs correctly before it is used for any further asylum decisions. This analysis is consistent with the structure of the regulatory framework which draws deliberate distinctions between different categories of obligation based on the nature of the service and the role of the provider.',
+            text: 'Your Honour, the high adherence rate and the speed of rejections are a violation of the \"Accuracy and Robustness\" requirements in Article 15. A system that leads to 97% agreement in under three minutes must be technically flawed or inadequately tested for real-world nuance. The DIA failed to provide benchmarks showing that the AI is actually as accurate as the manual claims. The appropriate remedy is to order a new round of third-party testing under Article 15 to ensure that the algorithm performs correctly before it is used for any further asylum decisions.',
             judge_response: 'Is the problem the system\'s accuracy, or the way the human is pressured to interact with it? Even if the AI were 100% accurate, does Article 14 not still require the human to be able to effectively oversee it?',
             legal_reasoning: 'This is the trap. Art 15 (Accuracy) is a separate requirement. A system could be very accurate but still violate Art 14 if it makes human intervention too difficult. This tests the student\'s ability to isolate the oversight failure.'
           },
@@ -7645,7 +7650,7 @@ const CASES = [
           {
             id: 'arg3-wrong',
             quality: 'wrong',
-            text: 'Your Honour, the DIA is actually exempt from Article 9 because they are a public authority acting under \"emergency powers.\" The AI Act states that in cases of mass migration, the standard high-risk rules can be suspended to ensure the safety of the state. Since the backlog constitutes an emergency, the rules on risk management and oversight do not apply. The agency can continue to use its 97% accurate system as it sees fit to protect the border until the crisis is over. The Authority should exercise its full enforcement competence under this provision to ensure that the respondent brings its practices into compliance with the applicable standards without further delay.',
+            text: 'Your Honour, the DIA is actually exempt from Article 9 because they are a public authority acting under \"emergency powers.\" The AI Act states that in cases of mass migration, the standard high-risk rules can be suspended to ensure the safety of the state. Since the backlog constitutes an emergency, the rules on risk management and oversight do not apply. The agency can continue to use its 97% accurate system as it sees fit to protect the border until the crisis is over.',
             judge_response: 'Counsel, there is no \"emergency suspension\" of the Article 9 rules in the AI Act, and public authorities are the *primary* subjects of these regulations. Your jurisdictional argument is entirely without merit.',
             legal_reasoning: 'Fundamental error. It invents a non-existent \"emergency exemption\" and wrongly claims the AI Act is optional for the state.'
           }
@@ -7657,7 +7662,7 @@ const CASES = [
   verdict: {
     winText: 'Victory! The Court has ruled that the asylum triage process was unlawful. Justice Rossi found that the Department of Immigration violated Article 14 of the AI Act by creating an administrative environment that rendered human oversight ineffective. The court ruled that the \"162-second average\" and the efficiency-linked metrics constituted a structural failure to minimize automation bias. The court has ordered that Amadou Sarr\'s case be re-evaluated by a human officer with no reference to the AI score, and the DIA has been ordered to redesign the oversight process.',
     loseText: 'Defeat. The Court found that while the speed of processing was \"concerning,\" the final signature on the rejection was still human. Because you failed to effectively prove that the administrative pressure constitutes a technical failure of \"effective oversight\" under Article 14, the court has ruled that the DIA\'s efficiency metrics are a matter of institutional discretion, shielding the agency from liability.',
-    modelAnswer: 'The Department of Immigration violated the EU AI Act on two primary counts. First, AsylumFlow AI failed the Article 14 human oversight mandate. High-risk systems must be designed to allow effective oversight, which includes the ability to disregard or override the output (Art 14(4e)). By setting a 50-case daily target (Evidence 3) that resulted in a 162-second review time (Evidence 4), the DIA created a structural environment that obstructed the exercise of this discretion. Second, the system failed the Article 13(1) transparency mandate. The use of opaque labels like \"Consistency Error\" (Evidence 2) without further interpretability means the officer could not understand the AI\'s logic, rendering oversight nominal rather than effective. Efficiency and \"backlog reduction\" cannot override the mandatory requirement for meaningful human agency in high-risk migration assessments.'
+    modelAnswer: 'The Department of Immigration violated the EU AI Act on two primary counts. First, AsylumFlow AI failed the Article 14 human oversight mandate. High-risk systems must be designed to allow effective oversight, which includes the ability to disregard or override the output (Art. 14(4)(d)). By setting a 50-case daily target (Evidence 3) that resulted in a 162-second review time (Evidence 4), the DIA created a structural environment that obstructed the exercise of this discretion. Second, the system failed the Article 13(1) transparency mandate. The use of opaque labels like \"Consistency Error\" (Evidence 2) without further interpretability means the officer could not understand the AI\'s logic, rendering oversight nominal rather than effective. Efficiency and \"backlog reduction\" cannot override the mandatory requirement for meaningful human agency in high-risk migration assessments.'
   }
 },
 
@@ -7675,10 +7680,10 @@ const CASES = [
   estimatedMinutes: 25,
   codexReferences: ['art9', 'art15', 'annex-iii-2'],
 briefing: {
-  narrative: 'In July 2025, the National Power Grid (NPG) suffered a catastrophic failure of its \'GridCore AI\' system, which manages real-time load balancing. During a rare weather event\u2014an intense heatwave coupled with sudden, heavy cloud cover that plummeted solar production\u2014the AI encountered variables it was not trained to handle. The system crashed, and because NPG had fully automated the switching process without manual fallback procedures, 200,000 households were left without power for eight hours. Your client, the Federation of Consumer Associations, argues that NPG violated the AI Act by failing to identify foreseeable environmental risks and by deploying a system that lacked the mandatory robustness and redundancy required for critical infrastructure.',
+  narrative: 'In July 2025, the National Power Grid (NPG), a state-owned transmission operator based in Stuttgart, Germany, suffered a catastrophic failure of its \'GridCore AI\' system, which manages real-time load balancing. During a rare weather event\u2014an intense heatwave coupled with sudden, heavy cloud cover that plummeted solar production\u2014the AI encountered variables it was not trained to handle. The system crashed, and because NPG had fully automated the switching process without manual fallback procedures, 200,000 households were left without power for eight hours. Your client, the Federation of Consumer Associations, argues that NPG violated the AI Act by failing to identify foreseeable environmental risks and by deploying a system that lacked the mandatory robustness and redundancy required for critical infrastructure.',
   client: { name: 'Elena Vance', role: 'Director of the Federation of Consumer Associations' },
   respondent: { name: 'National Power Grid (NPG)', type: 'Critical Infrastructure Operator' },
-  setting: 'Administrative Court of the Union, Infrastructure Chamber'
+  setting: 'Administrative Court of Baden-Württemberg, Infrastructure Chamber, Stuttgart'
 },
 
 evidence: [
@@ -7814,7 +7819,7 @@ courtroom: {
               hints: ['Is extreme weather an unforeseeable event for critical infrastructure AI?', 'Article 9 requires identification of foreseeable risks. For an energy grid AI, extreme weather is not an edge case but a core operational scenario that must be planned for.']
             }
           ],
-      oppositionArgument: 'Your Honour, the National Power Grid maintained a state-of-the-art Risk Management System under Article 9. We identified all standard foreseeable risks, including cyberattacks and hardware failure. The combination of record-breaking heat and sudden cloud cover was a \'Black Swan\' event\u2014a Force Majeure that no reasonable operator could be expected to model. Article 9(4) allows for the acceptance of residual risks that are reasonable. To demand that every possible weather permutation be tested would prevent any AI from ever being deployed in the energy sector.',
+      oppositionArgument: 'Your Honour, the National Power Grid maintained a state-of-the-art Risk Management System under Article 9. We identified all standard foreseeable risks, including cyberattacks and hardware failure. The combination of record-breaking heat and sudden cloud cover was a \'Black Swan\' event\u2014a Force Majeure that no reasonable operator could be expected to model. Article 9(3) allows for the acceptance of residual risks that are reasonable. To demand that every possible weather permutation be tested would prevent any AI from ever being deployed in the energy sector.',
       writePrompt: 'The respondent claims extreme weather isn\'t "foreseeable." Look at Article 9(2) and Evidence 3\u2014was this risk identified before the launch?',
       minWords: 10,
       options: [
@@ -7858,7 +7863,7 @@ courtroom: {
               hints: ['Does having two AI systems provide redundancy if both fail in the same conditions?', 'Article 15(4) requires robustness. If both systems share training data or architecture, they are correlated not independent. This is a single point of failure, not redundancy.']
             }
           ],
-      oppositionArgument: 'Your Honour, we have met the robustness requirements of Article 15. GridCore was designed with a dual-redundancy architecture. We had a primary and a secondary AI. Article 15(1) requires that high-risk systems be resilient as regards errors, faults, or inconsistencies. Our architecture was resilient to hardware faults. The fact that both systems encountered the same environmental inconsistency at the same time is a technical anomaly that no level of redundancy could prevent. We followed the state-of-the-art standards for high-availability systems.',
+      oppositionArgument: 'Your Honour, we have met the robustness requirements of Article 15. GridCore was designed with a dual-redundancy architecture. We had a primary and a secondary AI. Article 15(4) requires that high-risk systems be resilient as regards errors, faults, or inconsistencies. Our architecture was resilient to hardware faults. The fact that both systems encountered the same environmental inconsistency at the same time is a technical anomaly that no level of redundancy could prevent. We followed the state-of-the-art standards for high-availability systems.',
       writePrompt: 'The respondent claims dual-AI is "redundancy." Look at Article 15(4) and Evidence 5—does redundancy work if both systems share the same training defect?',
       minWords: 10,
       options: [
@@ -7902,7 +7907,7 @@ courtroom: {
               hints: ['Can environmental goals justify accepting safety risks in critical infrastructure?', 'Article 9 does not allow trading critical safety for policy goals. When human lives depend on critical infrastructure, no policy justification makes the safety risk acceptable.']
             }
           ],
-      oppositionArgument: 'Finally, Your Honour, we must consider the public interest. GridCore AI has reduced carbon emissions by 18% by optimizing renewable energy integration. Article 9(4) requires that risk management ensures the residual risk remains acceptable when weighed against the benefits. The environmental benefit of GridCore is massive. To demand manual fallbacks or legacy switching systems would increase energy prices and slow down the green transition. The risk of an 8-hour blackout once every ten years is an acceptable price to pay for a carbon-neutral and efficient power grid.',
+      oppositionArgument: 'Finally, Your Honour, we must consider the public interest. GridCore AI has reduced carbon emissions by 18% by optimizing renewable energy integration. Article 9(3) requires that risk management ensures the residual risk remains acceptable when weighed against the benefits. The environmental benefit of GridCore is massive. To demand manual fallbacks or legacy switching systems would increase energy prices and slow down the green transition. The risk of an 8-hour blackout once every ten years is an acceptable price to pay for a carbon-neutral and efficient power grid.',
       writePrompt: 'The respondent argues "Green Transition" justifies the risk. Does Article 9 allow for a trade-off where critical safety fallbacks are removed for the sake of efficiency or environmental goals?',
       minWords: 10,
       options: [
@@ -7955,15 +7960,15 @@ verdict: {
   subtitle: 'Psychographic profiling and the integrity of the ballot box',
   framework: 'ai-act',
   frameworkLabel: 'EU AI Act',
-  primaryArticles: ['Annex III, point 8(a)', 'Art. 9', 'Art. 50(4)'],
+  primaryArticles: ['Annex III, point 8(b)', 'Art. 9', 'Art. 50(4)'],
   difficulty: 'Hard',
   estimatedMinutes: 25,
-  codexReferences: ['annex-iii-8a', 'art9', 'art50-4'],
+  codexReferences: ['annex-iii-8b', 'art9', 'art50-4'],
   briefing: {
-    narrative: 'DemocracyLabs, a political consulting firm, has deployed \'VoterPulse AI\' for the Unity Party\'s national campaign. The system uses a proprietary \'Psychographic Engine\' to scrape social media and browsing history, categorizing voters into segments like \'Security-Driven\', \'Anxiety-Prone\', or \'Idealist\'. The AI then generates thousands of hyper-personalized policy ads. A \'Security-Driven\' voter sees an ad suggesting the candidate will double police presence; an \'Anxiety-Prone\' voter sees a fear-based ad about rising crime. None of these messages are labeled as AI-generated. An investigation by journalist Leo Sterling has exposed that the same candidate is being presented with contradictory policy platforms to different people. You represent the Electoral Integrity Commission, seeking to halt the use of the system before election day.',
+    narrative: 'DemocracyLabs, a political consulting firm based in Vienna, Austria, has deployed \'VoterPulse AI\' for the Unity Party\'s Austrian national parliamentary campaign. The system uses a proprietary \'Psychographic Engine\' to scrape social media and browsing history, categorizing voters into segments like \'Security-Driven\', \'Anxiety-Prone\', or \'Idealist\'. The AI then generates thousands of hyper-personalized policy ads. A \'Security-Driven\' voter sees an ad suggesting the candidate will double police presence; an \'Anxiety-Prone\' voter sees a fear-based ad about rising crime. None of these messages are labeled as AI-generated. An investigation by journalist Leo Sterling has exposed that the same candidate is being presented with contradictory policy platforms to different people. You represent the Electoral Integrity Commission, seeking to halt the use of the system before election day.',
     client: { name: 'Dr. Aris Vance', role: 'Chief Commissioner, Electoral Integrity Commission' },
     respondent: { name: 'DemocracyLabs Consulting', type: 'Political Technology Provider' },
-    setting: 'Administrative High Court, Electoral Division, June 2025'
+    setting: 'Administrative High Court, Vienna, Electoral Division, June 2025'
   },
   
   evidence: [
@@ -7972,7 +7977,7 @@ verdict: {
       type: 'client-intake',
       title: 'Sterling Report: The Mirror Campaign',
       date: 'May 14, 2025',
-      content: '<div class="doc-section"><div class="doc-section-title">Investigative Findings: The \'Mirror\' Effect</div><p>My team conducted a digital forensics audit of the Unity Party\'s online campaign utilizing \'VoterPulse AI.\' We tracked the digital ad delivery for two individuals residing in the exact same apartment building in a key swing district.</p><p><strong>Subject A</strong> (Indexed by the AI as "Risk-Averse/Anxious") received 12 distinct video and text ads emphasizing border closures, increased police funding, and the threat of urban decay. <br><strong>Subject B</strong> (Indexed by the AI as "Progressive-Urban/Idealist") received 12 ads from the *exact same candidate* emphasizing environmental deregulation, green energy investment, and police reform.</p></div><div class="doc-section"><p><div class="doc-highlight">The AI is literally tailoring the candidate\'s soul to the voter\'s browser history.</div> It generates contradictory policy platforms in real-time to match the psychological vulnerabilities of the specific viewer. Crucially, none of these thousands of dynamically generated messages carry the mandatory "AI-Generated Content" disclosures required by the new European regulations. The public believes they are hearing the candidate\'s authentic voice.</p></div>'
+      content: '<div class="doc-section"><div class="doc-section-title">Investigative Findings: The \'Mirror\' Effect</div><p>My team conducted a digital forensics audit of the Unity Party\'s online campaign utilizing \'VoterPulse AI.\' We tracked the digital ad delivery for two individuals residing in the exact same apartment building in a key electoral constituency.</p><p><strong>Subject A</strong> (Indexed by the AI as "Risk-Averse/Anxious") received 12 distinct video and text ads emphasizing border closures, increased police funding, and the threat of urban decay. <br><strong>Subject B</strong> (Indexed by the AI as "Progressive-Urban/Idealist") received 12 ads from the *exact same candidate* emphasizing environmental deregulation, green energy investment, and police reform.</p></div><div class="doc-section"><p><div class="doc-highlight">The AI is literally tailoring the candidate\'s soul to the voter\'s browser history.</div> It generates contradictory policy platforms in real-time to match the psychological vulnerabilities of the specific viewer. Crucially, none of these thousands of dynamically generated messages carry the mandatory "AI-Generated Content" disclosures required by the new European regulations. The public believes they are hearing the candidate\'s authentic voice.</p></div>'
     },
     {
       id: 'ev2-tech-logic',
@@ -8007,7 +8012,7 @@ verdict: {
       type: 'procurement-document',
       title: 'Service Agreement: Unity Party & DemocracyLabs',
       date: 'January 2025',
-      content: '<div class="doc-section"><div class="doc-section-title">Master Service Agreement</div><p><strong>Client:</strong> The Unity Party National Committee<br><strong>Vendor:</strong> DemocracyLabs Consulting<br><strong>Contract Value:</strong> €12,500,000</p></div><div class="doc-section"><div class="doc-section-title">Section 2: Scope of Work & Deliverables</div><p>2.1 DemocracyLabs shall provide the primary digital analytics and generative engine for influencing the outcome of the 2025 National Election.</p><p>2.2 <div class="doc-highlight">The explicit goal of this engagement is to shift the voting behavior of undecided natural persons</div> in 45 key swing districts using the VoterPulse AI proprietary system.</p><p>2.3 The Vendor guarantees a minimum 4% shift in targeted voter sentiment through the deployment of hyper-personalized, dynamically generated policy messaging designed to exploit localized demographic vulnerabilities.</p></div>'
+      content: '<div class="doc-section"><div class="doc-section-title">Master Service Agreement</div><p><strong>Client:</strong> The Unity Party National Committee<br><strong>Vendor:</strong> DemocracyLabs Consulting<br><strong>Contract Value:</strong> €12,500,000</p></div><div class="doc-section"><div class="doc-section-title">Section 2: Scope of Work & Deliverables</div><p>2.1 DemocracyLabs shall provide the primary digital analytics and generative engine for influencing the outcome of the 2025 National Election.</p><p>2.2 <div class="doc-highlight">The explicit goal of this engagement is to shift the voting behavior of undecided natural persons</div> in 45 key electoral constituencies using the VoterPulse AI proprietary system.</p><p>2.3 The Vendor guarantees a minimum 4% shift in targeted voter sentiment through the deployment of hyper-personalized, dynamically generated policy messaging designed to exploit localized demographic vulnerabilities.</p></div>'
     }
   ],
   
@@ -8026,7 +8031,7 @@ verdict: {
         witnessResponse: 'Our purpose is to help candidates connect with voters. Every political campaign in history has tried to influence behavior; we just use better tools to ensure the message is relevant to the individual.',
         category: 'effective',
         impact: 'positive',
-        impactExplanation: 'This admission satisfies the classification criteria for high-risk systems under Annex III, point 8(a).',
+        impactExplanation: 'This admission satisfies the classification criteria for high-risk systems under Annex III, point 8(b).',
         followUp: {
           available: true,
           questionText: 'So you admit the system is "intended to be used to influence the outcome of an election"?',
@@ -8065,7 +8070,7 @@ verdict: {
         impactExplanation: 'This establishing a breach of Art. 9, which requires high-risk systems to manage risks to fundamental rights, including democratic integrity.',
         followUp: {
           available: true,
-          questionText: 'Does Annex III, point 8(a) not explicitly categorize "influencing voting behavior" as a high-risk activity requiring such assessments?',
+          questionText: 'Does Annex III, point 8(b) not explicitly categorize "influencing voting behavior" as a high-risk activity requiring such assessments?',
           witnessResponse: 'We had a different legal interpretation at the time.',
           followUpImpact: 'positive'
         }
@@ -8106,14 +8111,14 @@ verdict: {
           {
             id: 'arg1-strong',
             quality: 'strong',
-            text: 'Your Honour, the respondent\'s interpretation is flatly contradicted by the text of the Regulation. Annex III, point 8(a) specifically classifies as high-risk those AI systems intended to be used by political campaigns to influence the outcome of an election or referendum or the voting behavior of natural persons. The contract in Evidence 6 explicitly states that DemocracyLabs was hired to provide the primary engine for shifting voting behavior. The law makes no distinction between public or private providers here; the high-risk status is triggered by the intent to influence the democratic process, which is clearly established in this case.',
+            text: 'Your Honour, the respondent\'s interpretation is flatly contradicted by the text of the Regulation. Annex III, point 8(b) specifically classifies as high-risk those AI systems intended to be used by political campaigns to influence the outcome of an election or referendum or the voting behavior of natural persons. The contract in Evidence 6 explicitly states that DemocracyLabs was hired to provide the primary engine for shifting voting behavior. The law makes no distinction between public or private providers here; the high-risk status is triggered by the intent to influence the democratic process, which is clearly established in this case.',
             judge_response: 'The statutory language is unambiguous. \"Political campaigns\" are explicitly named. Dr. Eisenberg, are you suggesting the contract does not mean what it says regarding \"influencing behavior\"?',
             legal_reasoning: 'This argument correctly identifies the scope of Annex III, 8(a), which specifically names political campaigns, and uses the contract (Evidence 6) to prove the system meets the "influencing behavior" test.'
           },
           {
             id: 'arg1-plausible',
             quality: 'plausible',
-            text: 'Your Honour, the primary issue is that VoterPulse AI constitutes a prohibited practice under Article 5(1)(a). It uses subliminal techniques beyond a person\'s consciousness to materially distort their behavior. By targeting voters with fear-based messaging based on their secret psychological profiles, the firm is manipulating the subconscious of the electorate. Because this manipulation distorts the democratic process, the system represents an unacceptable risk that must be banned entirely. Any system that uses psychological profiling to change a vote is a violation of the absolute prohibitions on behavioral distortion under the AI Act. The regulatory framework specifically anticipates this kind of conduct and provides targeted obligations that supersede the more general provisions upon which the complainant has based their application.',
+            text: 'Your Honour, the primary issue is that VoterPulse AI constitutes a prohibited practice under Article 5(1)(a). It uses subliminal techniques beyond a person\'s consciousness to materially distort their behavior. By targeting voters with fear-based messaging based on their secret psychological profiles, the firm is manipulating the subconscious of the electorate. Because this manipulation distorts the democratic process, the system represents an unacceptable risk that must be banned entirely. Any system that uses psychological profiling to change a vote is a violation of the absolute prohibitions on behavioral distortion under the AI Act.',
             judge_response: 'Counsel, while the system is intrusive, does it truly meet the high threshold of \"subliminal techniques\" under Article 5(1)(a)? Or is it a high-risk system specifically designed for electoral influence as described in Annex III?',
             legal_reasoning: 'This is the trap. It misclassifies the system as a prohibited practice (Art 5). While microtargeting is manipulative, the AI Act specifically addresses it as a High-Risk system in Annex III, point 8, rather than a prohibited subliminal tool. This tests the student\'s understanding of the specific electoral safeguards.'
           },
@@ -8225,9 +8230,9 @@ verdict: {
   },
   
   verdict: {
-    winText: 'Victory! The Court has issued a permanent injunction against the use of VoterPulse AI. Justice Morel found that DemocracyLabs violated Annex III, point 8(a) by failing to perform a mandatory risk assessment on the system\'s impact on democratic integrity. Furthermore, the court ruled that the deliberate decision to omit AI-generation labels on political messaging was a willful breach of Article 50(4). DemocracyLabs has been ordered to immediately disclose the AI-generated nature of all previous ads and pay a record fine for interfering with the sanctity of the electoral process.',
+    winText: 'Victory! The Court has issued a permanent injunction against the use of VoterPulse AI. Justice Morel found that DemocracyLabs violated Annex III, point 8(b) by failing to perform a mandatory risk assessment on the system\'s impact on democratic integrity. Furthermore, the court ruled that the deliberate decision to omit AI-generation labels on political messaging was a willful breach of Article 50(4). DemocracyLabs has been ordered to immediately disclose the AI-generated nature of all previous ads and pay a record fine for interfering with the sanctity of the electoral process.',
     loseText: 'Defeat. The Court found that while the psychographic profiling was \"intrusive,\" the firm\'s right to political speech and the candidate\'s autonomy gave them broad discretion. Because you failed to effectively prove that the system was \"intended to influence voting behavior\" beyond the bounds of standard political marketing, the court has allowed the Unity Party to continue using the system as long as they add a generic disclaimer to their homepage.',
-    modelAnswer: 'DemocracyLabs violated the EU AI Act on three primary counts. First, VoterPulse AI is a high-risk system under Annex III, point 8(a), as it is intended to influence the voting behavior of natural persons. Second, the provider failed its Article 9 risk management duties by explicitly refusing to assess the risks to democratic processes and psychological integrity (Evidence 5). Third, the firm breached Article 50(4) by failing to disclose that political messaging on matters of public interest was AI-generated. The internal email (Evidence 3) proves this was a willful violation to maintain a false sense of \"authenticity.\" High-risk systems used in elections represent a critical threat to fundamental rights, and the AI Act mandates transparency and risk mitigation precisely to protect the democratic order from automated manipulation.'
+    modelAnswer: 'DemocracyLabs violated the EU AI Act on three primary counts. First, VoterPulse AI is a high-risk system under Annex III, point 8(b), as it is intended to influence the voting behavior of natural persons. Second, the provider failed its Article 9 risk management duties by explicitly refusing to assess the risks to democratic processes and psychological integrity (Evidence 5). Third, the firm breached Article 50(4) by failing to disclose that political messaging on matters of public interest was AI-generated. The internal email (Evidence 3) proves this was a willful violation to maintain a false sense of \"authenticity.\" High-risk systems used in elections represent a critical threat to fundamental rights, and the AI Act mandates transparency and risk mitigation precisely to protect the democratic order from automated manipulation.'
   }
 },
 
@@ -8240,10 +8245,10 @@ verdict: {
   subtitle: 'Hyper-personalized psychographic profiling in national elections',
   framework: 'ai-act',
   frameworkLabel: 'EU AI Act',
-  primaryArticles: ['Annex III, point 8(a)', 'Art. 9', 'Art. 50(4)'],
+  primaryArticles: ['Annex III, point 8(b)', 'Art. 9', 'Art. 50(4)'],
   difficulty: 'Hard',
   estimatedMinutes: 25,
-  codexReferences: ['annex-iii-8a', 'art9', 'art50-4'],
+  codexReferences: ['annex-iii-8b', 'art9', 'art50-4'],
   briefing: {
     narrative: 'In the weeks leading up to the 2025 European Parliamentary elections, a whistleblower from \'StrategicPulse Consulting\' leaked documents regarding \'Project Citizen-Sync\'. The firm deployed a high-risk AI system that processes social media activity and browsing history to generate hyper-personalised political messaging. The AI crafts contradictory policy stances: a voter identified as \'security-focused\' receives fear-based ads about border control, while a \'libertarian-leaning\' voter receives ads from the same candidate about deregulation. None of the content is labelled as AI-generated. Your client, the Electoral Integrity Commission, argues that this system represents an unmanaged risk to the democratic process and violates mandatory transparency duties for high-risk systems used in elections.',
     client: { name: 'Dr. Aris Thorne', role: 'Chief Commissioner, Electoral Integrity Commission' },
@@ -8257,7 +8262,7 @@ verdict: {
       type: 'witness-statement',
       title: 'Investigative Report: The Mirror Campaign',
       date: 'May 12, 2025',
-      content: '<div class="doc-section"><div class="doc-section-title">Investigation Methodology</div><p>During the critical final six weeks of the European Parliamentary campaign, our investigative team tracked the digital footprints and ad deliveries of 500 self-identified "undecided" voters across three key swing districts. We utilized custom tracking software to monitor the political advertisements they received across social media and news portals.</p></div><div class="doc-section"><div class="doc-section-title">Findings: The Mirror Effect</div><p>The AI, internally known as "VoterFlow", delivered an astonishing 14,000 unique message variations on behalf of the Unity Party. <div class="doc-highlight">The candidate\'s environmental policy appeared as a "Green New Deal" to some and as "Eliminating Bureaucratic Waste" to others.</div> One voter, profiled as "financially anxious," received apocalyptic warnings about inflation, while her neighbor, profiled as "optimistic/tech-forward," received visionary promises about innovation from the exact same candidate. Crucially, there were absolutely no disclosures that these messages were synthetically generated by a neural network to perfectly match their secret psychological profiles. The voters believed they were reading the authentic, personal priorities of the candidate.</p></div>'
+      content: '<div class="doc-section"><div class="doc-section-title">Investigation Methodology</div><p>During the critical final six weeks of the European Parliamentary campaign, our investigative team tracked the digital footprints and ad deliveries of 500 self-identified "undecided" voters across three key electoral constituencies. We utilized custom tracking software to monitor the political advertisements they received across social media and news portals.</p></div><div class="doc-section"><div class="doc-section-title">Findings: The Mirror Effect</div><p>The AI, internally known as "VoterFlow", delivered an astonishing 14,000 unique message variations on behalf of the Unity Party. <div class="doc-highlight">The candidate\'s environmental policy appeared as a "Green New Deal" to some and as "Eliminating Bureaucratic Waste" to others.</div> One voter, profiled as "financially anxious," received apocalyptic warnings about inflation, while her neighbor, profiled as "optimistic/tech-forward," received visionary promises about innovation from the exact same candidate. Crucially, there were absolutely no disclosures that these messages were synthetically generated by a neural network to perfectly match their secret psychological profiles. The voters believed they were reading the authentic, personal priorities of the candidate.</p></div>'
     },
     {
       id: 'ev2-target-logic',
@@ -8311,7 +8316,7 @@ verdict: {
         witnessResponse: 'Our tool helps candidates reach their audience. Every campaign since the dawn of time has tried to influence voters; we just use better data to ensure the message resonates.',
         category: 'effective',
         impact: 'positive',
-        impactExplanation: 'This establishes that the system meets the high-risk criteria defined in Annex III, point 8(a).',
+        impactExplanation: 'This establishes that the system meets the high-risk criteria defined in Annex III, point 8(b).',
         followUp: {
           available: true,
           questionText: 'If your goal was to "reach the audience", why did you explicitly omit the AI-generation labels required for public interest text?',
@@ -8385,20 +8390,20 @@ verdict: {
             }
           ],
         oppositionArgument: 'Your Honour, the claimant is attempting to apply the heavy burden of high-risk oversight to standard political communication. VoterFlow is a marketing support tool. The AI Act\'s high-risk categories were intended for systems used by \"public authorities\" or for critical infrastructure. StrategicPulse is a private firm. Our system does not make decisions; it merely suggests messaging. To classify every targeted political ad as \"high-risk\" would stifle political speech and give regulators an unprecedented veto over democratic campaigning.',
-        writePrompt: 'The respondent claims high-risk status doesn\'t apply to private political campaigns. Check Annex III, point 8(a)—is this classification limited to state actors?',
+        writePrompt: 'The respondent claims high-risk status doesn\'t apply to private political campaigns. Check Annex III, point 8(b)—is this classification limited to state actors?',
         minWords: 10,
         options: [
           {
             id: 'arg1-strong',
             quality: 'strong',
-            text: 'Your Honour, the respondent\'s claim is flatly contradicted by the text of the AI Act. Annex III, point 8(a) explicitly classifies as high-risk those AI systems intended to be used to influence the outcome of an election or referendum or the voting behaviour of natural persons. The technical documentation (Evidence 2) and the campaign contract (Evidence 6) confirm the system was designed for exactly this purpose. The law makes no distinction between public or private providers in this category; the high-risk status is triggered by the intent to influence the democratic process, which is clearly established here.',
+            text: 'Your Honour, the respondent\'s claim is flatly contradicted by the text of the AI Act. Annex III, point 8(b) explicitly classifies as high-risk those AI systems intended to be used to influence the outcome of an election or referendum or the voting behaviour of natural persons. The technical documentation (Evidence 2) and the campaign contract (Evidence 6) confirm the system was designed for exactly this purpose. The law makes no distinction between public or private providers in this category; the high-risk status is triggered by the intent to influence the democratic process, which is clearly established here.',
             judge_response: 'The statutory language is unambiguous. \"Influencing voting behaviour\" is the trigger. Dr. Sterling, how can you claim this system is not intended to influence the outcome when that is its only function?',
-            legal_reasoning: 'This argument correctly applies the Annex III, point 8(a) test, which focuses on the "intent to influence" rather than the public/private status of the user.'
+            legal_reasoning: 'This argument correctly applies the Annex III, point 8(b) test, which focuses on the "intent to influence" rather than the public/private status of the user.'
           },
           {
             id: 'arg1-plausible',
             quality: 'plausible',
-            text: 'Your Honour, the primary issue is that VoterFlow constitutes a prohibited practice under Article 5(1)(a) of the AI Act. By using psychographic profiling to target psychological vulnerabilities beyond a person\'s consciousness, the firm is utilizing subliminal techniques to materially distort voter behavior. This type of behavioral manipulation is an unacceptable risk that must be banned entirely. Because the firm manipulated the subconscious of the electorate to change their political opinions, the system is not merely high-risk but is a prohibited practice that requires the immediate destruction of the algorithm. The Authority should therefore ground its finding in this specific framework rather than the general provisions the complainant has relied upon, which would provide a more targeted and effective enforcement pathway.',
+            text: 'Your Honour, the primary issue is that VoterFlow constitutes a prohibited practice under Article 5(1)(a) of the AI Act. By using psychographic profiling to target psychological vulnerabilities beyond a person\'s consciousness, the firm is utilizing subliminal techniques to materially distort voter behavior. This type of behavioral manipulation is an unacceptable risk that must be banned entirely. Because the firm manipulated the subconscious of the electorate to change their political opinions, the system is not merely high-risk but is a prohibited practice that requires the immediate destruction of the algorithm.',
             judge_response: 'Counsel, you are arguing for prohibition. But does microtargeting truly meet the high threshold of \"subliminal techniques\" under Article 5(1)(a)? Or is it a high-risk system specifically designed for electoral influence as described in Annex III?',
             legal_reasoning: 'This is the trap. While microtargeting is manipulative, the AI Act specifically addresses it as a High-Risk system in Annex III, point 8, rather than a prohibited subliminal tool. This tests the student\'s understanding of the specific electoral safeguards.'
           },
@@ -8510,12 +8515,11 @@ verdict: {
   },
   
   verdict: {
-    winText: 'Victory! The Court has issued a permanent injunction against the use of VoterFlow AI. Justice Vossen ruled that StrategicPulse violated Annex III, point 8(a) by failing to perform a mandatory risk assessment on the system\'s impact on democratic integrity. Furthermore, the court ruled that the deliberate decision to omit AI-generation labels on political messaging was a willful breach of Article 50(4). StrategicPulse has been ordered to immediately disclose the AI-generated nature of all previous ads and pay a record fine for interfering with the electoral process.',
+    winText: 'Victory! The Court has issued a permanent injunction against the use of VoterFlow AI. Justice Vossen ruled that StrategicPulse violated Annex III, point 8(b) by failing to perform a mandatory risk assessment on the system\'s impact on democratic integrity. Furthermore, the court ruled that the deliberate decision to omit AI-generation labels on political messaging was a willful breach of Article 50(4). StrategicPulse has been ordered to immediately disclose the AI-generated nature of all previous ads and pay a record fine for interfering with the electoral process.',
     loseText: 'Defeat. The Court found that while the psychographic profiling was \"intrusive,\" the firm\'s right to political speech gave them broad discretion. Because you failed to effectively prove that the system was \"intended to influence voting behaviour\" beyond the bounds of standard marketing, the court has allowed the firm to continue using the system as long as they add a generic disclaimer to their website.',
-    modelAnswer: 'StrategicPulse violated the EU AI Act on three primary counts. First, VoterFlow AI is a high-risk system under Annex III, point 8(a), as it is intended to influence the voting behavior of natural persons. Second, the provider failed its Article 9 risk management duties by explicitly refusing to assess the risks to democratic processes and psychological integrity (Evidence 4). Third, the firm breached Article 50(4) by failing to disclose that political messaging on matters of public interest was AI-generated. The CEO\'s email (Evidence 3) proves this was a willful violation to maintain persuasive power. High-risk systems used in elections represent a critical threat to fundamental rights, and the AI Act mandates transparency and risk mitigation precisely to protect the democratic order from automated manipulation.'
+    modelAnswer: 'StrategicPulse violated the EU AI Act on three primary counts. First, VoterFlow AI is a high-risk system under Annex III, point 8(b), as it is intended to influence the voting behavior of natural persons. Second, the provider failed its Article 9 risk management duties by explicitly refusing to assess the risks to democratic processes and psychological integrity (Evidence 4). Third, the firm breached Article 50(4) by failing to disclose that political messaging on matters of public interest was AI-generated. The CEO\'s email (Evidence 3) proves this was a willful violation to maintain persuasive power. High-risk systems used in elections represent a critical threat to fundamental rights, and the AI Act mandates transparency and risk mitigation precisely to protect the democratic order from automated manipulation.'
   }
 },
-
 
 // --- CASE 29: The Digital Confidant ---
 {
